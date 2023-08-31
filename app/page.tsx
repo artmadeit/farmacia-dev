@@ -1,3 +1,9 @@
+import Link from "next/link";
+
 export default function Home() {
-  return <div>lalala</div>;
+  return (
+    <div>
+      <Link href="patient-selection">Selección de paciente</Link>
+    </div>
+  );
 }
