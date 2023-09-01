@@ -1,6 +1,6 @@
 export type Item = { name: string; description: string };
 
-const PRM_GROUPS = [
+export const PRM_GROUPS = [
   {
     group: "Por Necesidad",
     items: [
@@ -36,4 +36,4 @@ const PRM_GROUPS = [
   },
 ];
 
-export const PRM_LIST: Item[] = PRM_GROUPS.flatMap((x) => x.items);
+const PRM_LIST: Item[] = PRM_GROUPS.flatMap((x) => x.items);

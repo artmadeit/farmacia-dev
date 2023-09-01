@@ -1,13 +1,20 @@
-import * as React from "react";
+import {
+  Checkbox,
+  FormControl,
+  InputLabel,
+  ListSubheader,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Item, PRM_LIST } from "./prm-groups";
-import { Checkbox } from "@mui/material";
+import * as React from "react";
+import { PRM_GROUPS } from "./prm-groups";
 
 type Criterio = {
   id: number;
@@ -33,7 +40,7 @@ const rows: Criterio[] = [
   },
 ];
 
-const helpReferences = [{ criteriaId: 8, items: PRM_LIST }];
+const helpReferences = [{ criteriaId: 8, items: PRM_GROUPS }];
 
 export default function PatientSelectionPage() {
   return (
@@ -64,7 +71,7 @@ export default function PatientSelectionPage() {
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell align="right">{row.score}</TableCell>
-                <TableCell>
+                <TableCell sx={{ width: "500px" }}>
                   <HelpReference criteriaId={row.id} />
                 </TableCell>
               </TableRow>
@@ -81,14 +88,24 @@ const HelpReference = ({ criteriaId }: { criteriaId: number }) => {
   if (!data) return "";
   return (
     <div>
-      <dl>
-        {data.items.map((x) => (
-          <React.Fragment key={x.name}>
-            <dt>{x.name}</dt>
-            <dd>{x.description}</dd>
-          </React.Fragment>
-        ))}
-      </dl>
+      <FormControl sx={{ m: 1, width: "100%" }}>
+        <InputLabel htmlFor="grouped-select">PRM</InputLabel>
+        <Select defaultValue="" id="grouped-select" label="Grouping">
+          <MenuItem value="">
+            <em>Ninguno</em>
+          </MenuItem>
+          {data.items.map((x) => (
+            <React.Fragment key={x.group}>
+              <ListSubheader>{x.group}</ListSubheader>
+              {x.items.map((item) => (
+                <MenuItem key={item.name} value={item.name}>
+                  {item.name}: {item.description}
+                </MenuItem>
+              ))}
+            </React.Fragment>
+          ))}
+        </Select>
+      </FormControl>
     </div>
   );
 };
