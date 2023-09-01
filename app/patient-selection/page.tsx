@@ -7,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Item, PRM_LIST } from "./prm-groups";
+import { Checkbox } from "@mui/material";
 
 type Criterio = {
   id: number;
@@ -42,6 +43,7 @@ export default function PatientSelectionPage() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell></TableCell>
               <TableCell>N°</TableCell>
               <TableCell>Criterios</TableCell>
               <TableCell align="right">Puntaje</TableCell>
@@ -54,6 +56,9 @@ export default function PatientSelectionPage() {
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
+                <TableCell>
+                  <Checkbox inputProps={{ "aria-label": "Checkbox demo" }} />
+                </TableCell>
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
@@ -78,10 +83,10 @@ const HelpReference = ({ criteriaId }: { criteriaId: number }) => {
     <div>
       <dl>
         {data.items.map((x) => (
-          <>
+          <React.Fragment key={x.name}>
             <dt>{x.name}</dt>
             <dd>{x.description}</dd>
-          </>
+          </React.Fragment>
         ))}
       </dl>
     </div>
