@@ -40,7 +40,37 @@ const rows: Criterio[] = [
   },
 ];
 
-const helpReferences = [{ criteriaId: 8, items: PRM_GROUPS }];
+const PrmSelect = () => {
+  return (
+    <FormControl sx={{ m: 1, width: "100%" }}>
+      <InputLabel htmlFor="grouped-select">PRM</InputLabel>
+      <Select defaultValue="" id="grouped-select" label="Grouping">
+        <MenuItem value="">
+          <em>Ninguno</em>
+        </MenuItem>
+        {PRM_GROUPS.map((x) => (
+          <React.Fragment key={x.group}>
+            <ListSubheader>{x.group}</ListSubheader>
+            {x.items.map((item) => (
+              <MenuItem key={item.name} value={item.name}>
+                {item.name}: {item.description}
+              </MenuItem>
+            ))}
+          </React.Fragment>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
+
+const DrugAutocomplete = () => {
+  return <div>hola</div>;
+};
+
+const helpReferences = [
+  { criteriaId: 1, component: DrugAutocomplete },
+  { criteriaId: 8, component: PrmSelect },
+];
 
 export default function PatientSelectionPage() {
   return (
@@ -86,26 +116,11 @@ export default function PatientSelectionPage() {
 const HelpReference = ({ criteriaId }: { criteriaId: number }) => {
   const data = helpReferences.find((x) => x.criteriaId == criteriaId);
   if (!data) return "";
+  const Component = data.component;
+
   return (
     <div>
-      <FormControl sx={{ m: 1, width: "100%" }}>
-        <InputLabel htmlFor="grouped-select">PRM</InputLabel>
-        <Select defaultValue="" id="grouped-select" label="Grouping">
-          <MenuItem value="">
-            <em>Ninguno</em>
-          </MenuItem>
-          {data.items.map((x) => (
-            <React.Fragment key={x.group}>
-              <ListSubheader>{x.group}</ListSubheader>
-              {x.items.map((item) => (
-                <MenuItem key={item.name} value={item.name}>
-                  {item.name}: {item.description}
-                </MenuItem>
-              ))}
-            </React.Fragment>
-          ))}
-        </Select>
-      </FormControl>
+      <Component />
     </div>
   );
 };
