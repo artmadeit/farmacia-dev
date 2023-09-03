@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Checkbox,
   FormControl,
@@ -15,6 +17,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import { PRM_GROUPS } from "./prm-groups";
+import { Form, Formik } from "formik";
+import { AsyncAutocomplete } from "../(components)/autocomplete";
+import { api } from "../(api)/api";
+import { Page } from "../(api)/pagination";
 
 type Criterio = {
   id: number;
@@ -48,23 +54,38 @@ const PrmSelect = () => {
         <MenuItem value="">
           <em>Ninguno</em>
         </MenuItem>
-        {PRM_GROUPS.map((x) => (
-          <React.Fragment key={x.group}>
-            <ListSubheader>{x.group}</ListSubheader>
-            {x.items.map((item) => (
-              <MenuItem key={item.name} value={item.name}>
-                {item.name}: {item.description}
-              </MenuItem>
-            ))}
-          </React.Fragment>
-        ))}
+        {PRM_GROUPS.map((x) => [
+          <ListSubheader key={x.group}>{x.group}</ListSubheader>,
+          ...x.items.map((item) => (
+            <MenuItem key={item.name} value={item.name}>
+              {item.name}: {item.description}
+            </MenuItem>
+          )),
+        ])}
       </Select>
     </FormControl>
   );
 };
 
+type Drug = {
+  name: string;
+  description: string;
+};
+
 const DrugAutocomplete = () => {
-  return <div>hola</div>;
+  return (
+    <AsyncAutocomplete
+      label="Medicamento"
+      field="drug"
+      filter={(searchText) =>
+        api
+          .get<Page<Drug>>("drugs/search/findByNameContaining", {
+            params: { page: 0, searchText },
+          })
+          .then((x) => x.data._embedded.drugs)
+      }
+    />
+  );
 };
 
 const helpReferences = [
@@ -76,39 +97,50 @@ export default function PatientSelectionPage() {
   return (
     <div>
       <h1>Criterios de selección de pacientes</h1>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>N°</TableCell>
-              <TableCell>Criterios</TableCell>
-              <TableCell align="right">Puntaje</TableCell>
-              <TableCell>Referencias de ayuda</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell>
-                  <Checkbox inputProps={{ "aria-label": "Checkbox demo" }} />
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {row.id}
-                </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell align="right">{row.score}</TableCell>
-                <TableCell sx={{ width: "500px" }}>
-                  <HelpReference criteriaId={row.id} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Formik
+        initialValues={{
+          drug: null,
+        }}
+        onSubmit={() => {}}
+      >
+        <Form>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell>N°</TableCell>
+                  <TableCell>Criterios</TableCell>
+                  <TableCell align="right">Puntaje</TableCell>
+                  <TableCell>Referencias de ayuda</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell>
+                      <Checkbox
+                        inputProps={{ "aria-label": "Checkbox demo" }}
+                      />
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row.id}
+                    </TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell align="right">{row.score}</TableCell>
+                    <TableCell sx={{ width: "500px" }}>
+                      <HelpReference criteriaId={row.id} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Form>
+      </Formik>
     </div>
   );
 }
