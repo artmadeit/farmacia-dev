@@ -30,6 +30,76 @@ const antecedents = [
   { label: "Enf. tiroides", name: "tiroides" },
 ];
 
+const problems = [
+  {
+    id: "problems_snc",
+    label: "SNC",
+    items: [
+      { label: "Tos", name: "tos" },
+      { label: "Mareos", name: "mareo" },
+      { label: "Sueño", name: "sueño" },
+      { label: "Desvanecimiento", name: "des"},
+      { label: "Vision borrosa", name: "vborrosa"},
+      { label: "Pérdida de apetito", name: "p.apetito"},
+      { label: "Dolor de cabeza", name: "dolor_cabeza"},
+    ],
+  },
+  {
+    label: "Digestivo",
+    id: "problems_digestive",
+    items: [
+      {
+        label: "Dolor y/o ardor de estómago",
+        name: "d.estomago"
+       
+      },
+      { label: "Náuseas y/o vómitos", name: "nausea" },
+      { label: "Diarreas", name: "diarrea"},
+      { label: "Estreñimiento", name: "este"},
+      { label: "Sequeda bucal", name: "seq"},
+    ],
+  },
+  {
+    label: "Cardiovascular",
+    id: "problems_cardio",
+    items: [
+      { label: "Palpitaciones", name: "pal" },
+      { label: "Taquicardia", name: "taq" },
+      { label: "Hipotensión", name: "hip" },
+      { label: "Arritmias", name: "arr" },
+      { label: "Angina", name: "an" },
+      { label: "Bradicardia", name: "br" },
+      { label: "Broncoespasmo", name: "bro" },
+    ],
+  },
+  {
+    label: "Otros",
+    id: "problems_others",
+    items: [{ label: "Disgeusia", name: "disg" }],
+  },
+  {
+    label: "Ap. Locomotor",
+    id: "problems_loc",
+    items: [
+      { label: "Debilidad muscular", name: "deb"},
+    ],
+  },
+  {
+    label: "Metabólicas",
+    id: "problems_metabolics",
+    items: [
+      { label: "Hiponatremia", name: "hipo"},
+    ],
+  },
+  {
+    label: "Piel",
+    id: "problems_piel",
+    items: [
+      { label: "Erupciones", name: "eru"},
+    ],
+  },
+];
+
 export default function PatientInterview() {
   const code = "AJK-203";
 
@@ -50,7 +120,13 @@ export default function PatientInterview() {
         weight: 0,
         size: 0,
         other: "",
+     
         antecedents: [],
+        problems_other: [],
+        problems_cardio: [],
+        problems_digestive: [],
+        problems_loc: [],
+        problems_snc: [],
       }}
       onSubmit={() => {
         // TODO:
@@ -113,9 +189,10 @@ export default function PatientInterview() {
               {getImc(values)}
             </Grid>
           </Grid>
+          <strong>2. Historia de salud</strong>
           <Grid container spacing={2}>
             <Grid xs={12}>
-              <strong>2. Historia de salud</strong>
+              <strong>2.1 Antecedentes patologicos</strong>
             </Grid>
             <Grid xs={8} container>
               <Grid xs={12} container>
@@ -138,6 +215,32 @@ export default function PatientInterview() {
             </Grid>
           </Grid>
 
+          <Grid container spacing={2}>
+            <Grid xs={12}>
+              <strong>2.2 Problemas de salud</strong>
+            </Grid>
+            <Grid xs={12} container>
+              {problems.map((group, index) => (
+                <Grid key={index} xs={3} container  
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="stretch">
+                  <strong>{group.label }</strong>
+                  {group.items.map((item, idx) => (
+                    <Field
+                      key={idx} 
+                      component={CheckboxWithLabel}
+                      type="checkbox"
+                      name={group.id}
+                      value={item.name}
+                      Label={{ label: item.label }}
+                    />
+                  ))}
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+                      <br></br>
           <div>{JSON.stringify(values)}</div>
         </Form>
       )}
