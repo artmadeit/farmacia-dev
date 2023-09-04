@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  Box,
+  Button,
   Checkbox,
   FormControl,
   InputLabel,
@@ -21,6 +23,7 @@ import { Form, Formik } from "formik";
 import { AsyncAutocomplete } from "../(components)/autocomplete";
 import { api } from "../(api)/api";
 import { Page } from "../(api)/pagination";
+import { useRouter } from "next/navigation";
 
 type Criterio = {
   id: number;
@@ -94,6 +97,8 @@ const helpReferences = [
 ];
 
 export default function PatientSelectionPage() {
+  const router = useRouter();
+
   return (
     <div>
       <h1>Criterios de selección de pacientes</h1>
@@ -101,7 +106,9 @@ export default function PatientSelectionPage() {
         initialValues={{
           drug: null,
         }}
-        onSubmit={() => {}}
+        onSubmit={() => {
+          // TODO:
+        }}
       >
         <Form>
           <TableContainer component={Paper}>
@@ -139,6 +146,18 @@ export default function PatientSelectionPage() {
               </TableBody>
             </Table>
           </TableContainer>
+          <Box display="flex" justifyContent="end" paddingTop={2}>
+            <Button
+              onClick={() => {
+                // TODO: remove this when submit is done
+                console.log("redireccionando a patient interview");
+                router.push("patient-interview");
+              }}
+              variant="contained"
+            >
+              Continuar
+            </Button>
+          </Box>
         </Form>
       </Formik>
     </div>
