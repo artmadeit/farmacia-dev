@@ -1,34 +1,28 @@
 "use client";
 
-import * as React from "react";
+import { AccountCircle } from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Button, Link, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import PeopleIcon from "@mui/icons-material/People";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CheckroomIcon from "@mui/icons-material/Checkroom";
-import DiscountIcon from "@mui/icons-material/Discount";
-import BusinessIcon from "@mui/icons-material/Business";
-import { AccountCircle } from "@mui/icons-material";
-import LogoutIcon from "@mui/icons-material/Logout";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, Link, Menu, MenuItem } from "@mui/material";
+import * as React from "react";
+import Icon from "@mui/material/Icon";
 
 export const appName = "Atención farmacéutica";
 
@@ -79,8 +73,16 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   }));
 
   const options = [
-    { text: "Selección de pacientes", Icon: DashboardIcon, href: "" },
-    { text: "Medicamentos", Icon: ShoppingCartIcon, href: "/drugs" },
+    {
+      text: "Selección de pacientes",
+      Icon: () => <span className="material-symbols-outlined">flowsheet</span>,
+      href: "",
+    },
+    {
+      text: "Medicamentos",
+      Icon: () => <span className="material-symbols-outlined">pill</span>,
+      href: "/drugs",
+    },
   ];
 
   const drawer = (
