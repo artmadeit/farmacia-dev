@@ -11,6 +11,12 @@ import {
 } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { formatDate } from "../date";
+import {
+  differenceInCalendarYears,
+  differenceInYears,
+  intervalToDuration,
+  parse,
+} from "date-fns";
 
 const antecedents = [
   { label: "IMA", name: "ima" },
@@ -26,7 +32,6 @@ const antecedents = [
 
 export default function PatientInterview() {
   const code = "AJK-203";
-  const age = 18; // TODO: computed from fecha de nacimiento
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -35,6 +40,7 @@ export default function PatientInterview() {
       initialValues={{
         occupation: "",
         sex: "",
+        birthdate: null,
         weight: 0,
         size: 0,
         imc: 0,
@@ -63,9 +69,11 @@ export default function PatientInterview() {
             </Grid>
             <Grid xs={3}>
               Fecha Nac:
-              <Field component={DatePicker} label="Fecha" name="date" />
+              <Field component={DatePicker} label="Fecha" name="birthdate" />
             </Grid>
-            <Grid xs={2}>Edad: {age}</Grid>
+            <Grid xs={2}>
+              Edad: {values.birthdate ? calculateAge(values.birthdate) : "N/A"}
+            </Grid>
             <Grid xs={2}>
               Sexo:
               <Field component={RadioGroup} name="sex" row>
@@ -120,4 +128,10 @@ export default function PatientInterview() {
       )}
     </Formik>
   );
+}
+
+// Adapted from: https://stackoverflow.com/questions/66470624/date-fns-format-date-and-age-calculation-problem-in-react
+function calculateAge(date: Date) {
+  const age = differenceInYears(new Date(), date);
+  return age;
 }
