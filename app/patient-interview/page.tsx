@@ -4,6 +4,7 @@ import { FormControlLabel, Radio } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Field, Form, Formik } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
+import { formatDate } from "../date";
 
 export default function PatientInterview() {
   const code = "AJK-203";
@@ -24,7 +25,7 @@ export default function PatientInterview() {
           <Grid xs={10}>
             <strong>1. Datos personales</strong>
           </Grid>
-          <Grid xs={2}>Fecha: {new Date().toDateString()}</Grid>
+          <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
           <Grid xs={12}>Código del paciente: {code}</Grid>
           <Grid xs={5} display="flex" alignItems="center">
             Ocupación:
