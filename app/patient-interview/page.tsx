@@ -4,7 +4,9 @@ import { FormControlLabel, Radio } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Field, Form, Formik } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
+import { DatePicker } from "formik-mui-x-date-pickers";
 import { formatDate } from "../date";
+import { TextField as MuiTextField } from "@mui/material";
 
 export default function PatientInterview() {
   const code = "AJK-203";
@@ -31,7 +33,10 @@ export default function PatientInterview() {
             Ocupación:
             <Field name="occupation" component={TextField} variant="outlined" />
           </Grid>
-          <Grid xs={3}>Fecha Nac: {code}</Grid>
+          <Grid xs={3}>
+            Fecha Nac:
+            <Field component={DatePicker} label="Fecha" name="date" />
+          </Grid>
           <Grid xs={2}>Edad: {age}</Grid>
           <Grid xs={2}>
             Sexo:
