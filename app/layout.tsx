@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import MenuDrawer2 from "./(components)/MenuDrawer2";
 import "./globals.css";
+import { Providers } from "./(components)/Providers";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -33,9 +34,11 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <main className="main">
-          <MenuDrawer2>
-            <Box sx={{ p: 2 }}>{children}</Box>
-          </MenuDrawer2>
+          <Providers>
+            <MenuDrawer2>
+              <Box sx={{ p: 2 }}>{children}</Box>
+            </MenuDrawer2>
+          </Providers>
         </main>
       </body>
     </html>
