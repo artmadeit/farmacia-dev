@@ -24,6 +24,7 @@ import { AsyncAutocomplete } from "../(components)/autocomplete";
 import { api } from "../(api)/api";
 import { Page } from "../(api)/pagination";
 import { useRouter } from "next/navigation";
+import { Drug } from "../(portal)/drugs/Drug";
 
 type Criterio = {
   id: number;
@@ -68,11 +69,6 @@ const PrmSelect = () => {
       </Select>
     </FormControl>
   );
-};
-
-type Drug = {
-  name: string;
-  description: string;
 };
 
 const DrugAutocomplete = () => {
