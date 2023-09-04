@@ -33,7 +33,13 @@ const antecedents = [
 export default function PatientInterview() {
   const code = "AJK-203";
 
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
+  const getImc = ({ size, weight }: { size: number; weight: number }) => {
+    if (size && weight) {
+      return weight / size ** 2;
+    }
+
+    return "N/A";
+  };
 
   return (
     <Formik
@@ -43,7 +49,6 @@ export default function PatientInterview() {
         birthdate: null,
         weight: 0,
         size: 0,
-        imc: 0,
         other: "",
         antecedents: [],
       }}
@@ -86,16 +91,26 @@ export default function PatientInterview() {
               </Field>
             </Grid>
             <Grid xs={4} display="flex" alignItems="center">
-              Peso:
-              <Field name="weigth" component={TextField} variant="outlined" />
+              Peso (kg):
+              <Field
+                name="weight"
+                component={TextField}
+                type="number"
+                variant="outlined"
+              />
             </Grid>
             <Grid xs={4} display="flex" alignItems="center">
-              Talla:
-              <Field name="size" component={TextField} variant="outlined" />
+              Talla (m):
+              <Field
+                name="size"
+                component={TextField}
+                type="number"
+                variant="outlined"
+              />
             </Grid>
             <Grid xs={4} display="flex" alignItems="center">
               IMC:
-              <Field name="imc" component={TextField} variant="outlined" />
+              {getImc(values)}
             </Grid>
           </Grid>
           <Grid container spacing={2}>
