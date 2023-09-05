@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, Stack, Typography } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-mui";
 
@@ -43,6 +43,14 @@ const CreateDrugsPage = () => {
                     required
                   />
                 </Stack>
+                <Button
+                  type="submit"
+                  style={{ marginTop: "10px" }}
+                  disabled={isSubmitting}
+                  variant="contained"
+                >
+                  Guardar
+                </Button>
               </Grid>
             </Form>
           )}
