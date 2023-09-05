@@ -9,6 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useRouter } from "next/navigation";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import { Drug } from "./Drug";
+import { esES } from "@mui/x-data-grid";
 
 const DrugsPage = () => {
   const router = useRouter();
@@ -23,14 +24,14 @@ const DrugsPage = () => {
       totalPages: "",
       number: "",
     },
-  })
+  });
 
   const columns = React.useMemo(
     () =>
       (
         [
           { field: "name", headerName: "Nombre" },
-          { field: "description", headerName: "Descripción" },
+          { field: "description", headerName: "Descripción", width: 120 },
           {
             field: "actions",
             type: "actions",
@@ -65,7 +66,11 @@ const DrugsPage = () => {
         </Tooltip>
       </Stack>
       <div style={{ height: "70vh", width: "100%" }}>
-        <DataGrid columns={columns} rows={drugs._embedded.drugs} />
+        <DataGrid
+          columns={columns}
+          rows={drugs._embedded.drugs}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+        />
       </div>
     </Stack>
   );

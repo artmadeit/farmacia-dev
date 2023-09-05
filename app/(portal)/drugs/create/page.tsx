@@ -21,7 +21,9 @@ const CreateDrugsPage = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <Typography variant="h4">Registrar medicamento</Typography>
+              <Typography variant="h4" style={{ paddingBottom: "20px" }}>
+                Registrar medicamento
+              </Typography>
               <Grid>
                 <Stack spacing={2}>
                   <Field
