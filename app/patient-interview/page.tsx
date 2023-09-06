@@ -2,21 +2,11 @@
 
 import { FormControlLabel, Radio } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import { differenceInYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
-import {
-  CheckboxWithLabel,
-  RadioGroup,
-  TextField,
-  ToggleButtonGroup,
-} from "formik-mui";
+import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { formatDate } from "../date";
-import {
-  differenceInCalendarYears,
-  differenceInYears,
-  intervalToDuration,
-  parse,
-} from "date-fns";
 
 const antecedents = [
   { label: "IMA", name: "ima" },
@@ -38,10 +28,10 @@ const problems = [
       { label: "Tos", name: "tos" },
       { label: "Mareos", name: "mareo" },
       { label: "Sueño", name: "sueño" },
-      { label: "Desvanecimiento", name: "des"},
-      { label: "Vision borrosa", name: "vborrosa"},
-      { label: "Pérdida de apetito", name: "p.apetito"},
-      { label: "Dolor de cabeza", name: "dolor_cabeza"},
+      { label: "Desvanecimiento", name: "des" },
+      { label: "Vision borrosa", name: "vborrosa" },
+      { label: "Pérdida de apetito", name: "p.apetito" },
+      { label: "Dolor de cabeza", name: "dolor_cabeza" },
     ],
   },
   {
@@ -50,13 +40,12 @@ const problems = [
     items: [
       {
         label: "Dolor y/o ardor de estómago",
-        name: "d.estomago"
-       
+        name: "d.estomago",
       },
       { label: "Náuseas y/o vómitos", name: "nausea" },
-      { label: "Diarreas", name: "diarrea"},
-      { label: "Estreñimiento", name: "este"},
-      { label: "Sequeda bucal", name: "seq"},
+      { label: "Diarreas", name: "diarrea" },
+      { label: "Estreñimiento", name: "este" },
+      { label: "Sequeda bucal", name: "seq" },
     ],
   },
   {
@@ -80,23 +69,17 @@ const problems = [
   {
     label: "Ap. Locomotor",
     id: "problems_loc",
-    items: [
-      { label: "Debilidad muscular", name: "deb"},
-    ],
+    items: [{ label: "Debilidad muscular", name: "deb" }],
   },
   {
     label: "Metabólicas",
     id: "problems_metabolics",
-    items: [
-      { label: "Hiponatremia", name: "hipo"},
-    ],
+    items: [{ label: "Hiponatremia", name: "hipo" }],
   },
   {
     label: "Piel",
     id: "problems_piel",
-    items: [
-      { label: "Erupciones", name: "eru"},
-    ],
+    items: [{ label: "Erupciones", name: "eru" }],
   },
 ];
 
@@ -120,7 +103,7 @@ export default function PatientInterview() {
         weight: 0,
         size: 0,
         other: "",
-     
+
         antecedents: [],
         problems_other: [],
         problems_cardio: [],
@@ -221,14 +204,18 @@ export default function PatientInterview() {
             </Grid>
             <Grid xs={12} container>
               {problems.map((group, index) => (
-                <Grid key={index} xs={3} container  
-                direction="column"
-                justifyContent="flex-start"
-                alignItems="stretch">
-                  <strong>{group.label }</strong>
+                <Grid
+                  key={index}
+                  xs={3}
+                  container
+                  direction="column"
+                  justifyContent="flex-start"
+                  alignItems="stretch"
+                >
+                  <strong>{group.label}</strong>
                   {group.items.map((item, idx) => (
                     <Field
-                      key={idx} 
+                      key={idx}
                       component={CheckboxWithLabel}
                       type="checkbox"
                       name={group.id}
@@ -240,7 +227,7 @@ export default function PatientInterview() {
               ))}
             </Grid>
           </Grid>
-                      <br></br>
+          <br></br>
           <div>{JSON.stringify(values)}</div>
         </Form>
       )}

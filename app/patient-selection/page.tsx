@@ -3,12 +3,9 @@
 import {
   Box,
   Button,
-  Checkbox,
-  FormControl,
-  InputLabel,
   ListSubheader,
   MenuItem,
-  Select,
+  Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -17,57 +14,39 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import * as React from "react";
-import { PRM_GROUPS } from "./prm-groups";
-import { Form, Formik } from "formik";
-import { AsyncAutocomplete } from "../(components)/autocomplete";
+import { Field, Form, Formik } from "formik";
+import { Checkbox, Select } from "formik-mui";
+import { useRouter } from "next/navigation";
 import { api } from "../(api)/api";
 import { Page } from "../(api)/pagination";
-import { useRouter } from "next/navigation";
+import { AsyncAutocomplete } from "../(components)/autocomplete";
 import { Drug } from "../(portal)/drugs/Drug";
-
-type Criterio = {
-  id: number;
-  name: string;
-  score: number;
-};
-
-const rows: Criterio[] = [
-  {
-    id: 1,
-    name: "Pacientes que reciben medicamentos de estrecho margen terapéutico",
-    score: 5,
-  },
-  {
-    id: 2,
-    name: "Pacientes que son vulnerables a los efectos adversos por estar en situación fisiológicamente delicada (Con diagnóstico de insuficiencia renal, hepática)",
-    score: 4,
-  },
-  {
-    id: 8,
-    name: "Pacientes que presentan algún problema relacionado al medicamento (de necesidad, efictividad, o seguridad)",
-    score: 4,
-  },
-];
+import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
+import { PRM_GROUPS } from "./prm-groups";
+import { sum } from "lodash";
+import yup from "./../validation";
 
 const PrmSelect = () => {
   return (
-    <FormControl sx={{ m: 1, width: "100%" }}>
-      <InputLabel htmlFor="grouped-select">PRM</InputLabel>
-      <Select defaultValue="" id="grouped-select" label="Grouping">
-        <MenuItem value="">
-          <em>Ninguno</em>
-        </MenuItem>
-        {PRM_GROUPS.map((x) => [
-          <ListSubheader key={x.group}>{x.group}</ListSubheader>,
-          ...x.items.map((item) => (
-            <MenuItem key={item.name} value={item.name}>
-              {item.name}: {item.description}
-            </MenuItem>
-          )),
-        ])}
-      </Select>
-    </FormControl>
+    <Field
+      component={Select}
+      formControl={{ sx: { m: 1, width: "100%" } }}
+      id="prm"
+      name="prm"
+      label="PRM"
+    >
+      <MenuItem value="">
+        <em>Ninguno</em>
+      </MenuItem>
+      {PRM_GROUPS.map((x) => [
+        <ListSubheader key={x.group}>{x.group}</ListSubheader>,
+        ...x.items.map((item) => (
+          <MenuItem key={item.name} value={item.name}>
+            {item.name}: {item.description}
+          </MenuItem>
+        )),
+      ])}
+    </Field>
   );
 };
 
@@ -87,10 +66,24 @@ const DrugAutocomplete = () => {
   );
 };
 
+const CRITERIA_DRUG = 1;
+const CRITERIA_PRM = 8;
+
 const helpReferences = [
-  { criteriaId: 1, component: DrugAutocomplete },
-  { criteriaId: 8, component: PrmSelect },
+  { criteriaId: CRITERIA_DRUG, component: DrugAutocomplete },
+  { criteriaId: CRITERIA_PRM, component: PrmSelect },
 ];
+
+const getTotalScore = (criterionList: string[]) => {
+  return sum(
+    criterionList
+      .map((x) => Number(x))
+      .map((x) =>
+        patientSelectionCriteriaList.find((criterion) => criterion.id === x)
+      )
+      .map((criterion) => criterion?.score || 0)
+  );
+};
 
 export default function PatientSelectionPage() {
   const router = useRouter();
@@ -100,61 +93,83 @@ export default function PatientSelectionPage() {
       <h1>Criterios de selección de pacientes</h1>
       <Formik
         initialValues={{
+          criterionList: [],
           drug: null,
+          prm: "",
         }}
+        validationSchema={yup.object({
+          drug: yup
+            .mixed()
+            .nullable()
+            .label("Medicamento")
+            .when("criterionList", {
+              is: (val: string[]) => val.includes(String(CRITERIA_DRUG)),
+              then: (schema) => schema.required(),
+              otherwise: (schema) => schema,
+            }),
+          prm: yup.string().when("criterionList", {
+            is: (val: string[]) => val.includes(String(CRITERIA_PRM)),
+            then: (schema) => schema.required(),
+            otherwise: (schema) => schema,
+          }),
+        })}
         onSubmit={() => {
-          // TODO:
+          // TODO: save data
+          router.push("patient-interview");
         }}
       >
-        <Form>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell>N°</TableCell>
-                  <TableCell>Criterios</TableCell>
-                  <TableCell align="right">Puntaje</TableCell>
-                  <TableCell>Referencias de ayuda</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell>
-                      <Checkbox
-                        inputProps={{ "aria-label": "Checkbox demo" }}
-                      />
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.id}
-                    </TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell align="right">{row.score}</TableCell>
-                    <TableCell sx={{ width: "500px" }}>
-                      <HelpReference criteriaId={row.id} />
-                    </TableCell>
+        {({ values, errors }) => (
+          <Form>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell>N°</TableCell>
+                    <TableCell>Criterios</TableCell>
+                    <TableCell align="right">Puntaje</TableCell>
+                    <TableCell>Referencias de ayuda</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Box display="flex" justifyContent="end" paddingTop={2}>
-            <Button
-              onClick={() => {
-                // TODO: remove this when submit is done
-                console.log("redireccionando a patient interview");
-                router.push("patient-interview");
-              }}
-              variant="contained"
-            >
-              Continuar
-            </Button>
-          </Box>
-        </Form>
+                </TableHead>
+                <TableBody>
+                  {patientSelectionCriteriaList.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell>
+                        <Field
+                          component={Checkbox}
+                          type="checkbox"
+                          name="criterionList"
+                          value={String(row.id)}
+                        />
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.id}
+                      </TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell align="right">{row.score}</TableCell>
+                      <TableCell sx={{ width: "500px" }}>
+                        <HelpReference criteriaId={row.id} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Box display="flex" justifyContent="space-between" paddingTop={2}>
+              <Typography>
+                Puntaje total: {getTotalScore(values.criterionList)}
+                {getTotalScore(values.criterionList) >= 4 &&
+                  ", puntaje >= 4, considere SFT!"}
+              </Typography>
+              <Button variant="contained" type="submit">
+                Continuar
+              </Button>
+            </Box>
+          </Form>
+        )}
       </Formik>
     </div>
   );
