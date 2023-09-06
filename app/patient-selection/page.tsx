@@ -1,6 +1,12 @@
 "use client";
 
-import { Box, Button, ListSubheader, MenuItem } from "@mui/material";
+import {
+  Box,
+  Button,
+  ListSubheader,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,6 +23,7 @@ import { AsyncAutocomplete } from "../(components)/autocomplete";
 import { Drug } from "../(portal)/drugs/Drug";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
+import { sum } from "lodash";
 
 const PrmSelect = () => {
   return (
@@ -63,6 +70,17 @@ const helpReferences = [
   { criteriaId: 8, component: PrmSelect },
 ];
 
+const getTotalScore = (criterionList: string[]) => {
+  return sum(
+    criterionList
+      .map((x) => Number(x))
+      .map((x) =>
+        patientSelectionCriteriaList.find((criterion) => criterion.id === x)
+      )
+      .map((criterion) => criterion?.score || 0)
+  );
+};
+
 export default function PatientSelectionPage() {
   const router = useRouter();
 
@@ -76,7 +94,9 @@ export default function PatientSelectionPage() {
           prm: "",
         }}
         onSubmit={() => {
-          // TODO:
+          // TODO: remove this when submit is done
+          console.log("redireccionando a patient interview");
+          // router.push("patient-interview");
         }}
       >
         {({ values }) => (
@@ -119,16 +139,13 @@ export default function PatientSelectionPage() {
                 </TableBody>
               </Table>
             </TableContainer>
-            {JSON.stringify(values)}
-            <Box display="flex" justifyContent="end" paddingTop={2}>
-              <Button
-                onClick={() => {
-                  // TODO: remove this when submit is done
-                  console.log("redireccionando a patient interview");
-                  router.push("patient-interview");
-                }}
-                variant="contained"
-              >
+            <Box display="flex" justifyContent="space-between" paddingTop={2}>
+              <Typography>
+                Puntaje total: {getTotalScore(values.criterionList)}
+                {getTotalScore(values.criterionList) >= 4 &&
+                  ", puntaje >= 4, considere SFT!"}
+              </Typography>
+              <Button variant="contained" type="submit">
                 Continuar
               </Button>
             </Box>
