@@ -14,10 +14,12 @@ import useSWR from "swr";
 import { usePagination } from "@/app/(components)/hook-customization/usePagination";
 import { Page } from "@/app/(api)/pagination";
 import { api } from "@/app/(api)/api";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 
 const DrugsPage = () => {
   const router = useRouter();
-
+  const [itemToDelete, setItemToDelete] = React.useState<Drug | null>();
+  const alert = React.useContext(SnackbarContext);
   // const [drugs, setDrugs] = React.useState({
   //   _embedded: {
   //     drugs: [],
@@ -32,12 +34,13 @@ const DrugsPage = () => {
   // });
 
   const deleteDrugs = async () => {
-    // if(itemToDelete === null){
-    //   return;
-    // }
+    if (itemToDelete === null) {
+      return;
+    }
 
-    // await api.delete(``);
-    // alert.showMessage("");
+    await api.delete(``);
+    alert.showMessage("La medicina se ha eliminado");
+    setItemToDelete(null);
     await getDrugs();
   };
 
