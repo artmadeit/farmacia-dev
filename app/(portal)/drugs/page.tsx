@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import React from "react";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import { Drug } from "./Drug";
@@ -20,25 +21,13 @@ const DrugsPage = () => {
   const router = useRouter();
   const [itemToDelete, setItemToDelete] = React.useState<Drug | null>();
   const alert = React.useContext(SnackbarContext);
-  // const [drugs, setDrugs] = React.useState({
-  //   _embedded: {
-  //     drugs: [],
-  //   },
-  //   // _links: any;
-  //   page: {
-  //     size: "",
-  //     totalElements: "",
-  //     totalPages: "",
-  //     number: "",
-  //   },
-  // });
 
   const deleteDrugs = async () => {
     if (itemToDelete === null) {
       return;
     }
 
-    await api.delete(``);
+    await api.delete(`drugs/${itemToDelete}`);
     alert.showMessage("La medicina se ha eliminado");
     setItemToDelete(null);
     await getDrugs();
@@ -55,8 +44,8 @@ const DrugsPage = () => {
     () =>
       (
         [
-          { field: "name", headerName: "Nombre" },
-          { field: "description", headerName: "Descripción", width: 120 },
+          { field: "name", headerName: "Nombre", width: 150 },
+          // { field: "description", headerName: "Descripción", width: 120 },
           {
             field: "actions",
             type: "actions",
@@ -68,6 +57,13 @@ const DrugsPage = () => {
                     icon={<EditIcon />}
                     label="Editar"
                     onClick={() => router.push(`categories/${params.row.id}`)}
+                  />
+                </Tooltip>,
+                <Tooltip title="Eliminar" key="delete">
+                  <GridActionsCellItem
+                    icon={<DeleteIcon />}
+                    label="Eliminar"
+                    onClick={() => setItemToDelete(params.row)}
                   />
                 </Tooltip>,
               ];
