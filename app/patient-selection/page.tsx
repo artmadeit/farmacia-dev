@@ -25,30 +25,10 @@ import { api } from "../(api)/api";
 import { Page } from "../(api)/pagination";
 import { useRouter } from "next/navigation";
 import { Drug } from "../(portal)/drugs/Drug";
-
-type Criterio = {
-  id: number;
-  name: string;
-  score: number;
-};
-
-const rows: Criterio[] = [
-  {
-    id: 1,
-    name: "Pacientes que reciben medicamentos de estrecho margen terapéutico",
-    score: 5,
-  },
-  {
-    id: 2,
-    name: "Pacientes que son vulnerables a los efectos adversos por estar en situación fisiológicamente delicada (Con diagnóstico de insuficiencia renal, hepática)",
-    score: 4,
-  },
-  {
-    id: 8,
-    name: "Pacientes que presentan algún problema relacionado al medicamento (de necesidad, efictividad, o seguridad)",
-    score: 4,
-  },
-];
+import {
+  patientSelectionCriteriaList,
+  Criterio,
+} from "./patientSelectionCriteriaList";
 
 const PrmSelect = () => {
   return (
@@ -119,7 +99,7 @@ export default function PatientSelectionPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {patientSelectionCriteriaList.map((row) => (
                   <TableRow
                     key={row.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
