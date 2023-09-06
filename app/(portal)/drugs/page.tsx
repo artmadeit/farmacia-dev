@@ -10,21 +10,43 @@ import { useRouter } from "next/navigation";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import { Drug } from "./Drug";
 import { esES } from "@mui/x-data-grid";
+import useSWR from "swr";
+import { usePagination } from "@/app/(components)/hook-customization/usePagination";
+import { Page } from "@/app/(api)/pagination";
+import { api } from "@/app/(api)/api";
 
 const DrugsPage = () => {
   const router = useRouter();
-  const [drugs, setDrugs] = React.useState({
-    _embedded: {
-      drugs: [],
-    },
-    // _links: any;
-    page: {
-      size: "",
-      totalElements: "",
-      totalPages: "",
-      number: "",
-    },
-  });
+
+  // const [drugs, setDrugs] = React.useState({
+  //   _embedded: {
+  //     drugs: [],
+  //   },
+  //   // _links: any;
+  //   page: {
+  //     size: "",
+  //     totalElements: "",
+  //     totalPages: "",
+  //     number: "",
+  //   },
+  // });
+
+  const deleteDrugs = async () => {
+    // if(itemToDelete === null){
+    //   return;
+    // }
+
+    // await api.delete(``);
+    // alert.showMessage("");
+    await getDrugs();
+  };
+
+  const { page, pageSize, pagination } = usePagination();
+
+  const { data: drugs, mutate: getDrugs } = useSWR<Page<Drug>>([
+    "/drugs",
+    { params: { page: page, size: pageSize } },
+  ]);
 
   const columns = React.useMemo(
     () =>
@@ -53,6 +75,8 @@ const DrugsPage = () => {
     [router]
   );
 
+  if (!drugs) return <div>Loading</div>;
+
   return (
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
@@ -68,6 +92,8 @@ const DrugsPage = () => {
       <div style={{ height: "70vh", width: "100%" }}>
         <DataGrid
           columns={columns}
+          rowCount={drugs.page.totalElements}
+          {...pagination}
           rows={drugs._embedded.drugs}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
