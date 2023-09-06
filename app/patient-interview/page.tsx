@@ -10,13 +10,13 @@ import { formatDate } from "../date";
 
 const antecedents = [
   { label: "IMA", name: "ima" },
-  { label: "ACV", name: "acv" },
-  { label: "ICC", name: "icc" },
   { label: "Diabetes", name: "diabetes" },
-  { label: "Enf. Renal", name: "renal" },
-  { label: "Obesidad", name: "obesidad" },
   { label: "Enf. Hepática", name: "hepatica" },
+  { label: "ACV", name: "acv" },
+  { label: "Enf. Renal", name: "renal" },
   { label: "Úlcera", name: "ulcera" },
+  { label: "ICC", name: "icc" },
+  { label: "Obesidad", name: "obesidad" },
   { label: "Enf. tiroides", name: "tiroides" },
 ];
 
@@ -29,7 +29,7 @@ const problems = [
       { label: "Mareos", name: "mareo" },
       { label: "Sueño", name: "sueño" },
       { label: "Desvanecimiento", name: "des" },
-      { label: "Vision borrosa", name: "vborrosa" },
+      { label: "Visión borrosa", name: "vborrosa" },
       { label: "Pérdida de apetito", name: "p.apetito" },
       { label: "Dolor de cabeza", name: "dolor_cabeza" },
     ],
@@ -45,7 +45,7 @@ const problems = [
       { label: "Náuseas y/o vómitos", name: "nausea" },
       { label: "Diarreas", name: "diarrea" },
       { label: "Estreñimiento", name: "este" },
-      { label: "Sequeda bucal", name: "seq" },
+      { label: "Sequedad bucal", name: "seq" },
     ],
   },
   {
@@ -58,28 +58,55 @@ const problems = [
       { label: "Arritmias", name: "arr" },
       { label: "Angina", name: "an" },
       { label: "Bradicardia", name: "br" },
-      { label: "Broncoespasmo", name: "bro" },
+      { label: "Hipotensión ortostática", name: "hp" },
     ],
   },
   {
     label: "Otros",
     id: "problems_others",
-    items: [{ label: "Disgeusia", name: "disg" }],
+    items: [
+      { label: "Broncoespasmo", name: "bro" },
+      { label: "Disgeusia", name: "disg" },
+      { label: "Angioedema", name: "disg" },
+      { label: "Neutropenia", name: "disg" },
+      { label: "Proteinuria", name: "disg" },
+      { label: "Leucopenia", name: "disg" },
+      { label: "Fatiga", name: "disg" },
+      { label: "Impotencia", name: "disg" },
+      { label: "Astenia", name: "disg" },
+    ],
   },
   {
     label: "Ap. Locomotor",
     id: "problems_loc",
-    items: [{ label: "Debilidad muscular", name: "deb" }],
+    items: [
+      { label: "Debilidad muscular", name: "deb" },
+      { label: "Dolores articulares", name: "disg" },
+      { label: "Calambres", name: "disg" },
+      { label: "Dolor/rigidez de cuello ", name: "disg" },
+    ],
   },
   {
     label: "Metabólicas",
     id: "problems_metabolics",
-    items: [{ label: "Hiponatremia", name: "hipo" }],
+    items: [
+      { label: "Hiponatremia", name: "hipo" },
+      { label: "Hipopotasemia", name: "disg" },
+      { label: "Hiperglicemia", name: "disg" },
+      { label: "Hipercalcemia", name: "disg" },
+      { label: "Hipercolesterolemia", name: "disg" },
+      { label: "Edema", name: "disg" },
+      { label: "Hiperpotasemia", name: "disg" },
+    ],
   },
   {
     label: "Piel",
     id: "problems_piel",
-    items: [{ label: "Erupciones", name: "eru" }],
+    items: [
+      { label: "Erupciones", name: "eru" },
+      { label: "Prurito", name: "eru" },
+      { label: "Rubefacción", name: "eru" },
+    ],
   },
 ];
 
@@ -175,7 +202,7 @@ export default function PatientInterview() {
           <strong>2. Historia de salud</strong>
           <Grid container spacing={2}>
             <Grid xs={12}>
-              <strong>2.1 Antecedentes patologicos</strong>
+              <strong>2.1 Antecedentes patológicos</strong>
             </Grid>
             <Grid xs={8} container>
               <Grid xs={12} container>
@@ -194,7 +221,13 @@ export default function PatientInterview() {
             </Grid>
             <Grid xs={4}>
               Otros:
-              <Field name="other" component={TextField} variant="outlined" />
+              <Field
+                name="other"
+                component={TextField}
+                variant="outlined"
+                multiline
+                rows={4}
+              />
             </Grid>
           </Grid>
 
