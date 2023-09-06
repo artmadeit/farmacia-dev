@@ -66,10 +66,11 @@ const DrugAutocomplete = () => {
   );
 };
 
+const CRITERIA_DRUG = 1;
 const CRITERIA_PRM = 8;
 
 const helpReferences = [
-  { criteriaId: 1, component: DrugAutocomplete },
+  { criteriaId: CRITERIA_DRUG, component: DrugAutocomplete },
   { criteriaId: CRITERIA_PRM, component: PrmSelect },
 ];
 
@@ -97,6 +98,15 @@ export default function PatientSelectionPage() {
           prm: "",
         }}
         validationSchema={yup.object({
+          drug: yup
+            .mixed()
+            .nullable()
+            .label("Medicamento")
+            .when("criterionList", {
+              is: (val: string[]) => val.includes(String(CRITERIA_DRUG)),
+              then: (schema) => schema.required(),
+              otherwise: (schema) => schema,
+            }),
           prm: yup.string().when("criterionList", {
             is: (val: string[]) => val.includes(String(CRITERIA_PRM)),
             then: (schema) => schema.required(),
@@ -153,8 +163,6 @@ export default function PatientSelectionPage() {
                 Puntaje total: {getTotalScore(values.criterionList)}
                 {getTotalScore(values.criterionList) >= 4 &&
                   ", puntaje >= 4, considere SFT!"}
-                {JSON.stringify(errors)}
-                {JSON.stringify(values)}
               </Typography>
               <Button variant="contained" type="submit">
                 Continuar
