@@ -24,6 +24,7 @@ import { Drug } from "../(portal)/drugs/Drug";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
 import { sum } from "lodash";
+import yup from "./../validation";
 
 const PrmSelect = () => {
   return (
@@ -65,9 +66,11 @@ const DrugAutocomplete = () => {
   );
 };
 
+const CRITERIA_PRM = 8;
+
 const helpReferences = [
   { criteriaId: 1, component: DrugAutocomplete },
-  { criteriaId: 8, component: PrmSelect },
+  { criteriaId: CRITERIA_PRM, component: PrmSelect },
 ];
 
 const getTotalScore = (criterionList: string[]) => {
@@ -93,13 +96,19 @@ export default function PatientSelectionPage() {
           drug: null,
           prm: "",
         }}
+        validationSchema={yup.object({
+          prm: yup.string().when("criterionList", {
+            is: (val: string[]) => val.includes(String(CRITERIA_PRM)),
+            then: (schema) => schema.required(),
+            otherwise: (schema) => schema,
+          }),
+        })}
         onSubmit={() => {
-          // TODO: remove this when submit is done
-          console.log("redireccionando a patient interview");
-          // router.push("patient-interview");
+          // TODO: save data
+          router.push("patient-interview");
         }}
       >
-        {({ values }) => (
+        {({ values, errors }) => (
           <Form>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -144,6 +153,8 @@ export default function PatientSelectionPage() {
                 Puntaje total: {getTotalScore(values.criterionList)}
                 {getTotalScore(values.criterionList) >= 4 &&
                   ", puntaje >= 4, considere SFT!"}
+                {JSON.stringify(errors)}
+                {JSON.stringify(values)}
               </Typography>
               <Button variant="contained" type="submit">
                 Continuar
