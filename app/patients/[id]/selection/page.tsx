@@ -25,6 +25,7 @@ import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
 import { sum } from "lodash";
 import yup from "../../../validation";
+import { Title } from "@/app/(components)/Title";
 
 const PrmSelect = () => {
   return (
@@ -90,9 +91,7 @@ export default function PatientSelectionPage() {
 
   return (
     <div>
-      <Typography variant="h5" gutterBottom>
-        Criterios de selección de pacientes
-      </Typography>
+      <Title>Criterios de selección de pacientes</Title>
       <Formik
         initialValues={{
           criterionList: [],

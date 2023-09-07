@@ -1,5 +1,6 @@
 "use client";
 
+import { Title } from "@/app/(components)/Title";
 import { Button, FormLabel, Grid, Stack, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
@@ -26,7 +27,7 @@ export default function CreatePatient() {
     >
       <Form>
         <Stack spacing={2}>
-          <Typography variant="h5">Datos generales del paciente</Typography>
+          <Title>Datos generales del paciente</Title>
           <Grid container rowGap={2}>
             <Grid xs={12} sm={2} sx={inline}>
               <FormLabel>Código</FormLabel>
