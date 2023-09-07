@@ -36,7 +36,12 @@ const DialogDelete = ({
         }}
       >
         <Button onClick={handleClose}>Cancelar</Button>
-        <Button type="submit" variant="contained" onClick={onDelete}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="error"
+          onClick={onDelete}
+        >
           Eliminar
         </Button>
       </DialogActions>

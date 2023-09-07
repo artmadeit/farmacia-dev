@@ -33,7 +33,7 @@ const CreateDrugsPage = () => {
                     variant="outlined"
                     required
                   />
-                  <Field
+                  {/* <Field
                     component={TextField}
                     name="description"
                     label="Descripción"
@@ -41,11 +41,11 @@ const CreateDrugsPage = () => {
                     rows={4}
                     variant="outlined"
                     required
-                  />
+                  /> */}
                 </Stack>
                 <Button
                   type="submit"
-                  style={{ marginTop: "10px" }}
+                  style={{ marginTop: "20px" }}
                   disabled={isSubmitting}
                   variant="contained"
                 >
