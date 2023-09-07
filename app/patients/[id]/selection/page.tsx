@@ -90,7 +90,9 @@ export default function PatientSelectionPage() {
 
   return (
     <div>
-      <h1>Criterios de selección de pacientes</h1>
+      <Typography variant="h5" gutterBottom>
+        Criterios de selección de pacientes
+      </Typography>
       <Formik
         initialValues={{
           criterionList: [],
