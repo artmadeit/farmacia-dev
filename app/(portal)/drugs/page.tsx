@@ -16,10 +16,11 @@ import { usePagination } from "@/app/(components)/hook-customization/usePaginati
 import { Page } from "@/app/(api)/pagination";
 import { api } from "@/app/(api)/api";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
+import DialogDelete from "@/app/(components)/DialogDelete";
 
 const DrugsPage = () => {
   const router = useRouter();
-  const [itemToDelete, setItemToDelete] = React.useState<Drug | null>();
+  const [itemToDelete, setItemToDelete] = React.useState<Drug | null>(null);
   const alert = React.useContext(SnackbarContext);
 
   const deleteDrugs = async () => {
@@ -97,6 +98,12 @@ const DrugsPage = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
+      <DialogDelete
+        itemToDelete={itemToDelete}
+        handleClose={() => setItemToDelete(null)}
+        onDelete={deleteDrugs}
+        itemName="esta medicina"
+      />
     </Stack>
   );
 };
