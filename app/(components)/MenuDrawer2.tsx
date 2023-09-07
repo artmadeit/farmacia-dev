@@ -74,9 +74,11 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
 
   const options = [
     {
-      text: "Selección de pacientes",
-      Icon: () => <span className="material-symbols-outlined">flowsheet</span>,
-      href: "",
+      text: "Pacientes",
+      Icon: () => (
+        <span className="material-symbols-outlined">patient_list</span>
+      ),
+      href: "/patients",
     },
     {
       text: "Medicamentos",
