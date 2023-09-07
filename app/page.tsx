@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div>
-      <Link href="patient-selection">Ir al portal</Link>
+      <Link href="patient/selection">Ir al portal</Link>
     </div>
   );
 }

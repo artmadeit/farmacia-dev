@@ -17,14 +17,14 @@ import TableRow from "@mui/material/TableRow";
 import { Field, Form, Formik } from "formik";
 import { Checkbox, Select } from "formik-mui";
 import { useRouter } from "next/navigation";
-import { api } from "../(api)/api";
-import { Page } from "../(api)/pagination";
-import { AsyncAutocomplete } from "../(components)/autocomplete";
-import { Drug } from "../(portal)/drugs/Drug";
+import { api } from "../../(api)/api";
+import { Page } from "../../(api)/pagination";
+import { AsyncAutocomplete } from "../../(components)/autocomplete";
+import { Drug } from "../../(portal)/drugs/Drug";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
 import { sum } from "lodash";
-import yup from "./../validation";
+import yup from "../../validation";
 
 const PrmSelect = () => {
   return (
@@ -115,7 +115,7 @@ export default function PatientSelectionPage() {
         })}
         onSubmit={() => {
           // TODO: save data
-          router.push("patient-interview");
+          router.push("/patient/interview");
         }}
       >
         {({ values, errors }) => (
