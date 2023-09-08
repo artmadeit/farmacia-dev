@@ -30,6 +30,7 @@ export const SnackbarProvider = ({
         showMessage: showAlertMessage,
       }}
     >
+      {children}
       <Snackbar
         open={!!alertMessage}
         autoHideDuration={6000}

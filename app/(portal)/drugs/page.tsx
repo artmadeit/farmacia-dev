@@ -28,8 +28,8 @@ const DrugsPage = () => {
       return;
     }
 
-    await api.delete(`drugs/${itemToDelete}`);
-    alert.showMessage("La medicina se ha eliminado");
+    await api.delete(`drugs/${itemToDelete.id}`);
+    alert.showMessage("Medicamento eliminado");
     setItemToDelete(null);
     await getDrugs();
   };

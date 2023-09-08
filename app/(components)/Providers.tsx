@@ -6,6 +6,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { es as dateFnsEs } from "date-fns/locale";
 import { SWRConfig } from "swr";
 import { fetcher } from "../(api)/api";
+import { SnackbarProvider } from "./SnackbarContext";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -14,7 +15,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         dateAdapter={AdapterDateFns}
         adapterLocale={dateFnsEs}
       >
-         {children}
+        <SnackbarProvider>
+          {children}
+        </SnackbarProvider>
       </LocalizationProvider>
     </SWRConfig>
   );
