@@ -11,7 +11,7 @@ const EditDrugs = ({ params }: { params: { id: number } }) => {
 
   // if (isLoading) return <h1>Loading 1</h1>;
   if (!drugs) return <h1>Loading 2</h1>;
-  return <DrugForm drugs={drugs} />;
+  return <DrugForm drugs={drugs} textName="Editar"/>;
 };
 
 export default EditDrugs;

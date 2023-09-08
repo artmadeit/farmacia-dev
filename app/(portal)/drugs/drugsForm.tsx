@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 
 type DrugFormProps = {
   drugs: Drug;
+  textName: string;
 };
 
-const DrugForm = ({ drugs }: DrugFormProps) => {
+const DrugForm = ({ drugs, textName }: DrugFormProps) => {
   const snackbar = useContext(SnackbarContext);
   const router = useRouter();
 
@@ -32,14 +33,11 @@ const DrugForm = ({ drugs }: DrugFormProps) => {
   return (
     <Grid container spacing={2}>
       <Grid item>
-        <Formik
-          initialValues={drugs}
-          onSubmit={saveDrugForm}
-        >
+        <Formik initialValues={drugs} onSubmit={saveDrugForm}>
           {({ isSubmitting }) => (
             <Form>
               <Typography variant="h4" style={{ paddingBottom: "20px" }}>
-                Registrar medicamento
+                {textName} medicamento
               </Typography>
               <Grid>
                 <Stack spacing={2}>
