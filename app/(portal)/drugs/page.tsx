@@ -34,11 +34,11 @@ const DrugsPage = () => {
     await getDrugs();
   };
 
-  const { page, pageSize, pagination } = usePagination();
+  const {paginationModel, setPaginationModel} = usePagination();
 
   const { data: drugs, mutate: getDrugs } = useSWR<Page<Drug>>([
     "/drugs",
-    { params: { page: page, size: pageSize } },
+    { params: { page: paginationModel.page, size: paginationModel.pageSize } },
   ]);
 
   const columns = React.useMemo(
@@ -57,7 +57,7 @@ const DrugsPage = () => {
                   <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Editar"
-                    onClick={() => router.push(`categories/${params.row.id}`)}
+                    onClick={() => router.push(`drugs/${params.row.id}`)}
                   />
                 </Tooltip>,
                 <Tooltip title="Eliminar" key="delete">
@@ -93,7 +93,9 @@ const DrugsPage = () => {
         <DataGrid
           columns={columns}
           rowCount={drugs.page.totalElements}
-          {...pagination}
+          paginationModel={paginationModel}
+          paginationMode="server"
+          onPaginationModelChange={setPaginationModel}
           rows={drugs._embedded.drugs}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
