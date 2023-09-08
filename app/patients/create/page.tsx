@@ -1,7 +1,14 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { Button, FormLabel, Grid, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { useRouter } from "next/navigation";
@@ -30,26 +37,37 @@ export default function CreatePatient() {
           <Title>Datos generales del paciente</Title>
           <Grid container rowGap={2}>
             <Grid xs={12} sm={2} sx={inline}>
-              <FormLabel>Código</FormLabel>
+              <FormLabel required>Código</FormLabel>
             </Grid>
             <Grid xs={10}>
-              <Field name="code" component={TextField} variant="outlined" />
+              <Field
+                name="code"
+                component={TextField}
+                variant="outlined"
+                required
+              />
             </Grid>
             <Grid xs={12} sm={2} sx={inline}>
-              <FormLabel>Nombre(s)</FormLabel>
+              <FormLabel required>Nombre(s)</FormLabel>
             </Grid>
             <Grid xs={10}>
               <Field
                 name="firstName"
                 component={TextField}
                 variant="outlined"
+                required
               />
             </Grid>
             <Grid xs={12} sm={2} sx={inline}>
-              <FormLabel>Apellido(s)</FormLabel>
+              <FormLabel required>Apellido(s)</FormLabel>
             </Grid>
             <Grid xs={10}>
-              <Field name="lastName" component={TextField} variant="outlined" />
+              <Field
+                name="lastName"
+                component={TextField}
+                variant="outlined"
+                required
+              />
             </Grid>
             <Grid xs>
               <Button type="submit" variant="contained">
