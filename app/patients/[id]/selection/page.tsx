@@ -27,6 +27,7 @@ import { sum } from "lodash";
 import yup from "../../../validation";
 import { Title } from "@/app/(components)/Title";
 
+import { HorizontalStepper } from "../HorizontalStepper";
 const PrmSelect = () => {
   return (
     <Field
@@ -90,7 +91,7 @@ export default function PatientSelectionPage() {
   const router = useRouter();
 
   return (
-    <div>
+    <HorizontalStepper activeStep={0}>
       <Title>Criterios de selección de pacientes</Title>
       <Formik
         initialValues={{
@@ -172,7 +173,7 @@ export default function PatientSelectionPage() {
           </Form>
         )}
       </Formik>
-    </div>
+    </HorizontalStepper>
   );
 }
 
