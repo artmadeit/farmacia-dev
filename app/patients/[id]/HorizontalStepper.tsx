@@ -9,10 +9,8 @@ import React from "react";
 const steps = ["Selección", "Anamnesis", "Farmacoterapia"];
 
 export function HorizontalStepper({
-  children,
   activeStep: initialActiveStep,
 }: {
-  children: React.ReactNode;
   activeStep: number;
 }) {
   const [activeStep, setActiveStep] = React.useState(initialActiveStep);
@@ -25,7 +23,7 @@ export function HorizontalStepper({
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%" }} py={4}>
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label} completed={completed[index]}>
@@ -35,7 +33,6 @@ export function HorizontalStepper({
           </Step>
         ))}
       </Stepper>
-      <Box pt={4}>{children}</Box>
     </Box>
   );
 }

@@ -91,7 +91,11 @@ export default function PatientSelectionPage() {
   const router = useRouter();
 
   return (
-    <HorizontalStepper activeStep={0}>
+    <>
+      <Typography variant="h6" gutterBottom>
+        Paciente: Arthur Mauricio
+      </Typography>
+      <HorizontalStepper activeStep={0} />
       <Title>Criterios de selección de pacientes</Title>
       <Formik
         initialValues={{
@@ -173,7 +177,7 @@ export default function PatientSelectionPage() {
           </Form>
         )}
       </Formik>
-    </HorizontalStepper>
+    </>
   );
 }
 
