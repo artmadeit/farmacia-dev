@@ -1,5 +1,6 @@
 export type Item = { name: string; description: string };
 
+// PRM: es Problema Relacionado com Medicamento
 export const PRM_GROUPS = [
   {
     group: "Por Necesidad",
