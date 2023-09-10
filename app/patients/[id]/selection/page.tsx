@@ -121,7 +121,7 @@ export default function PatientSelectionPage() {
         })}
         onSubmit={() => {
           // TODO: save data
-          router.push("/patients/1/interview");
+          router.push("/patients/1/medical-history");
         }}
       >
         {({ values, errors }) => (
