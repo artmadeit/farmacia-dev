@@ -14,6 +14,9 @@ const steps = [
   { path: "consent", label: "Consentimiento" },
   { path: "medical-history", label: "Anamnesis" },
   { path: "todo", label: "Farmacoterapia" },
+  { path: "todo", label: "NES" },
+  { path: "todo", label: "PICO" },
+  { path: "todo", label: "SOAP" },
 ];
 
 const getParent = (path: string) => {
