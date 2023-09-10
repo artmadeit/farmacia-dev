@@ -1,6 +1,6 @@
 "use client";
 
-import { FormControlLabel, Radio, Typography } from "@mui/material";
+import { Divider, FormControlLabel, Radio, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
@@ -8,6 +8,7 @@ import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { formatDate } from "../../../date";
 import { HorizontalStepper } from "../HorizontalStepper";
+import { Title } from "@/app/(components)/Title";
 
 const antecedents = [
   { label: "IMA", name: "ima" },
@@ -124,7 +125,8 @@ export default function PatientInterview() {
 
   return (
     <div>
-      <HorizontalStepper activeStep={1} />
+      <Title>Ficha de anamnesis farmacológica</Title>
+      <Divider />
       <Formik
         initialValues={{
           occupation: "",

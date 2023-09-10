@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+import { HorizontalStepper } from "./HorizontalStepper";
 
 export default function MedicalFlowLayout({
   children,
@@ -10,6 +11,7 @@ export default function MedicalFlowLayout({
       <Typography variant="h6" gutterBottom>
         Paciente: Arthur Mauricio
       </Typography>
+      <HorizontalStepper />
 
       {children}
     </div>

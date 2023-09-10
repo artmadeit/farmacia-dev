@@ -3,6 +3,7 @@
 import {
   Box,
   Button,
+  Divider,
   ListSubheader,
   MenuItem,
   Typography,
@@ -92,7 +93,6 @@ export default function PatientSelectionPage() {
 
   return (
     <>
-      <HorizontalStepper activeStep={0} />
       <Title>Criterios de selección de pacientes</Title>
       <Formik
         initialValues={{

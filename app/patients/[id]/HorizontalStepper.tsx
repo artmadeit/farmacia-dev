@@ -21,9 +21,12 @@ const getParent = (path: string) => {
   return pathSplit.join("/");
 };
 
-export function HorizontalStepper({ activeStep }: { activeStep: number }) {
+export function HorizontalStepper() {
   const router = useRouter();
   const pathname = usePathname();
+
+  const currentRoute = pathname.split("/").pop();
+  const activeStep: number = steps.findIndex((x) => x.path === currentRoute);
 
   const [completed] = React.useState<{
     [k: number]: boolean;
