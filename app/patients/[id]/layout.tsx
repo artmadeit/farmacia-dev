@@ -1,15 +1,23 @@
 import { Typography } from "@mui/material";
 import { HorizontalStepper } from "./HorizontalStepper";
+import { apiUrl } from "@/app/(api)/api";
+import { Patient } from "../create/Patient";
 
-export default function MedicalFlowLayout({
+export default async function MedicalFlowLayout({
+  params,
   children,
 }: {
   children: React.ReactNode;
+  params: { id: number };
 }) {
+  const { id } = params;
+  const response = await fetch(`${apiUrl}/patients/${id}`);
+  const patient: Patient = await response.json();
+
   return (
     <div>
       <Typography variant="h6" gutterBottom>
-        Paciente: Arthur Mauricio
+        Paciente: {patient.firstName} {patient.lastName}
       </Typography>
       <HorizontalStepper />
 
