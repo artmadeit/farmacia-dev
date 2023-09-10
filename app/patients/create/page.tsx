@@ -1,5 +1,6 @@
 "use client";
 
+import { api } from "@/app/(api)/api";
 import { Title } from "@/app/(components)/Title";
 import {
   Button,
@@ -28,18 +29,19 @@ export default function CreatePatient() {
         firstName: "",
         lastName: "",
       }}
-      onSubmit={() => {
-        router.push("/patients/1/selection");
+      onSubmit={async (values) => {
+        const response = await api.post("/patients", values);
+        router.push(`/patients/${response.data.id}/selection`);
       }}
     >
       <Form>
         <Stack spacing={2}>
           <Title>Datos generales del paciente</Title>
           <Grid container rowGap={2}>
-            <Grid xs={12} sm={2} sx={inline}>
+            <Grid item xs={12} sm={2} sx={inline}>
               <FormLabel required>Código</FormLabel>
             </Grid>
-            <Grid xs={10}>
+            <Grid item xs={10}>
               <Field
                 name="code"
                 component={TextField}
@@ -47,10 +49,10 @@ export default function CreatePatient() {
                 required
               />
             </Grid>
-            <Grid xs={12} sm={2} sx={inline}>
+            <Grid item xs={12} sm={2} sx={inline}>
               <FormLabel required>Nombre(s)</FormLabel>
             </Grid>
-            <Grid xs={10}>
+            <Grid item xs={10}>
               <Field
                 name="firstName"
                 component={TextField}
@@ -58,10 +60,10 @@ export default function CreatePatient() {
                 required
               />
             </Grid>
-            <Grid xs={12} sm={2} sx={inline}>
+            <Grid item xs={12} sm={2} sx={inline}>
               <FormLabel required>Apellido(s)</FormLabel>
             </Grid>
-            <Grid xs={10}>
+            <Grid item xs={10}>
               <Field
                 name="lastName"
                 component={TextField}
@@ -69,7 +71,7 @@ export default function CreatePatient() {
                 required
               />
             </Grid>
-            <Grid xs>
+            <Grid item xs>
               <Button type="submit" variant="contained">
                 Guardar
               </Button>

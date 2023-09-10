@@ -13,10 +13,10 @@ const steps = [
   { path: "selection", label: "Selección" },
   { path: "consent", label: "Consentimiento" },
   { path: "medical-history", label: "Anamnesis" },
-  { path: "todo", label: "Farmacoterapia" },
-  { path: "todo", label: "NES" },
-  { path: "todo", label: "PICO" },
-  { path: "todo", label: "SOAP" },
+  { path: "pharmacotherapy", label: "Farmacoterapia" },
+  { path: "nes", label: "NES" },
+  { path: "pico", label: "PICO" },
+  { path: "soap", label: "SOAP" },
 ];
 
 const getParent = (path: string) => {
