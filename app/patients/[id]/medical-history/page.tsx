@@ -1,12 +1,13 @@
 "use client";
 
-import { FormControlLabel, Radio } from "@mui/material";
+import { FormControlLabel, Radio, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { formatDate } from "../../../date";
+import { HorizontalStepper } from "../HorizontalStepper";
 
 const antecedents = [
   { label: "IMA", name: "ima" },
@@ -122,149 +123,155 @@ export default function PatientInterview() {
   };
 
   return (
-    <Formik
-      initialValues={{
-        occupation: "",
-        sex: "",
-        birthdate: null,
-        weight: 0,
-        size: 0,
-        other: "",
-
-        antecedents: [],
-        problems_other: [],
-        problems_cardio: [],
-        problems_digestive: [],
-        problems_loc: [],
-        problems_snc: [],
-      }}
-      onSubmit={() => {
-        // TODO:
-      }}
-    >
-      {({ values }) => (
-        <Form>
-          <Grid container spacing={2}>
-            <Grid xs={10}>
-              <strong>1. Datos personales</strong>
-            </Grid>
-            <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
-            <Grid xs={12}>Código del paciente: {code}</Grid>
-            <Grid xs={5} display="flex" alignItems="center">
-              Ocupación:
-              <Field
-                name="occupation"
-                component={TextField}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid xs={3}>
-              Fecha Nac:
-              <Field component={DatePicker} label="Fecha" name="birthdate" />
-            </Grid>
-            <Grid xs={2}>
-              Edad: {values.birthdate ? calculateAge(values.birthdate) : "N/A"}
-            </Grid>
-            <Grid xs={2}>
-              Sexo:
-              <Field component={RadioGroup} name="sex" row>
-                <FormControlLabel value="MALE" control={<Radio />} label="M" />
-                <FormControlLabel
-                  value="FEMALE"
-                  control={<Radio />}
-                  label="F"
+    <div>
+      <HorizontalStepper activeStep={1} />
+      <Formik
+        initialValues={{
+          occupation: "",
+          sex: "",
+          birthdate: null,
+          weight: 0,
+          size: 0,
+          other: "",
+          antecedents: [],
+          problems_other: [],
+          problems_cardio: [],
+          problems_digestive: [],
+          problems_loc: [],
+          problems_snc: [],
+        }}
+        onSubmit={() => {
+          // TODO:
+        }}
+      >
+        {({ values }) => (
+          <Form>
+            <Grid container spacing={2}>
+              <Grid xs={10}>
+                <strong>1. Datos personales</strong>
+              </Grid>
+              <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
+              <Grid xs={12}>Código del paciente: {code}</Grid>
+              <Grid xs={5} display="flex" alignItems="center">
+                Ocupación:
+                <Field
+                  name="occupation"
+                  component={TextField}
+                  variant="outlined"
                 />
-              </Field>
+              </Grid>
+              <Grid xs={3}>
+                Fecha Nac:
+                <Field component={DatePicker} label="Fecha" name="birthdate" />
+              </Grid>
+              <Grid xs={2}>
+                Edad:{" "}
+                {values.birthdate ? calculateAge(values.birthdate) : "N/A"}
+              </Grid>
+              <Grid xs={2}>
+                Sexo:
+                <Field component={RadioGroup} name="sex" row>
+                  <FormControlLabel
+                    value="MALE"
+                    control={<Radio />}
+                    label="M"
+                  />
+                  <FormControlLabel
+                    value="FEMALE"
+                    control={<Radio />}
+                    label="F"
+                  />
+                </Field>
+              </Grid>
+              <Grid xs={4} display="flex" alignItems="center">
+                Peso (kg):
+                <Field
+                  name="weight"
+                  component={TextField}
+                  type="number"
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid xs={4} display="flex" alignItems="center">
+                Talla (m):
+                <Field
+                  name="size"
+                  component={TextField}
+                  type="number"
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid xs={4} display="flex" alignItems="center">
+                IMC:
+                {getImc(values)}
+              </Grid>
             </Grid>
-            <Grid xs={4} display="flex" alignItems="center">
-              Peso (kg):
-              <Field
-                name="weight"
-                component={TextField}
-                type="number"
-                variant="outlined"
-              />
+            <strong>2. Historia de salud</strong>
+            <Grid container spacing={2}>
+              <Grid xs={12}>
+                <strong>2.1 Antecedentes patológicos</strong>
+              </Grid>
+              <Grid xs={8} container>
+                <Grid xs={12} container>
+                  {antecedents.map((item) => (
+                    <Grid xs={4} key={item.name}>
+                      <Field
+                        component={CheckboxWithLabel}
+                        type="checkbox"
+                        name="antecedents"
+                        value={item.name}
+                        Label={{ label: item.label }}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+              <Grid xs={4}>
+                Otros:
+                <Field
+                  name="other"
+                  component={TextField}
+                  variant="outlined"
+                  multiline
+                  rows={4}
+                />
+              </Grid>
             </Grid>
-            <Grid xs={4} display="flex" alignItems="center">
-              Talla (m):
-              <Field
-                name="size"
-                component={TextField}
-                type="number"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid xs={4} display="flex" alignItems="center">
-              IMC:
-              {getImc(values)}
-            </Grid>
-          </Grid>
-          <strong>2. Historia de salud</strong>
-          <Grid container spacing={2}>
-            <Grid xs={12}>
-              <strong>2.1 Antecedentes patológicos</strong>
-            </Grid>
-            <Grid xs={8} container>
+            <Grid container spacing={2}>
+              <Grid xs={12}>
+                <strong>2.2 Problemas de salud</strong>
+              </Grid>
               <Grid xs={12} container>
-                {antecedents.map((item) => (
-                  <Grid xs={4} key={item.name}>
-                    <Field
-                      component={CheckboxWithLabel}
-                      type="checkbox"
-                      name="antecedents"
-                      value={item.name}
-                      Label={{ label: item.label }}
-                    />
+                {problems.map((group, index) => (
+                  <Grid
+                    key={index}
+                    xs={3}
+                    container
+                    direction="column"
+                    justifyContent="flex-start"
+                    alignItems="stretch"
+                  >
+                    <strong>{group.label}</strong>
+                    {group.items.map((item, idx) => (
+                      <Field
+                        key={idx}
+                        component={CheckboxWithLabel}
+                        type="checkbox"
+                        name={group.id}
+                        value={item.name}
+                        Label={{ label: item.label }}
+                      />
+                    ))}
                   </Grid>
                 ))}
               </Grid>
             </Grid>
-            <Grid xs={4}>
-              Otros:
-              <Field
-                name="other"
-                component={TextField}
-                variant="outlined"
-                multiline
-                rows={4}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={2}>
-            <Grid xs={12}>
-              <strong>2.2 Problemas de salud</strong>
-            </Grid>
-            <Grid xs={12} container>
-              {problems.map((group, index) => (
-                <Grid
-                  key={index}
-                  xs={3}
-                  container
-                  direction="column"
-                  justifyContent="flex-start"
-                  alignItems="stretch"
-                >
-                  <strong>{group.label}</strong>
-                  {group.items.map((item, idx) => (
-                    <Field
-                      key={idx}
-                      component={CheckboxWithLabel}
-                      type="checkbox"
-                      name={group.id}
-                      value={item.name}
-                      Label={{ label: item.label }}
-                    />
-                  ))}
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
-          <br></br>
-          <div>{JSON.stringify(values)}</div>
-        </Form>
-      )}
-    </Formik>
+            <br></br>
+            <div>{JSON.stringify(values)}</div>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 }
 

@@ -92,9 +92,6 @@ export default function PatientSelectionPage() {
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
-        Paciente: Arthur Mauricio
-      </Typography>
       <HorizontalStepper activeStep={0} />
       <Title>Criterios de selección de pacientes</Title>
       <Formik
