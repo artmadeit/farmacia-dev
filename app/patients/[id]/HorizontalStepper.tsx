@@ -11,6 +11,7 @@ type Step = { path: string; label: string };
 
 const steps = [
   { path: "selection", label: "Selección" },
+  { path: "consent", label: "Consentimiento" },
   { path: "medical-history", label: "Anamnesis" },
   { path: "todo", label: "Farmacoterapia" },
 ];
