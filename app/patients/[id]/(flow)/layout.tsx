@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { HorizontalStepper } from "./HorizontalStepper";
 import { apiUrl } from "@/app/(api)/api";
-import { Patient } from "../create/Patient";
+import { Patient } from "../../create/Patient";
 
 export default async function MedicalFlowLayout({
   params,

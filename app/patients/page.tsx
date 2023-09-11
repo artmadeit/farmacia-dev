@@ -5,6 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
 import { withOutSorting } from "../(components)/helpers/withOutSorting";
@@ -61,6 +62,7 @@ export default function ListPatients() {
                     onClick={() => router.push(`drugs/${params.row.id}`)}
                   />
                 </Tooltip>,
+                
               ];
             },
           },
