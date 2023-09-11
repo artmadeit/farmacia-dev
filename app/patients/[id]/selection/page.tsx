@@ -17,7 +17,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Field, Form, Formik } from "formik";
 import { Checkbox, Select } from "formik-mui";
-import { sum } from "lodash";
+import { isObject, sum } from "lodash";
 import { useRouter } from "next/navigation";
 import { api } from "../../../(api)/api";
 import { Page } from "../../../(api)/pagination";
@@ -86,26 +86,34 @@ const getTotalScore = (criterionList: string[]) => {
   );
 };
 
+type SelectionForm = {
+  criterionList: string[];
+  drug: Drug | string | null;
+  prm: string;
+};
+
+const initialValues: SelectionForm = {
+  criterionList: [],
+  drug: null,
+  prm: "",
+};
+
 export default function PatientSelectionPage({
   params,
 }: {
   params: { id: number };
 }) {
-  const { id } = params;
+  const { id: patientId } = params;
   const router = useRouter();
 
   return (
     <>
       <Title>Criterios de selección de pacientes</Title>
       <Formik
-        initialValues={{
-          criterionList: [],
-          drug: null,
-          prm: "",
-        }}
+        initialValues={initialValues}
         validationSchema={yup.object({
           drug: yup
-            .mixed()
+            .object()
             .nullable()
             .label("Medicamento")
             .when("criterionList", {
@@ -120,9 +128,12 @@ export default function PatientSelectionPage({
           }),
         })}
         onSubmit={async (values) => {
-          // TODO: save data
-          console.log({ values });
-          // router.push("/patients/1/medical-history");
+          await api.post(`/patients/${patientId}/selection-forms`, {
+            criterionList: values.criterionList,
+            drugId: isObject(values.drug) ? values.drug.id : null,
+            prm: values.prm,
+          });
+          router.push(`/patients/${patientId}/consent`);
         }}
       >
         {({ values, errors }) => (

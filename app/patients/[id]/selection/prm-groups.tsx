@@ -36,5 +36,3 @@ export const PRM_GROUPS = [
     ],
   },
 ];
-
-const PRM_LIST: Item[] = PRM_GROUPS.flatMap((x) => x.items);

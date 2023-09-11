@@ -11,7 +11,9 @@ export default async function MedicalFlowLayout({
   params: { id: number };
 }) {
   const { id } = params;
-  const response = await fetch(`${apiUrl}/patients/${id}`);
+  const response = await fetch(`${apiUrl}/patients/${id}`, {
+    cache: "no-cache",
+  });
   const patient: Patient = await response.json();
 
   return (
