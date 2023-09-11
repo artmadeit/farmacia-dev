@@ -62,6 +62,11 @@ export const AsyncAutocomplete = <T, F>({
       }
       filterOptions={(x: any) => x}
       onInputChange={(_event: any, newInputValue: any) => {
+        if (!_event) {
+          // is null when formik initialValues enableReinitialize works
+          return;
+        }
+
         searchItems(newInputValue);
         setFieldValue(field as string, newInputValue);
       }}

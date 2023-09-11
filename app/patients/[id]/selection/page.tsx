@@ -19,6 +19,7 @@ import { Field, Form, Formik } from "formik";
 import { Checkbox, Select } from "formik-mui";
 import { isObject, sum } from "lodash";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
 import { api } from "../../../(api)/api";
 import { Page } from "../../../(api)/pagination";
 import { AsyncAutocomplete } from "../../../(components)/autocomplete";
@@ -104,13 +105,17 @@ export default function PatientSelectionPage({
   params: { id: number };
 }) {
   const { id: patientId } = params;
+  const { data, mutate } = useSWR<SelectionForm>(
+    `/patients/${patientId}/selection-forms`
+  );
   const router = useRouter();
 
   return (
     <>
       <Title>Criterios de selección de pacientes</Title>
       <Formik
-        initialValues={initialValues}
+        initialValues={data || initialValues}
+        enableReinitialize
         validationSchema={yup.object({
           drug: yup
             .object()
@@ -128,15 +133,20 @@ export default function PatientSelectionPage({
           }),
         })}
         onSubmit={async (values) => {
-          await api.post(`/patients/${patientId}/selection-forms`, {
-            criterionList: values.criterionList,
-            drugId: isObject(values.drug) ? values.drug.id : null,
-            prm: values.prm,
-          });
+          const response = await api.post<SelectionForm>(
+            `/patients/${patientId}/selection-forms`,
+            {
+              criterionList: values.criterionList,
+              drugId: isObject(values.drug) ? values.drug.id : null,
+              prm: values.prm,
+            }
+          );
+          mutate(response.data);
+
           router.push(`/patients/${patientId}/consent`);
         }}
       >
-        {({ values, errors }) => (
+        {({ values }) => (
           <Form>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
