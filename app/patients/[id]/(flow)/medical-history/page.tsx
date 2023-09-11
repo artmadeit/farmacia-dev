@@ -1,25 +1,24 @@
 "use client";
 
-import { Divider, FormControlLabel, Radio, Typography } from "@mui/material";
+import { Title } from "@/app/(components)/Title";
+import { Divider, FormControlLabel, Radio } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { formatDate } from "../../../../date";
-import { HorizontalStepper } from "../HorizontalStepper";
-import { Title } from "@/app/(components)/Title";
 
 const antecedents = [
-  { label: "IMA", name: "ima" },
-  { label: "Diabetes", name: "diabetes" },
-  { label: "Enf. Hepática", name: "hepatica" },
-  { label: "ACV", name: "acv" },
-  { label: "Enf. Renal", name: "renal" },
-  { label: "Úlcera", name: "ulcera" },
-  { label: "ICC", name: "icc" },
-  { label: "Obesidad", name: "obesidad" },
-  { label: "Enf. tiroides", name: "tiroides" },
+  { label: "IMA", name: "IMA" },
+  { label: "Diabetes", name: "DIABETES" },
+  { label: "Enf. Hepática", name: "ENF_HEPÁTICA" },
+  { label: "ACV", name: "ACV" },
+  { label: "Enf. Renal", name: "ENF_RENAL" },
+  { label: "Úlcera", name: "ÚLCERA" },
+  { label: "ICC", name: "ICC" },
+  { label: "Obesidad", name: "OBESIDAD" },
+  { label: "Enf. tiroides", name: "ENF_TIROIDES" },
 ];
 
 const problems = [
@@ -27,13 +26,13 @@ const problems = [
     id: "problems_snc",
     label: "SNC",
     items: [
-      { label: "Tos", name: "tos" },
-      { label: "Mareos", name: "mareo" },
-      { label: "Sueño", name: "sueño" },
-      { label: "Desvanecimiento", name: "des" },
-      { label: "Visión borrosa", name: "vborrosa" },
-      { label: "Pérdida de apetito", name: "p.apetito" },
-      { label: "Dolor de cabeza", name: "dolor_cabeza" },
+      { label: "Tos", name: "TOS" },
+      { label: "Mareos", name: "MAREOS" },
+      { label: "Sueño", name: "SUEÑO" },
+      { label: "Desvanecimiento", name: "DESVANECIMIENTO" },
+      { label: "Visión borrosa", name: "VISIÓN_BORROSA" },
+      { label: "Pérdida de apetito", name: "PÉRDIDA_DE_APETITO" },
+      { label: "Dolor de cabeza", name: "DOLOR_DE_CABEZA" },
     ],
   },
   {
@@ -42,72 +41,72 @@ const problems = [
     items: [
       {
         label: "Dolor y/o ardor de estómago",
-        name: "d.estomago",
+        name: "DOLOR_ARDOR_ESTOMAGO",
       },
-      { label: "Náuseas y/o vómitos", name: "nausea" },
-      { label: "Diarreas", name: "diarrea" },
-      { label: "Estreñimiento", name: "este" },
-      { label: "Sequedad bucal", name: "seq" },
+      { label: "Náuseas y/o vómitos", name: "NAUSEAS_VOMITOS" },
+      { label: "Diarreas", name: "DIARREAS" },
+      { label: "Estreñimiento", name: "ESTREÑIMIENTO" },
+      { label: "Sequedad bucal", name: "SEQUEDAD_BUCAL" },
     ],
   },
   {
     label: "Cardiovascular",
     id: "problems_cardio",
     items: [
-      { label: "Palpitaciones", name: "pal" },
-      { label: "Taquicardia", name: "taq" },
-      { label: "Hipotensión", name: "hip" },
-      { label: "Arritmias", name: "arr" },
-      { label: "Angina", name: "an" },
-      { label: "Bradicardia", name: "br" },
-      { label: "Hipotensión ortostática", name: "hp" },
+      { label: "Palpitaciones", name: "PALPITACIONES" },
+      { label: "Taquicardia", name: "TAQUICARDIA" },
+      { label: "Hipotensión", name: "HIPOTENSIÓN" },
+      { label: "Arritmias", name: "ARRITMIAS" },
+      { label: "Angina", name: "ANGINA" },
+      { label: "Bradicardia", name: "BRADICARDIA" },
+      { label: "Hipotensión ortostática", name: "HIPOTENSIÓN_ORTOSTÁTICA" },
     ],
   },
   {
     label: "Otros",
     id: "problems_others",
     items: [
-      { label: "Broncoespasmo", name: "bro" },
-      { label: "Disgeusia", name: "disg" },
-      { label: "Angioedema", name: "disg" },
-      { label: "Neutropenia", name: "disg" },
-      { label: "Proteinuria", name: "disg" },
-      { label: "Leucopenia", name: "disg" },
-      { label: "Fatiga", name: "disg" },
-      { label: "Impotencia", name: "disg" },
-      { label: "Astenia", name: "disg" },
+      { label: "Broncoespasmo", name: "BRONCOESPASMO" },
+      { label: "Disgeusia", name: "DISGEUSIA" },
+      { label: "Angioedema", name: "ANGIOEDEMA" },
+      { label: "Neutropenia", name: "NEUTROPENIA" },
+      { label: "Proteinuria", name: "PROTEINURIA" },
+      { label: "Leucopenia", name: "LEUCOPENIA" },
+      { label: "Fatiga", name: "FATIGA" },
+      { label: "Impotencia", name: "IMPOTENCIA" },
+      { label: "Astenia", name: "ASTENIA" },
     ],
   },
   {
     label: "Ap. Locomotor",
     id: "problems_loc",
     items: [
-      { label: "Debilidad muscular", name: "deb" },
-      { label: "Dolores articulares", name: "disg" },
-      { label: "Calambres", name: "disg" },
-      { label: "Dolor/rigidez de cuello ", name: "disg" },
+      { label: "Debilidad muscular", name: "DEBILIDAD MUSCULAR" },
+      { label: "Dolores articulares", name: "DOLORES ARTICULARES" },
+      { label: "Calambres", name: "CALAMBRES" },
+      { label: "Dolor/rigidez de cuello", name: "DOLOR/RIGIDEZ DE CUELLO" },
     ],
   },
   {
     label: "Metabólicas",
     id: "problems_metabolics",
     items: [
-      { label: "Hiponatremia", name: "hipo" },
-      { label: "Hipopotasemia", name: "disg" },
-      { label: "Hiperglicemia", name: "disg" },
-      { label: "Hipercalcemia", name: "disg" },
-      { label: "Hipercolesterolemia", name: "disg" },
-      { label: "Edema", name: "disg" },
-      { label: "Hiperpotasemia", name: "disg" },
+      { label: "Hiponatremia", name: "HIPONATREMIA" },
+      { label: "Hipopotasemia", name: "HIPOPOTASEMIA" },
+      { label: "Hiperglicemia", name: "HIPERGLICEMIA" },
+      { label: "Hipercalcemia", name: "HIPERCALCEMIA" },
+      { label: "Hipercolesterolemia", name: "HIPERCOLESTEROLEMIA" },
+      { label: "Edema", name: "EDEMA" },
+      { label: "Hiperpotasemia", name: "HIPERPOTASEMIA" },
     ],
   },
   {
     label: "Piel",
     id: "problems_piel",
     items: [
-      { label: "Erupciones", name: "eru" },
-      { label: "Prurito", name: "eru" },
-      { label: "Rubefacción", name: "eru" },
+      { label: "Erupciones", name: "ERUPCIONES" },
+      { label: "Prurito", name: "PRURITO" },
+      { label: "Rubefacción", name: "RUBEFACCIÓN" },
     ],
   },
 ];
