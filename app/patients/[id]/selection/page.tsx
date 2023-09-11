@@ -105,7 +105,7 @@ export default function PatientSelectionPage({
   params: { id: number };
 }) {
   const { id: patientId } = params;
-  const { data } = useSWR<SelectionForm>(
+  const { data, mutate } = useSWR<SelectionForm>(
     `/patients/${patientId}/selection-forms`
   );
   const router = useRouter();
@@ -133,11 +133,16 @@ export default function PatientSelectionPage({
           }),
         })}
         onSubmit={async (values) => {
-          await api.post(`/patients/${patientId}/selection-forms`, {
-            criterionList: values.criterionList,
-            drugId: isObject(values.drug) ? values.drug.id : null,
-            prm: values.prm,
-          });
+          const response = await api.post<SelectionForm>(
+            `/patients/${patientId}/selection-forms`,
+            {
+              criterionList: values.criterionList,
+              drugId: isObject(values.drug) ? values.drug.id : null,
+              prm: values.prm,
+            }
+          );
+          mutate(response.data);
+
           router.push(`/patients/${patientId}/consent`);
         }}
       >
