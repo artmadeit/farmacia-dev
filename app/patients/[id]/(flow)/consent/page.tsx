@@ -6,8 +6,11 @@ import { DragDrop } from "@uppy/react";
 
 import "@uppy/core/dist/style.min.css";
 import "@uppy/drag-drop/dist/style.min.css";
+import Spanish from "@uppy/locales/lib/es_ES";
 
-const uppy = new Uppy();
+const uppy = new Uppy({
+  locale: Spanish,
+});
 
 export default function ConsentPage() {
   return (
