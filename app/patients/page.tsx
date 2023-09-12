@@ -5,34 +5,20 @@ import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
 import { withOutSorting } from "../(components)/helpers/withOutSorting";
-import { api } from "../(api)/api";
 import { Patient } from "./create/Patient";
 import useSWR from "swr";
 import { Page } from "../(api)/pagination";
 import { usePagination } from "../(components)/hook-customization/usePagination";
 
-export default function ListPatients() {
-  const [itemToDelete, setItemToDelete] = React.useState<Patient | null>(null);
+export default function ListPatients() {  
 
   const router = useRouter();
-
-  const deleteListPatients = async () => {
-    // if (itemToDelete === null) {
-    //   return;
-    // }
-
-    // await api.delete("");
-    console.log("Eliminando =D");
-    await getListPatients();
-  };
-
   const { paginationModel, setPaginationModel } = usePagination();
 
-  const { data: patients, mutate: getListPatients } = useSWR<Page<Patient>>([
+  const { data: patients } = useSWR<Page<Patient>>([
     "/patients",
     {
       params: {
@@ -59,7 +45,7 @@ export default function ListPatients() {
                   <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Editar"
-                    onClick={() => router.push(`drugs/${params.row.id}`)}
+                    onClick={() => router.push(`patients/${params.row.id}`)}
                   />
                 </Tooltip>,
                 
