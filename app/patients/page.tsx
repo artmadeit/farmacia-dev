@@ -5,7 +5,12 @@ import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  esES,
+} from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
 import { withOutSorting } from "../(components)/helpers/withOutSorting";
 import { Patient } from "./create/Patient";
@@ -13,8 +18,7 @@ import useSWR from "swr";
 import { Page } from "../(api)/pagination";
 import { usePagination } from "../(components)/hook-customization/usePagination";
 
-export default function ListPatients() {  
-
+export default function ListPatients() {
   const router = useRouter();
   const { paginationModel, setPaginationModel } = usePagination();
 
@@ -48,7 +52,6 @@ export default function ListPatients() {
                     onClick={() => router.push(`patients/${params.row.id}`)}
                   />
                 </Tooltip>,
-                
               ];
             },
           },
@@ -78,6 +81,7 @@ export default function ListPatients() {
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
           rows={patients._embedded.patients}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
     </Stack>
