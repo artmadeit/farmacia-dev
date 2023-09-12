@@ -2,14 +2,26 @@
 
 import { Title } from "@/app/(components)/Title";
 import Uppy from "@uppy/core";
-import { DragDrop } from "@uppy/react";
+import { DragDrop, StatusBar } from "@uppy/react";
 
 import "@uppy/core/dist/style.min.css";
+import "@uppy/status-bar/dist/style.min.css";
 import "@uppy/drag-drop/dist/style.min.css";
 import Spanish from "@uppy/locales/lib/es_ES";
+import Transloadit from "@uppy/transloadit";
 
 const uppy = new Uppy({
   locale: Spanish,
+  restrictions: {
+    maxNumberOfFiles: 1,
+  },
+}).use(Transloadit, {
+  assemblyOptions: {
+    params: {
+      auth: { key: "4a5c4913aceb43ce8df170cf343874db" },
+      template_id: "99d5c10e242049c8a089a4306d30698c",
+    },
+  },
 });
 
 export default function ConsentPage() {
@@ -17,6 +29,7 @@ export default function ConsentPage() {
     <div>
       <Title>Firma de consentimiento</Title>
       <DragDrop uppy={uppy} />
+      <StatusBar uppy={uppy} />
     </div>
   );
 }
