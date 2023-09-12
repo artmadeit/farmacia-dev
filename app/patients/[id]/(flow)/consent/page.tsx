@@ -30,17 +30,7 @@ const uppy = new Uppy({
 export default function ConsentPage() {
   const [uploadUrl, setUploadUrl] = useState<string | ArrayBuffer | null>("");
 
-  // uppy.on("upload-success", (file, response) => {
-  //   console.log(file);
-  //   console.log(response);
-
-  //   if (response.uploadURL) {
-  //     setUploadUrl(response.uploadURL);
-  //   }
-  // });
-
   uppy.on("transloadit:result", (stepName, result: any) => {
-    console.log("lalala");
     const file = uppy.getFile(result.localId);
     console.log({ file });
 
