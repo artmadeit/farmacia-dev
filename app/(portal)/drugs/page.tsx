@@ -45,8 +45,7 @@ const DrugsPage = () => {
     () =>
       (
         [
-          { field: "name", headerName: "Nombre", width: 150 },
-          // { field: "description", headerName: "Descripción", width: 120 },
+          { field: "name", headerName: "Nombre", width: 150 },          
           {
             field: "actions",
             type: "actions",

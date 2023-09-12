@@ -30,8 +30,7 @@ const PatientForm = ({patient: patient}: PatientFormProps) => {
       }}
     >
       <Form>
-        <Stack spacing={2}>
-          {/* <Typography variant="h4">Datos generales del paciente</Typography> */}
+        <Stack spacing={2}>          
           <Title>Datos generales del paciente</Title>
           <Grid container rowGap={2}>
             <Grid item xs={12} sm={2} sx={inline}>
