@@ -9,6 +9,7 @@ import "@uppy/status-bar/dist/style.min.css";
 import "@uppy/drag-drop/dist/style.min.css";
 import Spanish from "@uppy/locales/lib/es_ES";
 import Transloadit from "@uppy/transloadit";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 const uppy = new Uppy({
   locale: Spanish,
@@ -28,8 +29,20 @@ export default function ConsentPage() {
   return (
     <div>
       <Title>Firma de consentimiento</Title>
-      <DragDrop uppy={uppy} />
-      <StatusBar uppy={uppy} />
+      <Grid container spacing={4}>
+        <Grid xs={6}>
+          <DragDrop uppy={uppy} />
+          <StatusBar uppy={uppy} />
+        </Grid>
+        <Grid xs={6}>
+          <embed
+            src="/lala.pdf"
+            width="500"
+            height="375"
+            type="application/pdf"
+          />
+        </Grid>
+      </Grid>
     </div>
   );
 }
