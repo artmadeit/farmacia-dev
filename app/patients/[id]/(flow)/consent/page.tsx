@@ -12,29 +12,35 @@ import Transloadit from "@uppy/transloadit";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { useState } from "react";
 
-const uppy = new Uppy({
-  locale: Spanish,
-  restrictions: {
-    maxNumberOfFiles: 1,
-  },
-}).use(Transloadit, {
-  assemblyOptions: {
-    params: {
-      auth: { key: "4a5c4913aceb43ce8df170cf343874db" },
-      template_id: "99d5c10e242049c8a089a4306d30698c",
+function createUppy(patientId: number) {
+  return new Uppy({
+    locale: Spanish,
+    restrictions: {
+      maxNumberOfFiles: 1,
     },
-  },
-  waitForEncoding: true,
-});
+  }).use(Transloadit, {
+    assemblyOptions: {
+      params: {
+        auth: { key: "36304df90e3b489090286f719c6aa245" },
+        template_id: "7403cb05d1bb436a9995a3914ab8f238",
+      },
+      fields: { patientId },
+    },
+    waitForEncoding: true,
+  });
+}
 
-export default function ConsentPage() {
+export default function ConsentPage({ params }: { params: { id: number } }) {
+  const { id: patientId } = params;
+  const [uppy] = useState(() => createUppy(patientId));
   const [uploadUrl, setUploadUrl] = useState<string | ArrayBuffer | null>("");
 
   uppy.on("transloadit:result", (stepName, result: any) => {
     const file = uppy.getFile(result.localId);
     console.log({ file });
+    console.log({ result });
 
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = function (e) {
       if (e.target) {
         setUploadUrl(e.target.result);
