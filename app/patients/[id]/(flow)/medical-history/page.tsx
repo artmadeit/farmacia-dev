@@ -2,6 +2,7 @@
 
 import { Title } from "@/app/(components)/Title";
 import { Divider, FormControlLabel, Radio } from "@mui/material";
+import { blue, pink } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
@@ -224,7 +225,13 @@ export default function PatientInterview() {
               <Grid xs={12}>
                 <strong>2.1 Antecedentes patológicos</strong>
               </Grid>
-              <div style={{ display: "flex", border: "1px solid #E5EAF2" }}>
+              <div
+                style={{
+                  display: "flex",
+                  border: "1px solid #E5EAF2",
+                  margin: "10px",
+                }}
+              >
                 <Grid xs={8} container>
                   <Grid xs={12} container style={{ padding: "20px" }}>
                     {antecedents.map((item) => (
@@ -235,6 +242,9 @@ export default function PatientInterview() {
                           name="antecedents"
                           value={item.name}
                           Label={{ label: item.label }}
+                          sx={{
+                            color: blue[700],
+                          }}
                         />
                       </Grid>
                     ))}
@@ -278,10 +288,18 @@ export default function PatientInterview() {
                 </Grid> */}
             </Grid>
             <Grid container spacing={2}>
-              <Grid xs={12}>
+              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
                 <strong>2.2 Problemas de salud</strong>
               </Grid>
-              <Grid xs={12} container>
+              <Grid
+                xs={12}
+                container
+                style={{
+                  border: "1px solid #E5EAF2",
+                  padding: "20px",
+                  margin: "10px",
+                }}
+              >
                 {problems.map((group, index) => (
                   <Grid
                     key={index}
@@ -300,6 +318,9 @@ export default function PatientInterview() {
                         name={group.id}
                         value={item.name}
                         Label={{ label: item.label }}
+                        sx={{
+                          color: blue[700],
+                        }}
                       />
                     ))}
                   </Grid>
