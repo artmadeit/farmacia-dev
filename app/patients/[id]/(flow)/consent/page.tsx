@@ -33,7 +33,7 @@ function createUppy(patientId: number) {
 export default function ConsentPage({ params }: { params: { id: number } }) {
   const { id: patientId } = params;
   const [uppy] = useState(() => createUppy(patientId));
-  const [uploadUrl, setUploadUrl] = useState<string | ArrayBuffer | null>("");
+  const [uploadUrl, setUploadUrl] = useState<string | ArrayBuffer | null>();
 
   uppy.on("transloadit:result", (stepName, result: any) => {
     const file = uppy.getFile(result.localId);
@@ -44,6 +44,10 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
     reader.onload = function (e) {
       if (e.target) {
         setUploadUrl(e.target.result);
+
+        // remove file so user can upload again
+        // replacing the file
+        uppy.removeFile(result.localId);
       }
     };
     reader.readAsDataURL(file.data);
