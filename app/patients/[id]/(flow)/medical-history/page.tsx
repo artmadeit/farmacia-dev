@@ -7,8 +7,9 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
-import { DatePicker } from "formik-mui-x-date-pickers";
+
 import { formatDate } from "../../../../date";
+import { DatePicker } from "formik-mui-x-date-pickers";
 
 const antecedents = [
   { label: "IMA", name: "IMA" },
@@ -168,7 +169,7 @@ export default function PatientInterview() {
               <Grid xs={3} display="flex" alignItems="center">
                 <Field
                   component={DatePicker}
-                  label="Fecha de Nacimiento"
+                  slotProps={{ textField: { label: "Fecha de Nacimiento" } }}
                   name="birthdate"
                 />
               </Grid>
