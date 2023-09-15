@@ -11,6 +11,8 @@ import Spanish from "@uppy/locales/lib/es_ES";
 import Transloadit from "@uppy/transloadit";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { useState } from "react";
+import useSWR from "swr";
+import { api } from "@/app/(api)/api";
 
 function createUppy(patientId: number) {
   return new Uppy({
@@ -33,7 +35,8 @@ function createUppy(patientId: number) {
 export default function ConsentPage({ params }: { params: { id: number } }) {
   const { id: patientId } = params;
   const [uppy] = useState(() => createUppy(patientId));
-  const [uploadUrl, setUploadUrl] = useState<string | ArrayBuffer | null>();
+
+  const { data: signedUrl, mutate } = useSWR(`patients/${patientId}/consent`);
 
   uppy.on("transloadit:result", (stepName, result: any) => {
     const file = uppy.getFile(result.localId);
@@ -41,9 +44,11 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
     console.log({ result });
 
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = async function (e) {
       if (e.target) {
-        setUploadUrl(e.target.result);
+        await api.post(`patients/${patientId}/consent`);
+        mutate();
+        // Useful if we want to save the url, setUploadUrl(e.target.result);
 
         // remove file so user can upload again
         // replacing the file
@@ -62,9 +67,9 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
           <StatusBar uppy={uppy} />
         </Grid>
         <Grid xs={6}>
-          {uploadUrl && (
+          {signedUrl && (
             <embed
-              src={uploadUrl as any}
+              src={signedUrl}
               width="500"
               height="375"
               type="application/pdf"
