@@ -13,6 +13,8 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { useState } from "react";
 import useSWR from "swr";
 import { api } from "@/app/(api)/api";
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 function createUppy(patientId: number) {
   return new Uppy({
@@ -40,15 +42,13 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
 
   uppy.on("transloadit:result", (stepName, result: any) => {
     const file = uppy.getFile(result.localId);
-    console.log({ file });
-    console.log({ result });
 
     const reader = new FileReader();
     reader.onload = async function (e) {
       if (e.target) {
         await api.post(`patients/${patientId}/consent`);
         mutate();
-        // Useful if we want to save the url, setUploadUrl(e.target.result);
+        // Useful if we want to save the url, setUploadUrl(e.target.result); check console.log(file) and result
 
         // remove file so user can upload again
         // replacing the file
@@ -57,6 +57,11 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
     };
     reader.readAsDataURL(file.data);
   });
+
+  const deleteConsent = async () => {
+    await api.delete(`patients/${patientId}/consent`);
+    mutate();
+  };
 
   return (
     <div>
@@ -68,12 +73,17 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
         </Grid>
         <Grid xs={6}>
           {signedUrl && (
-            <embed
-              src={signedUrl}
-              width="500"
-              height="375"
-              type="application/pdf"
-            />
+            <>
+              <IconButton aria-label="delete" onClick={deleteConsent}>
+                <CloseIcon />
+              </IconButton>
+              <embed
+                src={signedUrl}
+                width="500"
+                height="375"
+                type="application/pdf"
+              />
+            </>
           )}
         </Grid>
       </Grid>
