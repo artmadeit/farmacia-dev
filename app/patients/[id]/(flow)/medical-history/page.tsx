@@ -2,12 +2,14 @@
 
 import { Title } from "@/app/(components)/Title";
 import { Divider, FormControlLabel, Radio } from "@mui/material";
+import { blue, pink } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
-import { DatePicker } from "formik-mui-x-date-pickers";
+import yup from "../../../../validation";
 import { formatDate } from "../../../../date";
+import { DatePicker } from "formik-mui-x-date-pickers";
 
 const antecedents = [
   { label: "IMA", name: "IMA" },
@@ -111,6 +113,8 @@ const problems = [
   },
 ];
 
+const minYear = new Date(1920, 1, 1);
+
 export default function PatientInterview() {
   const code = "AJK-203";
 
@@ -141,31 +145,56 @@ export default function PatientInterview() {
           problems_loc: [],
           problems_snc: [],
         }}
+        validationSchema={yup.object({
+          occupation: yup.string().required().label("La ocupación"),
+          birthdate: yup
+            .date()
+            .min(
+              minYear,
+              `La fecha de nacimiento no puede ser menor del año ${minYear.getFullYear()}`
+            ),
+          weight: yup.number().required().min(10).max(200).label("El peso"),
+          size: yup.number().required().min(0.4).max(2.5).label("La Altura"),
+        })}
         onSubmit={() => {
           // TODO:
         }}
       >
-        {({ values }) => (
+        {({ values, errors }) => (
           <Form>
+            {/* {JSON.stringify(values)}
+            {JSON.stringify(errors)} */}
             <Grid container spacing={2}>
-              <Grid xs={10}>
+              <Grid xs={10} style={{ marginTop: "10px" }}>
                 <strong>1. Datos personales</strong>
               </Grid>
-              <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
+              <Grid xs={2} style={{ marginTop: "10px" }}>
+                Fecha: {formatDate(new Date())}
+              </Grid>
               <Grid xs={12}>Código del paciente: {code}</Grid>
-              <Grid xs={5} display="flex" alignItems="center">
-                Ocupación:
+              <Grid xs={3} display="flex" alignItems="center">
                 <Field
+                  label="Ocupación"
                   name="occupation"
+                  fullWidth
                   component={TextField}
                   variant="outlined"
                 />
               </Grid>
-              <Grid xs={3}>
-                Fecha Nac:
-                <Field component={DatePicker} label="Fecha" name="birthdate" />
+              <Grid xs={3} display="flex" alignItems="center">
+                <Field
+                  component={DatePicker}
+                  minDate={minYear}
+                  slotProps={{
+                    textField: {
+                      label: "Fecha de Nacimiento",
+                      helperText: errors.birthdate ? errors.birthdate : "",
+                    },
+                  }}
+                  name="birthdate"
+                />
               </Grid>
-              <Grid xs={2}>
+              <Grid xs={2} display="flex" alignItems="center">
                 Edad:{" "}
                 {values.birthdate ? calculateAge(values.birthdate) : "N/A"}
               </Grid>
@@ -184,22 +213,24 @@ export default function PatientInterview() {
                   />
                 </Field>
               </Grid>
-              <Grid xs={4} display="flex" alignItems="center">
-                Peso (kg):
+              <Grid xs={3} display="flex" alignItems="center">
                 <Field
+                  label="Peso (kg):"
                   name="weight"
                   component={TextField}
                   type="number"
                   variant="outlined"
+                  fullWidth
                 />
               </Grid>
-              <Grid xs={4} display="flex" alignItems="center">
-                Talla (m):
+              <Grid xs={3} display="flex" alignItems="center">
                 <Field
+                  label="Talla (m):"
                   name="size"
                   component={TextField}
                   type="number"
                   variant="outlined"
+                  fullWidth
                 />
               </Grid>
               <Grid xs={4} display="flex" alignItems="center">
@@ -207,42 +238,90 @@ export default function PatientInterview() {
                 {getImc(values)}
               </Grid>
             </Grid>
-            <strong>2. Historia de salud</strong>
+
             <Grid container spacing={2}>
+              <Grid xs={12} style={{ marginTop: "10px" }}>
+                <strong>2. Historia de salud</strong>
+                <Divider />
+              </Grid>
               <Grid xs={12}>
                 <strong>2.1 Antecedentes patológicos</strong>
               </Grid>
-              <Grid xs={8} container>
-                <Grid xs={12} container>
-                  {antecedents.map((item) => (
-                    <Grid xs={4} key={item.name}>
-                      <Field
-                        component={CheckboxWithLabel}
-                        type="checkbox"
-                        name="antecedents"
-                        value={item.name}
-                        Label={{ label: item.label }}
-                      />
-                    </Grid>
-                  ))}
+              <div
+                style={{
+                  display: "flex",
+                  border: "1px solid #E5EAF2",
+                  margin: "10px",
+                }}
+              >
+                <Grid xs={8} container>
+                  <Grid xs={12} container style={{ padding: "20px" }}>
+                    {antecedents.map((item) => (
+                      <Grid xs={4} key={item.name}>
+                        <Field
+                          component={CheckboxWithLabel}
+                          type="checkbox"
+                          name="antecedents"
+                          value={item.name}
+                          Label={{ label: item.label }}
+                          sx={{
+                            color: blue[700],
+                          }}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid xs={4}>
-                Otros:
-                <Field
-                  name="other"
-                  component={TextField}
-                  variant="outlined"
-                  multiline
-                  rows={4}
-                />
-              </Grid>
+                <Grid xs={4} style={{ padding: "20px" }}>
+                  <Field
+                    name="other"
+                    label="Otros:"
+                    component={TextField}
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                  />
+                </Grid>
+              </div>
+              {/* <Grid xs={8} container>
+                  <Grid xs={12} container>
+                    {antecedents.map((item) => (
+                      <Grid xs={4} key={item.name}>
+                        <Field
+                          component={CheckboxWithLabel}
+                          type="checkbox"
+                          name="antecedents"
+                          value={item.name}
+                          Label={{ label: item.label }}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Grid>
+                <Grid xs={4}>
+                  Otros:
+                  <Field
+                    name="other"
+                    component={TextField}
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                  />
+                </Grid> */}
             </Grid>
             <Grid container spacing={2}>
-              <Grid xs={12}>
+              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
                 <strong>2.2 Problemas de salud</strong>
               </Grid>
-              <Grid xs={12} container>
+              <Grid
+                xs={12}
+                container
+                style={{
+                  border: "1px solid #E5EAF2",
+                  padding: "20px",
+                  margin: "10px",
+                }}
+              >
                 {problems.map((group, index) => (
                   <Grid
                     key={index}
@@ -261,6 +340,9 @@ export default function PatientInterview() {
                         name={group.id}
                         value={item.name}
                         Label={{ label: item.label }}
+                        sx={{
+                          color: blue[700],
+                        }}
                       />
                     ))}
                   </Grid>
