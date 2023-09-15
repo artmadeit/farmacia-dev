@@ -113,6 +113,8 @@ const problems = [
   },
 ];
 
+const minYear = new Date(1920, 1, 1);
+
 export default function PatientInterview() {
   const code = "AJK-203";
 
@@ -145,6 +147,12 @@ export default function PatientInterview() {
         }}
         validationSchema={yup.object({
           occupation: yup.string().required().label("La ocupación"),
+          birthdate: yup
+            .date()
+            .min(
+              minYear,
+              `La fecha de nacimiento no puede ser menor del año ${minYear.getFullYear()}`
+            ),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La Altura"),
         })}
@@ -152,8 +160,10 @@ export default function PatientInterview() {
           // TODO:
         }}
       >
-        {({ values }) => (
+        {({ values, errors }) => (
           <Form>
+            {/* {JSON.stringify(values)}
+            {JSON.stringify(errors)} */}
             <Grid container spacing={2}>
               <Grid xs={10} style={{ marginTop: "10px" }}>
                 <strong>1. Datos personales</strong>
@@ -174,7 +184,13 @@ export default function PatientInterview() {
               <Grid xs={3} display="flex" alignItems="center">
                 <Field
                   component={DatePicker}
-                  slotProps={{ textField: { label: "Fecha de Nacimiento" } }}
+                  minDate={minYear}
+                  slotProps={{
+                    textField: {
+                      label: "Fecha de Nacimiento",
+                      helperText: errors.birthdate ? errors.birthdate : "",
+                    },
+                  }}
                   name="birthdate"
                 />
               </Grid>
