@@ -7,7 +7,7 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
-
+import yup from "../../../../validation";
 import { formatDate } from "../../../../date";
 import { DatePicker } from "formik-mui-x-date-pickers";
 
@@ -143,6 +143,11 @@ export default function PatientInterview() {
           problems_loc: [],
           problems_snc: [],
         }}
+        validationSchema={yup.object({
+          occupation: yup.string().required().label("La ocupación"),
+          weight: yup.number().required().min(10).max(200).label("El peso"),
+          size: yup.number().required().min(0.4).max(2.5).label("La Altura"),
+        })}
         onSubmit={() => {
           // TODO:
         }}
