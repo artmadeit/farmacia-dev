@@ -4,7 +4,7 @@ import { Title } from "@/app/(components)/Title";
 import { Divider, FormControlLabel, Radio } from "@mui/material";
 import { blue, pink } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { differenceInYears } from "date-fns";
+import { addDays, differenceInYears, sub, subYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import yup from "../../../../validation";
@@ -113,7 +113,9 @@ const problems = [
   },
 ];
 
-const minYear = new Date(1920, 1, 1);
+const minYear = subYears(new Date(), 103);
+
+const today = new Date();
 
 export default function PatientInterview() {
   const code = "AJK-203";
@@ -152,7 +154,8 @@ export default function PatientInterview() {
             .min(
               minYear,
               `La fecha de nacimiento no puede ser menor del año ${minYear.getFullYear()}`
-            ),
+            )
+            .max(today),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La Altura"),
         })}
@@ -185,6 +188,7 @@ export default function PatientInterview() {
                 <Field
                   component={DatePicker}
                   minDate={minYear}
+                  maxDate={today}
                   slotProps={{
                     textField: {
                       label: "Fecha de Nacimiento",
