@@ -36,9 +36,9 @@ export default function ListPatients() {
     () =>
       (
         [
+          { field: "code", headerName: "Código" },
           { field: "firstName", headerName: "Nombre" },
           { field: "lastName", headerName: "Apellido" },
-          { field: "code", headerName: "Código" },
           {
             field: "actions",
             type: "actions",
