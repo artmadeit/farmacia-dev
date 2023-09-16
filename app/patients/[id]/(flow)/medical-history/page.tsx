@@ -116,6 +116,7 @@ const problems = [
 const minYear = subYears(new Date(), 103);
 
 const today = new Date();
+const EMPTY = "-";
 
 export default function PatientInterview() {
   const code = "AJK-203";
@@ -125,7 +126,7 @@ export default function PatientInterview() {
       return weight / size ** 2;
     }
 
-    return "N/A";
+    return EMPTY;
   };
 
   return (
@@ -157,7 +158,7 @@ export default function PatientInterview() {
             )
             .max(today),
           weight: yup.number().required().min(10).max(200).label("El peso"),
-          size: yup.number().required().min(0.4).max(2.5).label("La Altura"),
+          size: yup.number().required().min(0.4).max(2.5).label("La talla"),
         })}
         onSubmit={() => {
           // TODO:
@@ -200,7 +201,7 @@ export default function PatientInterview() {
               </Grid>
               <Grid xs={2} display="flex" alignItems="center">
                 Edad:{" "}
-                {values.birthdate ? calculateAge(values.birthdate) : "N/A"}
+                {values.birthdate ? calculateAge(values.birthdate) : EMPTY}
               </Grid>
               <Grid xs={2}>
                 Sexo:
@@ -238,8 +239,7 @@ export default function PatientInterview() {
                 />
               </Grid>
               <Grid xs={4} display="flex" alignItems="center">
-                IMC:
-                {getImc(values)}
+                IMC: {getImc(values)}
               </Grid>
             </Grid>
 
@@ -365,5 +365,9 @@ export default function PatientInterview() {
 // Adapted from: https://stackoverflow.com/questions/66470624/date-fns-format-date-and-age-calculation-problem-in-react
 function calculateAge(date: Date) {
   const age = differenceInYears(new Date(), date);
+  if (isNaN(age)) {
+    return EMPTY;
+  }
+
   return age;
 }
