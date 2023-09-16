@@ -13,8 +13,9 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { useState } from "react";
 import useSWR from "swr";
 import { api } from "@/app/(api)/api";
-import { IconButton } from "@mui/material";
+import { Box, Button, IconButton, Stack } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useRouter } from "next/navigation";
 
 function createUppy(patientId: number) {
   return new Uppy({
@@ -34,11 +35,16 @@ function createUppy(patientId: number) {
   });
 }
 
+const height = 400;
+
 export default function ConsentPage({ params }: { params: { id: number } }) {
   const { id: patientId } = params;
   const [uppy] = useState(() => createUppy(patientId));
+  const router = useRouter();
 
-  const { data: signedUrl, mutate } = useSWR(`patients/${patientId}/consent`);
+  const { data: signedUrl, mutate } = useSWR(`patients/${patientId}/consent`, {
+    revalidateOnFocus: false,
+  });
 
   uppy.on("transloadit:result", (stepName, result: any) => {
     const file = uppy.getFile(result.localId);
@@ -67,26 +73,33 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
     <div>
       <Title>Firma de consentimiento</Title>
       <Grid container spacing={4}>
-        <Grid xs={6}>
-          <DragDrop uppy={uppy} />
+        <Grid xs={6} pt={8}>
+          <DragDrop uppy={uppy} height={height} />
           <StatusBar uppy={uppy} />
         </Grid>
         <Grid xs={6}>
           {signedUrl && (
-            <>
-              <IconButton aria-label="delete" onClick={deleteConsent}>
-                <CloseIcon />
-              </IconButton>
-              <embed
-                src={signedUrl}
-                width="500"
-                height="375"
-                type="application/pdf"
-              />
-            </>
+            <Stack>
+              <Box display="flex" justifyContent="end">
+                <IconButton aria-label="delete" onClick={deleteConsent}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              <embed src={signedUrl} height={height} type="application/pdf" />
+            </Stack>
           )}
         </Grid>
       </Grid>
+      <Box display="flex" justifyContent="end" paddingTop={2}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            router.push(`/patients/${patientId}/medical-history`);
+          }}
+        >
+          Continuar
+        </Button>
+      </Box>
     </div>
   );
 }
