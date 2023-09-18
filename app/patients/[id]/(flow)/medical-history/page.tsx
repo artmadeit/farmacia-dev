@@ -394,32 +394,42 @@ export default function PatientInterview() {
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
                 <strong>2.3 Funciones vitales</strong>
               </Grid>
-              <Stack direction="row">
+              <Grid xs={3}>
                 <Field
                   component={TextField}
                   name="FC"
                   label="FC:"
                   variant="outlined"
+                  fullWidth
                 />
+              </Grid>
+              <Grid xs={3}>
                 <Field
                   component={TextField}
                   name="FR"
                   label="FR:"
                   variant="outlined"
+                  fullWidth
                 />
+              </Grid>
+              <Grid xs={3}>
                 <Field
                   component={TextField}
                   name="T"
                   label="T°:"
                   variant="outlined"
+                  fullWidth
                 />
+              </Grid>
+              <Grid xs={3}>
                 <Field
                   component={TextField}
                   name="PA"
                   label="PA:"
                   variant="outlined"
+                  fullWidth
                 />
-              </Stack>
+              </Grid>
             </Grid>
             <Grid container spacing={2}>
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
@@ -443,7 +453,7 @@ export default function PatientInterview() {
                         type="checkbox"
                         name={group.id}
                         value={item.name}
-                        label={{ label: item.label }}
+                        Label={{ label: item.label }}
                         sx={{
                           color: blue[700],
                         }}
