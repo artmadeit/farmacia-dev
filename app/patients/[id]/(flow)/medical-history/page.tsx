@@ -1,7 +1,7 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { Divider, FormControlLabel, Radio } from "@mui/material";
+import { Divider, FormControlLabel, Radio, Stack } from "@mui/material";
 import { blue, pink } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { addDays, differenceInYears, sub, subYears } from "date-fns";
@@ -116,7 +116,7 @@ const problems = [
 const consumptionHabits = [
   {
     label: "Alcohol",
-    id: "consumptions_habits",
+    id: "consumptions_alcohol",
     items: [
       { label: "No", name: "NO" },
       { label: "Eventual", name: "EVENTUALLY" },
@@ -181,6 +181,9 @@ export default function PatientInterview() {
           problems_digestive: [],
           problems_loc: [],
           problems_snc: [],
+          consumptions_alcohol: [],
+          consumptions_tobacco: [],
+          consumptions_tea: [],
         }}
         validationSchema={yup.object({
           occupation: yup.string().required().label("La ocupación"),
@@ -386,6 +389,37 @@ export default function PatientInterview() {
                   </Grid>
                 ))}
               </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
+                <strong>2.3 Funciones vitales</strong>
+              </Grid>
+              <Stack direction="row">
+                <Field
+                  component={TextField}
+                  name="FC"
+                  label="FC:"
+                  variant="outlined"
+                />
+                <Field
+                  component={TextField}
+                  name="FR"
+                  label="FR:"
+                  variant="outlined"
+                />
+                <Field
+                  component={TextField}
+                  name="T"
+                  label="T°:"
+                  variant="outlined"
+                />
+                <Field
+                  component={TextField}
+                  name="PA"
+                  label="PA:"
+                  variant="outlined"
+                />
+              </Stack>
             </Grid>
             <Grid container spacing={2}>
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
