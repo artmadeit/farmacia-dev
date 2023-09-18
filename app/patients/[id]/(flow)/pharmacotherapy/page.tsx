@@ -24,9 +24,16 @@ export default function Pharmacotherapy() {
       <Divider />
       <Formik
         initialValues={{
-          drug: "",
+          administration: "",
+          difficulties: "",
+          acceptance: "",
+          reasonForUse: "",
+          suspensionDate: null,
+          restartDate: null,
           startDate: null,
+          dose: "",
           mode: "",
+          drug: "",
         }}
         onSubmit={() => {}}
       >
@@ -72,95 +79,103 @@ export default function Pharmacotherapy() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableCell>
-                    <Field
-                      name="drug"
-                      component={TextField}
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Field component={RadioGroup} name="mode" row>
-                      <FormControlLabel
-                        value="P"
-                        control={<Radio />}
-                        label="P"
+                  <TableRow>
+                    <TableCell>
+                      <Field
+                        name="drug"
+                        component={TextField}
+                        variant="outlined"
                       />
-                      <FormControlLabel
-                        value="A"
-                        control={<Radio />}
-                        label="A"
+                    </TableCell>
+                    <TableCell>
+                      <Field component={RadioGroup} name="mode" row>
+                        <FormControlLabel
+                          value="P"
+                          control={<Radio />}
+                          label="P"
+                        />
+                        <FormControlLabel
+                          value="A"
+                          control={<Radio />}
+                          label="A"
+                        />
+                      </Field>
+                    </TableCell>
+                    <TableCell>
+                      <Field
+                        name="dose"
+                        component={TextField}
+                        variant="outlined"
                       />
-                    </Field>
-                  </TableCell>
-                  <TableCell>
-                    <Field
-                      name="dose"
-                      component={TextField}
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Field
-                      component={DatePicker}
-                      slotProps={{
-                        textField: {
-                          helperText: errors.startDate ? errors.startDate : "",
-                        },
-                      }}
-                      name="startDate"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Field
-                      component={DatePicker}
-                      slotProps={{
-                        textField: {
-                          helperText: errors.startDate ? errors.startDate : "",
-                        },
-                      }}
-                      name="startDate"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Field
-                      component={DatePicker}
-                      slotProps={{
-                        textField: {
-                          helperText: errors.startDate ? errors.startDate : "",
-                        },
-                      }}
-                      name="startDate"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Field
-                      name="reasonForUse"
-                      component={TextField}
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Field
-                      name="acceptance"
-                      component={TextField}
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Field
-                      name="administration"
-                      component={TextField}
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Field
-                      name="difficulties"
-                      component={TextField}
-                      variant="outlined"
-                    />
-                  </TableCell>
+                    </TableCell>
+                    <TableCell>
+                      <Field
+                        component={DatePicker}
+                        slotProps={{
+                          textField: {
+                            helperText: errors.startDate
+                              ? errors.startDate
+                              : "",
+                          },
+                        }}
+                        name="startDate"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Field
+                        component={DatePicker}
+                        slotProps={{
+                          textField: {
+                            helperText: errors.suspensionDate
+                              ? errors.suspensionDate
+                              : "",
+                          },
+                        }}
+                        name="suspensionDate"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Field
+                        component={DatePicker}
+                        slotProps={{
+                          textField: {
+                            helperText: errors.restartDate
+                              ? errors.restartDate
+                              : "",
+                          },
+                        }}
+                        name="restartDate"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Field
+                        name="reasonForUse"
+                        component={TextField}
+                        variant="outlined"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Field
+                        name="acceptance"
+                        component={TextField}
+                        variant="outlined"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Field
+                        name="administration"
+                        component={TextField}
+                        variant="outlined"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Field
+                        name="difficulties"
+                        component={TextField}
+                        variant="outlined"
+                      />
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
