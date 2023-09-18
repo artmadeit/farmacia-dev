@@ -1,7 +1,7 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { Divider, FormControlLabel, Radio } from "@mui/material";
+import { Divider, FormControlLabel, Radio, Stack } from "@mui/material";
 import { blue, pink } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { addDays, differenceInYears, sub, subYears } from "date-fns";
@@ -113,6 +113,40 @@ const problems = [
   },
 ];
 
+const consumptionHabits = [
+  {
+    label: "Alcohol",
+    id: "consumptions_alcohol",
+    items: [
+      { label: "No", name: "NO" },
+      { label: "Eventual", name: "EVENTUALLY" },
+      { label: "1/4-1/2 vasos/día", name: "1/4-1/2 VASOS/DIA" },
+      { label: "1 o más vasos/día", name: "1 O MAS VASOS/DIA" },
+    ],
+  },
+  {
+    label: "Tabaco",
+    id: "consumptions_tobacco",
+    items: [
+      { label: "No", name: "NO" },
+      { label: "Eventual", name: "EVENTUALLY" },
+      { label: "1/2 cajetilla/día", name: "1/2 CAJETILLA/DIA" },
+      { label: "1 cajetilla/día", name: "1 CAJETILLA/DIA" },
+      { label: "Más de 1 cajetilla/día", name: "MAS DE 1 CAJETILLA/DIA" },
+    ],
+  },
+  {
+    label: "Té",
+    id: "consumptions_tea",
+    items: [
+      { label: "No", name: "NO" },
+      { label: "Eventual", name: "EVENTUALLY" },
+      { label: "1/2 tazas/día", name: "" },
+      { label: "Más de 3 tazas/día", name: "" },
+    ],
+  },
+];
+
 const minYear = subYears(new Date(), 103);
 
 const today = new Date();
@@ -147,6 +181,9 @@ export default function PatientInterview() {
           problems_digestive: [],
           problems_loc: [],
           problems_snc: [],
+          consumptions_alcohol: [],
+          consumptions_tobacco: [],
+          consumptions_tea: [],
         }}
         validationSchema={yup.object({
           occupation: yup.string().required().label("La ocupación"),
@@ -344,6 +381,69 @@ export default function PatientInterview() {
                         name={group.id}
                         value={item.name}
                         Label={{ label: item.label }}
+                        sx={{
+                          color: blue[700],
+                        }}
+                      />
+                    ))}
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
+                <strong>2.3 Funciones vitales</strong>
+              </Grid>
+              <Stack direction="row">
+                <Field
+                  component={TextField}
+                  name="FC"
+                  label="FC:"
+                  variant="outlined"
+                />
+                <Field
+                  component={TextField}
+                  name="FR"
+                  label="FR:"
+                  variant="outlined"
+                />
+                <Field
+                  component={TextField}
+                  name="T"
+                  label="T°:"
+                  variant="outlined"
+                />
+                <Field
+                  component={TextField}
+                  name="PA"
+                  label="PA:"
+                  variant="outlined"
+                />
+              </Stack>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
+                <strong>2.4 Hábitos de consumo</strong>
+              </Grid>
+              <Grid xs={12} container style={{ border: "1px solid #E5EAF2" }}>
+                {consumptionHabits.map((group, index) => (
+                  <Grid
+                    key={index}
+                    container
+                    xs={3}
+                    direction="column"
+                    justifyContent="flex-start"
+                    alignItems="stretch"
+                  >
+                    <strong>{group.label}</strong>
+                    {group.items.map((item, idx) => (
+                      <Field
+                        key={idx}
+                        component={CheckboxWithLabel}
+                        type="checkbox"
+                        name={group.id}
+                        value={item.name}
+                        label={{ label: item.label }}
                         sx={{
                           color: blue[700],
                         }}
