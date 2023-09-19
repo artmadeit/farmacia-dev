@@ -11,8 +11,9 @@ import yup from "../../../../validation";
 import { formatDate } from "../../../../date";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { antecedents, consumptionHabits, problems } from "./data";
+import React from "react";
 
-const habitsConsumptions = [
+const foodHabits = [
   {
     label: "Sal en dieta",
     id: "salt_consumption",
@@ -23,7 +24,7 @@ const habitsConsumptions = [
     ],
   },
   {
-    label: "Adiciona a comidas",
+    label: "¿Adiciona a comidas?",
     id: "salt_addition",
     items: [
       { label: "Si", name: "HIPOSODICA" },
@@ -242,7 +243,39 @@ export default function PatientInterview() {
                   padding: "20px",
                 }}
               >
-                {habitsConsumptions.map((group, index) => (
+                <Grid xs={3}>
+                  {foodHabits.map((group) => (
+                    <React.Fragment key={group.id}>
+                      <strong>{group.label}</strong>
+                      <Field component={RadioGroup} name={group.id}>
+                        {group.items.map((item) => (
+                          <FormControlLabel
+                            key={item.name}
+                            value={item.name}
+                            control={
+                              <Radio
+                                sx={{
+                                  color: blue[700],
+                                }}
+                              />
+                            }
+                            label={item.label}
+                          />
+                        ))}
+                      </Field>
+                    </React.Fragment>
+                  ))}
+                </Grid>
+                <Grid xs={3}>
+                  <strong>Alimentos/consume</strong>
+                </Grid>
+                <Grid xs={3}>
+                  <strong>Alimentos/consume</strong>
+                </Grid>
+                <Grid xs={3}>
+                  <strong>Otros:</strong>
+                </Grid>
+                {/* {foodHabits.map((group, index) => (
                   <Grid
                     key={index}
                     container
@@ -268,24 +301,8 @@ export default function PatientInterview() {
                         />
                       ))}
                     </Field>
-                    {/* <Field>
-                      <strong>¿Adiciona a comidas?</strong>
-                    </Field> */}
-                    {/* {group.items.map((item, idx) => (
-                      <Field
-                        key={idx}
-                        component={CheckboxWithLabel}
-                        type="checkbox"
-                        name={group.id}
-                        value={item.name}
-                        Label={{ label: item.label }}
-                        sx={{
-                          color: blue[700],
-                        }}
-                      />
-                    ))} */}
                   </Grid>
-                ))}
+                ))} */}
               </Grid>
             </Grid>
             <br></br>
