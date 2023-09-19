@@ -54,159 +54,163 @@ export default function Pharmacotherapy() {
               </Grid>
             </Grid>
             <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell style={{ minWidth: 200 }}>Medicamento</TableCell>
-                    <TableCell>P/A</TableCell>
-                    <TableCell style={{ minWidth: 200 }} align="center">
-                      Dosis
-                    </TableCell>
-                    <TableCell style={{ minWidth: 200 }} align="center">
-                      Fecha inicio
-                    </TableCell>
-                    <TableCell style={{ minWidth: 200 }} align="center">
-                      Fecha susp
-                    </TableCell>
-                    <TableCell style={{ minWidth: 200 }} align="center">
-                      Fecha rein.
-                    </TableCell>
-                    <TableCell style={{ minWidth: 200 }} align="center">
-                      Motivo de uso
-                    </TableCell>
-                    <TableCell style={{ minWidth: 200 }} align="center">
-                      Aceptación
-                    </TableCell>
-                    <TableCell style={{ minWidth: 200 }} align="center">
-                      Administración
-                    </TableCell>
-                    <TableCell style={{ minWidth: 200 }} align="center">
-                      Dificultades para tomarlo y/o tolerarlo
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <FieldArray name="history">
-                  {(arrayHelpers: ArrayHelpers) => (
-                    <>
-                      <TableBody>
-                        {values.history.map((x, index) => (
-                          <TableRow key={index}>
-                            <TableCell>
-                              <Field
-                                name={`history.${index}.drug`}
-                                component={TextField}
-                                variant="outlined"
+              <FieldArray name="history">
+                {(arrayHelpers: ArrayHelpers) => (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell style={{ minWidth: 200 }}>
+                          Medicamento
+                        </TableCell>
+                        <TableCell>P/A</TableCell>
+                        <TableCell style={{ minWidth: 200 }} align="center">
+                          Dosis
+                        </TableCell>
+                        <TableCell style={{ minWidth: 200 }} align="center">
+                          Fecha inicio
+                        </TableCell>
+                        <TableCell style={{ minWidth: 200 }} align="center">
+                          Fecha susp
+                        </TableCell>
+                        <TableCell style={{ minWidth: 200 }} align="center">
+                          Fecha rein.
+                        </TableCell>
+                        <TableCell style={{ minWidth: 200 }} align="center">
+                          Motivo de uso
+                        </TableCell>
+                        <TableCell style={{ minWidth: 200 }} align="center">
+                          Aceptación
+                        </TableCell>
+                        <TableCell style={{ minWidth: 200 }} align="center">
+                          Administración
+                        </TableCell>
+                        <TableCell style={{ minWidth: 200 }} align="center">
+                          Dificultades para tomarlo y/o tolerarlo
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {values.history.map((x, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Field
+                              name={`history.${index}.drug`}
+                              component={TextField}
+                              variant="outlined"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={RadioGroup}
+                              name={`history.${index}.mode`}
+                              row
+                            >
+                              <FormControlLabel
+                                value="P"
+                                control={<Radio />}
+                                label="P"
                               />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                component={RadioGroup}
-                                name={`history.${index}.mode`}
-                                row
-                              >
-                                <FormControlLabel
-                                  value="P"
-                                  control={<Radio />}
-                                  label="P"
-                                />
-                                <FormControlLabel
-                                  value="A"
-                                  control={<Radio />}
-                                  label="A"
-                                />
-                              </Field>
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                name={`history.${index}.dose`}
-                                component={TextField}
-                                variant="outlined"
+                              <FormControlLabel
+                                value="A"
+                                control={<Radio />}
+                                label="A"
                               />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                component={DatePicker}
-                                // slotProps={{
-                                //   textField: {
-                                //     helperText: errors.history[index].startDate
-                                //       ? errors.history[index].startDate
-                                //       : "",
-                                //   },
-                                // }}
-                                name={`history.${index}.startDate`}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                component={DatePicker}
-                                // slotProps={{
-                                //   textField: {
-                                //     helperText: errors.suspensionDate
-                                //       ? errors.suspensionDate
-                                //       : "",
-                                //   },
-                                // }}
-                                name={`history.${index}.suspensionDate`}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                component={DatePicker}
-                                // slotProps={{
-                                //   textField: {
-                                //     helperText: errors.restartDate
-                                //       ? errors.restartDate
-                                //       : "",
-                                //   },
-                                // }}
-                                name={`history.${index}.restartDate`}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                name={`history.${index}.reasonForUse`}
-                                component={TextField}
-                                variant="outlined"
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                name={`history.${index}.acceptance`}
-                                component={TextField}
-                                variant="outlined"
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                name={`history.${index}.administration`}
-                                component={TextField}
-                                variant="outlined"
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                name={`history.${index}.difficulties`}
-                                component={TextField}
-                                variant="outlined"
-                              />
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                      <TableFooter>
-                        <Button
-                          startIcon={<AddIcon />}
-                          onClick={() => {
-                            arrayHelpers.push(emptyHistoryRow);
-                          }}
-                        >
-                          Agregar columna
-                        </Button>
-                      </TableFooter>
-                    </>
-                  )}
-                </FieldArray>
-              </Table>
+                            </Field>
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              name={`history.${index}.dose`}
+                              component={TextField}
+                              variant="outlined"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={DatePicker}
+                              // slotProps={{
+                              //   textField: {
+                              //     helperText: errors.history[index].startDate
+                              //       ? errors.history[index].startDate
+                              //       : "",
+                              //   },
+                              // }}
+                              name={`history.${index}.startDate`}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={DatePicker}
+                              // slotProps={{
+                              //   textField: {
+                              //     helperText: errors.suspensionDate
+                              //       ? errors.suspensionDate
+                              //       : "",
+                              //   },
+                              // }}
+                              name={`history.${index}.suspensionDate`}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={DatePicker}
+                              // slotProps={{
+                              //   textField: {
+                              //     helperText: errors.restartDate
+                              //       ? errors.restartDate
+                              //       : "",
+                              //   },
+                              // }}
+                              name={`history.${index}.restartDate`}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              name={`history.${index}.reasonForUse`}
+                              component={TextField}
+                              variant="outlined"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              name={`history.${index}.acceptance`}
+                              component={TextField}
+                              variant="outlined"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              name={`history.${index}.administration`}
+                              component={TextField}
+                              variant="outlined"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              name={`history.${index}.difficulties`}
+                              component={TextField}
+                              variant="outlined"
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TableCell colSpan={3}>
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() => {
+                              arrayHelpers.push(emptyHistoryRow);
+                            }}
+                          >
+                            Agregar columna
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                )}
+              </FieldArray>
             </TableContainer>
             <p>
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore,
