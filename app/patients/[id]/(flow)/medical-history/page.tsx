@@ -147,6 +147,37 @@ const consumptionHabits = [
   },
 ];
 
+const habitsConsumptions = [
+  {
+    label: "Sal en dieta",
+    id: "salt_consumption",
+    items: [
+      { label: "Hiposódica", name: "HIPOSODICA" },
+      { label: "Normosódica", name: "NORMOSODICA" },
+      { label: "Hipersódica", name: "HIPERSODICA" },
+    ],
+  },
+  {
+    label: "Alimentos/consumo",
+    id: "food_consumption",
+    items: [
+      { label: "Carnes rojas", name: "CARNES ROJAS" },
+      { label: "Pescado", name: "PESCADO" },
+      { label: "Verduras", name: "VERDURAS" },
+      { label: "Frutas", name: "FRUTAS" },
+    ],
+  },
+  {
+    label: "",
+    id: "",
+    items: [
+      { label: "Pastas", name: "PASTAS" },
+      { label: "dulces", name: "DULCES" },
+      { label: "Frituras", name: "FRITURAS" },
+    ],
+  },
+];
+
 const minYear = subYears(new Date(), 103);
 
 const today = new Date();
@@ -471,9 +502,33 @@ export default function PatientInterview() {
                 ))}
               </Grid>
             </Grid>
-            <Grid container spacing={2} style={{ margin: "20px 0px 10px 0px" }}>
-              <Grid xs={12}>
+            <Grid container spacing={2}>
+              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
                 <strong>2.5 Hábitos alimenticios y/o dietéticos</strong>
+              </Grid>
+              <Grid container xs={12} style={{ border: "1px solid #E5EAF2" }}>
+                {habitsConsumptions.map((group, index) => (
+                  <Grid
+                    key={index}
+                    container
+                    xs={3}
+                    direction="column"
+                    justifyContent="flex-start"
+                    alignItems="stretch"
+                  >
+                    <strong>{group.label}</strong>
+                    {group.items.map((item, idx) => (
+                      <Field
+                        key={idx}
+                        component={CheckboxWithLabel}
+                        type="checkbox"
+                        name={group.id}
+                        value={item.name}
+                        Label={{ label: item.label }}
+                      />
+                    ))}
+                  </Grid>
+                ))}
               </Grid>
             </Grid>
             <br></br>
