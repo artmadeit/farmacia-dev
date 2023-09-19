@@ -158,18 +158,27 @@ const habitsConsumptions = [
     ],
   },
   {
-    label: "Alimentos/consumo",
-    id: "food_consumption",
+    label: "Adiciona a comidas",
+    id: "salt_addition",
     items: [
-      { label: "Carnes rojas", name: "CARNES ROJAS" },
-      { label: "Pescado", name: "PESCADO" },
-      { label: "Verduras", name: "VERDURAS" },
-      { label: "Frutas", name: "FRUTAS" },
-      { label: "Pastas", name: "PASTAS" },
-      { label: "Dulces", name: "DULCES" },
-      { label: "Frituras", name: "FRITURAS" },
+      { label: "Si", name: "HIPOSODICA" },
+      { label: "No", name: "NORMOSODICA" },
+      
     ],
   },
+  // {
+  //   label: "Alimentos/consumo",
+  //   id: "food_consumption",
+  //   items: [
+  //     { label: "Carnes rojas", name: "CARNES ROJAS" },
+  //     { label: "Pescado", name: "PESCADO" },
+  //     { label: "Verduras", name: "VERDURAS" },
+  //     { label: "Frutas", name: "FRUTAS" },
+  //     { label: "Pastas", name: "PASTAS" },
+  //     { label: "Dulces", name: "DULCES" },
+  //     { label: "Frituras", name: "FRITURAS" },
+  //   ],
+  // },
 ];
 
 const minYear = subYears(new Date(), 103);
@@ -349,31 +358,7 @@ export default function PatientInterview() {
                   />
                 </Grid>
               </div>
-              {/* <Grid xs={8} container>
-                  <Grid xs={12} container>
-                    {antecedents.map((item) => (
-                      <Grid xs={4} key={item.name}>
-                        <Field
-                          component={CheckboxWithLabel}
-                          type="checkbox"
-                          name="antecedents"
-                          value={item.name}
-                          Label={{ label: item.label }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
-                <Grid xs={4}>
-                  Otros:
-                  <Field
-                    name="other"
-                    component={TextField}
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                  />
-                </Grid> */}
+              
             </Grid>
             <Grid container spacing={2}>
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
@@ -482,7 +467,7 @@ export default function PatientInterview() {
                     <Field component={RadioGroup} name={group.id}>
                       <FormControlLabel
                         value={group.no.name}
-                        control={<Radio sx={{ color: blue[700]}}/>}
+                        control={<Radio sx={{ color: blue[700] }} />}
                         label={group.no.label}
                       />
                       <strong>Tipos: </strong>
@@ -528,7 +513,27 @@ export default function PatientInterview() {
                     alignItems="stretch"
                   >
                     <strong>{group.label}</strong>
-                    {group.items.map((item, idx) => (
+                    <Field component={RadioGroup} name={group.id}>
+                      {group.items.map((item) => (
+                        <FormControlLabel
+                          key={item.name}
+                          value={item.name}
+                          control={
+                            <Radio
+                              sx={{
+                                color: blue[700],
+                              }}
+                            />
+                          }
+                          label={item.label}
+                        />
+                      ))}
+                      
+                    </Field>
+                    {/* <Field>
+                      <strong>¿Adiciona a comidas?</strong>
+                    </Field> */}
+                    {/* {group.items.map((item, idx) => (
                       <Field
                         key={idx}
                         component={CheckboxWithLabel}
@@ -540,7 +545,7 @@ export default function PatientInterview() {
                           color: blue[700],
                         }}
                       />
-                    ))}
+                    ))} */}
                   </Grid>
                 ))}
               </Grid>
