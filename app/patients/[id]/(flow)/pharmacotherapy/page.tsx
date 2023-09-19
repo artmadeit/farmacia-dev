@@ -33,6 +33,12 @@ const emptyHistoryRow = {
   drug: "",
 };
 
+const emptyAllergyRow = {
+  drug: "",
+  description: "",
+  date: null,
+};
+
 export default function Pharmacotherapy() {
   return (
     <div>
@@ -41,6 +47,11 @@ export default function Pharmacotherapy() {
       <Formik
         initialValues={{
           history: [{ ...emptyHistoryRow }],
+          allergies: [
+            {
+              ...emptyAllergyRow,
+            },
+          ],
         }}
         onSubmit={() => {}}
       >
@@ -212,12 +223,77 @@ export default function Pharmacotherapy() {
                 )}
               </FieldArray>
             </TableContainer>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore,
-              sint ratione voluptatem veniam quisquam porro excepturi repellat,
-              reprehenderit id dignissimos deleniti quibusdam. Hic beatae
-              officia minus adipisci qui voluptate recusandae.
-            </p>
+            <Grid container spacing={2} pt={4}>
+              <Grid xs={10}>
+                <em>
+                  <strong>Plan de Seguimiento Farmacoterapéutico:</strong>
+                </em>
+              </Grid>
+              <Grid xs={10}>
+                <strong>3.1 Alergias</strong>
+              </Grid>
+            </Grid>
+            <TableContainer component={Paper}>
+              <FieldArray name="allergies">
+                {(arrayHelpers: ArrayHelpers) => (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Medicamento</TableCell>
+                        <TableCell style={{ minWidth: 500 }}>
+                          Descripción
+                        </TableCell>
+                        <TableCell>Fecha</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {values.allergies.map((x, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Field
+                              name={`allergies.${index}.drug`}
+                              component={TextField}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              name={`allergies.${index}.description`}
+                              component={TextField}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={DatePicker}
+                              fullWidth
+                              name={`allergies.${index}.date`}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TableCell colSpan={3}>
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() => {
+                              arrayHelpers.push(emptyAllergyRow);
+                            }}
+                          >
+                            Agregar alergia
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                )}
+              </FieldArray>
+            </TableContainer>
+
             {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
 
 examen de laboratorio o prueba diagnostica	fecha	resultado
