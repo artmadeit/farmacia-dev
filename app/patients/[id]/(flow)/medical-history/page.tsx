@@ -117,8 +117,8 @@ const consumptionHabits = [
   {
     label: "Alcohol",
     id: "consumptions_alcohol",
-    items: [
-      { label: "No", name: "NO" },
+    no: { label: "No", name: "NO" },
+    types: [
       { label: "Eventual", name: "EVENTUALLY" },
       { label: "1/4-1/2 vasos/día", name: "1/4-1/2 VASOS/DIA" },
       { label: "1 o más vasos/día", name: "1 O MAS VASOS/DIA" },
@@ -127,8 +127,8 @@ const consumptionHabits = [
   {
     label: "Tabaco",
     id: "consumptions_tobacco",
-    items: [
-      { label: "No", name: "NO" },
+    no: { label: "No", name: "NO" },
+    types: [
       { label: "Eventual", name: "EVENTUALLY" },
       { label: "1/2 cajetilla/día", name: "1/2 CAJETILLA/DIA" },
       { label: "1 cajetilla/día", name: "1 CAJETILLA/DIA" },
@@ -138,11 +138,11 @@ const consumptionHabits = [
   {
     label: "Té",
     id: "consumptions_tea",
-    items: [
-      { label: "No", name: "NO" },
+    no: { label: "No", name: "NO" },
+    types: [
       { label: "Eventual", name: "EVENTUALLY" },
-      { label: "1/2 tazas/día", name: "" },
-      { label: "Más de 3 tazas/día", name: "" },
+      { label: "1/2 tazas/día", name: "1/2 TAZAS/DÍA" },
+      { label: "Más de 3 tazas/día", name: "MAS DE 3 TAZAS/DÍA" },
     ],
   },
 ];
@@ -165,14 +165,8 @@ const habitsConsumptions = [
       { label: "Pescado", name: "PESCADO" },
       { label: "Verduras", name: "VERDURAS" },
       { label: "Frutas", name: "FRUTAS" },
-    ],
-  },
-  {
-    label: "",
-    id: "",
-    items: [
       { label: "Pastas", name: "PASTAS" },
-      { label: "dulces", name: "DULCES" },
+      { label: "Dulces", name: "DULCES" },
       { label: "Frituras", name: "FRITURAS" },
     ],
   },
@@ -485,19 +479,28 @@ export default function PatientInterview() {
                     alignItems="stretch"
                   >
                     <strong>{group.label}</strong>
-                    {group.items.map((item, idx) => (
-                      <Field
-                        key={idx}
-                        component={CheckboxWithLabel}
-                        type="checkbox"
-                        name={group.id}
-                        value={item.name}
-                        Label={{ label: item.label }}
-                        sx={{
-                          color: blue[700],
-                        }}
+                    <Field component={RadioGroup} name={group.id}>
+                      <FormControlLabel
+                        value={group.no.name}
+                        control={<Radio sx={{ color: blue[700]}}/>}
+                        label={group.no.label}
                       />
-                    ))}
+                      <strong>Tipos: </strong>
+                      {group.types.map((type) => (
+                        <FormControlLabel
+                          key={type.name}
+                          value={type.name}
+                          control={
+                            <Radio
+                              sx={{
+                                color: blue[700],
+                              }}
+                            />
+                          }
+                          label={type.label}
+                        />
+                      ))}
+                    </Field>
                   </Grid>
                 ))}
               </Grid>
@@ -506,7 +509,15 @@ export default function PatientInterview() {
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
                 <strong>2.5 Hábitos alimenticios y/o dietéticos</strong>
               </Grid>
-              <Grid container xs={12} style={{ border: "1px solid #E5EAF2" }}>
+              <Grid
+                container
+                xs={12}
+                style={{
+                  border: "1px solid #E5EAF2",
+                  margin: "10px",
+                  padding: "20px",
+                }}
+              >
                 {habitsConsumptions.map((group, index) => (
                   <Grid
                     key={index}
@@ -525,6 +536,9 @@ export default function PatientInterview() {
                         name={group.id}
                         value={item.name}
                         Label={{ label: item.label }}
+                        sx={{
+                          color: blue[700],
+                        }}
                       />
                     ))}
                   </Grid>
