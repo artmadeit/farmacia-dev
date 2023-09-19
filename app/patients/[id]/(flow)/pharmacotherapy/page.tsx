@@ -1,6 +1,7 @@
 "use client";
 import { Title } from "@/app/(components)/Title";
 import {
+  Button,
   Divider,
   FormControlLabel,
   Paper,
@@ -9,13 +10,28 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { Field, Form, Formik } from "formik";
+import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
+import AddIcon from "@mui/icons-material/Add";
+
+const emptyHistoryRow = {
+  administration: "",
+  difficulties: "",
+  acceptance: "",
+  reasonForUse: "",
+  suspensionDate: null,
+  restartDate: null,
+  startDate: null,
+  dose: "",
+  mode: "",
+  drug: "",
+};
 
 export default function Pharmacotherapy() {
   return (
@@ -24,16 +40,7 @@ export default function Pharmacotherapy() {
       <Divider />
       <Formik
         initialValues={{
-          administration: "",
-          difficulties: "",
-          acceptance: "",
-          reasonForUse: "",
-          suspensionDate: null,
-          restartDate: null,
-          startDate: null,
-          dose: "",
-          mode: "",
-          drug: "",
+          history: [{ ...emptyHistoryRow }],
         }}
         onSubmit={() => {}}
       >
@@ -78,105 +85,127 @@ export default function Pharmacotherapy() {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <Field
-                        name="drug"
-                        component={TextField}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Field component={RadioGroup} name="mode" row>
-                        <FormControlLabel
-                          value="P"
-                          control={<Radio />}
-                          label="P"
-                        />
-                        <FormControlLabel
-                          value="A"
-                          control={<Radio />}
-                          label="A"
-                        />
-                      </Field>
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        name="dose"
-                        component={TextField}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        component={DatePicker}
-                        slotProps={{
-                          textField: {
-                            helperText: errors.startDate
-                              ? errors.startDate
-                              : "",
-                          },
-                        }}
-                        name="startDate"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        component={DatePicker}
-                        slotProps={{
-                          textField: {
-                            helperText: errors.suspensionDate
-                              ? errors.suspensionDate
-                              : "",
-                          },
-                        }}
-                        name="suspensionDate"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        component={DatePicker}
-                        slotProps={{
-                          textField: {
-                            helperText: errors.restartDate
-                              ? errors.restartDate
-                              : "",
-                          },
-                        }}
-                        name="restartDate"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        name="reasonForUse"
-                        component={TextField}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        name="acceptance"
-                        component={TextField}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        name="administration"
-                        component={TextField}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        name="difficulties"
-                        component={TextField}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
+                <FieldArray name="history">
+                  {(arrayHelpers: ArrayHelpers) => (
+                    <>
+                      <TableBody>
+                        {values.history.map((x, index) => (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <Field
+                                name={`history.${index}.drug`}
+                                component={TextField}
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={RadioGroup}
+                                name={`history.${index}.mode`}
+                                row
+                              >
+                                <FormControlLabel
+                                  value="P"
+                                  control={<Radio />}
+                                  label="P"
+                                />
+                                <FormControlLabel
+                                  value="A"
+                                  control={<Radio />}
+                                  label="A"
+                                />
+                              </Field>
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                name={`history.${index}.dose`}
+                                component={TextField}
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={DatePicker}
+                                // slotProps={{
+                                //   textField: {
+                                //     helperText: errors.history[index].startDate
+                                //       ? errors.history[index].startDate
+                                //       : "",
+                                //   },
+                                // }}
+                                name={`history.${index}.startDate`}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={DatePicker}
+                                // slotProps={{
+                                //   textField: {
+                                //     helperText: errors.suspensionDate
+                                //       ? errors.suspensionDate
+                                //       : "",
+                                //   },
+                                // }}
+                                name={`history.${index}.suspensionDate`}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={DatePicker}
+                                // slotProps={{
+                                //   textField: {
+                                //     helperText: errors.restartDate
+                                //       ? errors.restartDate
+                                //       : "",
+                                //   },
+                                // }}
+                                name={`history.${index}.restartDate`}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                name={`history.${index}.reasonForUse`}
+                                component={TextField}
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                name={`history.${index}.acceptance`}
+                                component={TextField}
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                name={`history.${index}.administration`}
+                                component={TextField}
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                name={`history.${index}.difficulties`}
+                                component={TextField}
+                                variant="outlined"
+                              />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                      <TableFooter>
+                        <Button
+                          startIcon={<AddIcon />}
+                          onClick={() => {
+                            arrayHelpers.push(emptyHistoryRow);
+                          }}
+                        >
+                          Agregar columna
+                        </Button>
+                      </TableFooter>
+                    </>
+                  )}
+                </FieldArray>
               </Table>
             </TableContainer>
             <p>
@@ -185,6 +214,10 @@ export default function Pharmacotherapy() {
               reprehenderit id dignissimos deleniti quibusdam. Hic beatae
               officia minus adipisci qui voluptate recusandae.
             </p>
+            {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
+
+examen de laboratorio o prueba diagnostica	fecha	resultado
+rango de valor normal	evaluacion/comentarios */}
           </Form>
         )}
       </Formik>
