@@ -435,7 +435,15 @@ export default function PatientInterview() {
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
                 <strong>2.4 Hábitos de consumo</strong>
               </Grid>
-              <Grid xs={12} container style={{ border: "1px solid #E5EAF2" }}>
+              <Grid
+                xs={12}
+                container
+                style={{
+                  border: "1px solid #E5EAF2",
+                  margin: "10px",
+                  padding: "20px",
+                }}
+              >
                 {consumptionHabits.map((group, index) => (
                   <Grid
                     key={index}
@@ -461,6 +469,11 @@ export default function PatientInterview() {
                     ))}
                   </Grid>
                 ))}
+              </Grid>
+            </Grid>
+            <Grid container spacing={2} style={{ margin: "20px 0px 10px 0px" }}>
+              <Grid xs={12}>
+                <strong>2.5 Hábitos alimenticios y/o dietéticos</strong>
               </Grid>
             </Grid>
             <br></br>
