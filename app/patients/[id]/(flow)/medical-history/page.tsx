@@ -2,9 +2,9 @@
 
 import { Title } from "@/app/(components)/Title";
 import { Divider, FormControlLabel, Radio, Stack } from "@mui/material";
-import { blue, pink } from "@mui/material/colors";
+import { blue } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { addDays, differenceInYears, sub, subYears } from "date-fns";
+import { differenceInYears, subYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import yup from "../../../../validation";
@@ -234,7 +234,6 @@ export default function PatientInterview() {
                   ))}
                 </Grid>
                 <Grid xs={4} style={{ padding: "20px" }}>
-                  {/* <strong>Cantidad de agua que consume:</strong> */}
                   <Field
                     component={TextField}
                     style={{ margin: "10px 0px" }}
@@ -308,34 +307,6 @@ export default function PatientInterview() {
                     fullWidth
                   />
                 </Grid>
-                {/* {foodHabits.map((group, index) => (
-                  <Grid
-                    key={index}
-                    container
-                    xs={3}
-                    direction="column"
-                    justifyContent="flex-start"
-                    alignItems="stretch"
-                  >
-                    <strong>{group.label}</strong>
-                    <Field component={RadioGroup} name={group.id}>
-                      {group.items.map((item) => (
-                        <FormControlLabel
-                          key={item.name}
-                          value={item.name}
-                          control={
-                            <Radio
-                              sx={{
-                                color: blue[700],
-                              }}
-                            />
-                          }
-                          label={item.label}
-                        />
-                      ))}
-                    </Field>
-                  </Grid>
-                ))} */}
               </Grid>
             </Grid>
             <br></br>
@@ -367,7 +338,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="FC"
-          label="FC:"
+          label="FC(LPM):"
           variant="outlined"
           fullWidth
         />
@@ -385,7 +356,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="T"
-          label="T°:"
+          label="T°(C°):"
           variant="outlined"
           fullWidth
         />
