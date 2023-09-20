@@ -104,23 +104,35 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
       <ListItem>
         <Collapse in={pillOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
+            <Link
+              component={NextLink}
+              href="/drugs/narrow"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <ArrowRight />
+                </ListItemIcon>
+                <ListItemText primary="Estrecho margen" />
+              </ListItemButton>
+            </Link>
+            <Link
+              component={NextLink}
+              href="/drugs/dci"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <ArrowRight />
+                </ListItemIcon>
+                <ListItemText primary="DCI" />
+              </ListItemButton>
+            </Link>
             <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>
                 <ArrowRight />
               </ListItemIcon>
-              <ListItemText primary="Estrecho margen" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <ArrowRight />
-              </ListItemIcon>
-              <ListItemText primary="DCI" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <ArrowRight />
-              </ListItemIcon>
-              <ListItemText primary="CI 10" />
+              <ListItemText primary="Productos farmaceuticos" />
             </ListItemButton>
           </List>
         </Collapse>

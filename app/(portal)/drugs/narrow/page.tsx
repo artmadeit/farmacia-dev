@@ -34,7 +34,7 @@ const DrugsPage = () => {
     await getDrugs();
   };
 
-  const {paginationModel, setPaginationModel} = usePagination();
+  const { paginationModel, setPaginationModel } = usePagination();
 
   const { data: drugs, mutate: getDrugs } = useSWR<Page<Drug>>([
     "/drugs",
@@ -45,7 +45,7 @@ const DrugsPage = () => {
     () =>
       (
         [
-          { field: "name", headerName: "Nombre", width: 150 },          
+          { field: "name", headerName: "Nombre", width: 150 },
           {
             field: "actions",
             type: "actions",
@@ -79,9 +79,9 @@ const DrugsPage = () => {
   return (
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
-        <Typography variant="h4">Medicamentos</Typography>
+        <Typography variant="h4">Estrecho margen</Typography>
         <Tooltip title="Crear">
-          <Link href="drugs/create">
+          <Link href="narrow/create">
             <Fab color="primary" aria-labelledby="add">
               <AddIcon />
             </Fab>
