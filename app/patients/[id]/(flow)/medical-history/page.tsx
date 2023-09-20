@@ -64,6 +64,7 @@ export default function PatientInterview() {
           weight: 0,
           size: 0,
           other: "",
+          other2: "",
           antecedents: [],
           problems_other: [],
           problems_cardio: [],
@@ -82,7 +83,8 @@ export default function PatientInterview() {
               minYear,
               `La fecha de nacimiento no puede ser menor del año ${minYear.getFullYear()}`
             )
-            .max(today),
+            .max(today)
+            .label("Fecha de nacimiento"),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
         })}
@@ -103,30 +105,29 @@ export default function PatientInterview() {
               <Grid xs={12}>
                 <strong>2.1 Antecedentes patológicos</strong>
               </Grid>
-              <div
+              <Grid
+                xs={12}
+                container
                 style={{
-                  display: "flex",
                   border: "1px solid #E5EAF2",
                   margin: "10px",
                 }}
               >
-                <Grid xs={8} container>
-                  <Grid xs={12} container style={{ padding: "20px" }}>
-                    {antecedents.map((item) => (
-                      <Grid xs={4} key={item.name}>
-                        <Field
-                          component={CheckboxWithLabel}
-                          type="checkbox"
-                          name="antecedents"
-                          value={item.name}
-                          Label={{ label: item.label }}
-                          sx={{
-                            color: blue[700],
-                          }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
+                <Grid xs={8} container style={{ padding: "20px" }}>
+                  {antecedents.map((item) => (
+                    <Grid xs={4} key={item.name}>
+                      <Field
+                        component={CheckboxWithLabel}
+                        type="checkbox"
+                        name="antecedents"
+                        value={item.name}
+                        Label={{ label: item.label }}
+                        sx={{
+                          color: blue[700],
+                        }}
+                      />
+                    </Grid>
+                  ))}
                 </Grid>
                 <Grid xs={4} style={{ padding: "20px" }}>
                   <Field
@@ -138,7 +139,7 @@ export default function PatientInterview() {
                     rows={4}
                   />
                 </Grid>
-              </div>
+              </Grid>
             </Grid>
             <Grid container spacing={2}>
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
@@ -191,43 +192,54 @@ export default function PatientInterview() {
                 style={{
                   border: "1px solid #E5EAF2",
                   margin: "10px",
-                  padding: "20px",
                 }}
               >
-                {consumptionHabits.map((group, index) => (
-                  <Grid
-                    key={index}
-                    container
-                    xs={3}
-                    direction="column"
-                    justifyContent="flex-start"
-                    alignItems="stretch"
-                  >
-                    <strong>{group.label}</strong>
-                    <Field component={RadioGroup} name={group.id}>
-                      <FormControlLabel
-                        value={group.no.name}
-                        control={<Radio sx={{ color: blue[700] }} />}
-                        label={group.no.label}
-                      />
-                      <strong>Tipos: </strong>
-                      {group.types.map((type) => (
+                <Grid xs={8} container style={{ padding: "20px" }}>
+                  {consumptionHabits.map((group, index) => (
+                    <Grid
+                      key={index}
+                      xs={4}
+                      direction="column"
+                      justifyContent="flex-start"
+                      alignItems="stretch"
+                    >
+                      <strong>{group.label}</strong>
+                      <Field component={RadioGroup} name={group.id}>
                         <FormControlLabel
-                          key={type.name}
-                          value={type.name}
-                          control={
-                            <Radio
-                              sx={{
-                                color: blue[700],
-                              }}
-                            />
-                          }
-                          label={type.label}
+                          value={group.no.name}
+                          control={<Radio sx={{ color: blue[700] }} />}
+                          label={group.no.label}
                         />
-                      ))}
-                    </Field>
-                  </Grid>
-                ))}
+                        <strong>Tipos: </strong>
+                        {group.types.map((type) => (
+                          <FormControlLabel
+                            key={type.name}
+                            value={type.name}
+                            control={
+                              <Radio
+                                sx={{
+                                  color: blue[700],
+                                }}
+                              />
+                            }
+                            label={type.label}
+                          />
+                        ))}
+                      </Field>
+                    </Grid>
+                  ))}
+                </Grid>
+                <Grid xs={4} style={{ padding: "20px" }}>
+                  {/* <strong>Cantidad de agua que consume:</strong> */}
+                  <Field
+                    name="other2"
+                    label="Otros:"
+                    component={TextField}
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                  />
+                </Grid>
               </Grid>
             </Grid>
             <Grid container spacing={2}>
