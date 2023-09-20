@@ -27,8 +27,8 @@ const foodHabits = [
     label: "¿Adiciona a comidas?",
     id: "salt_addition",
     items: [
-      { label: "Si", name: "HIPOSODICA" },
-      { label: "No", name: "NORMOSODICA" },
+      { label: "Si", name: "YES" },
+      { label: "No", name: "NO" },
     ],
   },
   // {
@@ -64,7 +64,6 @@ export default function PatientInterview() {
           weight: 0,
           size: 0,
           other: "",
-          other2: "",
           antecedents: [],
           problems_other: [],
           problems_cardio: [],
@@ -74,6 +73,10 @@ export default function PatientInterview() {
           consumptions_alcohol: [],
           consumptions_tobacco: [],
           consumptions_tea: [],
+          other2: "",
+          salt_consumption: [],
+          salt_addition: [],
+          other3: "",
         }}
         validationSchema={yup.object({
           occupation: yup.string().required().label("La ocupación"),
@@ -234,7 +237,7 @@ export default function PatientInterview() {
                   {/* <strong>Cantidad de agua que consume:</strong> */}
                   <Field
                     component={TextField}
-                    style={{margin: "10px 0px"}}
+                    style={{ margin: "10px 0px" }}
                     name="waterConsumption"
                     label="Cantidad de agua que consume:"
                     variant="outlined"
@@ -295,7 +298,15 @@ export default function PatientInterview() {
                   <strong>Alimentos/consume</strong>
                 </Grid>
                 <Grid xs={3}>
-                  <strong>Otros:</strong>
+                  <Field
+                    component={TextField}
+                    name="other3"
+                    label="Otros:"
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                    fullWidth
+                  />
                 </Grid>
                 {/* {foodHabits.map((group, index) => (
                   <Grid
