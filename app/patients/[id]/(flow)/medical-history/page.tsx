@@ -137,6 +137,7 @@ export default function PatientInterview() {
                     variant="outlined"
                     multiline
                     rows={4}
+                    fullWidth
                   />
                 </Grid>
               </Grid>
@@ -232,12 +233,21 @@ export default function PatientInterview() {
                 <Grid xs={4} style={{ padding: "20px" }}>
                   {/* <strong>Cantidad de agua que consume:</strong> */}
                   <Field
+                    component={TextField}
+                    style={{margin: "10px 0px"}}
+                    name="waterConsumption"
+                    label="Cantidad de agua que consume:"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  <Field
                     name="other2"
                     label="Otros:"
                     component={TextField}
                     variant="outlined"
                     multiline
                     rows={4}
+                    fullWidth
                   />
                 </Grid>
               </Grid>
