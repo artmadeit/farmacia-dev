@@ -27,7 +27,7 @@ const DrugForm = ({ drugs, textName }: DrugFormProps) => {
       await api.post(`/drugs`, values);
     }
     snackbar.showMessage("Medicamento guardado");
-    router.push("/");
+    router.push("/drugs/narrow");
   };
 
   return (

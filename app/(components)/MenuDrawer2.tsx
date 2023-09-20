@@ -4,7 +4,7 @@ import { AccountCircle } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Button, Link, Menu, MenuItem } from "@mui/material";
+import { Button, Collapse, Link, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -22,7 +22,9 @@ import { styled } from "@mui/material/styles";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
-import Icon from "@mui/material/Icon";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import ArrowRight from "@mui/icons-material/ArrowRight";
 
 export const appName = "Atención farmacéutica";
 
@@ -72,40 +74,69 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
     justifyContent: "flex-end",
   }));
 
-  const options = [
-    {
-      text: "Pacientes",
-      Icon: () => (
-        <span className="material-symbols-outlined">patient_list</span>
-      ),
-      href: "/patients",
-    },
-    {
-      text: "Medicamentos",
-      Icon: () => <span className="material-symbols-outlined">pill</span>,
-      href: "/drugs",
-    },
-  ];
+  const [pillOpen, setPillOpen] = React.useState(true);
 
   const drawer = (
     <List>
-      {options.map(({ Icon, text, href }) => (
-        <Link
-          component={NextLink}
-          key={text}
-          href={href}
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <ListItem disablePadding>
-            <ListItemButton>
+      <Link
+        component={NextLink}
+        href="/patients"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <ListItem>
+          <ListItemButton>
+            <ListItemIcon>
+              <span className="material-symbols-outlined">patient_list</span>
+            </ListItemIcon>
+            <ListItemText primary="Pacientes" />
+          </ListItemButton>
+        </ListItem>
+      </Link>
+      <ListItem>
+        <ListItemButton onClick={() => setPillOpen((prev) => !prev)}>
+          <ListItemIcon>
+            <span className="material-symbols-outlined">pill</span>
+          </ListItemIcon>
+          <ListItemText primary="Medicamentos" />
+          {/* {pillOpen ? <ExpandLess /> : <ExpandMore />} */}
+        </ListItemButton>
+      </ListItem>
+      <ListItem>
+        <Collapse in={pillOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <Link
+              component={NextLink}
+              href="/drugs/narrow"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <ArrowRight />
+                </ListItemIcon>
+                <ListItemText primary="Estrecho margen" />
+              </ListItemButton>
+            </Link>
+            <Link
+              component={NextLink}
+              href="/drugs/dci"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <ArrowRight />
+                </ListItemIcon>
+                <ListItemText primary="DCI" />
+              </ListItemButton>
+            </Link>
+            <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>
-                <Icon />
+                <ArrowRight />
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary="Productos farmaceuticos" />
             </ListItemButton>
-          </ListItem>
-        </Link>
-      ))}
+          </List>
+        </Collapse>
+      </ListItem>
     </List>
   );
 
