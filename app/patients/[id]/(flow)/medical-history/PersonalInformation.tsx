@@ -38,12 +38,6 @@ export const PersonalInformation = ({
 }: PersonalInformationProps) => {
   return (
     <Grid container spacing={2}>
-      <Grid xs={10} style={{ marginTop: "10px" }}>
-        <Subtitle component="h4">1. Datos personales</Subtitle>
-      </Grid>
-      <Grid xs={2} style={{ marginTop: "10px" }}>
-        Fecha: {formatDate(new Date())}
-      </Grid>
       <Grid xs={3} display="flex" alignItems="center">
         <Field
           label="Ocupación"

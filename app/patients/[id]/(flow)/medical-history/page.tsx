@@ -26,6 +26,8 @@ import {
   foodHabits,
   healthProblems,
 } from "./data";
+import { Grid4x4Sharp } from "@mui/icons-material";
+import { formatDate } from "@/app/date";
 
 export const minYear = subYears(new Date(), 103);
 
@@ -96,190 +98,33 @@ export default function PatientInterview() {
       >
         {({ values, errors }) => (
           <Form>
-            <PersonalInformation values={values} errors={errors} />
-            <Grid container spacing={2}>
-              <Grid xs={12} style={{ marginTop: "10px" }}>
-                <Subtitle component="h4">2. Historia de salud</Subtitle>
-                <Divider />
-              </Grid>
-              <Grid xs={12}>
-                <Subtitle component="h5">2.1 Antecedentes patológicos</Subtitle>
-              </Grid>
-              <Grid
-                xs={12}
-                container
-                style={{
-                  border: "1px solid #E5EAF2",
-                  margin: "10px",
-                }}
-              >
-                <Grid xs={8} container style={{ padding: "20px" }}>
-                  {antecedents.map((item) => (
-                    <Grid xs={4} key={item.name}>
-                      <Field
-                        component={CheckboxWithLabel}
-                        type="checkbox"
-                        name="antecedents"
-                        value={item.name}
-                        Label={{ label: item.label }}
-                        sx={{
-                          color: blue[700],
-                        }}
-                      />
-                    </Grid>
-                  ))}
+            <Stack spacing={2} pt={2}>
+              <Grid container>
+                <Grid xs={10}>
+                  <Subtitle component="h4">1. Datos personales</Subtitle>
                 </Grid>
-                <Grid xs={4} style={{ padding: "20px" }}>
-                  <Field
-                    name="other"
-                    label="Otros:"
-                    component={TextField}
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    fullWidth
-                  />
-                </Grid>
+                <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
               </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
-                <Subtitle component="h5">2.2 Problemas de salud</Subtitle>
-              </Grid>
-              <Grid
-                xs={12}
-                container
-                style={{
-                  border: "1px solid #E5EAF2",
-                  padding: "20px",
-                  margin: "10px",
-                }}
-              >
-                {healthProblems.map((group, index) => (
-                  <CheckboxGroup key={index} group={group} />
-                ))}
-              </Grid>
-            </Grid>
-            <VitalFunctions />
-            <Grid container spacing={2}>
-              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
-                <Subtitle component="h5">2.4 Hábitos de consumo</Subtitle>
-              </Grid>
-              <Grid
-                xs={12}
-                container
-                style={{
-                  border: "1px solid #E5EAF2",
-                  margin: "10px",
-                }}
-              >
-                <Grid xs={8} container style={{ padding: "20px" }}>
-                  {consumptionHabits.map((group, index) => (
-                    <Grid key={index} xs={4}>
-                      <Subtitle component="h6">{group.label}</Subtitle>
-                      <Field component={RadioGroup} name={group.id}>
-                        <FormControlLabel
-                          value={group.no.name}
-                          control={<Radio sx={{ color: blue[700] }} />}
-                          label={group.no.label}
-                        />
-                        <Subtitle component="h6">Tipos: </Subtitle>
-                        {group.types.map((type) => (
-                          <FormControlLabel
-                            key={type.name}
-                            value={type.name}
-                            control={
-                              <Radio
-                                sx={{
-                                  color: blue[700],
-                                }}
-                              />
-                            }
-                            label={type.label}
-                          />
-                        ))}
-                      </Field>
-                    </Grid>
-                  ))}
-                </Grid>
-                <Grid xs={4} style={{ padding: "20px" }}>
-                  <Field
-                    component={TextField}
-                    style={{ margin: "10px 0px" }}
-                    name="waterConsumption"
-                    label="Cantidad de agua que consume:"
-                    variant="outlined"
-                    fullWidth
-                  />
-                  <Field
-                    name="other2"
-                    label="Otros:"
-                    component={TextField}
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
-                <Subtitle component="h5">
-                  2.5 Hábitos alimenticios y/o dietéticos
-                </Subtitle>
-              </Grid>
-              <Grid
-                container
-                xs={12}
-                style={{
-                  border: "1px solid #E5EAF2",
-                  margin: "10px",
-                  padding: "20px",
-                }}
-              >
-                <Grid xs={3}>
-                  {foodHabits.map((group) => (
-                    <React.Fragment key={group.id}>
-                      <Subtitle component="h6">{group.label}</Subtitle>
-                      <Field component={RadioGroup} name={group.id}>
-                        {group.items.map((item) => (
-                          <FormControlLabel
-                            key={item.name}
-                            value={item.name}
-                            control={
-                              <Radio
-                                sx={{
-                                  color: blue[700],
-                                }}
-                              />
-                            }
-                            label={item.label}
-                          />
-                        ))}
-                      </Field>
-                    </React.Fragment>
-                  ))}
-                </Grid>
-                <CheckboxGroup group={foodConsumptionsGroup1} />
-                <CheckboxGroup group={foodConsumptionsGroup2} />
-                <Grid xs={3}>
-                  <Field
-                    component={TextField}
-                    name="other3"
-                    label="Otros:"
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            <PhysicalExercises />
-            <LabTests />
-            <br></br>
-            <div>{JSON.stringify(values)}</div>
+              <PersonalInformation values={values} errors={errors} />
+              <Subtitle component="h4">2. Historia de salud</Subtitle>
+              <Subtitle component="h5">2.1 Antecedentes patológicos</Subtitle>
+              <PathologicalAntecedents />
+              <Subtitle component="h5">2.2 Problemas de salud</Subtitle>
+              <HealthProblems />
+              <Subtitle component="h5">2.3 Funciones vitales</Subtitle>
+              <VitalFunctions />
+              <Subtitle component="h5">2.4 Hábitos de consumo</Subtitle>
+              <ConsumptionHabits />
+              <Subtitle component="h5">
+                2.5 Hábitos alimenticios y/o dietéticos
+              </Subtitle>
+              <FoodHabits />
+              <Subtitle component="h5">2.6 Ejercicios físicos</Subtitle>
+              <PhysicalExercises />
+              <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
+              <LabTests />
+              <div>{JSON.stringify(values)}</div>
+            </Stack>
           </Form>
         )}
       </Formik>
@@ -287,21 +132,167 @@ export default function PatientInterview() {
   );
 }
 
+const FoodHabits = () => (
+  <Grid
+    container
+    style={{
+      border: "1px solid #E5EAF2",
+    }}
+    p={3}
+  >
+    <Grid xs={3}>
+      {foodHabits.map((group) => (
+        <React.Fragment key={group.id}>
+          <Subtitle component="h6">{group.label}</Subtitle>
+          <Field component={RadioGroup} name={group.id}>
+            {group.items.map((item) => (
+              <FormControlLabel
+                key={item.name}
+                value={item.name}
+                control={
+                  <Radio
+                    sx={{
+                      color: blue[700],
+                    }}
+                  />
+                }
+                label={item.label}
+              />
+            ))}
+          </Field>
+        </React.Fragment>
+      ))}
+    </Grid>
+    <CheckboxGroup group={foodConsumptionsGroup1} />
+    <CheckboxGroup group={foodConsumptionsGroup2} />
+    <Grid xs={3}>
+      <Field
+        component={TextField}
+        name="other3"
+        label="Otros:"
+        variant="outlined"
+        multiline
+        rows={4}
+        fullWidth
+      />
+    </Grid>
+  </Grid>
+);
+
+const ConsumptionHabits = () => (
+  <Grid
+    container
+    style={{
+      border: "1px solid #E5EAF2",
+    }}
+    p={2}
+  >
+    <Grid xs={8} container>
+      {consumptionHabits.map((group, index) => (
+        <Grid key={index} xs={4}>
+          <Subtitle component="h6">{group.label}</Subtitle>
+          <Field component={RadioGroup} name={group.id}>
+            <FormControlLabel
+              value={group.no.name}
+              control={<Radio sx={{ color: blue[700] }} />}
+              label={group.no.label}
+            />
+            <Subtitle component="h6">Tipos: </Subtitle>
+            {group.types.map((type) => (
+              <FormControlLabel
+                key={type.name}
+                value={type.name}
+                control={
+                  <Radio
+                    sx={{
+                      color: blue[700],
+                    }}
+                  />
+                }
+                label={type.label}
+              />
+            ))}
+          </Field>
+        </Grid>
+      ))}
+    </Grid>
+    <Grid xs={4}>
+      <Stack spacing={2}>
+        <Field
+          component={TextField}
+          name="waterConsumption"
+          label="Cantidad de agua que consume:"
+          variant="outlined"
+          fullWidth
+        />
+        <Field
+          name="other2"
+          label="Otros:"
+          component={TextField}
+          variant="outlined"
+          multiline
+          rows={4}
+          fullWidth
+        />
+      </Stack>
+    </Grid>
+  </Grid>
+);
+
+const HealthProblems = () => (
+  <Grid
+    container
+    style={{
+      border: "1px solid #E5EAF2",
+    }}
+    p={4}
+  >
+    {healthProblems.map((group, index) => (
+      <CheckboxGroup key={index} group={group} />
+    ))}
+  </Grid>
+);
+
+const PathologicalAntecedents = () => (
+  <Grid
+    container
+    style={{
+      border: "1px solid #E5EAF2",
+    }}
+    p={2}
+  >
+    <Grid xs={8} container>
+      {antecedents.map((item) => (
+        <Grid xs={4} key={item.name}>
+          <Field
+            component={CheckboxWithLabel}
+            type="checkbox"
+            name="antecedents"
+            value={item.name}
+            Label={{ label: item.label }}
+            sx={{
+              color: blue[700],
+            }}
+          />
+        </Grid>
+      ))}
+    </Grid>
+    <Grid xs={4}>
+      <Field
+        name="other"
+        label="Otros:"
+        component={TextField}
+        variant="outlined"
+        multiline
+        rows={4}
+        fullWidth
+      />
+    </Grid>
+  </Grid>
+);
+
 const LabTests = () => {
-  return (
-    <Box>
-      <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
-      <Grid
-        container
-        xs={12}
-        style={{
-          border: "1px solid #E5EAF2",
-          margin: "10px",
-          padding: "20px",
-        }}
-      ></Grid>
-    </Box>
-  );
+  return <Grid container></Grid>;
 };
 
 export const Subtitle = ({
@@ -318,78 +309,75 @@ export const Subtitle = ({
 
 const PhysicalExercises = () => {
   return (
-    <Stack component="section" spacing={2}>
-      <Subtitle component="h5">2.6 Ejercicios físicos</Subtitle>
-      <Field component={RadioGroup} name="physicalExercises">
-        <Grid container component={Paper} variant="outlined" p={2}>
-          <Grid xs>
-            <FormControlLabel
-              value="Eventualmente"
-              control={
-                <Radio
-                  sx={{
-                    color: blue[700],
-                  }}
-                />
-              }
-              label="Eventualmente"
-            />
-          </Grid>
-          <Grid xs>
-            <FormControlLabel
-              value="10-30 min/día"
-              control={
-                <Radio
-                  sx={{
-                    color: blue[700],
-                  }}
-                />
-              }
-              label="10-30 min/día"
-            />
-          </Grid>
-          <Grid xs>
-            <FormControlLabel
-              value="30-60 min/día"
-              control={
-                <Radio
-                  sx={{
-                    color: blue[700],
-                  }}
-                />
-              }
-              label="30-60 min/día"
-            />
-          </Grid>
-          <Grid xs>
-            <FormControlLabel
-              value=">60 min/día"
-              control={
-                <Radio
-                  sx={{
-                    color: blue[700],
-                  }}
-                />
-              }
-              label=">60 min/día"
-            />
-          </Grid>
-          <Grid xs>
-            <FormControlLabel
-              value="Nunca"
-              control={
-                <Radio
-                  sx={{
-                    color: blue[700],
-                  }}
-                />
-              }
-              label="Nunca"
-            />
-          </Grid>
+    <Field component={RadioGroup} name="physicalExercises">
+      <Grid container component={Paper} variant="outlined" p={2}>
+        <Grid xs>
+          <FormControlLabel
+            value="Eventualmente"
+            control={
+              <Radio
+                sx={{
+                  color: blue[700],
+                }}
+              />
+            }
+            label="Eventualmente"
+          />
         </Grid>
-      </Field>
-    </Stack>
+        <Grid xs>
+          <FormControlLabel
+            value="10-30 min/día"
+            control={
+              <Radio
+                sx={{
+                  color: blue[700],
+                }}
+              />
+            }
+            label="10-30 min/día"
+          />
+        </Grid>
+        <Grid xs>
+          <FormControlLabel
+            value="30-60 min/día"
+            control={
+              <Radio
+                sx={{
+                  color: blue[700],
+                }}
+              />
+            }
+            label="30-60 min/día"
+          />
+        </Grid>
+        <Grid xs>
+          <FormControlLabel
+            value=">60 min/día"
+            control={
+              <Radio
+                sx={{
+                  color: blue[700],
+                }}
+              />
+            }
+            label=">60 min/día"
+          />
+        </Grid>
+        <Grid xs>
+          <FormControlLabel
+            value="Nunca"
+            control={
+              <Radio
+                sx={{
+                  color: blue[700],
+                }}
+              />
+            }
+            label="Nunca"
+          />
+        </Grid>
+      </Grid>
+    </Field>
   );
 };
 
@@ -419,9 +407,6 @@ const CheckboxGroup = ({ group }: { group: GroupItems }) => {
 const VitalFunctions = () => {
   return (
     <Grid container spacing={2}>
-      <Grid xs={12}>
-        <Subtitle component="h5">2.3 Funciones vitales</Subtitle>
-      </Grid>
       <Grid xs={3}>
         <Field
           component={TextField}
