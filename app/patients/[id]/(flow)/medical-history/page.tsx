@@ -10,7 +10,13 @@ import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import yup from "../../../../validation";
 import { formatDate } from "../../../../date";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import { alimentos, antecedents, consumptionHabits, problems } from "./data";
+import {
+  foodConsumptions,
+  antecedents,
+  consumptionHabits,
+  healthProblems,
+  GroupItems,
+} from "./data";
 import React from "react";
 
 const foodHabits = [
@@ -91,8 +97,6 @@ export default function PatientInterview() {
       >
         {({ values, errors }) => (
           <Form>
-            {/* {JSON.stringify(values)}
-            {JSON.stringify(errors)} */}
             <PersonalInformation values={values} errors={errors} />
             <Grid container spacing={2}>
               <Grid xs={12} style={{ marginTop: "10px" }}>
@@ -152,25 +156,8 @@ export default function PatientInterview() {
                   margin: "10px",
                 }}
               >
-                {problems.map((group, index) => (
-                  <Grid key={index} xs={3}>
-                    <strong>{group.label}</strong>
-                    <Stack>
-                      {group.items.map((item, idx) => (
-                        <Field
-                          key={idx}
-                          component={CheckboxWithLabel}
-                          type="checkbox"
-                          name={group.id}
-                          value={item.name}
-                          Label={{ label: item.label }}
-                          sx={{
-                            color: blue[700],
-                          }}
-                        />
-                      ))}
-                    </Stack>
-                  </Grid>
+                {healthProblems.map((group, index) => (
+                  <CheckboxGroup key={index} group={group} />
                 ))}
               </Grid>
             </Grid>
@@ -273,42 +260,18 @@ export default function PatientInterview() {
                     </React.Fragment>
                   ))}
                 </Grid>
-                <Grid xs={3}>
-                  <strong>Alimentos/consume</strong>
-                  <Stack>
-                    {alimentos.items1.map((item, idx) => (
-                      <Field
-                        key={idx}
-                        component={CheckboxWithLabel}
-                        type="checkbox"
-                        name={alimentos.id}
-                        value={item.name}
-                        Label={{ label: item.label }}
-                        sx={{
-                          color: blue[700],
-                        }}
-                      />
-                    ))}
-                  </Stack>
-                </Grid>
-                <Grid xs={3}>
-                  <strong>Alimentos/consume</strong>
-                  <Stack>
-                    {alimentos.items2.map((item, idx) => (
-                      <Field
-                        key={idx}
-                        component={CheckboxWithLabel}
-                        type="checkbox"
-                        name={alimentos.id}
-                        value={item.name}
-                        Label={{ label: item.label }}
-                        sx={{
-                          color: blue[700],
-                        }}
-                      />
-                    ))}
-                  </Stack>
-                </Grid>
+                <CheckboxGroup
+                  group={{
+                    ...foodConsumptions,
+                    items: foodConsumptions.items.slice(0, 4),
+                  }}
+                />
+                <CheckboxGroup
+                  group={{
+                    ...foodConsumptions,
+                    items: foodConsumptions.items.slice(4),
+                  }}
+                />
                 <Grid xs={3}>
                   <Field
                     component={TextField}
@@ -340,6 +303,29 @@ function calculateAge(date: Date) {
 
   return age;
 }
+
+const CheckboxGroup = ({ group }: { group: GroupItems }) => {
+  return (
+    <Grid xs={3}>
+      <strong>{group.label}</strong>
+      <Stack>
+        {group.items.map((item, idx) => (
+          <Field
+            key={idx}
+            component={CheckboxWithLabel}
+            type="checkbox"
+            name={group.id}
+            value={item.name}
+            Label={{ label: item.label }}
+            sx={{
+              color: blue[700],
+            }}
+          />
+        ))}
+      </Stack>
+    </Grid>
+  );
+};
 
 const VitalFunctions = () => {
   return (
