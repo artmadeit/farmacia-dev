@@ -5,14 +5,7 @@ import { differenceInYears } from "date-fns";
 import { Field } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import { formatDate } from "../../../../date";
-import {
-  EMPTY,
-  PersonalInformationProps,
-  Subtitle,
-  minYear,
-  today,
-} from "./page";
+import { EMPTY, PersonalInformationProps, minYear, today } from "./page";
 
 const getImc = ({ size, weight }: { size: number; weight: number }) => {
   if (size && weight) {

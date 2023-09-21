@@ -304,11 +304,6 @@ export default function Pharmacotherapy() {
                 )}
               </FieldArray>
             </TableContainer>
-
-            {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
-
-examen de laboratorio o prueba diagnostica	fecha	resultado
-rango de valor normal	evaluacion/comentarios */}
           </Form>
         )}
       </Formik>

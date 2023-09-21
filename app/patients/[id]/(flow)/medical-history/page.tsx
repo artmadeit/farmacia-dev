@@ -1,9 +1,12 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
+import { formatDate } from "@/app/date";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Divider,
+  Fab,
   FormControlLabel,
   Paper,
   PaperProps,
@@ -16,6 +19,7 @@ import { blue } from "@mui/material/colors";
 import { subYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
+import { DatePicker } from "formik-mui-x-date-pickers";
 import React from "react";
 import yup from "../../../../validation";
 import { PersonalInformation } from "./PersonalInformation";
@@ -27,8 +31,6 @@ import {
   foodHabits,
   healthProblems,
 } from "./data";
-import { Grid4x4Sharp } from "@mui/icons-material";
-import { formatDate } from "@/app/date";
 
 export const minYear = subYears(new Date(), 103);
 
@@ -124,6 +126,7 @@ export default function PatientInterview() {
               <PhysicalExercises />
               <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
               <LabTests />
+              <Subtitle component="h5">2.8 Diagnóstico</Subtitle>
               <div>{JSON.stringify(values)}</div>
             </Stack>
           </Form>
@@ -269,7 +272,91 @@ const PathologicalAntecedents = () => (
 );
 
 const LabTests = () => {
-  return <Grid container></Grid>;
+  return (
+    <Box>
+      <Stack spacing={2} direction="row" alignItems="center">
+        <label htmlFor="existLabTests">
+          ¿Se realizaron examenes de laboratorio u otra prueba diagnostica?
+        </label>
+        <Field
+          component={RadioGroup}
+          id="existLabTests"
+          name="existLabTests"
+          row
+        >
+          <FormControlLabel
+            value={true}
+            control={<Radio sx={{ color: blue[700] }} />}
+            label="Si"
+          />
+          <FormControlLabel
+            value={false}
+            control={<Radio sx={{ color: blue[700] }} />}
+            label="No"
+          />
+        </Field>
+      </Stack>
+      <Stack>
+        <Grid container spacing={1}>
+          <Grid xs={12} display="flex" justifyContent="end">
+            <Fab color="primary" aria-label="delete" onClick={() => {}}>
+              <CloseIcon />
+            </Fab>
+          </Grid>
+          <Grid xs={6}>
+            <Field
+              name="other"
+              label="Examen de laboratorio o prueba diagnostica"
+              component={TextField}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+          <Grid xs={3}>
+            <Field
+              component={DatePicker}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  label: "Fecha",
+                },
+              }}
+              name="birthdate"
+            />
+          </Grid>
+          <Grid xs={3}>
+            <Field
+              name="other"
+              label="Resultado"
+              component={TextField}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+          <Grid xs={6}>
+            <Field
+              name="other"
+              label="Rango de valor normal"
+              component={TextField}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+          <Grid xs={6}>
+            <Field
+              name="other"
+              label="Evaluacion/comentariosl"
+              component={TextField}
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+            />
+          </Grid>
+        </Grid>
+      </Stack>
+    </Box>
+  );
 };
 
 export const Subtitle = ({
