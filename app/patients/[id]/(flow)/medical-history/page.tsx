@@ -119,11 +119,11 @@ export default function PatientInterview() {
             <PersonalInformation values={values} errors={errors} />
             <Grid container spacing={2}>
               <Grid xs={12} style={{ marginTop: "10px" }}>
-                <strong>2. Historia de salud</strong>
+                <Subtitle component="h4">2. Historia de salud</Subtitle>
                 <Divider />
               </Grid>
               <Grid xs={12}>
-                <strong>2.1 Antecedentes patológicos</strong>
+                <Subtitle component="h5">2.1 Antecedentes patológicos</Subtitle>
               </Grid>
               <Grid
                 xs={12}
@@ -164,7 +164,7 @@ export default function PatientInterview() {
             </Grid>
             <Grid container spacing={2}>
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
-                <strong>2.2 Problemas de salud</strong>
+                <Subtitle component="h5">2.2 Problemas de salud</Subtitle>
               </Grid>
               <Grid
                 xs={12}
@@ -183,7 +183,7 @@ export default function PatientInterview() {
             <VitalFunctions />
             <Grid container spacing={2}>
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
-                <strong>2.4 Hábitos de consumo</strong>
+                <Subtitle component="h5">2.4 Hábitos de consumo</Subtitle>
               </Grid>
               <Grid
                 xs={12}
@@ -196,14 +196,14 @@ export default function PatientInterview() {
                 <Grid xs={8} container style={{ padding: "20px" }}>
                   {consumptionHabits.map((group, index) => (
                     <Grid key={index} xs={4}>
-                      <strong>{group.label}</strong>
+                      <Subtitle component="h6">{group.label}</Subtitle>
                       <Field component={RadioGroup} name={group.id}>
                         <FormControlLabel
                           value={group.no.name}
                           control={<Radio sx={{ color: blue[700] }} />}
                           label={group.no.label}
                         />
-                        <strong>Tipos: </strong>
+                        <Subtitle component="h6">Tipos: </Subtitle>
                         {group.types.map((type) => (
                           <FormControlLabel
                             key={type.name}
@@ -245,7 +245,9 @@ export default function PatientInterview() {
             </Grid>
             <Grid container spacing={2}>
               <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
-                <strong>2.5 Hábitos alimenticios y/o dietéticos</strong>
+                <Subtitle component="h5">
+                  2.5 Hábitos alimenticios y/o dietéticos
+                </Subtitle>
               </Grid>
               <Grid
                 container
@@ -259,7 +261,7 @@ export default function PatientInterview() {
                 <Grid xs={3}>
                   {foodHabits.map((group) => (
                     <React.Fragment key={group.id}>
-                      <strong>{group.label}</strong>
+                      <Subtitle component="h6">{group.label}</Subtitle>
                       <Field component={RadioGroup} name={group.id}>
                         {group.items.map((item) => (
                           <FormControlLabel
@@ -308,7 +310,7 @@ export default function PatientInterview() {
 const LabTests = () => {
   return (
     <Box>
-      <strong>2.7 Pruebas de laboratorio</strong>
+      <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
       <Grid
         container
         xs={12}
@@ -322,12 +324,22 @@ const LabTests = () => {
   );
 };
 
+const Subtitle = ({
+  children,
+  component,
+}: {
+  children: React.ReactNode;
+  component: React.ElementType;
+}) => (
+  <Typography component={component} sx={{ fontWeight: "bold" }} gutterBottom>
+    {children}
+  </Typography>
+);
+
 const PhysicalExercises = () => {
   return (
     <Stack component="section" spacing={2}>
-      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }} gutterBottom>
-        2.6 Ejercicios físicos
-      </Typography>
+      <Subtitle component="h5">2.6 Ejercicios físicos</Subtitle>
       <Field component={RadioGroup} name="physicalExercises">
         <Grid container component={Paper} variant="outlined" p={2}>
           <Grid xs>
@@ -414,7 +426,7 @@ function calculateAge(date: Date) {
 const CheckboxGroup = ({ group }: { group: GroupItems }) => {
   return (
     <Grid xs={3}>
-      <strong>{group.label}</strong>
+      <Subtitle component="h6">{group.label}</Subtitle>
       <Stack>
         {group.items.map((item, idx) => (
           <Field
@@ -437,8 +449,8 @@ const CheckboxGroup = ({ group }: { group: GroupItems }) => {
 const VitalFunctions = () => {
   return (
     <Grid container spacing={2}>
-      <Grid xs={12} style={{ margin: "20px 0px 10px 0px" }}>
-        <strong>2.3 Funciones vitales</strong>
+      <Grid xs={12}>
+        <Subtitle component="h5">2.3 Funciones vitales</Subtitle>
       </Grid>
       <Grid xs={3}>
         <Field
@@ -497,7 +509,7 @@ const PersonalInformation = ({ values, errors }: PersonalInformationProps) => {
   return (
     <Grid container spacing={2}>
       <Grid xs={10} style={{ marginTop: "10px" }}>
-        <strong>1. Datos personales</strong>
+        <Subtitle component="h4">1. Datos personales</Subtitle>
       </Grid>
       <Grid xs={2} style={{ marginTop: "10px" }}>
         Fecha: {formatDate(new Date())}
