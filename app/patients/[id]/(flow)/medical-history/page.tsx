@@ -1,7 +1,7 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { Divider, FormControlLabel, Radio, Stack } from "@mui/material";
+import { Box, Divider, FormControlLabel, Radio, Stack } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears, subYears } from "date-fns";
@@ -10,7 +10,13 @@ import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import yup from "../../../../validation";
 import { formatDate } from "../../../../date";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import { antecedents, consumptionHabits, problems } from "./data";
+import {
+  foodConsumptions,
+  antecedents,
+  consumptionHabits,
+  healthProblems,
+  GroupItems,
+} from "./data";
 import React from "react";
 
 const foodHabits = [
@@ -31,19 +37,6 @@ const foodHabits = [
       { label: "No", name: "NO" },
     ],
   },
-  // {
-  //   label: "Alimentos/consumo",
-  //   id: "food_consumption",
-  //   items: [
-  //     { label: "Carnes rojas", name: "CARNES ROJAS" },
-  //     { label: "Pescado", name: "PESCADO" },
-  //     { label: "Verduras", name: "VERDURAS" },
-  //     { label: "Frutas", name: "FRUTAS" },
-  //     { label: "Pastas", name: "PASTAS" },
-  //     { label: "Dulces", name: "DULCES" },
-  //     { label: "Frituras", name: "FRITURAS" },
-  //   ],
-  // },
 ];
 
 const minYear = subYears(new Date(), 103);
@@ -61,8 +54,8 @@ export default function PatientInterview() {
           occupation: "",
           sex: "",
           birthdate: null,
-          weight: 0,
-          size: 0,
+          weight: null,
+          size: null,
           other: "",
           antecedents: [],
           problems_other: [],
@@ -70,9 +63,10 @@ export default function PatientInterview() {
           problems_digestive: [],
           problems_loc: [],
           problems_snc: [],
-          fc: 0,
-          fr: 0,
-          t: 0,
+          fc: null,
+          fr: null,
+          t: null,
+          pa: null,
           consumptions_alcohol: [],
           consumptions_tobacco: [],
           consumptions_tea: [],
@@ -103,8 +97,6 @@ export default function PatientInterview() {
       >
         {({ values, errors }) => (
           <Form>
-            {/* {JSON.stringify(values)}
-            {JSON.stringify(errors)} */}
             <PersonalInformation values={values} errors={errors} />
             <Grid container spacing={2}>
               <Grid xs={12} style={{ marginTop: "10px" }}>
@@ -164,30 +156,8 @@ export default function PatientInterview() {
                   margin: "10px",
                 }}
               >
-                {problems.map((group, index) => (
-                  <Grid
-                    key={index}
-                    xs={3}
-                    container
-                    direction="column"
-                    justifyContent="flex-start"
-                    alignItems="stretch"
-                  >
-                    <strong>{group.label}</strong>
-                    {group.items.map((item, idx) => (
-                      <Field
-                        key={idx}
-                        component={CheckboxWithLabel}
-                        type="checkbox"
-                        name={group.id}
-                        value={item.name}
-                        Label={{ label: item.label }}
-                        sx={{
-                          color: blue[700],
-                        }}
-                      />
-                    ))}
-                  </Grid>
+                {healthProblems.map((group, index) => (
+                  <CheckboxGroup key={index} group={group} />
                 ))}
               </Grid>
             </Grid>
@@ -206,13 +176,7 @@ export default function PatientInterview() {
               >
                 <Grid xs={8} container style={{ padding: "20px" }}>
                   {consumptionHabits.map((group, index) => (
-                    <Grid
-                      key={index}
-                      xs={4}
-                      direction="column"
-                      justifyContent="flex-start"
-                      alignItems="stretch"
-                    >
+                    <Grid key={index} xs={4}>
                       <strong>{group.label}</strong>
                       <Field component={RadioGroup} name={group.id}>
                         <FormControlLabel
@@ -296,12 +260,18 @@ export default function PatientInterview() {
                     </React.Fragment>
                   ))}
                 </Grid>
-                <Grid xs={3}>
-                  <strong>Alimentos/consume</strong>
-                </Grid>
-                <Grid xs={3}>
-                  <strong>Alimentos/consume</strong>
-                </Grid>
+                <CheckboxGroup
+                  group={{
+                    ...foodConsumptions,
+                    items: foodConsumptions.items.slice(0, 4),
+                  }}
+                />
+                <CheckboxGroup
+                  group={{
+                    ...foodConsumptions,
+                    items: foodConsumptions.items.slice(4),
+                  }}
+                />
                 <Grid xs={3}>
                   <Field
                     component={TextField}
@@ -334,6 +304,29 @@ function calculateAge(date: Date) {
   return age;
 }
 
+const CheckboxGroup = ({ group }: { group: GroupItems }) => {
+  return (
+    <Grid xs={3}>
+      <strong>{group.label}</strong>
+      <Stack>
+        {group.items.map((item, idx) => (
+          <Field
+            key={idx}
+            component={CheckboxWithLabel}
+            type="checkbox"
+            name={group.id}
+            value={item.name}
+            Label={{ label: item.label }}
+            sx={{
+              color: blue[700],
+            }}
+          />
+        ))}
+      </Stack>
+    </Grid>
+  );
+};
+
 const VitalFunctions = () => {
   return (
     <Grid container spacing={2}>
@@ -344,7 +337,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="fc"
-          label="FC(LPM):"
+          label="Frecuencia cárdiaca (LPM):"
           variant="outlined"
           fullWidth
         />
@@ -353,7 +346,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="fr"
-          label="FR:"
+          label="Frecuencia Respiratoria (rpm):"
           variant="outlined"
           fullWidth
         />
@@ -362,7 +355,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="t"
-          label="T°(C°):"
+          label="Temperatura (C°):"
           variant="outlined"
           fullWidth
         />
@@ -371,7 +364,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="pa"
-          label="PA:"
+          label="Presión arterial:"
           variant="outlined"
           fullWidth
         />

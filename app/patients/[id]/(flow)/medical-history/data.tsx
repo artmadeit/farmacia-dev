@@ -10,7 +10,16 @@ export const antecedents = [
   { label: "Enf. tiroides", name: "ENF_TIROIDES" },
 ];
 
-export const problems = [
+export type GroupItems = {
+  id: string;
+  label: string;
+  items: {
+    label: string;
+    name: string;
+  }[];
+};
+
+export const healthProblems: GroupItems[] = [
   {
     id: "problems_snc",
     label: "SNC",
@@ -133,3 +142,17 @@ export const consumptionHabits = [
     ],
   },
 ];
+
+export const foodConsumptions = {
+  id: "food_consumption",
+  label: "Alimentos/consume",
+  items: [
+    { label: "Carnes rojas", name: "CARNES ROJAS" },
+    { label: "Pescado", name: "PESCADO" },
+    { label: "Verduras", name: "VERDURAS" },
+    { label: "Frutas", name: "FRUTAS" },
+    { label: "Pastas", name: "PASTAS" },
+    { label: "Dulces", name: "DULCES" },
+    { label: "Frituras", name: "FRITURAS" },
+  ],
+};
