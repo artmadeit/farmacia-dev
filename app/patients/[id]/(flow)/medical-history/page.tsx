@@ -153,28 +153,23 @@ export default function PatientInterview() {
                 }}
               >
                 {problems.map((group, index) => (
-                  <Grid
-                    key={index}
-                    xs={3}
-                    container
-                    direction="column"
-                    justifyContent="flex-start"
-                    alignItems="stretch"
-                  >
+                  <Grid key={index} xs={3}>
                     <strong>{group.label}</strong>
-                    {group.items.map((item, idx) => (
-                      <Field
-                        key={idx}
-                        component={CheckboxWithLabel}
-                        type="checkbox"
-                        name={group.id}
-                        value={item.name}
-                        Label={{ label: item.label }}
-                        sx={{
-                          color: blue[700],
-                        }}
-                      />
-                    ))}
+                    <Stack>
+                      {group.items.map((item, idx) => (
+                        <Field
+                          key={idx}
+                          component={CheckboxWithLabel}
+                          type="checkbox"
+                          name={group.id}
+                          value={item.name}
+                          Label={{ label: item.label }}
+                          sx={{
+                            color: blue[700],
+                          }}
+                        />
+                      ))}
+                    </Stack>
                   </Grid>
                 ))}
               </Grid>
@@ -194,13 +189,7 @@ export default function PatientInterview() {
               >
                 <Grid xs={8} container style={{ padding: "20px" }}>
                   {consumptionHabits.map((group, index) => (
-                    <Grid
-                      key={index}
-                      xs={4}
-                      direction="column"
-                      justifyContent="flex-start"
-                      alignItems="stretch"
-                    >
+                    <Grid key={index} xs={4}>
                       <strong>{group.label}</strong>
                       <Field component={RadioGroup} name={group.id}>
                         <FormControlLabel
@@ -286,7 +275,7 @@ export default function PatientInterview() {
                 </Grid>
                 <Grid xs={3}>
                   <strong>Alimentos/consume</strong>
-                  <Box display="flex" flexDirection="column">
+                  <Stack>
                     {alimentos.items1.map((item, idx) => (
                       <Field
                         key={idx}
@@ -300,11 +289,11 @@ export default function PatientInterview() {
                         }}
                       />
                     ))}
-                  </Box>
+                  </Stack>
                 </Grid>
                 <Grid xs={3}>
                   <strong>Alimentos/consume</strong>
-                  <Box display="flex" flexDirection="column">
+                  <Stack>
                     {alimentos.items2.map((item, idx) => (
                       <Field
                         key={idx}
@@ -318,7 +307,7 @@ export default function PatientInterview() {
                         }}
                       />
                     ))}
-                  </Box>
+                  </Stack>
                 </Grid>
                 <Grid xs={3}>
                   <Field
