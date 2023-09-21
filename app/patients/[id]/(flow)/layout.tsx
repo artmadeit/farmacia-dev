@@ -19,7 +19,7 @@ export default async function MedicalFlowLayout({
   return (
     <div>
       <Typography variant="h6" gutterBottom>
-        Paciente: {patient.firstName} {patient.lastName}
+        Paciente: {patient.firstName} {patient.lastName}, código: {patient.code}
       </Typography>
       <HorizontalStepper />
 

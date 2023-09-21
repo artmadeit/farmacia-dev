@@ -380,8 +380,6 @@ type PersonalInformationProps = {
 };
 
 const PersonalInformation = ({ values, errors }: PersonalInformationProps) => {
-  const code = "AJK-203";
-
   const getImc = ({ size, weight }: { size: number; weight: number }) => {
     if (size && weight) {
       return weight / size ** 2;
@@ -397,7 +395,6 @@ const PersonalInformation = ({ values, errors }: PersonalInformationProps) => {
       <Grid xs={2} style={{ marginTop: "10px" }}>
         Fecha: {formatDate(new Date())}
       </Grid>
-      <Grid xs={12}>Código del paciente: {code}</Grid>
       <Grid xs={3} display="flex" alignItems="center">
         <Field
           label="Ocupación"
