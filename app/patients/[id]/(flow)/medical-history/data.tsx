@@ -133,3 +133,19 @@ export const consumptionHabits = [
     ],
   },
 ];
+
+export const alimentos = {
+  id: "food_consumption",
+  label: "Alimentos/consume",
+  items1: [
+    { label: "Carnes rojas", name: "CARNES ROJAS" },
+    { label: "Pescado", name: "PESCADO" },
+    { label: "Verduras", name: "VERDURAS" },
+    { label: "Frutas", name: "FRUTAS" },
+  ],
+  items2: [
+    { label: "Pastas", name: "PASTAS" },
+    { label: "Dulces", name: "DULCES" },
+    { label: "Frituras", name: "FRITURAS" },
+  ],
+};

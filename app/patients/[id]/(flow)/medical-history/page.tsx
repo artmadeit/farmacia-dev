@@ -1,7 +1,7 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { Divider, FormControlLabel, Radio, Stack } from "@mui/material";
+import { Box, Divider, FormControlLabel, Radio, Stack } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears, subYears } from "date-fns";
@@ -10,7 +10,7 @@ import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import yup from "../../../../validation";
 import { formatDate } from "../../../../date";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import { antecedents, consumptionHabits, problems } from "./data";
+import { alimentos, antecedents, consumptionHabits, problems } from "./data";
 import React from "react";
 
 const foodHabits = [
@@ -31,19 +31,6 @@ const foodHabits = [
       { label: "No", name: "NO" },
     ],
   },
-  // {
-  //   label: "Alimentos/consumo",
-  //   id: "food_consumption",
-  //   items: [
-  //     { label: "Carnes rojas", name: "CARNES ROJAS" },
-  //     { label: "Pescado", name: "PESCADO" },
-  //     { label: "Verduras", name: "VERDURAS" },
-  //     { label: "Frutas", name: "FRUTAS" },
-  //     { label: "Pastas", name: "PASTAS" },
-  //     { label: "Dulces", name: "DULCES" },
-  //     { label: "Frituras", name: "FRITURAS" },
-  //   ],
-  // },
 ];
 
 const minYear = subYears(new Date(), 103);
@@ -299,9 +286,39 @@ export default function PatientInterview() {
                 </Grid>
                 <Grid xs={3}>
                   <strong>Alimentos/consume</strong>
+                  <Box display="flex" flexDirection="column">
+                    {alimentos.items1.map((item, idx) => (
+                      <Field
+                        key={idx}
+                        component={CheckboxWithLabel}
+                        type="checkbox"
+                        name={alimentos.id}
+                        value={item.name}
+                        Label={{ label: item.label }}
+                        sx={{
+                          color: blue[700],
+                        }}
+                      />
+                    ))}
+                  </Box>
                 </Grid>
                 <Grid xs={3}>
                   <strong>Alimentos/consume</strong>
+                  <Box display="flex" flexDirection="column">
+                    {alimentos.items2.map((item, idx) => (
+                      <Field
+                        key={idx}
+                        component={CheckboxWithLabel}
+                        type="checkbox"
+                        name={alimentos.id}
+                        value={item.name}
+                        Label={{ label: item.label }}
+                        sx={{
+                          color: blue[700],
+                        }}
+                      />
+                    ))}
+                  </Box>
                 </Grid>
                 <Grid xs={3}>
                   <Field
