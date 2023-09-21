@@ -10,47 +10,27 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { blue } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { differenceInYears, subYears } from "date-fns";
+import { blue } from "@mui/material/colors";
+import { subYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
+import React from "react";
 import yup from "../../../../validation";
-import { formatDate } from "../../../../date";
-import { DatePicker } from "formik-mui-x-date-pickers";
+import { PersonalInformation } from "./PersonalInformation";
 import {
-  foodConsumptions,
+  GroupItems,
   antecedents,
   consumptionHabits,
+  foodConsumptions,
+  foodHabits,
   healthProblems,
-  GroupItems,
 } from "./data";
-import React from "react";
 
-const foodHabits = [
-  {
-    label: "Sal en dieta",
-    id: "salt_consumption",
-    items: [
-      { label: "Hiposódica", name: "HIPOSODICA" },
-      { label: "Normosódica", name: "NORMOSODICA" },
-      { label: "Hipersódica", name: "HIPERSODICA" },
-    ],
-  },
-  {
-    label: "¿Adiciona a comidas?",
-    id: "salt_addition",
-    items: [
-      { label: "Si", name: "YES" },
-      { label: "No", name: "NO" },
-    ],
-  },
-];
+export const minYear = subYears(new Date(), 103);
 
-const minYear = subYears(new Date(), 103);
-
-const today = new Date();
-const EMPTY = "-";
+export const today = new Date();
+export const EMPTY = "-";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -324,7 +304,7 @@ const LabTests = () => {
   );
 };
 
-const Subtitle = ({
+export const Subtitle = ({
   children,
   component,
 }: {
@@ -413,16 +393,6 @@ const PhysicalExercises = () => {
   );
 };
 
-// Adapted from: https://stackoverflow.com/questions/66470624/date-fns-format-date-and-age-calculation-problem-in-react
-function calculateAge(date: Date) {
-  const age = differenceInYears(new Date(), date);
-  if (isNaN(age)) {
-    return EMPTY;
-  }
-
-  return age;
-}
-
 const CheckboxGroup = ({ group }: { group: GroupItems }) => {
   return (
     <Grid xs={3}>
@@ -492,84 +462,8 @@ const VitalFunctions = () => {
   );
 };
 
-type PersonalInformationProps = {
+export type PersonalInformationProps = {
   //TODO: Arthur revisar
   values: any;
   errors: any;
-};
-
-const PersonalInformation = ({ values, errors }: PersonalInformationProps) => {
-  const getImc = ({ size, weight }: { size: number; weight: number }) => {
-    if (size && weight) {
-      return weight / size ** 2;
-    }
-
-    return EMPTY;
-  };
-  return (
-    <Grid container spacing={2}>
-      <Grid xs={10} style={{ marginTop: "10px" }}>
-        <Subtitle component="h4">1. Datos personales</Subtitle>
-      </Grid>
-      <Grid xs={2} style={{ marginTop: "10px" }}>
-        Fecha: {formatDate(new Date())}
-      </Grid>
-      <Grid xs={3} display="flex" alignItems="center">
-        <Field
-          label="Ocupación"
-          name="occupation"
-          fullWidth
-          component={TextField}
-          variant="outlined"
-        />
-      </Grid>
-      <Grid xs={3} display="flex" alignItems="center">
-        <Field
-          component={DatePicker}
-          minDate={minYear}
-          maxDate={today}
-          slotProps={{
-            textField: {
-              label: "Fecha de Nacimiento",
-              helperText: errors.birthdate ? errors.birthdate : "",
-            },
-          }}
-          name="birthdate"
-        />
-      </Grid>
-      <Grid xs={2} display="flex" alignItems="center">
-        Edad: {values.birthdate ? calculateAge(values.birthdate) : EMPTY}
-      </Grid>
-      <Grid xs={2}>
-        Sexo:
-        <Field component={RadioGroup} name="sex" row>
-          <FormControlLabel value="MALE" control={<Radio />} label="M" />
-          <FormControlLabel value="FEMALE" control={<Radio />} label="F" />
-        </Field>
-      </Grid>
-      <Grid xs={3} display="flex" alignItems="center">
-        <Field
-          label="Peso (kg):"
-          name="weight"
-          component={TextField}
-          type="number"
-          variant="outlined"
-          fullWidth
-        />
-      </Grid>
-      <Grid xs={3} display="flex" alignItems="center">
-        <Field
-          label="Talla (m):"
-          name="size"
-          component={TextField}
-          type="number"
-          variant="outlined"
-          fullWidth
-        />
-      </Grid>
-      <Grid xs={4} display="flex" alignItems="center">
-        IMC: {getImc(values)}
-      </Grid>
-    </Grid>
-  );
 };

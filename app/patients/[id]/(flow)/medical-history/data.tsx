@@ -156,3 +156,23 @@ export const foodConsumptions = {
     { label: "Frituras", name: "FRITURAS" },
   ],
 };
+
+export const foodHabits = [
+  {
+    label: "Sal en dieta",
+    id: "salt_consumption",
+    items: [
+      { label: "Hiposódica", name: "HIPOSODICA" },
+      { label: "Normosódica", name: "NORMOSODICA" },
+      { label: "Hipersódica", name: "HIPERSODICA" },
+    ],
+  },
+  {
+    label: "¿Adiciona a comidas?",
+    id: "salt_addition",
+    items: [
+      { label: "Si", name: "YES" },
+      { label: "No", name: "NO" },
+    ],
+  },
+];
