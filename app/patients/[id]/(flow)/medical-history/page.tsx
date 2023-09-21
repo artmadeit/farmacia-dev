@@ -6,6 +6,7 @@ import {
   Divider,
   FormControlLabel,
   Paper,
+  PaperProps,
   Radio,
   Stack,
   Typography,
@@ -133,13 +134,7 @@ export default function PatientInterview() {
 }
 
 const FoodHabits = () => (
-  <Grid
-    container
-    style={{
-      border: "1px solid #E5EAF2",
-    }}
-    p={3}
-  >
+  <Grid container component={OutlinedPaper}>
     <Grid xs={3}>
       {foodHabits.map((group) => (
         <React.Fragment key={group.id}>
@@ -180,13 +175,7 @@ const FoodHabits = () => (
 );
 
 const ConsumptionHabits = () => (
-  <Grid
-    container
-    style={{
-      border: "1px solid #E5EAF2",
-    }}
-    p={2}
-  >
+  <Grid container component={OutlinedPaper}>
     <Grid xs={8} container>
       {consumptionHabits.map((group, index) => (
         <Grid key={index} xs={4}>
@@ -240,13 +229,7 @@ const ConsumptionHabits = () => (
 );
 
 const HealthProblems = () => (
-  <Grid
-    container
-    style={{
-      border: "1px solid #E5EAF2",
-    }}
-    p={4}
-  >
+  <Grid container component={OutlinedPaper}>
     {healthProblems.map((group, index) => (
       <CheckboxGroup key={index} group={group} />
     ))}
@@ -254,13 +237,7 @@ const HealthProblems = () => (
 );
 
 const PathologicalAntecedents = () => (
-  <Grid
-    container
-    style={{
-      border: "1px solid #E5EAF2",
-    }}
-    p={2}
-  >
+  <Grid container component={OutlinedPaper}>
     <Grid xs={8} container>
       {antecedents.map((item) => (
         <Grid xs={4} key={item.name}>
@@ -307,10 +284,16 @@ export const Subtitle = ({
   </Typography>
 );
 
+const OutlinedPaper = ({ children, ...rest }: PaperProps) => (
+  <Paper variant="outlined" sx={{ p: 2 }} {...rest}>
+    {children}
+  </Paper>
+);
+
 const PhysicalExercises = () => {
   return (
     <Field component={RadioGroup} name="physicalExercises">
-      <Grid container component={Paper} variant="outlined" p={2}>
+      <Grid container component={OutlinedPaper}>
         <Grid xs>
           <FormControlLabel
             value="Eventualmente"
