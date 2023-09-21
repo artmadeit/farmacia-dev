@@ -1,7 +1,14 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { Box, Divider, FormControlLabel, Radio, Stack } from "@mui/material";
+import {
+  Box,
+  Divider,
+  FormControlLabel,
+  Radio,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { blue } from "@mui/material/colors";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears, subYears } from "date-fns";
@@ -44,6 +51,16 @@ const minYear = subYears(new Date(), 103);
 const today = new Date();
 const EMPTY = "-";
 
+const foodConsumptionsGroup1 = {
+  ...foodConsumptions,
+  items: foodConsumptions.items.slice(0, 4),
+};
+
+const foodConsumptionsGroup2 = {
+  ...foodConsumptions,
+  items: foodConsumptions.items.slice(4),
+};
+
 export default function PatientInterview() {
   return (
     <div>
@@ -74,6 +91,7 @@ export default function PatientInterview() {
           salt_consumption: [],
           salt_addition: [],
           other3: "",
+          physicalExercises: "",
         }}
         validationSchema={yup.object({
           occupation: yup.string().required().label("La ocupación"),
@@ -260,18 +278,8 @@ export default function PatientInterview() {
                     </React.Fragment>
                   ))}
                 </Grid>
-                <CheckboxGroup
-                  group={{
-                    ...foodConsumptions,
-                    items: foodConsumptions.items.slice(0, 4),
-                  }}
-                />
-                <CheckboxGroup
-                  group={{
-                    ...foodConsumptions,
-                    items: foodConsumptions.items.slice(4),
-                  }}
-                />
+                <CheckboxGroup group={foodConsumptionsGroup1} />
+                <CheckboxGroup group={foodConsumptionsGroup2} />
                 <Grid xs={3}>
                   <Field
                     component={TextField}
@@ -285,6 +293,8 @@ export default function PatientInterview() {
                 </Grid>
               </Grid>
             </Grid>
+            <PhysicalExercises />
+            <LabTests />
             <br></br>
             <div>{JSON.stringify(values)}</div>
           </Form>
@@ -293,6 +303,102 @@ export default function PatientInterview() {
     </div>
   );
 }
+
+const LabTests = () => {
+  return (
+    <Box>
+      <strong>2.7 Pruebas de laboratorio</strong>
+      <Grid
+        container
+        xs={12}
+        style={{
+          border: "1px solid #E5EAF2",
+          margin: "10px",
+          padding: "20px",
+        }}
+      ></Grid>
+    </Box>
+  );
+};
+
+const PhysicalExercises = () => {
+  return (
+    <Stack spacing={2}>
+      <Typography variant="subtitle1" gutterBottom>
+        <strong>2.6 Ejercicios físicos</strong>
+      </Typography>
+      <Field component={RadioGroup} name="physicalExercises">
+        <Grid container>
+          <Grid xs>
+            <FormControlLabel
+              value="Eventualmente"
+              control={
+                <Radio
+                  sx={{
+                    color: blue[700],
+                  }}
+                />
+              }
+              label="Eventualmente"
+            />
+          </Grid>
+          <Grid xs>
+            <FormControlLabel
+              value="10-30 min/día"
+              control={
+                <Radio
+                  sx={{
+                    color: blue[700],
+                  }}
+                />
+              }
+              label="10-30 min/día"
+            />
+          </Grid>
+          <Grid xs>
+            <FormControlLabel
+              value="30-60 min/día"
+              control={
+                <Radio
+                  sx={{
+                    color: blue[700],
+                  }}
+                />
+              }
+              label="30-60 min/día"
+            />
+          </Grid>
+          <Grid xs>
+            <FormControlLabel
+              value=">60 min/día"
+              control={
+                <Radio
+                  sx={{
+                    color: blue[700],
+                  }}
+                />
+              }
+              label=">60 min/día"
+            />
+          </Grid>
+          <Grid xs>
+            <FormControlLabel
+              value="Nunca"
+              control={
+                <Radio
+                  sx={{
+                    color: blue[700],
+                  }}
+                />
+              }
+              label="Nunca"
+            />
+          </Grid>
+        </Grid>
+      </Field>
+    </Stack>
+  );
+};
 
 // Adapted from: https://stackoverflow.com/questions/66470624/date-fns-format-date-and-age-calculation-problem-in-react
 function calculateAge(date: Date) {
