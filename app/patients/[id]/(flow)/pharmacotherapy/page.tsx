@@ -4,6 +4,7 @@ import {
   Button,
   Divider,
   FormControlLabel,
+  IconButton,
   Paper,
   Radio,
   Table,
@@ -19,6 +20,7 @@ import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 
 const emptyHistoryRow = {
   administration: "",
@@ -244,6 +246,7 @@ export default function Pharmacotherapy() {
                           Descripción
                         </TableCell>
                         <TableCell>Fecha</TableCell>
+                        <TableCell></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -271,6 +274,14 @@ export default function Pharmacotherapy() {
                               fullWidth
                               name={`allergies.${index}.date`}
                             />
+                          </TableCell>
+                          <TableCell>
+                            <IconButton
+                              aria-label="delete"
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              <CloseIcon />
+                            </IconButton>
                           </TableCell>
                         </TableRow>
                       ))}

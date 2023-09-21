@@ -23,7 +23,7 @@ import useSWR from "swr";
 import { api } from "../../../../(api)/api";
 import { Page } from "../../../../(api)/pagination";
 import { AsyncAutocomplete } from "../../../../(components)/autocomplete";
-import { Drug } from "../../../../(portal)/drugs/Drug";
+import { Drug } from "../../../../(portal)/drugs/narrow/Drug";
 import yup from "../../../../validation";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
@@ -188,9 +188,9 @@ export default function PatientSelectionPage({
             </TableContainer>
             <Box display="flex" justifyContent="space-between" paddingTop={2}>
               <Typography>
+                Si el puntaje &ge; 4, inicie seguimiento farmacoterapeutico
+                <br />
                 Puntaje total: {getTotalScore(values.criterionList)}
-                {getTotalScore(values.criterionList) >= 4 &&
-                  ", puntaje >= 4, considere SFT!"}
               </Typography>
               <Button variant="contained" type="submit">
                 Continuar
