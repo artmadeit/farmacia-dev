@@ -61,8 +61,8 @@ export default function PatientInterview() {
           occupation: "",
           sex: "",
           birthdate: null,
-          weight: 0,
-          size: 0,
+          weight: null,
+          size: null,
           other: "",
           antecedents: [],
           problems_other: [],
@@ -70,9 +70,10 @@ export default function PatientInterview() {
           problems_digestive: [],
           problems_loc: [],
           problems_snc: [],
-          fc: 0,
-          fr: 0,
-          t: 0,
+          fc: null,
+          fr: null,
+          t: null,
+          pa: null,
           consumptions_alcohol: [],
           consumptions_tobacco: [],
           consumptions_tea: [],
@@ -344,7 +345,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="fc"
-          label="FC(LPM):"
+          label="Frecuencia cárdiaca (LPM):"
           variant="outlined"
           fullWidth
         />
@@ -353,7 +354,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="fr"
-          label="FR:"
+          label="Frecuencia Respiratoria (rpm):"
           variant="outlined"
           fullWidth
         />
@@ -362,7 +363,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="t"
-          label="T°(C°):"
+          label="Temperatura (C°):"
           variant="outlined"
           fullWidth
         />
@@ -371,7 +372,7 @@ const VitalFunctions = () => {
         <Field
           component={TextField}
           name="pa"
-          label="PA:"
+          label="Presión arterial:"
           variant="outlined"
           fullWidth
         />
