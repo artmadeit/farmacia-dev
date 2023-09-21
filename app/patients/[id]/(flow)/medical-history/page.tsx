@@ -5,6 +5,7 @@ import {
   Box,
   Divider,
   FormControlLabel,
+  Paper,
   Radio,
   Stack,
   Typography,
@@ -323,12 +324,12 @@ const LabTests = () => {
 
 const PhysicalExercises = () => {
   return (
-    <Stack spacing={2}>
-      <Typography variant="subtitle1" gutterBottom>
-        <strong>2.6 Ejercicios físicos</strong>
+    <Stack component="section" spacing={2}>
+      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }} gutterBottom>
+        2.6 Ejercicios físicos
       </Typography>
       <Field component={RadioGroup} name="physicalExercises">
-        <Grid container>
+        <Grid container component={Paper} variant="outlined" p={2}>
           <Grid xs>
             <FormControlLabel
               value="Eventualmente"
