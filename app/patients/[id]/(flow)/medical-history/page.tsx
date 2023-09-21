@@ -70,6 +70,9 @@ export default function PatientInterview() {
           problems_digestive: [],
           problems_loc: [],
           problems_snc: [],
+          fc: 0,
+          fr: 0,
+          t: 0,
           consumptions_alcohol: [],
           consumptions_tobacco: [],
           consumptions_tea: [],
@@ -90,6 +93,9 @@ export default function PatientInterview() {
             .label("Fecha de nacimiento"),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
+          fc: yup.number().required().min(40).max(250),
+          fr: yup.number().required().min(8).max(40),
+          t: yup.number().required().min(34).max(42),
         })}
         onSubmit={() => {
           // TODO:
@@ -337,7 +343,7 @@ const VitalFunctions = () => {
       <Grid xs={3}>
         <Field
           component={TextField}
-          name="FC"
+          name="fc"
           label="FC(LPM):"
           variant="outlined"
           fullWidth
@@ -346,7 +352,7 @@ const VitalFunctions = () => {
       <Grid xs={3}>
         <Field
           component={TextField}
-          name="FR"
+          name="fr"
           label="FR:"
           variant="outlined"
           fullWidth
@@ -355,7 +361,7 @@ const VitalFunctions = () => {
       <Grid xs={3}>
         <Field
           component={TextField}
-          name="T"
+          name="t"
           label="T°(C°):"
           variant="outlined"
           fullWidth
@@ -364,7 +370,7 @@ const VitalFunctions = () => {
       <Grid xs={3}>
         <Field
           component={TextField}
-          name="PA"
+          name="pa"
           label="PA:"
           variant="outlined"
           fullWidth
