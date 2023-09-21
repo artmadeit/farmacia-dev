@@ -231,7 +231,7 @@ export default function Pharmacotherapy() {
                   <strong>Plan de Seguimiento Farmacoterapéutico:</strong>
                 </em>
               </Grid>
-              <Grid xs={10}>
+              <Grid xs={10} style={{ margin: "10px 0px" }}>
                 <strong>3.1 Alergias</strong>
               </Grid>
             </Grid>
@@ -304,6 +304,11 @@ export default function Pharmacotherapy() {
                 )}
               </FieldArray>
             </TableContainer>
+            <Grid container spacing={2} pt={4}>
+              <Grid xs={10} style={{ margin: "10px 0px" }}>
+                <strong>Alimentos u otros</strong>
+              </Grid>
+            </Grid>
 
             {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
 
