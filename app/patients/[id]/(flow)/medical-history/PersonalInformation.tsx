@@ -2,10 +2,10 @@
 import { FormControlLabel, Radio } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
-import { Field } from "formik";
+import { Field, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import { EMPTY, PersonalInformationProps, minYear, today } from "./page";
+import { Anamnesis, EMPTY, minYear, today } from "./page";
 
 const getImc = ({ size, weight }: { size: number; weight: number }) => {
   if (size && weight) {
@@ -25,10 +25,9 @@ function calculateAge(date: Date) {
   return age;
 }
 
-export const PersonalInformation = ({
-  values,
-  errors,
-}: PersonalInformationProps) => {
+export const PersonalInformation = () => {
+  const { values, errors } = useFormikContext<Anamnesis>();
+
   return (
     <Grid container spacing={2}>
       <Grid xs={3} display="flex" alignItems="center">

@@ -17,10 +17,17 @@ import {
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
 import { subYears } from "date-fns";
-import { Field, Form, Formik } from "formik";
+import {
+  ArrayHelpers,
+  Field,
+  FieldArray,
+  Form,
+  Formik,
+  useFormikContext,
+} from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import React from "react";
+import React, { ChangeEvent } from "react";
 import yup from "../../../../validation";
 import { PersonalInformation } from "./PersonalInformation";
 import {
@@ -47,38 +54,77 @@ const foodConsumptionsGroup2 = {
   items: foodConsumptions.items.slice(4),
 };
 
+const initialValues = {
+  occupation: "",
+  sex: "",
+  birthdate: null,
+  weight: null,
+  size: null,
+  other: "",
+  antecedents: [],
+  problems_other: [],
+  problems_cardio: [],
+  problems_digestive: [],
+  problems_loc: [],
+  problems_snc: [],
+  fc: null,
+  fr: null,
+  t: null,
+  pa: null,
+  consumptions_alcohol: [],
+  consumptions_tobacco: [],
+  consumptions_tea: [],
+  other2: "",
+  salt_consumption: [],
+  salt_addition: [],
+  other3: "",
+  physicalExercises: "",
+  labTests: [],
+};
+
+export type Anamnesis = {
+  occupation: string;
+  sex: string;
+  birthdate: Date;
+  weight: number;
+  size: number;
+  other: string;
+  antecedents: never[];
+  problems_other: never[];
+  problems_cardio: never[];
+  problems_digestive: never[];
+  problems_loc: never[];
+  problems_snc: never[];
+  fc: number;
+  fr: number;
+  t: number;
+  pa: number;
+  consumptions_alcohol: never[];
+  consumptions_tobacco: never[];
+  consumptions_tea: never[];
+  other2: string;
+  salt_consumption: never[];
+  salt_addition: never[];
+  other3: string;
+  physicalExercises: string;
+  labTests: never[];
+};
+
+const emptyLabTest = {
+  name: "",
+  date: null,
+  result: "",
+  normalRange: "",
+  comments: "",
+};
+
 export default function PatientInterview() {
   return (
     <div>
       <Title>Ficha de anamnesis farmacológica</Title>
       <Divider />
       <Formik
-        initialValues={{
-          occupation: "",
-          sex: "",
-          birthdate: null,
-          weight: null,
-          size: null,
-          other: "",
-          antecedents: [],
-          problems_other: [],
-          problems_cardio: [],
-          problems_digestive: [],
-          problems_loc: [],
-          problems_snc: [],
-          fc: null,
-          fr: null,
-          t: null,
-          pa: null,
-          consumptions_alcohol: [],
-          consumptions_tobacco: [],
-          consumptions_tea: [],
-          other2: "",
-          salt_consumption: [],
-          salt_addition: [],
-          other3: "",
-          physicalExercises: "",
-        }}
+        initialValues={initialValues}
         validationSchema={yup.object({
           occupation: yup.string().required().label("La ocupación"),
           birthdate: yup
@@ -108,7 +154,7 @@ export default function PatientInterview() {
                 </Grid>
                 <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
               </Grid>
-              <PersonalInformation values={values} errors={errors} />
+              <PersonalInformation />
               <Subtitle component="h4">2. Historia de salud</Subtitle>
               <Subtitle component="h5">2.1 Antecedentes patológicos</Subtitle>
               <PathologicalAntecedents />
@@ -272,6 +318,8 @@ const PathologicalAntecedents = () => (
 );
 
 const LabTests = () => {
+  const { values, setFieldValue } = useFormikContext<Anamnesis>();
+
   return (
     <Box>
       <Stack spacing={2} direction="row" alignItems="center">
@@ -283,77 +331,93 @@ const LabTests = () => {
           id="existLabTests"
           name="existLabTests"
           row
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setFieldValue(
+              "labTests",
+              e.target.value === "si" ? [emptyLabTest] : []
+            );
+          }}
         >
           <FormControlLabel
-            value={true}
+            value="si"
             control={<Radio sx={{ color: blue[700] }} />}
             label="Si"
           />
           <FormControlLabel
-            value={false}
+            value="no"
             control={<Radio sx={{ color: blue[700] }} />}
             label="No"
           />
         </Field>
       </Stack>
       <Stack>
-        <Grid container spacing={1}>
-          <Grid xs={12} display="flex" justifyContent="end">
-            <Fab color="primary" aria-label="delete" onClick={() => {}}>
-              <CloseIcon />
-            </Fab>
-          </Grid>
-          <Grid xs={6}>
-            <Field
-              name="other"
-              label="Examen de laboratorio o prueba diagnostica"
-              component={TextField}
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>
-          <Grid xs={3}>
-            <Field
-              component={DatePicker}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  label: "Fecha",
-                },
-              }}
-              name="birthdate"
-            />
-          </Grid>
-          <Grid xs={3}>
-            <Field
-              name="other"
-              label="Resultado"
-              component={TextField}
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>
-          <Grid xs={6}>
-            <Field
-              name="other"
-              label="Rango de valor normal"
-              component={TextField}
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>
-          <Grid xs={6}>
-            <Field
-              name="other"
-              label="Evaluacion/comentariosl"
-              component={TextField}
-              variant="outlined"
-              fullWidth
-              multiline
-              rows={4}
-            />
-          </Grid>
-        </Grid>
+        <FieldArray name="labTests">
+          {(arrayHelpers: ArrayHelpers) =>
+            values.labTests.map((x, index) => (
+              <Grid container spacing={1} key={index}>
+                <Grid xs={12} display="flex" justifyContent="end">
+                  <Fab
+                    color="primary"
+                    aria-label="delete"
+                    onClick={arrayHelpers.handleRemove(index)}
+                  >
+                    <CloseIcon />
+                  </Fab>
+                </Grid>
+                <Grid xs={6}>
+                  <Field
+                    name={`labTests.${index}.name`}
+                    label="Examen de laboratorio o prueba diagnostica"
+                    component={TextField}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid xs={3}>
+                  <Field
+                    component={DatePicker}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        label: "Fecha",
+                      },
+                    }}
+                    name={`labTests.${index}.date`}
+                  />
+                </Grid>
+                <Grid xs={3}>
+                  <Field
+                    name={`labTests.${index}.result`}
+                    label="Resultado"
+                    component={TextField}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid xs={6}>
+                  <Field
+                    name={`labTests.${index}.normalRange`}
+                    label="Rango de valor normal"
+                    component={TextField}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid xs={6}>
+                  <Field
+                    name={`labTests.${index}.comments`}
+                    label="Evaluacion/comentarios"
+                    component={TextField}
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    rows={4}
+                  />
+                </Grid>
+              </Grid>
+            ))
+          }
+        </FieldArray>
       </Stack>
     </Box>
   );
@@ -515,10 +579,4 @@ const VitalFunctions = () => {
       </Grid>
     </Grid>
   );
-};
-
-export type PersonalInformationProps = {
-  //TODO: Arthur revisar
-  values: any;
-  errors: any;
 };
