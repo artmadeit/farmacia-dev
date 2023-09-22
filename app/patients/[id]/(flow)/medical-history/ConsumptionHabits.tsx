@@ -50,7 +50,7 @@ export const ConsumptionHabits = () => (
           fullWidth
         />
         <Field
-          name="other2"
+          name="otherConsumptionHabits"
           label="Otros:"
           component={TextField}
           variant="outlined"

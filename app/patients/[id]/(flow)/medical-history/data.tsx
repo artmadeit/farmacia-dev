@@ -21,7 +21,7 @@ export type GroupItems = {
 
 export const healthProblems: GroupItems[] = [
   {
-    id: "problems_snc",
+    id: "sncProblems",
     label: "SNC",
     items: [
       { label: "Tos", name: "TOS" },
@@ -35,7 +35,7 @@ export const healthProblems: GroupItems[] = [
   },
   {
     label: "Digestivo",
-    id: "problems_digestive",
+    id: "digestiveProblems",
     items: [
       {
         label: "Dolor y/o ardor de estómago",
@@ -49,7 +49,7 @@ export const healthProblems: GroupItems[] = [
   },
   {
     label: "Cardiovascular",
-    id: "problems_cardio",
+    id: "cardioProblems",
     items: [
       { label: "Palpitaciones", name: "PALPITACIONES" },
       { label: "Taquicardia", name: "TAQUICARDIA" },
@@ -62,7 +62,7 @@ export const healthProblems: GroupItems[] = [
   },
   {
     label: "Otros",
-    id: "problems_others",
+    id: "otherProblems",
     items: [
       { label: "Broncoespasmo", name: "BRONCOESPASMO" },
       { label: "Disgeusia", name: "DISGEUSIA" },
@@ -77,7 +77,7 @@ export const healthProblems: GroupItems[] = [
   },
   {
     label: "Ap. Locomotor",
-    id: "problems_loc",
+    id: "locomotiveProblems",
     items: [
       { label: "Debilidad muscular", name: "DEBILIDAD MUSCULAR" },
       { label: "Dolores articulares", name: "DOLORES ARTICULARES" },
@@ -87,7 +87,7 @@ export const healthProblems: GroupItems[] = [
   },
   {
     label: "Metabólicas",
-    id: "problems_metabolics",
+    id: "metabolicProblems",
     items: [
       { label: "Hiponatremia", name: "HIPONATREMIA" },
       { label: "Hipopotasemia", name: "HIPOPOTASEMIA" },
@@ -100,7 +100,7 @@ export const healthProblems: GroupItems[] = [
   },
   {
     label: "Piel",
-    id: "problems_piel",
+    id: "skinProblems",
     items: [
       { label: "Erupciones", name: "ERUPCIONES" },
       { label: "Prurito", name: "PRURITO" },
@@ -112,7 +112,7 @@ export const healthProblems: GroupItems[] = [
 export const consumptionHabits = [
   {
     label: "Alcohol",
-    id: "consumptions_alcohol",
+    id: "alcoholConsumption",
     no: { label: "No", name: "NO" },
     types: [
       { label: "Eventual", name: "EVENTUALLY" },
@@ -122,7 +122,7 @@ export const consumptionHabits = [
   },
   {
     label: "Tabaco",
-    id: "consumptions_tobacco",
+    id: "tobaccoConsumption",
     no: { label: "No", name: "NO" },
     types: [
       { label: "Eventual", name: "EVENTUALLY" },
@@ -133,7 +133,7 @@ export const consumptionHabits = [
   },
   {
     label: "Té",
-    id: "consumptions_tea",
+    id: "teaConsumption",
     no: { label: "No", name: "NO" },
     types: [
       { label: "Eventual", name: "EVENTUALLY" },
@@ -144,7 +144,7 @@ export const consumptionHabits = [
 ];
 
 export const foodConsumptions = {
-  id: "food_consumption",
+  id: "foodHabits",
   label: "Alimentos/consume",
   items: [
     { label: "Carnes rojas", name: "CARNES ROJAS" },
@@ -160,7 +160,7 @@ export const foodConsumptions = {
 export const foodHabits = [
   {
     label: "Sal en dieta",
-    id: "salt_consumption",
+    id: "saltConsumption",
     items: [
       { label: "Hiposódica", name: "HIPOSODICA" },
       { label: "Normosódica", name: "NORMOSODICA" },
@@ -169,7 +169,7 @@ export const foodHabits = [
   },
   {
     label: "¿Adiciona a comidas?",
-    id: "salt_addition",
+    id: "saltAddition",
     items: [
       { label: "Si", name: "YES" },
       { label: "No", name: "NO" },

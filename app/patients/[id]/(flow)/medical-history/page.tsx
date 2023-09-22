@@ -8,22 +8,22 @@ import { blue } from "@mui/material/colors";
 import { subYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
-import React, { ChangeEvent } from "react";
+import React from "react";
 import yup from "../../../../validation";
+import { CheckboxGroup } from "./CheckboxGroup";
+import { ConsumptionHabits } from "./ConsumptionHabits";
+import { LabTests } from "./LabTests";
+import { OutlinedPaper } from "./OutlinedPaper";
 import { PersonalInformation } from "./PersonalInformation";
+import { PhysicalExercises } from "./PhysicalExercises";
+import { Subtitle } from "./Subtitle";
+import { VitalFunctions } from "./VitalFunctions";
 import {
   antecedents,
   foodConsumptions,
   foodHabits,
   healthProblems,
 } from "./data";
-import { LabTests } from "./LabTests";
-import { Subtitle } from "./Subtitle";
-import { OutlinedPaper } from "./OutlinedPaper";
-import { PhysicalExercises } from "./PhysicalExercises";
-import { VitalFunctions } from "./VitalFunctions";
-import { CheckboxGroup } from "./CheckboxGroup";
-import { ConsumptionHabits } from "./ConsumptionHabits";
 
 export const minYear = subYears(new Date(), 103);
 
@@ -40,30 +40,40 @@ const foodConsumptionsGroup2 = {
   items: foodConsumptions.items.slice(4),
 };
 
-const initialValues = {
+const initialValues: Anamnesis = {
   occupation: "",
   sex: "",
   birthdate: null,
   weight: null,
   size: null,
-  other: "",
+
   antecedents: [],
-  problems_other: [],
-  problems_cardio: [],
-  problems_digestive: [],
-  problems_loc: [],
-  problems_snc: [],
+  otherAntecedents: "",
+
+  sncProblems: [],
+  digestiveProblems: [],
+  cardioProblems: [],
+  otherProblems: [],
+  locomotiveProblems: [],
+  metabolicProblems: [],
+  skinProblems: [],
+
   fc: null,
   fr: null,
   t: null,
   pa: null,
-  consumptions_alcohol: [],
-  consumptions_tobacco: [],
-  consumptions_tea: [],
-  other2: "",
-  salt_consumption: [],
-  salt_addition: [],
-  other3: "",
+
+  alcoholConsumption: "",
+  tobaccoConsumption: "",
+  teaConsumption: "",
+  waterConsumption: "",
+  otherConsumptionHabits: "",
+
+  saltConsumption: "",
+  saltAddition: "",
+  foodHabits: [],
+  otherFoodHabits: "",
+
   physicalExercises: "",
   existLabTests: null,
   labTests: [],
@@ -73,29 +83,33 @@ const initialValues = {
 export type Anamnesis = {
   occupation: string;
   sex: string;
-  birthdate: Date;
-  weight: number;
-  size: number;
-  other: string;
-  antecedents: never[];
-  problems_other: never[];
-  problems_cardio: never[];
-  problems_digestive: never[];
-  problems_loc: never[];
-  problems_snc: never[];
-  fc: number;
-  fr: number;
-  t: number;
-  pa: number;
-  consumptions_alcohol: never[];
-  consumptions_tobacco: never[];
-  consumptions_tea: never[];
-  other2: string;
-  salt_consumption: never[];
-  salt_addition: never[];
-  other3: string;
+  birthdate: Date | null;
+  weight: number | null;
+  size: number | null;
+  otherAntecedents: string;
+  antecedents: string[];
+  otherProblems: string[];
+  cardioProblems: string[];
+  digestiveProblems: string[];
+  locomotiveProblems: string[];
+  sncProblems: string[];
+  metabolicProblems: string[];
+  skinProblems: string[];
+  fc: number | null;
+  fr: number | null;
+  t: number | null;
+  pa: number | null;
+  alcoholConsumption: string;
+  tobaccoConsumption: string;
+  teaConsumption: string;
+  waterConsumption: string;
+  otherConsumptionHabits: string;
+  saltConsumption: string;
+  saltAddition: string;
+  foodHabits: string[];
+  otherFoodHabits: string;
   physicalExercises: string;
-  existLabTests: boolean;
+  existLabTests: boolean | null;
   labTests: never[];
   diagnosis: string;
 };
@@ -213,7 +227,7 @@ const FoodHabits = () => (
     <Grid xs={3}>
       <Field
         component={TextField}
-        name="other3"
+        name="otherFoodHabits"
         label="Otros:"
         variant="outlined"
         multiline
@@ -252,7 +266,7 @@ const PathologicalAntecedents = () => (
     </Grid>
     <Grid xs={4}>
       <Field
-        name="other"
+        name="otherAntecedents"
         label="Otros:"
         component={TextField}
         variant="outlined"
