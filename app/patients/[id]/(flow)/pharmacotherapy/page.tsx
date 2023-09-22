@@ -49,6 +49,13 @@ const emptyFoodsRow = {
   date: null,
 };
 
+const emptyAdverseReactionRow = {
+  date: null, 
+  medicine:"",
+  dosis: "",
+  adverseReaction:"",
+}
+
 export default function Pharmacotherapy() {
   return (
     <div>
@@ -67,6 +74,11 @@ export default function Pharmacotherapy() {
               ...emptyFoodsRow,
             },
           ],
+          adverseReaction: [
+            {
+              ...emptyAdverseReactionRow,
+            }
+          ]
         }}
         onSubmit={() => {}}
       >
@@ -391,6 +403,30 @@ export default function Pharmacotherapy() {
                         </TableCell>
                       </TableRow>
                     </TableFooter>
+                  </Table>
+                )}
+              </FieldArray>
+            </TableContainer>
+            <Grid container spacing={2} pt={4}>
+              <Grid xs={10} style={{ margin: "10px 0px" }}>
+                <strong>3.2 Antecedentes de reacción adversa medicamentosa (RAM)</strong>
+              </Grid>
+            </Grid>
+            <TableContainer>
+              <FieldArray name="adverseReaction">
+                {(arrayHelpers: ArrayHelpers) => (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Fecha</TableCell>
+                        <TableCell>Medicamento</TableCell>
+                        <TableCell>Dosis</TableCell>
+                        <TableCell>Reacción adversa medicamentosa</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    {/* <TableBody>
+
+                    </TableBody> */}
                   </Table>
                 )}
               </FieldArray>
