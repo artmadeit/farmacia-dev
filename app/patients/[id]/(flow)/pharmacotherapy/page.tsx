@@ -50,11 +50,11 @@ const emptyFoodsRow = {
 };
 
 const emptyAdverseReactionRow = {
-  date: null, 
-  medicine:"",
-  dosis: "",
-  adverseReaction:"",
-}
+  date: null,
+  medicine: "",
+  dose: "",
+  adverseReactionOfDrug: "",
+};
 
 export default function Pharmacotherapy() {
   return (
@@ -77,8 +77,8 @@ export default function Pharmacotherapy() {
           adverseReaction: [
             {
               ...emptyAdverseReactionRow,
-            }
-          ]
+            },
+          ],
         }}
         onSubmit={() => {}}
       >
@@ -364,7 +364,7 @@ export default function Pharmacotherapy() {
                           <TableCell>
                             <Field
                               component={TextField}
-                              name={`food.${index}.description`}
+                              name={`foods.${index}.description`}
                               variant="outlined"
                               fullWidth
                             />
@@ -372,8 +372,8 @@ export default function Pharmacotherapy() {
                           <TableCell>
                             <Field
                               component={DatePicker}
+                              name={`foods.${index}.date`}
                               fullWidth
-                              name={`food.${index}.date`}
                             />
                           </TableCell>
                           <TableCell>
@@ -409,7 +409,9 @@ export default function Pharmacotherapy() {
             </TableContainer>
             <Grid container spacing={2} pt={4}>
               <Grid xs={10} style={{ margin: "10px 0px" }}>
-                <strong>3.2 Antecedentes de reacción adversa medicamentosa (RAM)</strong>
+                <strong>
+                  3.2 Antecedentes de reacción adversa medicamentosa (RAM)
+                </strong>
               </Grid>
             </Grid>
             <TableContainer>
@@ -424,16 +426,49 @@ export default function Pharmacotherapy() {
                         <TableCell>Reacción adversa medicamentosa</TableCell>
                       </TableRow>
                     </TableHead>
-                    {/* <TableBody>
-
-                    </TableBody> */}
+                    <TableBody>
+                      {values.adverseReaction.map((x, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Field
+                              component={DatePicker}
+                              name={`adverseReaction.${index}.date`}
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`adverseReaction.${index}.medicine`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`adverseReaction.${index}.dose`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell style={{ minWidth: 500 }}>
+                            <Field
+                              component={TextField}
+                              name={`adverseReaction.${index}.adverseReactionOfDrug`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 )}
               </FieldArray>
             </TableContainer>
 
             {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
-
 examen de laboratorio o prueba diagnostica	fecha	resultado
 rango de valor normal	evaluacion/comentarios */}
           </Form>
