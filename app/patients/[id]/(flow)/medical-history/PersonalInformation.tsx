@@ -7,9 +7,15 @@ import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { Anamnesis, EMPTY, minYear, today } from "./page";
 
-const getImc = ({ size, weight }: { size: number; weight: number }) => {
+const getImc = ({
+  size,
+  weight,
+}: {
+  size: number | null;
+  weight: number | null;
+}) => {
   if (size && weight) {
-    return weight / size ** 2;
+    return (weight / size ** 2).toFixed(1);
   }
 
   return EMPTY;

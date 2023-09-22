@@ -149,38 +149,36 @@ export default function PatientInterview() {
           // TODO:
         }}
       >
-        {({ values, errors }) => (
-          <Form>
-            <Stack spacing={2} pt={2}>
-              <Grid container>
-                <Grid xs={10}>
-                  <Subtitle component="h4">1. Datos personales</Subtitle>
-                </Grid>
-                <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
+        <Form>
+          <Stack spacing={2} pt={2}>
+            <Grid container>
+              <Grid xs={10}>
+                <Subtitle component="h4">1. Datos personales</Subtitle>
               </Grid>
-              <PersonalInformation />
-              <Subtitle component="h4">2. Historia de salud</Subtitle>
-              <Subtitle component="h5">2.1 Antecedentes patológicos</Subtitle>
-              <PathologicalAntecedents />
-              <Subtitle component="h5">2.2 Problemas de salud</Subtitle>
-              <HealthProblems />
-              <Subtitle component="h5">2.3 Funciones vitales</Subtitle>
-              <VitalFunctions />
-              <Subtitle component="h5">2.4 Hábitos de consumo</Subtitle>
-              <ConsumptionHabits />
-              <Subtitle component="h5">
-                2.5 Hábitos alimenticios y/o dietéticos
-              </Subtitle>
-              <FoodHabits />
-              <Subtitle component="h5">2.6 Ejercicios físicos</Subtitle>
-              <PhysicalExercises />
-              <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
-              <LabTests />
-              <Subtitle component="h5">2.8 Diagnóstico</Subtitle>
-              <Diagnosis />
-            </Stack>
-          </Form>
-        )}
+              <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
+            </Grid>
+            <PersonalInformation />
+            <Subtitle component="h4">2. Historia de salud</Subtitle>
+            <Subtitle component="h5">2.1 Antecedentes patológicos</Subtitle>
+            <PathologicalAntecedents />
+            <Subtitle component="h5">2.2 Problemas de salud</Subtitle>
+            <HealthProblems />
+            <Subtitle component="h5">2.3 Funciones vitales</Subtitle>
+            <VitalFunctions />
+            <Subtitle component="h5">2.4 Hábitos de consumo</Subtitle>
+            <ConsumptionHabits />
+            <Subtitle component="h5">
+              2.5 Hábitos alimenticios y/o dietéticos
+            </Subtitle>
+            <FoodHabits />
+            <Subtitle component="h5">2.6 Ejercicios físicos</Subtitle>
+            <PhysicalExercises />
+            <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
+            <LabTests />
+            <Subtitle component="h5">2.8 Diagnóstico</Subtitle>
+            <Diagnosis />
+          </Stack>
+        </Form>
       </Formik>
     </div>
   );
