@@ -36,7 +36,7 @@ export const PersonalInformation = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid xs={3} display="flex" alignItems="center">
+      <Grid xs={3}>
         <Field
           label="Ocupación"
           name="occupation"
@@ -45,7 +45,7 @@ export const PersonalInformation = () => {
           variant="outlined"
         />
       </Grid>
-      <Grid xs={3} display="flex" alignItems="center">
+      <Grid xs={3}>
         <Field
           component={DatePicker}
           minDate={minYear}
@@ -60,7 +60,7 @@ export const PersonalInformation = () => {
           name="birthdate"
         />
       </Grid>
-      <Grid xs={2} display="flex" alignItems="center">
+      <Grid xs={2} p={3}>
         Edad: {values.birthdate ? calculateAge(values.birthdate) : EMPTY}
       </Grid>
       <Grid xs={2}>
@@ -70,7 +70,7 @@ export const PersonalInformation = () => {
           <FormControlLabel value="FEMALE" control={<Radio />} label="F" />
         </Field>
       </Grid>
-      <Grid xs={3} display="flex" alignItems="center">
+      <Grid xs={3}>
         <Field
           label="Peso (kg):"
           name="weight"
@@ -80,7 +80,7 @@ export const PersonalInformation = () => {
           fullWidth
         />
       </Grid>
-      <Grid xs={3} display="flex" alignItems="center">
+      <Grid xs={3}>
         <Field
           label="Talla (m):"
           name="size"
@@ -90,7 +90,7 @@ export const PersonalInformation = () => {
           fullWidth
         />
       </Grid>
-      <Grid xs={4} display="flex" alignItems="center">
+      <Grid xs={4} p={3}>
         IMC: {getImc(values)}
       </Grid>
     </Grid>
