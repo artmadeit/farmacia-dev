@@ -2,7 +2,7 @@
 
 import { Title } from "@/app/(components)/Title";
 import { formatDate } from "@/app/date";
-import { Divider, FormControlLabel, Radio, Stack } from "@mui/material";
+import { Box, Divider, FormControlLabel, Radio, Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
 import { subYears } from "date-fns";
@@ -67,6 +67,7 @@ const initialValues = {
   physicalExercises: "",
   existLabTests: null,
   labTests: [],
+  diagnosis: "",
 };
 
 export type Anamnesis = {
@@ -96,6 +97,7 @@ export type Anamnesis = {
   physicalExercises: string;
   existLabTests: boolean;
   labTests: never[];
+  diagnosis: string;
 };
 
 export const emptyLabTest = {
@@ -161,6 +163,7 @@ export default function PatientInterview() {
               <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
               <LabTests />
               <Subtitle component="h5">2.8 Diagnóstico</Subtitle>
+              <Diagnosis />
             </Stack>
           </Form>
         )}
@@ -168,6 +171,17 @@ export default function PatientInterview() {
     </div>
   );
 }
+
+const Diagnosis = () => (
+  <Box>
+    <Field
+      name="diagnosis"
+      component={TextField}
+      variant="outlined"
+      fullWidth
+    />
+  </Box>
+);
 
 const FoodHabits = () => (
   <Grid container component={OutlinedPaper}>
