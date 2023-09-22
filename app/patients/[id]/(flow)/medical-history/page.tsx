@@ -2,9 +2,11 @@
 
 import { Title } from "@/app/(components)/Title";
 import { formatDate } from "@/app/date";
+import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
+  Button,
   Divider,
   Fab,
   FormControlLabel,
@@ -79,6 +81,7 @@ const initialValues = {
   salt_addition: [],
   other3: "",
   physicalExercises: "",
+  existLabTests: null,
   labTests: [],
 };
 
@@ -107,6 +110,7 @@ export type Anamnesis = {
   salt_addition: never[];
   other3: string;
   physicalExercises: string;
+  existLabTests: boolean;
   labTests: never[];
 };
 
@@ -173,7 +177,6 @@ export default function PatientInterview() {
               <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
               <LabTests />
               <Subtitle component="h5">2.8 Diagnóstico</Subtitle>
-              <div>{JSON.stringify(values)}</div>
             </Stack>
           </Form>
         )}
@@ -332,19 +335,18 @@ const LabTests = () => {
           name="existLabTests"
           row
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setFieldValue(
-              "labTests",
-              e.target.value === "si" ? [emptyLabTest] : []
-            );
+            const existLabTests = e.target.value === "true";
+            setFieldValue("labTests", existLabTests ? [emptyLabTest] : []);
+            setFieldValue("existLabTests", existLabTests);
           }}
         >
           <FormControlLabel
-            value="si"
+            value={true}
             control={<Radio sx={{ color: blue[700] }} />}
             label="Si"
           />
           <FormControlLabel
-            value="no"
+            value={false}
             control={<Radio sx={{ color: blue[700] }} />}
             label="No"
           />
@@ -352,71 +354,83 @@ const LabTests = () => {
       </Stack>
       <Stack>
         <FieldArray name="labTests">
-          {(arrayHelpers: ArrayHelpers) =>
-            values.labTests.map((x, index) => (
-              <Grid container spacing={1} key={index}>
-                <Grid xs={12} display="flex" justifyContent="end">
-                  <Fab
-                    color="primary"
-                    aria-label="delete"
-                    onClick={arrayHelpers.handleRemove(index)}
-                  >
-                    <CloseIcon />
-                  </Fab>
+          {(arrayHelpers: ArrayHelpers) => (
+            <Stack spacing={2}>
+              {values.labTests.map((x, index) => (
+                <Grid container spacing={1} key={index}>
+                  <Grid xs={12} display="flex" justifyContent="end">
+                    <Fab
+                      color="primary"
+                      aria-label="delete"
+                      onClick={arrayHelpers.handleRemove(index)}
+                    >
+                      <CloseIcon />
+                    </Fab>
+                  </Grid>
+                  <Grid xs={6}>
+                    <Field
+                      name={`labTests.${index}.name`}
+                      label="Examen de laboratorio o prueba diagnostica"
+                      component={TextField}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid xs={3}>
+                    <Field
+                      component={DatePicker}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          label: "Fecha",
+                        },
+                      }}
+                      name={`labTests.${index}.date`}
+                    />
+                  </Grid>
+                  <Grid xs={3}>
+                    <Field
+                      name={`labTests.${index}.result`}
+                      label="Resultado"
+                      component={TextField}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid xs={6}>
+                    <Field
+                      name={`labTests.${index}.normalRange`}
+                      label="Rango de valor normal"
+                      component={TextField}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid xs={6}>
+                    <Field
+                      name={`labTests.${index}.comments`}
+                      label="Evaluacion/comentarios"
+                      component={TextField}
+                      variant="outlined"
+                      fullWidth
+                      multiline
+                      rows={4}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid xs={6}>
-                  <Field
-                    name={`labTests.${index}.name`}
-                    label="Examen de laboratorio o prueba diagnostica"
-                    component={TextField}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid xs={3}>
-                  <Field
-                    component={DatePicker}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        label: "Fecha",
-                      },
-                    }}
-                    name={`labTests.${index}.date`}
-                  />
-                </Grid>
-                <Grid xs={3}>
-                  <Field
-                    name={`labTests.${index}.result`}
-                    label="Resultado"
-                    component={TextField}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid xs={6}>
-                  <Field
-                    name={`labTests.${index}.normalRange`}
-                    label="Rango de valor normal"
-                    component={TextField}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid xs={6}>
-                  <Field
-                    name={`labTests.${index}.comments`}
-                    label="Evaluacion/comentarios"
-                    component={TextField}
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    rows={4}
-                  />
-                </Grid>
-              </Grid>
-            ))
-          }
+              ))}
+              {values.labTests.length > 0 && (
+                <Button
+                  startIcon={<AddIcon />}
+                  onClick={() => {
+                    arrayHelpers.push(emptyLabTest);
+                  }}
+                >
+                  Agregar otra prueba de laboratorio
+                </Button>
+              )}
+            </Stack>
+          )}
         </FieldArray>
       </Stack>
     </Box>
