@@ -14,6 +14,7 @@ import {
   TableFooter,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
@@ -21,6 +22,7 @@ import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const emptyHistoryRow = {
   administration: "",
@@ -287,12 +289,14 @@ export default function Pharmacotherapy() {
                             />
                           </TableCell>
                           <TableCell>
-                            <IconButton
-                              aria-label="delete"
-                              onClick={() => arrayHelpers.remove(index)}
-                            >
-                              <CloseIcon />
-                            </IconButton>
+                            <Tooltip title="Eliminar">
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -331,6 +335,7 @@ export default function Pharmacotherapy() {
                           Descripción
                         </TableCell>
                         <TableCell>Fecha</TableCell>
+                        <TableCell></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -358,7 +363,17 @@ export default function Pharmacotherapy() {
                               fullWidth
                               name={`food.${index}.date`}
                             />
-                          </TableCell>                          
+                          </TableCell>
+                          <TableCell>
+                            <Tooltip title="Eliminar">
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
