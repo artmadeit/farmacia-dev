@@ -2,44 +2,28 @@
 
 import { Title } from "@/app/(components)/Title";
 import { formatDate } from "@/app/date";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
-import {
-  Box,
-  Button,
-  Divider,
-  Fab,
-  FormControlLabel,
-  Paper,
-  PaperProps,
-  Radio,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Divider, FormControlLabel, Radio, Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
 import { subYears } from "date-fns";
-import {
-  ArrayHelpers,
-  Field,
-  FieldArray,
-  Form,
-  Formik,
-  useFormikContext,
-} from "formik";
+import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
-import { DatePicker } from "formik-mui-x-date-pickers";
 import React, { ChangeEvent } from "react";
 import yup from "../../../../validation";
 import { PersonalInformation } from "./PersonalInformation";
 import {
-  GroupItems,
   antecedents,
-  consumptionHabits,
   foodConsumptions,
   foodHabits,
   healthProblems,
 } from "./data";
+import { LabTests } from "./LabTests";
+import { Subtitle } from "./Subtitle";
+import { OutlinedPaper } from "./OutlinedPaper";
+import { PhysicalExercises } from "./PhysicalExercises";
+import { VitalFunctions } from "./VitalFunctions";
+import { CheckboxGroup } from "./CheckboxGroup";
+import { ConsumptionHabits } from "./ConsumptionHabits";
 
 export const minYear = subYears(new Date(), 103);
 
@@ -114,7 +98,7 @@ export type Anamnesis = {
   labTests: never[];
 };
 
-const emptyLabTest = {
+export const emptyLabTest = {
   name: "",
   date: null,
   result: "",
@@ -226,60 +210,6 @@ const FoodHabits = () => (
   </Grid>
 );
 
-const ConsumptionHabits = () => (
-  <Grid container component={OutlinedPaper}>
-    <Grid xs={8} container>
-      {consumptionHabits.map((group, index) => (
-        <Grid key={index} xs={4}>
-          <Subtitle component="h6">{group.label}</Subtitle>
-          <Field component={RadioGroup} name={group.id}>
-            <FormControlLabel
-              value={group.no.name}
-              control={<Radio sx={{ color: blue[700] }} />}
-              label={group.no.label}
-            />
-            <Subtitle component="h6">Tipos: </Subtitle>
-            {group.types.map((type) => (
-              <FormControlLabel
-                key={type.name}
-                value={type.name}
-                control={
-                  <Radio
-                    sx={{
-                      color: blue[700],
-                    }}
-                  />
-                }
-                label={type.label}
-              />
-            ))}
-          </Field>
-        </Grid>
-      ))}
-    </Grid>
-    <Grid xs={4}>
-      <Stack spacing={2}>
-        <Field
-          component={TextField}
-          name="waterConsumption"
-          label="Cantidad de agua que consume:"
-          variant="outlined"
-          fullWidth
-        />
-        <Field
-          name="other2"
-          label="Otros:"
-          component={TextField}
-          variant="outlined"
-          multiline
-          rows={4}
-          fullWidth
-        />
-      </Stack>
-    </Grid>
-  </Grid>
-);
-
 const HealthProblems = () => (
   <Grid container component={OutlinedPaper}>
     {healthProblems.map((group, index) => (
@@ -319,278 +249,3 @@ const PathologicalAntecedents = () => (
     </Grid>
   </Grid>
 );
-
-const LabTests = () => {
-  const { values, setFieldValue } = useFormikContext<Anamnesis>();
-
-  return (
-    <Box>
-      <Stack spacing={2} direction="row" alignItems="center">
-        <label htmlFor="existLabTests">
-          ¿Se realizaron examenes de laboratorio u otra prueba diagnostica?
-        </label>
-        <Field
-          component={RadioGroup}
-          id="existLabTests"
-          name="existLabTests"
-          row
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const existLabTests = e.target.value === "true";
-            setFieldValue("labTests", existLabTests ? [emptyLabTest] : []);
-            setFieldValue("existLabTests", existLabTests);
-          }}
-        >
-          <FormControlLabel
-            value={true}
-            control={<Radio sx={{ color: blue[700] }} />}
-            label="Si"
-          />
-          <FormControlLabel
-            value={false}
-            control={<Radio sx={{ color: blue[700] }} />}
-            label="No"
-          />
-        </Field>
-      </Stack>
-      <Stack>
-        <FieldArray name="labTests">
-          {(arrayHelpers: ArrayHelpers) => (
-            <Stack spacing={2}>
-              {values.labTests.map((x, index) => (
-                <Grid container spacing={1} key={index}>
-                  <Grid xs={12} display="flex" justifyContent="end">
-                    <Fab
-                      color="primary"
-                      aria-label="delete"
-                      onClick={arrayHelpers.handleRemove(index)}
-                    >
-                      <CloseIcon />
-                    </Fab>
-                  </Grid>
-                  <Grid xs={6}>
-                    <Field
-                      name={`labTests.${index}.name`}
-                      label="Examen de laboratorio o prueba diagnostica"
-                      component={TextField}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid xs={3}>
-                    <Field
-                      component={DatePicker}
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          label: "Fecha",
-                        },
-                      }}
-                      name={`labTests.${index}.date`}
-                    />
-                  </Grid>
-                  <Grid xs={3}>
-                    <Field
-                      name={`labTests.${index}.result`}
-                      label="Resultado"
-                      component={TextField}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid xs={6}>
-                    <Field
-                      name={`labTests.${index}.normalRange`}
-                      label="Rango de valor normal"
-                      component={TextField}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid xs={6}>
-                    <Field
-                      name={`labTests.${index}.comments`}
-                      label="Evaluacion/comentarios"
-                      component={TextField}
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                    />
-                  </Grid>
-                </Grid>
-              ))}
-              {values.labTests.length > 0 && (
-                <Button
-                  startIcon={<AddIcon />}
-                  onClick={() => {
-                    arrayHelpers.push(emptyLabTest);
-                  }}
-                >
-                  Agregar otra prueba de laboratorio
-                </Button>
-              )}
-            </Stack>
-          )}
-        </FieldArray>
-      </Stack>
-    </Box>
-  );
-};
-
-export const Subtitle = ({
-  children,
-  component,
-}: {
-  children: React.ReactNode;
-  component: React.ElementType;
-}) => (
-  <Typography component={component} sx={{ fontWeight: "bold" }} gutterBottom>
-    {children}
-  </Typography>
-);
-
-const OutlinedPaper = ({ children, ...rest }: PaperProps) => (
-  <Paper variant="outlined" sx={{ p: 2 }} {...rest}>
-    {children}
-  </Paper>
-);
-
-const PhysicalExercises = () => {
-  return (
-    <Field component={RadioGroup} name="physicalExercises">
-      <Grid container component={OutlinedPaper}>
-        <Grid xs>
-          <FormControlLabel
-            value="Eventualmente"
-            control={
-              <Radio
-                sx={{
-                  color: blue[700],
-                }}
-              />
-            }
-            label="Eventualmente"
-          />
-        </Grid>
-        <Grid xs>
-          <FormControlLabel
-            value="10-30 min/día"
-            control={
-              <Radio
-                sx={{
-                  color: blue[700],
-                }}
-              />
-            }
-            label="10-30 min/día"
-          />
-        </Grid>
-        <Grid xs>
-          <FormControlLabel
-            value="30-60 min/día"
-            control={
-              <Radio
-                sx={{
-                  color: blue[700],
-                }}
-              />
-            }
-            label="30-60 min/día"
-          />
-        </Grid>
-        <Grid xs>
-          <FormControlLabel
-            value=">60 min/día"
-            control={
-              <Radio
-                sx={{
-                  color: blue[700],
-                }}
-              />
-            }
-            label=">60 min/día"
-          />
-        </Grid>
-        <Grid xs>
-          <FormControlLabel
-            value="Nunca"
-            control={
-              <Radio
-                sx={{
-                  color: blue[700],
-                }}
-              />
-            }
-            label="Nunca"
-          />
-        </Grid>
-      </Grid>
-    </Field>
-  );
-};
-
-const CheckboxGroup = ({ group }: { group: GroupItems }) => {
-  return (
-    <Grid xs={3}>
-      <Subtitle component="h6">{group.label}</Subtitle>
-      <Stack>
-        {group.items.map((item, idx) => (
-          <Field
-            key={idx}
-            component={CheckboxWithLabel}
-            type="checkbox"
-            name={group.id}
-            value={item.name}
-            Label={{ label: item.label }}
-            sx={{
-              color: blue[700],
-            }}
-          />
-        ))}
-      </Stack>
-    </Grid>
-  );
-};
-
-const VitalFunctions = () => {
-  return (
-    <Grid container spacing={2}>
-      <Grid xs={3}>
-        <Field
-          component={TextField}
-          name="fc"
-          label="Frecuencia cárdiaca (LPM):"
-          variant="outlined"
-          fullWidth
-        />
-      </Grid>
-      <Grid xs={3}>
-        <Field
-          component={TextField}
-          name="fr"
-          label="Frecuencia Respiratoria (rpm):"
-          variant="outlined"
-          fullWidth
-        />
-      </Grid>
-      <Grid xs={3}>
-        <Field
-          component={TextField}
-          name="t"
-          label="Temperatura (C°):"
-          variant="outlined"
-          fullWidth
-        />
-      </Grid>
-      <Grid xs={3}>
-        <Field
-          component={TextField}
-          name="pa"
-          label="Presión arterial:"
-          variant="outlined"
-          fullWidth
-        />
-      </Grid>
-    </Grid>
-  );
-};
