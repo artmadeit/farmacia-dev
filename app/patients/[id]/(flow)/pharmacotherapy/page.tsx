@@ -41,6 +41,12 @@ const emptyAllergyRow = {
   date: null,
 };
 
+const emptyFoodsRow = {
+  food: "",
+  description: "",
+  date: null,
+};
+
 export default function Pharmacotherapy() {
   return (
     <div>
@@ -52,6 +58,11 @@ export default function Pharmacotherapy() {
           allergies: [
             {
               ...emptyAllergyRow,
+            },
+          ],
+          foods: [
+            {
+              ...emptyFoodsRow,
             },
           ],
         }}
@@ -309,6 +320,52 @@ export default function Pharmacotherapy() {
                 <strong>Alimentos u otros</strong>
               </Grid>
             </Grid>
+            <TableContainer component={Paper}>
+              <FieldArray name="foods">
+                {(arrayHelpers: ArrayHelpers) => (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Alimento/otro</TableCell>
+                        <TableCell style={{ minWidth: 500 }}>
+                          Descripción
+                        </TableCell>
+                        <TableCell>Fecha</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {values.foods.map((x, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`foods.${index}.food`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`food.${index}.description`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={DatePicker}
+                              fullWidth
+                              name={`food.${index}.date`}
+                            />
+                          </TableCell>                          
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </FieldArray>
+            </TableContainer>
 
             {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
 
