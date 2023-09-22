@@ -368,7 +368,9 @@ export default function Pharmacotherapy() {
                             <Tooltip title="Eliminar">
                               <IconButton
                                 aria-label="delete"
-                                onClick={() => arrayHelpers.remove(index)}
+                                onClick={() => {
+                                  arrayHelpers.remove(index);
+                                }}
                               >
                                 <DeleteIcon />
                               </IconButton>
@@ -377,6 +379,18 @@ export default function Pharmacotherapy() {
                         </TableRow>
                       ))}
                     </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TableCell colSpan={3}>
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() => arrayHelpers.push(emptyFoodsRow)}
+                          >
+                            Agregar alimento
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableFooter>
                   </Table>
                 )}
               </FieldArray>
