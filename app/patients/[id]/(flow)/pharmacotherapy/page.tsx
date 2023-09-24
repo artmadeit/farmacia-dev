@@ -14,6 +14,7 @@ import {
   TableFooter,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
@@ -21,6 +22,7 @@ import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const emptyHistoryRow = {
   administration: "",
@@ -41,6 +43,19 @@ const emptyAllergyRow = {
   date: null,
 };
 
+const emptyFoodsRow = {
+  food: "",
+  description: "",
+  date: null,
+};
+
+const emptyAdverseReactionRow = {
+  date: null,
+  medicine: "",
+  dose: "",
+  adverseReactionOfDrug: "",
+};
+
 export default function Pharmacotherapy() {
   return (
     <div>
@@ -52,6 +67,16 @@ export default function Pharmacotherapy() {
           allergies: [
             {
               ...emptyAllergyRow,
+            },
+          ],
+          foods: [
+            {
+              ...emptyFoodsRow,
+            },
+          ],
+          adverseReaction: [
+            {
+              ...emptyAdverseReactionRow,
             },
           ],
         }}
@@ -231,7 +256,7 @@ export default function Pharmacotherapy() {
                   <strong>Plan de Seguimiento Farmacoterapéutico:</strong>
                 </em>
               </Grid>
-              <Grid xs={10}>
+              <Grid xs={10} style={{ margin: "10px 0px" }}>
                 <strong>3.1 Alergias</strong>
               </Grid>
             </Grid>
@@ -276,12 +301,14 @@ export default function Pharmacotherapy() {
                             />
                           </TableCell>
                           <TableCell>
-                            <IconButton
-                              aria-label="delete"
-                              onClick={() => arrayHelpers.remove(index)}
-                            >
-                              <CloseIcon />
-                            </IconButton>
+                            <Tooltip title="Eliminar">
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -304,6 +331,146 @@ export default function Pharmacotherapy() {
                 )}
               </FieldArray>
             </TableContainer>
+            <Grid container spacing={2} pt={4}>
+              <Grid xs={10} style={{ margin: "10px 0px" }}>
+                <strong>Alimentos u otros</strong>
+              </Grid>
+            </Grid>
+            <TableContainer component={Paper}>
+              <FieldArray name="foods">
+                {(arrayHelpers: ArrayHelpers) => (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Alimento/otro</TableCell>
+                        <TableCell style={{ minWidth: 500 }}>
+                          Descripción
+                        </TableCell>
+                        <TableCell>Fecha</TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {values.foods.map((x, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`foods.${index}.food`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`foods.${index}.description`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={DatePicker}
+                              name={`foods.${index}.date`}
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Tooltip title="Eliminar">
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() => {
+                                  arrayHelpers.remove(index);
+                                }}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TableCell colSpan={3}>
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() => arrayHelpers.push(emptyFoodsRow)}
+                          >
+                            Agregar alimento
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                )}
+              </FieldArray>
+            </TableContainer>
+            <Grid container spacing={2} pt={4}>
+              <Grid xs={10} style={{ margin: "10px 0px" }}>
+                <strong>
+                  3.2 Antecedentes de reacción adversa medicamentosa (RAM)
+                </strong>
+              </Grid>
+            </Grid>
+            <TableContainer>
+              <FieldArray name="adverseReaction">
+                {(arrayHelpers: ArrayHelpers) => (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Fecha</TableCell>
+                        <TableCell>Medicamento</TableCell>
+                        <TableCell>Dosis</TableCell>
+                        <TableCell>Reacción adversa medicamentosa</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {values.adverseReaction.map((x, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Field
+                              component={DatePicker}
+                              name={`adverseReaction.${index}.date`}
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`adverseReaction.${index}.medicine`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`adverseReaction.${index}.dose`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                          <TableCell style={{ minWidth: 500 }}>
+                            <Field
+                              component={TextField}
+                              name={`adverseReaction.${index}.adverseReactionOfDrug`}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </FieldArray>
+            </TableContainer>
+
+            {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
+examen de laboratorio o prueba diagnostica	fecha	resultado
+rango de valor normal	evaluacion/comentarios */}
           </Form>
         )}
       </Formik>
