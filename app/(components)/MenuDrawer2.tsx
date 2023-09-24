@@ -128,12 +128,18 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
                 <ListItemText primary="DCI" />
               </ListItemButton>
             </Link>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <ArrowRight />
-              </ListItemIcon>
-              <ListItemText primary="Productos farmaceuticos" />
-            </ListItemButton>
+            <Link
+              component={NextLink}
+              href="/drugs/pharmaceutical-product"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <ArrowRight />
+                </ListItemIcon>
+                <ListItemText primary="Productos farmacéuticos" />
+              </ListItemButton>
+            </Link>
           </List>
         </Collapse>
       </ListItem>
