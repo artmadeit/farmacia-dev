@@ -23,7 +23,7 @@ import useSWR from "swr";
 import { api } from "../../../../(api)/api";
 import { Page } from "../../../../(api)/pagination";
 import { AsyncAutocomplete } from "../../../../(components)/autocomplete";
-import { Drug } from "../../../../(portal)/drugs/narrow/Drug";
+import { Drug } from "../../../../(portal)/drugs/narrow-margin/Drug";
 import yup from "../../../../validation";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
@@ -59,10 +59,13 @@ const DrugAutocomplete = () => {
       field="drug"
       filter={(searchText) =>
         api
-          .get<Page<Drug>>("drugs/search/findByNameContainingIgnoringCase", {
-            params: { page: 0, searchText },
-          })
-          .then((x) => x.data._embedded.drugs)
+          .get<Page<Drug>>(
+            "drugNarrowMargins/search/findByNameContainingIgnoringCase",
+            {
+              params: { page: 0, searchText },
+            }
+          )
+          .then((x) => x.data._embedded.drugNarrowMargins)
       }
     />
   );

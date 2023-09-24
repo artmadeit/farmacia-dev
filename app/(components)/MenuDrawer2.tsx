@@ -106,7 +106,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
           <List component="div" disablePadding>
             <Link
               component={NextLink}
-              href="/drugs/narrow"
+              href="/drugs/narrow-margin"
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <ListItemButton sx={{ pl: 4 }}>

@@ -28,7 +28,7 @@ const DrugsPage = () => {
       return;
     }
 
-    await api.delete(`drugs/${itemToDelete.id}`);
+    await api.delete(`/drugNarrowMargins/${itemToDelete.id}`);
     alert.showMessage("Medicamento eliminado");
     setItemToDelete(null);
     await getDrugs();
@@ -37,7 +37,7 @@ const DrugsPage = () => {
   const { paginationModel, setPaginationModel } = usePagination();
 
   const { data: drugs, mutate: getDrugs } = useSWR<Page<Drug>>([
-    "/drugs",
+    "/drugNarrowMargins",
     { params: { page: paginationModel.page, size: paginationModel.pageSize } },
   ]);
 
@@ -56,7 +56,9 @@ const DrugsPage = () => {
                   <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Editar"
-                    onClick={() => router.push(`drugs/${params.row.id}`)}
+                    onClick={() =>
+                      router.push(`/drugs/narrow-margin/${params.row.id}`)
+                    }
                   />
                 </Tooltip>,
                 <Tooltip title="Eliminar" key="delete">
@@ -81,7 +83,7 @@ const DrugsPage = () => {
       <Stack direction="row" alignItems="center" spacing={2}>
         <Typography variant="h4">Estrecho margen</Typography>
         <Tooltip title="Crear">
-          <Link href="narrow/create">
+          <Link href="narrow-margin/create">
             <Fab color="primary" aria-labelledby="add">
               <AddIcon />
             </Fab>
@@ -95,7 +97,7 @@ const DrugsPage = () => {
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
-          rows={drugs._embedded.drugs}
+          rows={drugs._embedded.drugNarrowMargins}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>

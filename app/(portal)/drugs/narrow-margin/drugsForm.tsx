@@ -22,12 +22,12 @@ const DrugForm = ({ drugs, textName }: DrugFormProps) => {
   ) => {
     setSubmitting(false);
     if (drugs.id) {
-      await api.put(`/drugs/${drugs.id}`, values);
+      await api.put(`/drugNarrowMargins/${drugs.id}`, values);
     } else {
-      await api.post(`/drugs`, values);
+      await api.post(`/drugNarrowMargins`, values);
     }
     snackbar.showMessage("Medicamento guardado");
-    router.push("/drugs/narrow");
+    router.push("/drugs/narrow-margin");
   };
 
   return (
