@@ -55,15 +55,17 @@ export const LabTests = () => {
             <Stack spacing={2}>
               {values.labTests.map((x, index) => (
                 <Grid container spacing={1} key={index}>
-                  <Grid xs={12} display="flex" justifyContent="end">
-                    <Fab
-                      color="primary"
-                      aria-label="delete"
-                      onClick={arrayHelpers.handleRemove(index)}
-                    >
-                      <CloseIcon />
-                    </Fab>
-                  </Grid>
+                  {values.labTests.length > 1 && (
+                    <Grid xs={12} display="flex" justifyContent="end">
+                      <Fab
+                        color="primary"
+                        aria-label="delete"
+                        onClick={arrayHelpers.handleRemove(index)}
+                      >
+                        <CloseIcon />
+                      </Fab>
+                    </Grid>
+                  )}
                   <Grid xs={6}>
                     <Field
                       name={`labTests.${index}.name`}
