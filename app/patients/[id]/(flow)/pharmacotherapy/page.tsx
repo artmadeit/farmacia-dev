@@ -513,6 +513,20 @@ export default function Pharmacotherapy() {
                         </TableRow>
                       ))}
                     </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TableCell colSpan={3}>
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() =>
+                              arrayHelpers.push(emptyAdverseReactionRow)
+                            }
+                          >
+                            Agregar reacción adversa
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableFooter>
                   </Table>
                 )}
               </FieldArray>
