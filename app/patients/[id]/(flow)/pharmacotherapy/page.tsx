@@ -316,8 +316,8 @@ export default function Pharmacotherapy() {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell>Medicamento</TableCell>
-                        <TableCell style={{ minWidth: 500 }}>
+                        <TableCell style={{ minWidth: 200 }}>Medicamento</TableCell>
+                        <TableCell style={{ minWidth: 200 }}>
                           Descripción
                         </TableCell>
                         <TableCell>Fecha</TableCell>
@@ -328,12 +328,14 @@ export default function Pharmacotherapy() {
                       {values.allergies.map((x, index) => (
                         <TableRow key={index}>
                           <TableCell>
-                            <Field
+                            <DciAutocomplete name={`allergies.${index}.drug`} />
+
+                            {/* <Field
                               name={`allergies.${index}.drug`}
                               component={TextField}
                               variant="outlined"
                               fullWidth
-                            />
+                            /> */}
                           </TableCell>
                           <TableCell>
                             <Field
@@ -480,7 +482,7 @@ export default function Pharmacotherapy() {
                     <TableBody>
                       {values.adverseReaction.map((x, index) => (
                         <TableRow key={index}>
-                          <TableCell>
+                          <TableCell style={{ maxWidth: 200 }}>
                             <Field
                               component={DatePicker}
                               name={`adverseReaction.${index}.date`}
@@ -488,12 +490,15 @@ export default function Pharmacotherapy() {
                             />
                           </TableCell>
                           <TableCell>
-                            <Field
+                            <DciAutocomplete
+                              name={`adverseReaction.${index}.medicine`}
+                            />
+                            {/* <Field
                               component={TextField}
                               name={`adverseReaction.${index}.medicine`}
                               variant="outlined"
                               fullWidth
-                            />
+                            /> */}
                           </TableCell>
                           <TableCell>
                             <Field
@@ -503,7 +508,7 @@ export default function Pharmacotherapy() {
                               fullWidth
                             />
                           </TableCell>
-                          <TableCell style={{ minWidth: 500 }}>
+                          <TableCell style={{ minWidth: 300 }}>
                             <Field
                               component={TextField}
                               name={`adverseReaction.${index}.adverseReactionOfDrug`}
@@ -552,3 +557,19 @@ rango de valor normal	evaluacion/comentarios */}
     </div>
   );
 }
+
+const DciAutocomplete = ({ name }: { name: string }) => {
+  return (
+    <AsyncAutocomplete
+      label="Medicamento"
+      field={name}
+      filter={(searchText) =>
+        api
+          .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
+            params: { page: 0, searchText },
+          })
+          .then((x) => x.data._embedded.drugDcis)
+      }
+    />
+  );
+};
