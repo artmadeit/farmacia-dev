@@ -26,7 +26,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const emptyHistoryRow = {
   administration: "",
-  difficulties: "",
+  difficulty: "",
+  difficultyJustification: "",
   acceptance: "",
   reasonForUse: "",
   suspensionDate: null,
@@ -128,7 +129,7 @@ export default function Pharmacotherapy() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {values.history.map((x, index) => (
+                      {values.history.map((history, index) => (
                         <TableRow key={index}>
                           <TableCell>
                             <Field
@@ -210,10 +211,25 @@ export default function Pharmacotherapy() {
                           </TableCell>
                           <TableCell>
                             <Field
+                              component={RadioGroup}
                               name={`history.${index}.acceptance`}
-                              component={TextField}
-                              variant="outlined"
-                            />
+                            >
+                              <FormControlLabel
+                                value="Si"
+                                control={<Radio />}
+                                label="Si"
+                              />
+                              <FormControlLabel
+                                value="No"
+                                control={<Radio />}
+                                label="No"
+                              />
+                              <FormControlLabel
+                                value="No aplica"
+                                control={<Radio />}
+                                label="No aplica"
+                              />
+                            </Field>
                           </TableCell>
                           <TableCell>
                             <Field
@@ -224,10 +240,27 @@ export default function Pharmacotherapy() {
                           </TableCell>
                           <TableCell>
                             <Field
-                              name={`history.${index}.difficulties`}
-                              component={TextField}
-                              variant="outlined"
-                            />
+                              component={RadioGroup}
+                              name={`history.${index}.difficulty`}
+                            >
+                              <FormControlLabel
+                                value="Si"
+                                control={<Radio />}
+                                label="Si"
+                              />
+                              <FormControlLabel
+                                value="No"
+                                control={<Radio />}
+                                label="No"
+                              />
+                            </Field>
+                            {history.difficulty === "Si" && (
+                              <Field
+                                name={`history.${index}.difficultyJustification`}
+                                component={TextField}
+                                variant="outlined"
+                              />
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
