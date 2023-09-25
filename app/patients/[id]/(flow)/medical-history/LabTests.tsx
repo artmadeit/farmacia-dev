@@ -15,7 +15,15 @@ import { ArrayHelpers, Field, FieldArray, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import React from "react";
-import { Anamnesis, emptyLabTest } from "./page";
+import { Anamnesis } from "./page";
+
+const emptyLabTest = {
+  name: "",
+  date: null,
+  result: "",
+  normalRange: "",
+  comments: "",
+};
 
 export const LabTests = () => {
   const { values, setFieldValue } = useFormikContext<Anamnesis>();
