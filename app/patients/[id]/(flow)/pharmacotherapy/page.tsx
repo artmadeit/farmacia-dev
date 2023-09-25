@@ -474,6 +474,7 @@ export default function Pharmacotherapy() {
                         <TableCell>Medicamento</TableCell>
                         <TableCell>Dosis</TableCell>
                         <TableCell>Reacción adversa medicamentosa</TableCell>
+                        <TableCell></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -509,6 +510,16 @@ export default function Pharmacotherapy() {
                               variant="outlined"
                               fullWidth
                             />
+                          </TableCell>
+                          <TableCell>
+                            <Tooltip title="Eliminar">
+                              <IconButton
+                                aria-labelledby="delete"
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       ))}
