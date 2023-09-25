@@ -328,14 +328,7 @@ export default function Pharmacotherapy() {
                       {values.allergies.map((x, index) => (
                         <TableRow key={index}>
                           <TableCell>
-                            <DciAutocomplete name={`allergies.${index}.drug`} />
-
-                            {/* <Field
-                              name={`allergies.${index}.drug`}
-                              component={TextField}
-                              variant="outlined"
-                              fullWidth
-                            /> */}
+                            <DciAutocomplete name={`allergies.${index}.drug`} />                          
                           </TableCell>
                           <TableCell>
                             <Field
@@ -492,13 +485,7 @@ export default function Pharmacotherapy() {
                           <TableCell>
                             <DciAutocomplete
                               name={`adverseReaction.${index}.medicine`}
-                            />
-                            {/* <Field
-                              component={TextField}
-                              name={`adverseReaction.${index}.medicine`}
-                              variant="outlined"
-                              fullWidth
-                            /> */}
+                            />                            
                           </TableCell>
                           <TableCell>
                             <Field
