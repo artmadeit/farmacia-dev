@@ -5,7 +5,10 @@ import { differenceInYears } from "date-fns";
 import { Field, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import { Anamnesis, EMPTY, minYear, today } from "./page";
+import { Anamnesis } from "./page";
+import { minYear, today } from "@/app/date";
+
+const EMPTY = "-";
 
 const getImc = ({
   size,

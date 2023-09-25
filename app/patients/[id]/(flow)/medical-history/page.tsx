@@ -1,11 +1,10 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { formatDate } from "@/app/date";
+import { formatDate, minYear, today } from "@/app/date";
 import { Box, Divider, FormControlLabel, Radio, Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { subYears } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import React from "react";
@@ -24,11 +23,6 @@ import {
   foodHabits,
   healthProblems,
 } from "./data";
-
-export const minYear = subYears(new Date(), 103);
-
-export const today = new Date();
-export const EMPTY = "-";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -112,14 +106,6 @@ export type Anamnesis = {
   existLabTests: boolean | null;
   labTests: never[];
   diagnosis: string;
-};
-
-export const emptyLabTest = {
-  name: "",
-  date: null,
-  result: "",
-  normalRange: "",
-  comments: "",
 };
 
 export default function PatientInterview() {
