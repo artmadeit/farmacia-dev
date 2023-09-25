@@ -1,5 +1,11 @@
 "use client";
+import { api } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
 import { Title } from "@/app/(components)/Title";
+import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
+import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Button,
   Divider,
@@ -20,9 +26,6 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const emptyHistoryRow = {
   administration: "",
@@ -132,10 +135,24 @@ export default function Pharmacotherapy() {
                       {values.history.map((history, index) => (
                         <TableRow key={index}>
                           <TableCell>
-                            <Field
-                              name={`history.${index}.drug`}
-                              component={TextField}
-                              variant="outlined"
+                            <AsyncAutocomplete
+                              label="Medicamento"
+                              field={`history.${index}.drug`}
+                              getLabel={(option) => option.fullName}
+                              filter={(searchText) =>
+                                api
+                                  .get<Page<Drug>>(
+                                    "drugPharmaceuticalProducts/search/findByFullName",
+                                    {
+                                      params: { page: 0, searchText },
+                                    }
+                                  )
+                                  .then(
+                                    (x) =>
+                                      x.data._embedded
+                                        .drugPharmaceuticalProducts
+                                  )
+                              }
                             />
                           </TableCell>
                           <TableCell>
