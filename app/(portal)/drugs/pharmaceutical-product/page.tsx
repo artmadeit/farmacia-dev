@@ -24,6 +24,8 @@ const DrugsPage = () => {
         [
           { field: "code", headerName: "Código", width: 150 },
           { field: "name", headerName: "Nombre", width: 150 },
+          { field: "concentration", headerName: "Concentración", width: 150 },
+          { field: "form", headerName: "Forma", width: 150 },
         ] as GridColDef<Drug>[]
       ).map(withOutSorting),
     []
