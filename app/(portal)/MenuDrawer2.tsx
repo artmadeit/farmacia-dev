@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import { AccountCircle } from "@mui/icons-material";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -20,7 +21,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import NextLink from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import * as React from "react";
 
 const appName = "Atención farmacéutica";
@@ -29,14 +30,8 @@ const drawerWidth = 240;
 
 export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   const router = useRouter();
-  //   const { user, logout } = React.useContext(UserContext);
-  const user = {
-    firstName: "Gladys",
-  };
-
-  const logout = () => {
-    alert("Logout");
-  };
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { logout } = useAuth0();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -58,8 +53,8 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   };
 
   const handleLogOut = () => {
-    logout();
     setAnchorEl(null);
+    logout({ logoutParams: { returnTo: window.location.origin } });
   };
 
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -72,6 +67,9 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   }));
 
   const [pillOpen, setPillOpen] = React.useState(true);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!isAuthenticated) return redirect("/");
 
   const drawer = (
     <List>
@@ -179,7 +177,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
               startIcon={<AccountCircle />}
               onClick={handleClick}
             >
-              {user?.firstName}
+              {user?.nickname}
             </Button>
             <Menu
               id="basic-menu"
@@ -190,12 +188,12 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={handleProfile}>
+              {/* <MenuItem onClick={handleProfile}>
                 <ListItemIcon>
                   <AccountCircle />
                 </ListItemIcon>
                 Perfil
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem onClick={handleLogOut}>
                 <ListItemIcon>
                   <LogoutIcon />

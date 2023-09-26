@@ -1,12 +1,13 @@
+"use client";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
+
 export default function Home() {
-  return (
-    <div>
-      <div>
-        <a href="/patients">Ver pacientes</a>
-      </div>
-      <div>
-        <a href="/api/auth/login">Login</a>
-      </div>
-    </div>
-  );
+  const { loginWithRedirect } = useAuth0();
+
+  useEffect(() => {
+    loginWithRedirect();
+  }, [loginWithRedirect]);
+
+  return <div>Loading...</div>;
 }
