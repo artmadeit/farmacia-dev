@@ -1,9 +1,9 @@
 "use client";
 
 import { AccountCircle } from "@mui/icons-material";
+import ArrowRight from "@mui/icons-material/ArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Button, Collapse, Link, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -22,11 +22,8 @@ import { styled } from "@mui/material/styles";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import ArrowRight from "@mui/icons-material/ArrowRight";
 
-export const appName = "Atención farmacéutica";
+const appName = "Atención farmacéutica";
 
 const drawerWidth = 240;
 
