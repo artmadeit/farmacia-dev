@@ -21,7 +21,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import NextLink from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import * as React from "react";
 
 const appName = "Atención farmacéutica";
@@ -30,7 +30,7 @@ const drawerWidth = 240;
 
 export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   const router = useRouter();
-  const { user, error, isLoading } = useAuth0();
+  const { user, isLoading } = useAuth0();
   const { logout } = useAuth0();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -69,7 +69,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   const [pillOpen, setPillOpen] = React.useState(true);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  if (!user) return redirect("/");
 
   const drawer = (
     <List>
