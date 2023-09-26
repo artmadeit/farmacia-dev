@@ -7,18 +7,19 @@ import { es as dateFnsEs } from "date-fns/locale";
 import { SWRConfig } from "swr";
 import { fetcher } from "../(api)/api";
 import { SnackbarProvider } from "./SnackbarContext";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <SWRConfig value={{ fetcher }}>
-      <LocalizationProvider
-        dateAdapter={AdapterDateFns}
-        adapterLocale={dateFnsEs}
-      >
-        <SnackbarProvider>
-          {children}
-        </SnackbarProvider>
-      </LocalizationProvider>
-    </SWRConfig>
+    <UserProvider>
+      <SWRConfig value={{ fetcher }}>
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          adapterLocale={dateFnsEs}
+        >
+          <SnackbarProvider>{children}</SnackbarProvider>
+        </LocalizationProvider>
+      </SWRConfig>
+    </UserProvider>
   );
 };
