@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { AccountCircle } from "@mui/icons-material";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -29,14 +30,8 @@ const drawerWidth = 240;
 
 export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   const router = useRouter();
-  //   const { user, logout } = React.useContext(UserContext);
-  const user = {
-    firstName: "Gladys",
-  };
+  const { user, error, isLoading } = useUser();
 
-  const logout = () => {
-    alert("Logout");
-  };
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -58,7 +53,6 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   };
 
   const handleLogOut = () => {
-    logout();
     setAnchorEl(null);
   };
 
@@ -72,6 +66,9 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   }));
 
   const [pillOpen, setPillOpen] = React.useState(true);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
 
   const drawer = (
     <List>
@@ -179,7 +176,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
               startIcon={<AccountCircle />}
               onClick={handleClick}
             >
-              {user?.firstName}
+              {user?.nickname}
             </Button>
             <Menu
               id="basic-menu"
@@ -190,13 +187,17 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={handleProfile}>
+              {/* <MenuItem onClick={handleProfile}>
                 <ListItemIcon>
                   <AccountCircle />
                 </ListItemIcon>
                 Perfil
-              </MenuItem>
-              <MenuItem onClick={handleLogOut}>
+              </MenuItem> */}
+              <MenuItem
+                onClick={handleLogOut}
+                component="a"
+                href="/api/auth/logout"
+              >
                 <ListItemIcon>
                   <LogoutIcon />
                 </ListItemIcon>
