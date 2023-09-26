@@ -30,7 +30,7 @@ const drawerWidth = 240;
 
 export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   const router = useRouter();
-  const { user, isLoading } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
   const { logout } = useAuth0();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -69,7 +69,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   const [pillOpen, setPillOpen] = React.useState(true);
 
   if (isLoading) return <div>Loading...</div>;
-  if (!user) return redirect("/");
+  if (!isAuthenticated) return redirect("/");
 
   const drawer = (
     <List>
