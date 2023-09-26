@@ -1,7 +1,7 @@
 "use client";
 
-import { api } from "@/app/(api)/api"
-import { Button, FormLabel, Grid, Stack, Typography } from "@mui/material";
+import { api } from "@/app/(api)/api";
+import { Button, FormLabel, Grid, Stack } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { useRouter } from "next/navigation";
@@ -10,14 +10,14 @@ import { Title } from "@/app/(components)/Title";
 
 type PatientFormProps = {
   patient: Patient;
-}
+};
 
 const inline = {
   display: "flex",
   alignItems: "center",
 };
 
-const PatientForm = ({patient: patient}: PatientFormProps) => {
+const PatientForm = ({ patient: patient }: PatientFormProps) => {
   const router = useRouter();
 
   return (
@@ -29,7 +29,7 @@ const PatientForm = ({patient: patient}: PatientFormProps) => {
       }}
     >
       <Form>
-        <Stack spacing={2}>          
+        <Stack spacing={2}>
           <Title>Datos generales del paciente</Title>
           <Grid container rowGap={2}>
             <Grid item xs={12} sm={2} sx={inline}>

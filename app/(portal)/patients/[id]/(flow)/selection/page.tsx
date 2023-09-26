@@ -20,11 +20,11 @@ import { Checkbox, Select } from "formik-mui";
 import { isObject, sum } from "lodash";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
-import { api } from "../../../../(api)/api";
-import { Page } from "../../../../(api)/pagination";
-import { AsyncAutocomplete } from "../../../../(components)/autocomplete";
-import { Drug } from "../../../../(portal)/drugs/narrow-margin/Drug";
-import yup from "../../../../validation";
+import { api } from "../../../../../(api)/api";
+import { Page } from "../../../../../(api)/pagination";
+import { AsyncAutocomplete } from "../../../../../(components)/autocomplete";
+import { Drug } from "../../../../drugs/narrow-margin/Drug";
+import yup from "../../../../../validation";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
 

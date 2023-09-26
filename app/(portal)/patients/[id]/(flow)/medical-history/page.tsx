@@ -8,7 +8,7 @@ import { blue } from "@mui/material/colors";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import React from "react";
-import yup from "../../../../validation";
+import yup from "../../../../../validation";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { ConsumptionHabits } from "./ConsumptionHabits";
 import { LabTests } from "./LabTests";

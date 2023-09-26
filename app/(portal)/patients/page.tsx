@@ -12,11 +12,11 @@ import {
   esES,
 } from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
-import { withOutSorting } from "../(components)/helpers/withOutSorting";
+import { withOutSorting } from "../../(components)/helpers/withOutSorting";
 import { Patient } from "./create/Patient";
 import useSWR from "swr";
-import { Page } from "../(api)/pagination";
-import { usePagination } from "../(components)/hook-customization/usePagination";
+import { Page } from "../../(api)/pagination";
+import { usePagination } from "../../(components)/hook-customization/usePagination";
 
 export default function ListPatients() {
   const router = useRouter();
