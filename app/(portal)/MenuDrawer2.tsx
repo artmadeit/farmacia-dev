@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useAuth0 } from "@auth0/auth0-react";
 import { AccountCircle } from "@mui/icons-material";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -30,8 +30,8 @@ const drawerWidth = 240;
 
 export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   const router = useRouter();
-  const { user, error, isLoading } = useUser();
-
+  const { user, error, isLoading } = useAuth0();
+  const { logout } = useAuth0();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -54,6 +54,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
 
   const handleLogOut = () => {
     setAnchorEl(null);
+    logout({ logoutParams: { returnTo: window.location.origin } });
   };
 
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -193,11 +194,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
                 </ListItemIcon>
                 Perfil
               </MenuItem> */}
-              <MenuItem
-                onClick={handleLogOut}
-                component="a"
-                href="/api/auth/logout"
-              >
+              <MenuItem onClick={handleLogOut}>
                 <ListItemIcon>
                   <LogoutIcon />
                 </ListItemIcon>
