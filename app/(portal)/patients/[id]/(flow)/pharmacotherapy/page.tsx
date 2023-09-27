@@ -1,5 +1,5 @@
 "use client";
-import { api } from "@/app/(api)/api";
+import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
 import { Title } from "@/app/(components)/Title";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
@@ -61,6 +61,26 @@ const emptyAdverseReactionRow = {
 };
 
 export default function Pharmacotherapy() {
+  const getApi = useAuthApi();
+
+  const searchDrugDcis = (searchText: string) =>
+    getApi().then((api) =>
+      api
+        .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
+          params: { page: 0, searchText },
+        })
+        .then((x) => x.data._embedded.drugDcis)
+    );
+
+  const searchDrugPharmaceuticalProducts = (searchText: string) =>
+    getApi().then((api) =>
+      api
+        .get<Page<Drug>>("drugPharmaceuticalProducts/search/findByFullName", {
+          params: { page: 0, searchText },
+        })
+        .then((x) => x.data._embedded.drugPharmaceuticalProducts)
+    );
+
   return (
     <div>
       <Title>Hoja Farmacoterapéutica</Title>
@@ -139,20 +159,7 @@ export default function Pharmacotherapy() {
                               label="Medicamento"
                               field={`history.${index}.drug`}
                               getLabel={(option) => option.fullName}
-                              filter={(searchText) =>
-                                api
-                                  .get<Page<Drug>>(
-                                    "drugPharmaceuticalProducts/search/findByFullName",
-                                    {
-                                      params: { page: 0, searchText },
-                                    }
-                                  )
-                                  .then(
-                                    (x) =>
-                                      x.data._embedded
-                                        .drugPharmaceuticalProducts
-                                  )
-                              }
+                              filter={searchDrugPharmaceuticalProducts}
                             />
                           </TableCell>
                           <TableCell>
@@ -316,7 +323,9 @@ export default function Pharmacotherapy() {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell style={{ minWidth: 200 }}>Medicamento</TableCell>
+                        <TableCell style={{ minWidth: 200 }}>
+                          Medicamento
+                        </TableCell>
                         <TableCell style={{ minWidth: 200 }}>
                           Descripción
                         </TableCell>
@@ -328,7 +337,11 @@ export default function Pharmacotherapy() {
                       {values.allergies.map((x, index) => (
                         <TableRow key={index}>
                           <TableCell>
-                            <DciAutocomplete name={`allergies.${index}.drug`} />                          
+                            <AsyncAutocomplete
+                              label="Medicamento"
+                              field={`allergies.${index}.drug`}
+                              filter={searchDrugDcis}
+                            />
                           </TableCell>
                           <TableCell>
                             <Field
@@ -483,9 +496,11 @@ export default function Pharmacotherapy() {
                             />
                           </TableCell>
                           <TableCell>
-                            <DciAutocomplete
-                              name={`adverseReaction.${index}.medicine`}
-                            />                            
+                            <AsyncAutocomplete
+                              label="Medicamento"
+                              field={`adverseReaction.${index}.medicine`}
+                              filter={searchDrugDcis}
+                            />
                           </TableCell>
                           <TableCell>
                             <Field
@@ -544,19 +559,3 @@ rango de valor normal	evaluacion/comentarios */}
     </div>
   );
 }
-
-const DciAutocomplete = ({ name }: { name: string }) => {
-  return (
-    <AsyncAutocomplete
-      label="Medicamento"
-      field={name}
-      filter={(searchText) =>
-        api
-          .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
-            params: { page: 0, searchText },
-          })
-          .then((x) => x.data._embedded.drugDcis)
-      }
-    />
-  );
-};

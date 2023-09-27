@@ -1,4 +1,3 @@
-import { api } from "@/app/(api)/api";
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-mui";
@@ -6,6 +5,7 @@ import React, { useContext } from "react";
 import { Drug } from "./Drug";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import { useRouter } from "next/navigation";
+import { useAuthApi } from "@/app/(api)/api";
 
 type DrugFormProps = {
   drugs: Drug;
@@ -15,12 +15,16 @@ type DrugFormProps = {
 const DrugForm = ({ drugs, textName }: DrugFormProps) => {
   const snackbar = useContext(SnackbarContext);
   const router = useRouter();
+  const getApi = useAuthApi();
 
   const saveDrugForm = async (
     values: Drug,
     { setSubmitting }: FormikHelpers<Drug>
   ) => {
+    const api = await getApi();
+
     setSubmitting(false);
+
     if (drugs.id) {
       await api.put(`/drugNarrowMargins/${drugs.id}`, values);
     } else {

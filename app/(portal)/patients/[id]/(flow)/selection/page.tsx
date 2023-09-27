@@ -20,13 +20,13 @@ import { Checkbox, Select } from "formik-mui";
 import { isObject, sum } from "lodash";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
-import { api } from "../../../../../(api)/api";
 import { Page } from "../../../../../(api)/pagination";
 import { AsyncAutocomplete } from "../../../../../(components)/autocomplete";
 import { Drug } from "../../../../drugs/narrow-margin/Drug";
 import yup from "../../../../../validation";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
+import { useAuthApi } from "@/app/(api)/api";
 
 const PrmSelect = () => {
   return (
@@ -53,21 +53,26 @@ const PrmSelect = () => {
 };
 
 const DrugAutocomplete = () => {
+  const getApi = useAuthApi();
+
   return (
-    <AsyncAutocomplete
-      label="Medicamento"
-      field="drug"
-      filter={(searchText) =>
-        api
-          .get<Page<Drug>>(
-            "drugNarrowMargins/search/findByNameContainingIgnoringCase",
-            {
-              params: { page: 0, searchText },
-            }
-          )
-          .then((x) => x.data._embedded.drugNarrowMargins)
-      }
-    />
+    <div>hola</div>
+    // <AsyncAutocomplete
+    //   label="Medicamento"
+    //   field="drug"
+    //   filter={(searchText) =>
+    //     getApi().then((api) =>
+    //       api
+    //         .get<Page<Drug>>(
+    //           "drugNarrowMargins/search/findByNameContainingIgnoringCase",
+    //           {
+    //             params: { page: 0, searchText },
+    //           }
+    //         )
+    //         .then((x) => x.data._embedded.drugNarrowMargins)
+    //     )
+    //   }
+    // />
   );
 };
 
@@ -112,6 +117,7 @@ export default function PatientSelectionPage({
     `/patients/${patientId}/selection-forms`
   );
   const router = useRouter();
+  const getApi = useAuthApi();
 
   return (
     <>
@@ -136,13 +142,12 @@ export default function PatientSelectionPage({
           }),
         })}
         onSubmit={async (values) => {
-          const response = await api.post<SelectionForm>(
-            `/patients/${patientId}/selection-forms`,
-            {
+          const response = await getApi().then((api) =>
+            api.post<SelectionForm>(`/patients/${patientId}/selection-forms`, {
               criterionList: values.criterionList,
               drugId: isObject(values.drug) ? values.drug.id : null,
               prm: values.prm,
-            }
+            })
           );
           mutate(response.data);
 

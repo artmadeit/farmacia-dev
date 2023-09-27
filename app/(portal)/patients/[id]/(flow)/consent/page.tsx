@@ -12,10 +12,10 @@ import Transloadit from "@uppy/transloadit";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { useState } from "react";
 import useSWR from "swr";
-import { api } from "@/app/(api)/api";
 import { Box, Button, IconButton, Stack } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useRouter } from "next/navigation";
+import { useAuthApi } from "@/app/(api)/api";
 
 function createUppy(patientId: number) {
   return new Uppy({
@@ -38,6 +38,7 @@ function createUppy(patientId: number) {
 const height = 400;
 
 export default function ConsentPage({ params }: { params: { id: number } }) {
+  const getApi = useAuthApi();
   const { id: patientId } = params;
   const [uppy] = useState(() => createUppy(patientId));
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
     const reader = new FileReader();
     reader.onload = async function (e) {
       if (e.target) {
-        await api.post(`patients/${patientId}/consent`);
+        await getApi().then((api) => api.post(`patients/${patientId}/consent`));
         mutate();
         // Useful if we want to save the url, setUploadUrl(e.target.result); check console.log(file) and result
 
@@ -65,7 +66,7 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
   });
 
   const deleteConsent = async () => {
-    await api.delete(`patients/${patientId}/consent`);
+    await getApi().then((api) => api.delete(`patients/${patientId}/consent`));
     mutate();
   };
 

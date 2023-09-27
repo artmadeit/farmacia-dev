@@ -1,9 +1,12 @@
+"use client";
+
 import { Typography } from "@mui/material";
 import { HorizontalStepper } from "./HorizontalStepper";
 import { apiUrl } from "@/app/(api)/api";
 import { Patient } from "../../create/Patient";
+import useSWR from "swr";
 
-export default async function MedicalFlowLayout({
+export default function MedicalFlowLayout({
   params,
   children,
 }: {
@@ -11,11 +14,11 @@ export default async function MedicalFlowLayout({
   params: { id: number };
 }) {
   const { id } = params;
-  const response = await fetch(`${apiUrl}/patients/${id}`, {
-    cache: "no-cache",
-  });
-  const patient: Patient = await response.json();
+  const { data: patient, isLoading } = useSWR<Patient>(
+    `${apiUrl}/patients/${id}`
+  );
 
+  if (isLoading || !patient) return <div>Loading</div>;
   return (
     <div>
       <Typography variant="h6" gutterBottom>

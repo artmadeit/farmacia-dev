@@ -1,12 +1,12 @@
 "use client";
 
-import { api } from "@/app/(api)/api";
 import { Button, FormLabel, Grid, Stack } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { useRouter } from "next/navigation";
 import { Patient } from "./Patient";
 import { Title } from "@/app/(components)/Title";
+import { useAuthApi } from "@/app/(api)/api";
 
 type PatientFormProps = {
   patient: Patient;
@@ -19,12 +19,15 @@ const inline = {
 
 const PatientForm = ({ patient: patient }: PatientFormProps) => {
   const router = useRouter();
+  const getApi = useAuthApi();
 
   return (
     <Formik
       initialValues={patient}
       onSubmit={async (values) => {
-        const response = await api.post("/patients", values);
+        const response = await getApi().then((api) =>
+          api.post("/patients", values)
+        );
         router.push(`/patients/${response.data.id}/selection`);
       }}
     >
