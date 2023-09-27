@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Stack, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, esES } from "@mui/x-data-grid";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import { usePagination } from "@/app/(components)/hook-customization/usePagination";
 import { DrugDci } from "./DrugDci";
@@ -35,7 +35,7 @@ const DciList = () => {
           Denominación común internacional (DCI)
         </Typography>
       </Stack>
-      <div>
+      <div style={{height: "70vh", width: "100%"}}>
         <DataGrid
           columns={columns}
           rowCount={drugDcis.page.totalElements}
@@ -43,7 +43,7 @@ const DciList = () => {
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
-          // localeText={}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
     </Stack>
