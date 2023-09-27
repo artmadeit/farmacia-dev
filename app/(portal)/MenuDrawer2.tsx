@@ -138,14 +138,20 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
           </List>
         </Collapse>
       </ListItem>
-      <ListItem>
-        <ListItemButton>
-          <ListItemIcon>
-            <span className="material-symbols-outlined">prescriptions</span>
-          </ListItemIcon>
-          <ListItemText primary="CIE10" />
-        </ListItemButton>
-      </ListItem>
+      <Link
+        component={NextLink}
+        href="/cie10"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <ListItem>
+          <ListItemButton>
+            <ListItemIcon>
+              <span className="material-symbols-outlined">prescriptions</span>
+            </ListItemIcon>
+            <ListItemText primary="CIE10" />
+          </ListItemButton>
+        </ListItem>
+      </Link>
     </List>
   );
 
