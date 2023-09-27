@@ -11,7 +11,7 @@ export const Auth0ProviderWithNavigate = ({
   const redirectUri =
     process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL ||
     globalThis.location?.origin + "/patients";
-  //   const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+  const audience = process.env.NEXT_PUBLIC_APP_AUTH0_AUDIENCE;
 
   if (!(domain && clientId && redirectUri)) {
     throw "Error not configured Auth0 provider!";
@@ -22,7 +22,7 @@ export const Auth0ProviderWithNavigate = ({
       domain={domain}
       clientId={clientId}
       authorizationParams={{
-        // audience: audience,
+        audience: audience,
         redirect_uri: redirectUri,
         organization: "org_DFJ8phNPTZWumbyj",
       }}
