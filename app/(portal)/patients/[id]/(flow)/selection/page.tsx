@@ -56,23 +56,22 @@ const DrugAutocomplete = () => {
   const getApi = useAuthApi();
 
   return (
-    <div>hola</div>
-    // <AsyncAutocomplete
-    //   label="Medicamento"
-    //   field="drug"
-    //   filter={(searchText) =>
-    //     getApi().then((api) =>
-    //       api
-    //         .get<Page<Drug>>(
-    //           "drugNarrowMargins/search/findByNameContainingIgnoringCase",
-    //           {
-    //             params: { page: 0, searchText },
-    //           }
-    //         )
-    //         .then((x) => x.data._embedded.drugNarrowMargins)
-    //     )
-    //   }
-    // />
+    <AsyncAutocomplete
+      label="Medicamento"
+      field="drug"
+      filter={(searchText) =>
+        getApi().then((api) =>
+          api
+            .get<Page<Drug>>(
+              "drugNarrowMargins/search/findByNameContainingIgnoringCase",
+              {
+                params: { page: 0, searchText },
+              }
+            )
+            .then((x) => x.data._embedded.drugNarrowMargins)
+        )
+      }
+    />
   );
 };
 
