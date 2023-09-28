@@ -23,6 +23,10 @@ export default function NesPage() {
       <Formik
         initialValues={{
           name: "",
+          symptoms: "",
+          medicine: "",
+          nes: "",
+          prm: "",
         }}
         onSubmit={() => {}}
       >
@@ -40,11 +44,21 @@ export default function NesPage() {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Datos de Salud</TableCell>
-                    <TableCell>Evaluación de datos de salud</TableCell>
-                    <TableCell>Datos de farmacoterapia</TableCell>
-                    <TableCell>Evaluación de datos de farmacoterapia</TableCell>
-                    <TableCell>PRM identificado</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>
+                      Datos de Salud
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>
+                      Evaluación de datos de salud
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>
+                      Datos de farmacoterapia
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>
+                      Evaluación de datos de farmacoterapia
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>
+                      PRM identificado
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableHead>
@@ -55,7 +69,8 @@ export default function NesPage() {
                     </TableCell>
                     <TableCell>Medicamentos que consume el paciente</TableCell>
                     <TableCell>
-                      Evaluar c/u de los medicamentos si son:
+                      Evaluar c/u de los medicamentos si son:{" "}
+                      <span style={{ fontWeight: "bold" }}>NES</span>
                     </TableCell>
                     <TableCell>
                       De acuerdo a la evaluación realizada determinar el o los
@@ -87,7 +102,7 @@ export default function NesPage() {
                       />
                     </TableCell>
                     <TableCell>
-                      
+                      <Field component={TextField} name="nes" label="NES" />
                     </TableCell>
                     <TableCell>
                       <Field
