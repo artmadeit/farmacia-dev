@@ -9,10 +9,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
+import { DatePicker } from "formik-mui-x-date-pickers";
 
 export default function NesPage() {
   return (
@@ -33,11 +33,28 @@ export default function NesPage() {
         {({ values }) => (
           <Form>
             <Grid container>
-              <Grid xs={10} style={{ marginBottom: "10px" }}>
+              <Grid
+                xs={8}
+                style={{
+                  marginBottom: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <strong>
                   PARA LA EVALUACIÓN Y EL ANÁLISIS DE DATOS E IDENTIFICACIÓN DEL
                   PRM.
                 </strong>
+              </Grid>
+              <Grid
+                xs={4}
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ pb: 1 }}
+              >
+                <span style={{ fontSize: "14px" }}> FECHA DEL ANÁLISIS:</span>
+                <Field component={DatePicker} sx={{ width: "180px" }} />
               </Grid>
             </Grid>
             <TableContainer component={Paper}>
