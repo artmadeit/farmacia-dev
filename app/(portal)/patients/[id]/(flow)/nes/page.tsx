@@ -77,34 +77,30 @@ export default function NesPage() {
                       PRM identificado
                     </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableHead>
                   <TableRow>
-                    <TableCell>Diagnóstico(s)</TableCell>
-                    <TableCell>
+                    <TableCell rowSpan={2}>Diagnóstico(s)</TableCell>
+                    <TableCell rowSpan={2}>
                       Signos y sintomas que se relacionan con el Dx
                     </TableCell>
-                    <TableCell>Medicamentos que consume el paciente</TableCell>
+                    <TableCell rowSpan={2}>
+                      Medicamentos que consume el paciente
+                    </TableCell>
                     <TableCell colSpan={3}>
                       Evaluar c/u de los medicamentos si son:
                       {/* <span style={{ fontWeight: "bold" }}>NES</span> */}
                     </TableCell>
-                    <TableCell>
+                    <TableCell rowSpan={2}>
                       De acuerdo a la evaluación realizada determinar el o los
                       PRM identificados en el paciente
                     </TableCell>
                   </TableRow>
+                  <TableRow>
+                    <TableCell>N</TableCell>
+                    <TableCell>E</TableCell>
+                    <TableCell>S</TableCell>
+                  </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell style={{ width: 1 / 3 }}>N</TableCell>
-                    <TableCell style={{ width: 1 / 3 }}>E</TableCell>
-                    <TableCell style={{ width: 1 / 3 }}>S</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
                   <TableRow>
                     <TableCell>
                       <Field
@@ -127,16 +123,19 @@ export default function NesPage() {
                         label="Medicina"
                       />
                     </TableCell>
+                    <TableCell>Si y No</TableCell>
+                    <TableCell>Si y No</TableCell>
+                    <TableCell>Si y No</TableCell>
                     {/* <TableCell>
                       <Field component={TextField} name="nes" label="NES" />
                     </TableCell> */}
-                    {/* <TableCell>
+                    <TableCell>
                       <Field
                         component={TextField}
                         name="prm"
                         label="PRM identificado"
                       />
-                    </TableCell> */}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
