@@ -149,6 +149,7 @@ export default function Pharmacotherapy() {
                         <TableCell style={{ minWidth: 200 }} align="center">
                           Dificultades para tomarlo y/o tolerarlo
                         </TableCell>
+                        <TableCell></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -285,6 +286,16 @@ export default function Pharmacotherapy() {
                                 variant="outlined"
                               />
                             )}
+                          </TableCell>
+                          <TableCell>
+                            <Tooltip title="Eliminar">
+                              <IconButton
+                                aria-labelledby="eliminar"
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       ))}
