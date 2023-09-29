@@ -54,7 +54,7 @@ export default function NesPage() {
                 sx={{ pb: 1 }}
               >
                 <span style={{ fontSize: "14px" }}> FECHA DEL ANÁLISIS:</span>
-                <Field component={DatePicker} sx={{ width: "180px" }} />
+                {/* <Field component={DatePicker} sx={{ width: "180px" }} /> */}
               </Grid>
             </Grid>
             <TableContainer component={Paper}>
@@ -70,7 +70,7 @@ export default function NesPage() {
                     <TableCell sx={{ fontWeight: "bold" }}>
                       Datos de farmacoterapia
                     </TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>
+                    <TableCell sx={{ fontWeight: "bold" }} colSpan={3}>
                       Evaluación de datos de farmacoterapia
                     </TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>
@@ -85,9 +85,9 @@ export default function NesPage() {
                       Signos y sintomas que se relacionan con el Dx
                     </TableCell>
                     <TableCell>Medicamentos que consume el paciente</TableCell>
-                    <TableCell>
-                      Evaluar c/u de los medicamentos si son:{" "}
-                      <span style={{ fontWeight: "bold" }}>NES</span>
+                    <TableCell colSpan={3}>
+                      Evaluar c/u de los medicamentos si son:
+                      {/* <span style={{ fontWeight: "bold" }}>NES</span> */}
                     </TableCell>
                     <TableCell>
                       De acuerdo a la evaluación realizada determinar el o los
@@ -96,6 +96,15 @@ export default function NesPage() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell style={{ width: 1 / 3 }}>N</TableCell>
+                    <TableCell style={{ width: 1 / 3 }}>E</TableCell>
+                    <TableCell style={{ width: 1 / 3 }}>S</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
                   <TableRow>
                     <TableCell>
                       <Field
@@ -118,16 +127,16 @@ export default function NesPage() {
                         label="Medicina"
                       />
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       <Field component={TextField} name="nes" label="NES" />
-                    </TableCell>
-                    <TableCell>
+                    </TableCell> */}
+                    {/* <TableCell>
                       <Field
                         component={TextField}
                         name="prm"
                         label="PRM identificado"
                       />
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 </TableBody>
               </Table>
