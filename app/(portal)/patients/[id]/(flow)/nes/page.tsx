@@ -2,9 +2,11 @@
 
 import {
   Button,
+  FormControlLabel,
   Grid,
   IconButton,
   Paper,
+  Radio,
   Table,
   TableBody,
   TableCell,
@@ -15,7 +17,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
-import { TextField } from "formik-mui";
+import { RadioGroup, TextField } from "formik-mui";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DatePicker } from "formik-mui-x-date-pickers";
@@ -24,6 +26,9 @@ const emptyTestingRow = {
   diagnosis: "",
   symptoms: "",
   medicine: "",
+  necessity: "",
+  effectivity: "",
+  security: "",
   prm: "",
 };
 
@@ -124,7 +129,7 @@ export default function NesPage() {
                             <Field
                               component={TextField}
                               name={`testing.${index}.diagnosis`}
-                              label="Diagnostico"
+                              label="Diagnóstico"
                             />
                           </TableCell>
                           <TableCell>
@@ -137,13 +142,64 @@ export default function NesPage() {
                           <TableCell>
                             <Field
                               component={TextField}
-                              name={`.${index}.medicine`}
+                              name={`testing.${index}.medicine`}
                               label="Medicina"
                             />
                           </TableCell>
-                          <TableCell>Si y No</TableCell>
-                          <TableCell>Si y No</TableCell>
-                          <TableCell>Si y No</TableCell>
+                          <TableCell>
+                            <Field
+                              component={RadioGroup}
+                              name={`testing.${index}.necessity`}
+                              row
+                            >
+                              <FormControlLabel
+                                value="yes"
+                                control={<Radio />}
+                                label="Si"
+                              />
+                              <FormControlLabel
+                                value="no"
+                                control={<Radio />}
+                                label="No"
+                              />
+                            </Field>
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={RadioGroup}
+                              name={`testing.${index}.effectivity`}
+                              row
+                            >
+                              <FormControlLabel
+                                value="yes"
+                                control={<Radio />}
+                                label="Si"
+                              />
+                              <FormControlLabel
+                                value="no"
+                                control={<Radio />}
+                                label="No"
+                              />
+                            </Field>
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={RadioGroup}
+                              name={`testing.${index}.security`}
+                              row
+                            >
+                              <FormControlLabel
+                                value="yes"
+                                control={<Radio />}
+                                label="Si"
+                              />
+                              <FormControlLabel
+                                value="no"
+                                control={<Radio />}
+                                label="No"
+                              />
+                            </Field>
+                          </TableCell>
                           {/* <TableCell>
                       <Field component={TextField} name="nes" label="NES" />
                     </TableCell> */}
