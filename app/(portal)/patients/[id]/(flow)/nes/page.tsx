@@ -3,6 +3,7 @@
 import {
   Button,
   Grid,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -11,10 +12,12 @@ import {
   TableFooter,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DatePicker } from "formik-mui-x-date-pickers";
 
 const emptyTestingRow = {
@@ -89,6 +92,7 @@ export default function NesPage() {
                         <TableCell sx={{ fontWeight: "bold" }}>
                           PRM identificado
                         </TableCell>
+                        <TableCell></TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell rowSpan={2}>Diagnóstico(s)</TableCell>
@@ -149,6 +153,16 @@ export default function NesPage() {
                               name={`testing.${index}.prm`}
                               label="PRM identificado"
                             />
+                          </TableCell>
+                          <TableCell>
+                            <Tooltip title="Eliminar">
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       ))}
