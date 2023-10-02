@@ -17,7 +17,7 @@ import { TextField } from "formik-mui";
 import AddIcon from "@mui/icons-material/Add";
 import { DatePicker } from "formik-mui-x-date-pickers";
 
-const emptyTestRow = {
+const emptyTestingRow = {
   diagnosis: "",
   symptoms: "",
   medicine: "",
@@ -32,9 +32,9 @@ export default function NesPage() {
       </Typography> */}
       <Formik
         initialValues={{
-          test: [
+          testing: [
             {
-              ...emptyTestRow,
+              ...emptyTestingRow,
             },
           ],
         }}
@@ -69,7 +69,7 @@ export default function NesPage() {
             </Grid>
 
             <TableContainer component={Paper}>
-              <FieldArray name="">
+              <FieldArray name="testing">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Table>
                     <TableHead>
@@ -114,49 +114,51 @@ export default function NesPage() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      <TableRow>
-                        <TableCell>
-                          <Field
-                            component={TextField}
-                            name="diagnosis"
-                            label="Diagnostico"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Field
-                            component={TextField}
-                            name="symptoms"
-                            label="Sintomas"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Field
-                            component={TextField}
-                            name="medicine"
-                            label="Medicina"
-                          />
-                        </TableCell>
-                        <TableCell>Si y No</TableCell>
-                        <TableCell>Si y No</TableCell>
-                        <TableCell>Si y No</TableCell>
-                        {/* <TableCell>
+                      {values.testing.map((x, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`testing.${index}.diagnosis`}
+                              label="Diagnostico"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`testing.${index}.symptoms`}
+                              label="Sintomas"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`.${index}.medicine`}
+                              label="Medicina"
+                            />
+                          </TableCell>
+                          <TableCell>Si y No</TableCell>
+                          <TableCell>Si y No</TableCell>
+                          <TableCell>Si y No</TableCell>
+                          {/* <TableCell>
                       <Field component={TextField} name="nes" label="NES" />
                     </TableCell> */}
-                        <TableCell>
-                          <Field
-                            component={TextField}
-                            name="prm"
-                            label="PRM identificado"
-                          />
-                        </TableCell>
-                      </TableRow>
+                          <TableCell>
+                            <Field
+                              component={TextField}
+                              name={`testing.${index}.prm`}
+                              label="PRM identificado"
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                     <TableFooter>
                       <TableRow>
                         <TableCell colSpan={3}>
                           <Button
                             startIcon={<AddIcon />}
-                            onClick={() => arrayHelpers.push(emptyTestRow)}
+                            onClick={() => arrayHelpers.push(emptyTestingRow)}
                           >
                             Agrega Columna
                           </Button>
