@@ -13,10 +13,13 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  FormControl,
   FormControlLabel,
+  FormLabel,
   IconButton,
   Paper,
   Radio,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -226,55 +229,9 @@ export default function Pharmacotherapy() {
                                 name={`history.${index}.suspensionDate`}
                               />
                             </TableCell>
-                            {/* <TableCell>
-                            <Field
-                              component={DatePicker}
-                              // slotProps={{
-                              //   textField: {
-                              //     helperText: errors.restartDate
-                              //       ? errors.restartDate
-                              //       : "",
-                              //   },
-                              // }}
-                              name={`history.${index}.restartDate`}
-                            />
-                          </TableCell> */}
-                            {/* <TableCell>
-                            <Field
-                              name={`history.${index}.reasonForUse`}
-                              component={TextField}
-                              variant="outlined"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              component={RadioGroup}
-                              name={`history.${index}.acceptance`}
-                            >
-                              <FormControlLabel
-                                value="Si"
-                                control={<Radio />}
-                                label="Si"
-                              />
-                              <FormControlLabel
-                                value="No"
-                                control={<Radio />}
-                                label="No"
-                              />
-                              <FormControlLabel
-                                value="No aplica"
-                                control={<Radio />}
-                                label="No aplica"
-                              />
-                            </Field>
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              name={`history.${index}.administration`}
-                              component={TextField}
-                              variant="outlined"
-                            />
-                          </TableCell>
+                            {/* 
+                          
+                          
                           <TableCell>
                             <Field
                               component={RadioGroup}
@@ -325,17 +282,86 @@ export default function Pharmacotherapy() {
                               Otra información
                             </DialogTitle>
                             <DialogContent>
-                              <Field
-                                component={DatePicker}
-                                // slotProps={{
-                                //   textField: {
-                                //     helperText: errors.restartDate
-                                //       ? errors.restartDate
-                                //       : "",
-                                //   },
-                                // }}
-                                name={`history.${index}.restartDate`}
-                              />
+                              <Stack spacing={2}>
+                                <Field
+                                  component={DatePicker}
+                                  // slotProps={{
+                                  //   textField: {
+                                  //     helperText: errors.restartDate
+                                  //       ? errors.restartDate
+                                  //       : "",
+                                  //   },
+                                  // }}
+                                  name={`history.${index}.restartDate`}
+                                />
+                                <Field
+                                  name={`history.${index}.reasonForUse`}
+                                  component={TextField}
+                                  variant="outlined"
+                                  label="Motivo de uso"
+                                />
+                                <FormControl>
+                                  <FormLabel id="acceptance-radio-group">
+                                    Aceptación
+                                  </FormLabel>
+                                  <Field
+                                    component={RadioGroup}
+                                    name={`history.${index}.acceptance`}
+                                    row
+                                  >
+                                    <FormControlLabel
+                                      value="Si"
+                                      control={<Radio />}
+                                      label="Si"
+                                    />
+                                    <FormControlLabel
+                                      value="No"
+                                      control={<Radio />}
+                                      label="No"
+                                    />
+                                    <FormControlLabel
+                                      value="No aplica"
+                                      control={<Radio />}
+                                      label="No aplica"
+                                    />
+                                  </Field>
+                                </FormControl>
+                                <Field
+                                  name={`history.${index}.administration`}
+                                  component={TextField}
+                                  label="Administración"
+                                  variant="outlined"
+                                />
+                                <FormControl>
+                                  <FormLabel id="difficulty-radio-group">
+                                    Dificultades para tomarlo y/o tolerarlo
+                                  </FormLabel>
+                                  <Field
+                                    component={RadioGroup}
+                                    name={`history.${index}.difficulty`}
+                                    row
+                                  >
+                                    <FormControlLabel
+                                      value="Si"
+                                      control={<Radio />}
+                                      label="Si"
+                                    />
+                                    <FormControlLabel
+                                      value="No"
+                                      control={<Radio />}
+                                      label="No"
+                                    />
+                                  </Field>
+                                  {history.difficulty === "Si" && (
+                                    <Field
+                                      name={`history.${index}.difficultyJustification`}
+                                      component={TextField}
+                                      label="comentenos"
+                                      variant="outlined"
+                                    />
+                                  )}
+                                </FormControl>
+                              </Stack>
                             </DialogContent>
                           </Dialog>
                         </React.Fragment>
