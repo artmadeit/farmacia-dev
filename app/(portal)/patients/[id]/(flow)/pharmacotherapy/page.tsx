@@ -6,8 +6,12 @@ import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Divider,
   FormControlLabel,
   IconButton,
@@ -26,6 +30,7 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
+import React from "react";
 
 const emptyHistoryRow = {
   administration: "",
@@ -62,6 +67,11 @@ const emptyAdverseReactionRow = {
 
 export default function Pharmacotherapy() {
   const getApi = useAuthApi();
+  const [open, setOpen] = React.useState(false);
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
   const searchDrugDcis = (searchText: string) =>
     getApi().then((api) =>
@@ -134,10 +144,10 @@ export default function Pharmacotherapy() {
                         <TableCell style={{ minWidth: 200 }} align="center">
                           Fecha susp
                         </TableCell>
-                        <TableCell style={{ minWidth: 200 }} align="center">
+                        {/* <TableCell style={{ minWidth: 200 }} align="center">
                           Fecha rein.
-                        </TableCell>
-                        <TableCell style={{ minWidth: 200 }} align="center">
+                        </TableCell> */}
+                        {/* <TableCell style={{ minWidth: 200 }} align="center">
                           Motivo de uso
                         </TableCell>
                         <TableCell style={{ minWidth: 200 }} align="center">
@@ -148,73 +158,75 @@ export default function Pharmacotherapy() {
                         </TableCell>
                         <TableCell style={{ minWidth: 200 }} align="center">
                           Dificultades para tomarlo y/o tolerarlo
-                        </TableCell>
+                        </TableCell> */}
+                        <TableCell></TableCell>
                         <TableCell></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {values.history.map((history, index) => (
-                        <TableRow key={index}>
-                          <TableCell>
-                            <AsyncAutocomplete
-                              label="Medicamento"
-                              field={`history.${index}.drug`}
-                              getLabel={(option) => option.fullName}
-                              filter={searchDrugPharmaceuticalProducts}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              component={RadioGroup}
-                              name={`history.${index}.mode`}
-                              row
-                            >
-                              <FormControlLabel
-                                value="P"
-                                control={<Radio />}
-                                label="P"
+                        <React.Fragment key={index}>
+                          <TableRow>
+                            <TableCell>
+                              <AsyncAutocomplete
+                                label="Medicamento"
+                                field={`history.${index}.drug`}
+                                getLabel={(option) => option.fullName}
+                                filter={searchDrugPharmaceuticalProducts}
                               />
-                              <FormControlLabel
-                                value="A"
-                                control={<Radio />}
-                                label="A"
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={RadioGroup}
+                                name={`history.${index}.mode`}
+                                row
+                              >
+                                <FormControlLabel
+                                  value="P"
+                                  control={<Radio />}
+                                  label="P"
+                                />
+                                <FormControlLabel
+                                  value="A"
+                                  control={<Radio />}
+                                  label="A"
+                                />
+                              </Field>
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                name={`history.${index}.dose`}
+                                component={TextField}
+                                variant="outlined"
                               />
-                            </Field>
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              name={`history.${index}.dose`}
-                              component={TextField}
-                              variant="outlined"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              component={DatePicker}
-                              // slotProps={{
-                              //   textField: {
-                              //     helperText: errors.history[index].startDate
-                              //       ? errors.history[index].startDate
-                              //       : "",
-                              //   },
-                              // }}
-                              name={`history.${index}.startDate`}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              component={DatePicker}
-                              // slotProps={{
-                              //   textField: {
-                              //     helperText: errors.suspensionDate
-                              //       ? errors.suspensionDate
-                              //       : "",
-                              //   },
-                              // }}
-                              name={`history.${index}.suspensionDate`}
-                            />
-                          </TableCell>
-                          <TableCell>
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={DatePicker}
+                                // slotProps={{
+                                //   textField: {
+                                //     helperText: errors.history[index].startDate
+                                //       ? errors.history[index].startDate
+                                //       : "",
+                                //   },
+                                // }}
+                                name={`history.${index}.startDate`}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={DatePicker}
+                                // slotProps={{
+                                //   textField: {
+                                //     helperText: errors.suspensionDate
+                                //       ? errors.suspensionDate
+                                //       : "",
+                                //   },
+                                // }}
+                                name={`history.${index}.suspensionDate`}
+                              />
+                            </TableCell>
+                            {/* <TableCell>
                             <Field
                               component={DatePicker}
                               // slotProps={{
@@ -226,8 +238,8 @@ export default function Pharmacotherapy() {
                               // }}
                               name={`history.${index}.restartDate`}
                             />
-                          </TableCell>
-                          <TableCell>
+                          </TableCell> */}
+                            {/* <TableCell>
                             <Field
                               name={`history.${index}.reasonForUse`}
                               component={TextField}
@@ -286,18 +298,47 @@ export default function Pharmacotherapy() {
                                 variant="outlined"
                               />
                             )}
-                          </TableCell>
-                          <TableCell>
-                            <Tooltip title="Eliminar">
-                              <IconButton
-                                aria-labelledby="eliminar"
-                                onClick={() => arrayHelpers.remove(index)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </TableCell>
-                        </TableRow>
+                          </TableCell> */}
+                            <TableCell>
+                              <Tooltip title="Eliminar">
+                                <IconButton
+                                  aria-labelledby="eliminar"
+                                  onClick={() => arrayHelpers.remove(index)}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </TableCell>
+                            <TableCell>
+                              <Tooltip title="Ver más">
+                                <IconButton
+                                  aria-labelledby="Ver"
+                                  onClick={() => setOpen(true)}
+                                >
+                                  <SearchIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </TableCell>
+                          </TableRow>
+                          <Dialog open={open} onClose={onClose}>
+                            <DialogTitle style={{ fontSize: "1rem" }}>
+                              Otra información
+                            </DialogTitle>
+                            <DialogContent>
+                              <Field
+                                component={DatePicker}
+                                // slotProps={{
+                                //   textField: {
+                                //     helperText: errors.restartDate
+                                //       ? errors.restartDate
+                                //       : "",
+                                //   },
+                                // }}
+                                name={`history.${index}.restartDate`}
+                              />
+                            </DialogContent>
+                          </Dialog>
+                        </React.Fragment>
                       ))}
                     </TableBody>
                     <TableFooter>
@@ -318,6 +359,7 @@ export default function Pharmacotherapy() {
                 )}
               </FieldArray>
             </TableContainer>
+
             <Grid container spacing={2} pt={4}>
               <Grid xs={10}>
                 <em>
