@@ -1,4 +1,5 @@
 "use client";
+import { Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Field } from "formik";
 import { TextField } from "formik-mui";
@@ -7,7 +8,7 @@ import React from "react";
 export const VitalFunctions = () => {
   return (
     <Grid container spacing={2}>
-      <Grid xs={3}>
+      <Grid xs={4}>
         <Field
           component={TextField}
           name="fc"
@@ -16,7 +17,7 @@ export const VitalFunctions = () => {
           fullWidth
         />
       </Grid>
-      <Grid xs={3}>
+      <Grid xs={4}>
         <Field
           component={TextField}
           name="fr"
@@ -25,7 +26,7 @@ export const VitalFunctions = () => {
           fullWidth
         />
       </Grid>
-      <Grid xs={3}>
+      <Grid xs={4}>
         <Field
           component={TextField}
           name="t"
@@ -34,15 +35,31 @@ export const VitalFunctions = () => {
           fullWidth
         />
       </Grid>
-      <Grid xs={3}>
-        <Field
-          component={TextField}
-          name="pa"
-          label="Presión arterial:"
-          variant="outlined"
-          fullWidth
-        />
+      <Grid container>
+        <Grid xs={12}>
+          <Typography>Presión arterial</Typography>
+        </Grid>
+        <Grid xs={6}>
+          <Field
+            component={TextField}
+            name="pas"
+            label="Presión sistólica:"
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid xs={6}>
+          <Field
+            component={TextField}
+            name="pad"
+            label="presión diastólica"
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
       </Grid>
+
+      {/* </Grid> */}
     </Grid>
   );
 };

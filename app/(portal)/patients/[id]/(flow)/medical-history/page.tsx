@@ -55,7 +55,8 @@ const initialValues: Anamnesis = {
   fc: null,
   fr: null,
   t: null,
-  pa: null,
+  pas: null,
+  pad: null,
 
   alcoholConsumption: "",
   tobaccoConsumption: "",
@@ -92,7 +93,8 @@ export type Anamnesis = {
   fc: number | null;
   fr: number | null;
   t: number | null;
-  pa: number | null;
+  pas: number | null;
+  pad: number |null;
   alcoholConsumption: string;
   tobaccoConsumption: string;
   teaConsumption: string;
@@ -129,6 +131,8 @@ export default function PatientInterview() {
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
           fc: yup.number().required().min(40).max(250),
           fr: yup.number().required().min(8).max(40),
+          pas: yup.number().required().min(60).max(240),
+          pad: yup.number().required().min(30).max(160),
           t: yup.number().required().min(34).max(42),
         })}
         onSubmit={() => {

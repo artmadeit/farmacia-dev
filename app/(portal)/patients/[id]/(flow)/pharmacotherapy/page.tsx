@@ -387,11 +387,6 @@ export default function Pharmacotherapy() {
             </TableContainer>
 
             <Grid container spacing={2} pt={4}>
-              <Grid xs={10}>
-                <em>
-                  <strong>Plan de Seguimiento Farmacoterapéutico:</strong>
-                </em>
-              </Grid>
               <Grid xs={10} style={{ margin: "10px 0px" }}>
                 <strong>3.1 Alergias</strong>
               </Grid>
