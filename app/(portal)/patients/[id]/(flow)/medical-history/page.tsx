@@ -2,7 +2,14 @@
 
 import { Title } from "@/app/(components)/Title";
 import { formatDate, minYear, today } from "@/app/date";
-import { Box, Divider, FormControlLabel, Radio, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  FormControlLabel,
+  Radio,
+  Stack,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
 import { Field, Form, Formik } from "formik";
@@ -94,7 +101,7 @@ export type Anamnesis = {
   fr: number | null;
   t: number | null;
   pas: number | null;
-  pad: number |null;
+  pad: number | null;
   alcoholConsumption: string;
   tobaccoConsumption: string;
   teaConsumption: string;
@@ -168,6 +175,15 @@ export default function PatientInterview() {
             <Subtitle component="h5">2.8 Diagnóstico</Subtitle>
             <Diagnosis />
           </Stack>
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            sx={{ marginTop: "10px" }}
+          >
+            <Button variant="contained" type="submit">
+              Guardar
+            </Button>
+          </Box>
         </Form>
       </Formik>
     </div>

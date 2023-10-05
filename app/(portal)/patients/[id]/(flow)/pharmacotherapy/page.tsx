@@ -8,6 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import {
+  Box,
   Button,
   Dialog,
   DialogContent,
@@ -627,6 +628,15 @@ export default function Pharmacotherapy() {
             {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
 examen de laboratorio o prueba diagnostica	fecha	resultado
 rango de valor normal	evaluacion/comentarios */}
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ marginTop: "10px" }}
+            >
+              <Button variant="contained" type="submit">
+                Guardar
+              </Button>
+            </Box>
           </Form>
         )}
       </Formik>
