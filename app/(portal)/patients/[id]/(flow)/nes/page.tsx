@@ -21,6 +21,7 @@ import { RadioGroup, TextField } from "formik-mui";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DatePicker } from "formik-mui-x-date-pickers";
+import { formatDate } from "@/app/date";
 
 const emptyTestingRow = {
   diagnosis: "",
@@ -71,7 +72,7 @@ export default function NesPage() {
                 justifyContent="space-between"
                 sx={{ pb: 1 }}
               >
-                <span style={{ fontSize: "14px" }}> FECHA DEL ANÁLISIS:</span>
+                <span style={{ fontSize: "14px" }}> Fecha: { formatDate(new Date()) } </span>
                 {/* <Field component={DatePicker} sx={{ width: "180px" }} /> */}
               </Grid>
             </Grid>

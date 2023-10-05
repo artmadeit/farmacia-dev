@@ -37,13 +37,13 @@ export const VitalFunctions = () => {
       </Grid>
       <Grid container>
         <Grid xs={12}>
-          <Typography>Presión arterial</Typography>
+          <Typography>Presión arterial (PA)</Typography>
         </Grid>
         <Grid xs={6}>
           <Field
             component={TextField}
             name="pas"
-            label="Presión sistólica:"
+            label="PA sistólica:"
             variant="outlined"
             fullWidth
           />
@@ -52,7 +52,7 @@ export const VitalFunctions = () => {
           <Field
             component={TextField}
             name="pad"
-            label="presión diastólica"
+            label="PA diastólica"
             variant="outlined"
             fullWidth
           />

@@ -131,8 +131,8 @@ export default function PatientInterview() {
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
           fc: yup.number().required().min(40).max(250),
           fr: yup.number().required().min(8).max(40),
-          pas: yup.number().required().min(60).max(240),
-          pad: yup.number().required().min(30).max(160),
+          pas: yup.number().required().min(60).max(240).label("PA sistólica"),
+          pad: yup.number().required().min(30).max(160).label("PA diastólica"),
           t: yup.number().required().min(34).max(42),
         })}
         onSubmit={() => {
