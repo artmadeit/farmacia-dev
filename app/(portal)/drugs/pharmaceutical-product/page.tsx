@@ -1,7 +1,6 @@
 "use client";
 
 import { Page } from "@/app/(api)/pagination";
-import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import { usePagination } from "@/app/(components)/hook-customization/usePagination";
 import { Stack, Typography } from "@mui/material";
@@ -13,7 +12,7 @@ import { Drug } from "./Drug";
 const DrugsPage = () => {
   const { paginationModel, setPaginationModel } = usePagination();
 
-  const { data: drugs } = useSWR<Page<Drug>>([
+  const { data: drugs, isLoading } = useSWR<Page<Drug>>([
     "/drugPharmaceuticalProducts",
     { params: { page: paginationModel.page, size: paginationModel.pageSize } },
   ]);
@@ -22,7 +21,6 @@ const DrugsPage = () => {
     () =>
       (
         [
-          { field: "code", headerName: "Código", width: 150 },
           { field: "name", headerName: "Nombre", width: 150 },
           { field: "concentration", headerName: "Concentración", width: 150 },
           { field: "form", headerName: "Forma", width: 150 },
@@ -31,8 +29,6 @@ const DrugsPage = () => {
     []
   );
 
-  if (!drugs) return <div>Loading</div>;
-
   return (
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
@@ -40,12 +36,13 @@ const DrugsPage = () => {
       </Stack>
       <div style={{ height: "70vh", width: "100%" }}>
         <DataGrid
+          loading={isLoading}
           columns={columns}
-          rowCount={drugs.page.totalElements}
+          rowCount={drugs?.page.totalElements}
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
-          rows={drugs._embedded.drugPharmaceuticalProducts}
+          rows={drugs?._embedded.drugPharmaceuticalProducts || []}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
