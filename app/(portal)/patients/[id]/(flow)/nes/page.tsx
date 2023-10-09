@@ -72,7 +72,9 @@ export default function NesPage() {
                 justifyContent="space-between"
                 sx={{ pb: 1 }}
               >
-                <span style={{ fontSize: "14px" }}> Fecha: { formatDate(new Date()) } </span>
+                <span style={{ fontSize: "14px" }}>
+                  Fecha: {formatDate(new Date())}
+                </span>
                 {/* <Field component={DatePicker} sx={{ width: "180px" }} /> */}
               </Grid>
             </Grid>
@@ -240,6 +242,33 @@ export default function NesPage() {
                 )}
               </FieldArray>
             </TableContainer>
+            <Grid container pt={4}>
+              <Grid xs={10}>
+                <strong>Plan de intervención farmaceutica</strong>
+              </Grid>
+              <Grid container>
+                <Grid>
+                  <Field
+                    component={TextField}
+                    name="a"
+                    label="A"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid>
+                  <Field
+                    component={TextField}
+                    name="b"
+                    label="Comentarios"
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                    fullWidth
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
           </Form>
         )}
       </Formik>
