@@ -25,7 +25,7 @@ import React from "react";
 import yup from "../../../../../validation";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { ConsumptionHabits } from "./ConsumptionHabits";
-import { LabTests } from "./LabTests";
+import { LabTest, LabTests } from "./LabTests";
 import { OutlinedPaper } from "./OutlinedPaper";
 import { PersonalInformation } from "./PersonalInformation";
 import { PhysicalExercises } from "./PhysicalExercises";
@@ -124,7 +124,7 @@ export type Anamnesis = {
   otherFoodHabits: string;
   physicalExercises: string;
   existLabTests: boolean | null;
-  labTests: never[];
+  labTests: LabTest[];
   diagnosis: string[];
 };
 
