@@ -5,6 +5,8 @@ import {
   FormControlLabel,
   Grid,
   IconButton,
+  ListSubheader,
+  MenuItem,
   Paper,
   Radio,
   Stack,
@@ -23,6 +25,8 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { formatDate } from "@/app/date";
+import { Select } from "formik-mui";
+import { PI_GROUPS } from "./pi-groups";
 
 const emptyTestingRow = {
   diagnosis: "",
@@ -265,13 +269,16 @@ export default function NesPage() {
                     {values.pharmaceuticIntervention.map((x, index) => (
                       <Grid container key={index}>
                         <Grid xs={6} sx={{ paddingRight: "10px" }}>
-                          <Field
+                          <PiSelect
+                            name={`pharmaceuticIntervention.${index}.pharmaceuticIntervention`}
+                          />
+                          {/* <Field
                             component={TextField}
                             name={`pharmaceuticIntervention.${index}.pharmaceuticIntervention`}
                             label="A"
                             variant="outlined"
                             fullWidth
-                          />
+                          /> */}
                         </Grid>
                         <Grid xs={6}>
                           <Field
@@ -298,3 +305,26 @@ export default function NesPage() {
     </div>
   );
 }
+
+const PiSelect = ({ name }: any) => {
+  return (
+    <Field
+      component={Select}
+      formControl={{ sx: { m: 1, width: "100%" } }}
+      name={name}
+      label="Intervenciones Farmaceuticas"
+    >
+      <MenuItem value="">
+        <em>Ninguno:</em>
+      </MenuItem>
+      {PI_GROUPS.map((x) => [
+        <ListSubheader key={x.group}>{x.group}</ListSubheader>,
+        ...x.items.map((item) => (
+          <MenuItem key={item} value={item}>
+            {item}
+          </MenuItem>
+        )),
+      ])}
+    </Field>
+  );
+};
