@@ -211,7 +211,7 @@ const Diagnosis = () => {
       const api = await getApi();
       const page = await api
         .get<Page<DiseaseCie10>>(
-          "/diseases/search/findByNameContainingIgnoreCase",
+          "/diseases/search/findByNameContainingIgnoringCase",
           {
             params: { searchText: newInputValue },
           }
