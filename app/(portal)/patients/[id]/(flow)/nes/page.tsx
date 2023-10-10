@@ -7,6 +7,7 @@ import {
   IconButton,
   Paper,
   Radio,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -33,6 +34,11 @@ const emptyTestingRow = {
   prm: "",
 };
 
+const emptyPharmaceuticInterventionRow = {
+  pharmaceuticIntervention: "",
+  commentaries: "",
+};
+
 export default function NesPage() {
   return (
     <div>
@@ -44,6 +50,11 @@ export default function NesPage() {
           testing: [
             {
               ...emptyTestingRow,
+            },
+          ],
+          pharmaceuticIntervention: [
+            {
+              ...emptyPharmaceuticInterventionRow,
             },
           ],
         }}
@@ -243,31 +254,43 @@ export default function NesPage() {
               </FieldArray>
             </TableContainer>
             <Grid container pt={4}>
-              <Grid xs={10}>
+              <Grid xs={10} paddingBottom={2}>
                 <strong>Plan de intervención farmaceutica</strong>
               </Grid>
-              <Grid container>
-                <Grid>
-                  <Field
-                    component={TextField}
-                    name="a"
-                    label="A"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid>
-                  <Field
-                    component={TextField}
-                    name="b"
-                    label="Comentarios"
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
+              {/* <Grid container> */}
+              <FieldArray name="">
+                {(arrayHelpers: ArrayHelpers) => (
+                  // <Stack>
+                  <Grid container>
+                    {values.pharmaceuticIntervention.map((x, index) => (
+                      <Grid container key={index}>
+                        <Grid xs={6} sx={{ paddingRight: "10px" }}>
+                          <Field
+                            component={TextField}
+                            name={`pharmaceuticIntervention.${index}.pharmaceuticIntervention`}
+                            label="A"
+                            variant="outlined"
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid xs={6}>
+                          <Field
+                            component={TextField}
+                            name={`pharmaceuticIntervention.${index}.commentaries`}
+                            label="Comentarios"
+                            variant="outlined"
+                            multiline
+                            rows={4}
+                            fullWidth
+                          />
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
+                  // </Stack>
+                )}
+              </FieldArray>
+              {/* </Grid> */}
             </Grid>
           </Form>
         )}
