@@ -12,7 +12,7 @@ import { Page } from "@/app/(api)/pagination";
 const Cie10 = () => {
   const { paginationModel, setPaginationModel } = usePagination();
 
-  const { data: diseaseCie10 } = useSWR<Page<DiseaseCie10>>([
+  const { data: diseases, isLoading } = useSWR<Page<DiseaseCie10>>([
     "/diseases",
     { params: { page: paginationModel.page, size: paginationModel.pageSize } },
   ]);
@@ -21,13 +21,13 @@ const Cie10 = () => {
     () =>
       (
         [
-          { field: "name", headerName: "Nombre", width: 150 },
+          { field: "code", headerName: "Código", height: 100 },
+          { field: "name", headerName: "Nombre", flex: 1 },
         ] as GridColDef<DiseaseCie10>[]
       ).map(withOutSorting),
     []
   );
 
-  if (!diseaseCie10) return <div>Loading</div>;
   return (
     <Stack spacing={2}>
       <Stack spacing={2}>
@@ -35,9 +35,10 @@ const Cie10 = () => {
       </Stack>
       <div style={{ height: "70vh", width: "100%" }}>
         <DataGrid
+          loading={isLoading}
           columns={columns}
-          rowCount={diseaseCie10.page.totalElements}
-          rows={diseaseCie10._embedded.diseases}
+          rowCount={diseases?.page.totalElements}
+          rows={diseases?._embedded.diseases || []}
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}

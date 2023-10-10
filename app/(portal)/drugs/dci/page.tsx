@@ -21,7 +21,7 @@ const DciList = () => {
     () =>
       (
         [
-          { field: "name", headerName: "Nombre", width: 200 },
+          { field: "name", headerName: "Nombre", flex: 1 },
         ] as GridColDef<DrugDci>[]
       ).map(withOutSorting),
     []
@@ -35,7 +35,7 @@ const DciList = () => {
           Denominación común internacional (DCI)
         </Typography>
       </Stack>
-      <div style={{height: "70vh", width: "100%"}}>
+      <div style={{ height: "70vh", width: "100%" }}>
         <DataGrid
           columns={columns}
           rowCount={drugDcis.page.totalElements}

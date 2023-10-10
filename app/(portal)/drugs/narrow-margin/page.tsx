@@ -14,12 +14,13 @@ import { esES } from "@mui/x-data-grid";
 import useSWR from "swr";
 import { usePagination } from "@/app/(components)/hook-customization/usePagination";
 import { Page } from "@/app/(api)/pagination";
-import { api } from "@/app/(api)/api";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import DialogDelete from "@/app/(components)/DialogDelete";
+import { useAuthApi } from "@/app/(api)/api";
 
 const DrugsPage = () => {
   const router = useRouter();
+  const getApi = useAuthApi();
   const [itemToDelete, setItemToDelete] = React.useState<Drug | null>(null);
   const alert = React.useContext(SnackbarContext);
 
@@ -28,7 +29,9 @@ const DrugsPage = () => {
       return;
     }
 
-    await api.delete(`/drugNarrowMargins/${itemToDelete.id}`);
+    await getApi().then((api) =>
+      api.delete(`/drugNarrowMargins/${itemToDelete.id}`)
+    );
     alert.showMessage("Medicamento eliminado");
     setItemToDelete(null);
     await getDrugs();
@@ -45,7 +48,7 @@ const DrugsPage = () => {
     () =>
       (
         [
-          { field: "name", headerName: "Nombre", width: 150 },
+          { field: "name", headerName: "Nombre", minWidth: 200 },
           {
             field: "actions",
             type: "actions",
