@@ -1,6 +1,6 @@
 export const PI_GROUPS = [
   {
-    group: "a",
+    group: "Intervenciones farmacéuticas dirigidas al médico",
     items: [
       "Alternativas terapeúticas",
       "Suspensión de la prescripción",
@@ -15,7 +15,8 @@ export const PI_GROUPS = [
     ],
   },
   {
-    group: "b",
+    group:
+      "Intervenciones farmacéuticas dirigidas al paciente (Educación al paciente)",
     items: [
       "Conservación como almacenar en casa",
       "Preparación",

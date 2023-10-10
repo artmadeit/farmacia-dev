@@ -268,7 +268,7 @@ export default function NesPage() {
                   <Grid container>
                     {values.pharmaceuticIntervention.map((x, index) => (
                       <Grid container key={index}>
-                        <Grid xs={6} sx={{ paddingRight: "10px" }}>
+                        <Grid xs={6} sx={{ paddingRight: "20px" }}>
                           <PiSelect
                             name={`pharmaceuticIntervention.${index}.pharmaceuticIntervention`}
                           />
@@ -310,9 +310,10 @@ const PiSelect = ({ name }: any) => {
   return (
     <Field
       component={Select}
-      formControl={{ sx: { m: 1, width: "100%" } }}
+      formControl={{ sx: { width: "100%" } }}
       name={name}
       label="Intervenciones Farmaceuticas"
+      fullWidth
     >
       <MenuItem value="">
         <em>Ninguno:</em>
