@@ -3,22 +3,29 @@
 import { Title } from "@/app/(components)/Title";
 import { formatDate, minYear, today } from "@/app/date";
 import {
+  AutocompleteRenderInputParams,
   Box,
   Button,
   Divider,
   FormControlLabel,
   Radio,
   Stack,
+  TextField as MuiTextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { Field, Form, Formik } from "formik";
-import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
+import { Field, Form, Formik, useFormikContext } from "formik";
+import {
+  Autocomplete,
+  CheckboxWithLabel,
+  RadioGroup,
+  TextField,
+} from "formik-mui";
 import React from "react";
 import yup from "../../../../../validation";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { ConsumptionHabits } from "./ConsumptionHabits";
-import { LabTests } from "./LabTests";
+import { LabTest, LabTests } from "./LabTests";
 import { OutlinedPaper } from "./OutlinedPaper";
 import { PersonalInformation } from "./PersonalInformation";
 import { PhysicalExercises } from "./PhysicalExercises";
@@ -30,6 +37,10 @@ import {
   foodHabits,
   healthProblems,
 } from "./data";
+import { debounce } from "lodash";
+import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
+import { Page } from "@/app/(api)/pagination";
+import { useAuthApi } from "@/app/(api)/api";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -79,7 +90,7 @@ const initialValues: Anamnesis = {
   physicalExercises: "",
   existLabTests: null,
   labTests: [],
-  diagnosis: "",
+  diagnosis: [],
 };
 
 export type Anamnesis = {
@@ -113,8 +124,8 @@ export type Anamnesis = {
   otherFoodHabits: string;
   physicalExercises: string;
   existLabTests: boolean | null;
-  labTests: never[];
-  diagnosis: string;
+  labTests: LabTest[];
+  diagnosis: string[];
 };
 
 export default function PatientInterview() {
@@ -190,16 +201,59 @@ export default function PatientInterview() {
   );
 }
 
-const Diagnosis = () => (
-  <Box>
+const Diagnosis = () => {
+  const { touched, errors } = useFormikContext<Anamnesis>();
+  const getApi = useAuthApi();
+
+  const [diseases, setDiseases] = React.useState<DiseaseCie10[]>([]);
+  const searchDiseases = debounce(async (newInputValue: string) => {
+    if (newInputValue) {
+      const api = await getApi();
+      const page = await api
+        .get<Page<DiseaseCie10>>(
+          "/diseases/search/findByNameContainingIgnoringCase",
+          {
+            params: { searchText: newInputValue },
+          }
+        )
+        .then((x) => x.data);
+      setDiseases(page._embedded.diseases);
+    } else {
+      setDiseases([]);
+    }
+  }, 500);
+
+  const name = "diagnosis";
+  return (
     <Field
-      name="diagnosis"
-      component={TextField}
-      variant="outlined"
-      fullWidth
+      name={name}
+      multiple
+      component={Autocomplete}
+      options={diseases}
+      renderInput={(params: AutocompleteRenderInputParams) => (
+        <MuiTextField
+          label="Diagnosis"
+          variant="outlined"
+          {...params}
+          name={name}
+          error={touched[name] && !!errors[name]}
+          helperText={errors[name] as string}
+        />
+      )}
+      getOptionLabel={(option: any) =>
+        typeof option === "string" ? option : option.name
+      }
+      isOptionEqualToValue={(option: DiseaseCie10, value: DiseaseCie10) =>
+        option.id === value.id
+      }
+      filterSelectedOptions
+      filterOptions={(x: any) => x}
+      onInputChange={(_event: any, newInputValue: any) => {
+        searchDiseases(newInputValue);
+      }}
     />
-  </Box>
-);
+  );
+};
 
 const FoodHabits = () => (
   <Grid container component={OutlinedPaper}>

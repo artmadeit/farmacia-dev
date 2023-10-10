@@ -17,7 +17,15 @@ import { DatePicker } from "formik-mui-x-date-pickers";
 import React from "react";
 import { Anamnesis } from "./page";
 
-const emptyLabTest = {
+export type LabTest = {
+  name: string;
+  date: Date | null;
+  result: string;
+  normalRange: string;
+  comments: string;
+};
+
+const emptyLabTest: LabTest = {
   name: "",
   date: null,
   result: "",
