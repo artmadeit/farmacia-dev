@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  Box,
   Button,
+  Fab,
   FormControlLabel,
   Grid,
   IconButton,
@@ -27,6 +29,7 @@ import { DatePicker } from "formik-mui-x-date-pickers";
 import { formatDate } from "@/app/date";
 import { Select } from "formik-mui";
 import { PI_GROUPS } from "./pi-groups";
+import CloseIcon from "@mui/icons-material/Close";
 
 const emptyTestingRow = {
   diagnosis: "",
@@ -262,25 +265,34 @@ export default function NesPage() {
                 <strong>Plan de intervención farmaceutica</strong>
               </Grid>
               {/* <Grid container> */}
-              <FieldArray name="">
+              <FieldArray name="pharmaceuticIntervention">
                 {(arrayHelpers: ArrayHelpers) => (
                   // <Stack>
                   <Grid container>
                     {values.pharmaceuticIntervention.map((x, index) => (
-                      <Grid container key={index}>
-                        <Grid xs={6} sx={{ paddingRight: "20px" }}>
+                      <Grid container key={index} paddingBottom={2}>
+                        {values.pharmaceuticIntervention.length > 1 && (
+                          <Grid
+                            xs={12}
+                            display="flex"
+                            justifyContent="end"
+                            paddingBottom={2}
+                          >
+                            <Fab
+                              color="primary"
+                              aria-label="delete"
+                              onClick={arrayHelpers.handleRemove(index)}
+                            >
+                              <CloseIcon />
+                            </Fab>
+                          </Grid>
+                        )}
+                        <Grid item xs={6} sx={{ paddingRight: "20px" }}>
                           <PiSelect
                             name={`pharmaceuticIntervention.${index}.pharmaceuticIntervention`}
                           />
-                          {/* <Field
-                            component={TextField}
-                            name={`pharmaceuticIntervention.${index}.pharmaceuticIntervention`}
-                            label="A"
-                            variant="outlined"
-                            fullWidth
-                          /> */}
                         </Grid>
-                        <Grid xs={6}>
+                        <Grid item xs={6}>
                           <Field
                             component={TextField}
                             name={`pharmaceuticIntervention.${index}.commentaries`}
@@ -293,6 +305,18 @@ export default function NesPage() {
                         </Grid>
                       </Grid>
                     ))}
+                    {values.pharmaceuticIntervention.length > 0 && (
+                      <Box textAlign="center">
+                        <Button
+                          startIcon={<AddIcon />}
+                          onClick={() =>
+                            arrayHelpers.push(emptyPharmaceuticInterventionRow)
+                          }
+                        >
+                          Agregar otra intervención farmaceutica
+                        </Button>
+                      </Box>
+                    )}
                   </Grid>
                   // </Stack>
                 )}
