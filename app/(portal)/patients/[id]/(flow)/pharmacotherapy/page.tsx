@@ -11,6 +11,7 @@ import {
   Box,
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -364,6 +365,9 @@ export default function Pharmacotherapy() {
                                 </FormControl>
                               </Stack>
                             </DialogContent>
+                            <DialogActions sx={{ padding: "20px 24px" }}>
+                              <Button variant="contained">Guardar</Button>
+                            </DialogActions>
                           </Dialog>
                         </React.Fragment>
                       ))}

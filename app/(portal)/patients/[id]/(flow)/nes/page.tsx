@@ -323,6 +323,13 @@ export default function NesPage() {
               </FieldArray>
               {/* </Grid> */}
             </Grid>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ marginTop: "10px" }}
+            >
+              <Button variant="contained">Guardar</Button>
+            </Box>
           </Form>
         )}
       </Formik>
