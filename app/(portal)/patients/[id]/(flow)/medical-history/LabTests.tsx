@@ -16,6 +16,10 @@ import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import React from "react";
 import { Anamnesis } from "./page";
+import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
+import { useAuthApi } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
+import { LabTestD } from "./LabTestD";
 
 export type LabTest = {
   name: string;
@@ -35,6 +39,20 @@ const emptyLabTest: LabTest = {
 
 export const LabTests = () => {
   const { values, setFieldValue } = useFormikContext<Anamnesis>();
+  const getApi = useAuthApi();
+
+  const searchLabTest = (searchText: string) => {
+    return getApi().then((api) =>
+      api
+        .get<Page<LabTestD>>(
+          "labTests/search/findByNameContainingIgnoringCase",
+          {
+            params: { page: 0, searchText },
+          }
+        )
+        .then((x) => x.data._embedded.labTests)
+    );
+  };
 
   return (
     <Box>
@@ -83,13 +101,11 @@ export const LabTests = () => {
                     </Grid>
                   )}
                   <Grid xs={6}>
-                    <Field
-                      name={`labTests.${index}.name`}
+                    <AsyncAutocomplete
                       label="Examen de laboratorio o prueba diagnostica"
-                      component={TextField}
-                      variant="outlined"
-                      fullWidth
-                    />
+                      field={`labTests.${index}.name`}
+                      filter={searchLabTest}
+                    />                    
                   </Grid>
                   <Grid xs={3}>
                     <Field
