@@ -30,6 +30,10 @@ import { formatDate } from "@/app/date";
 import { Select } from "formik-mui";
 import { PI_GROUPS } from "./pi-groups";
 import CloseIcon from "@mui/icons-material/Close";
+import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
+import { useAuthApi } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
+import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 
 const emptyTestingRow = {
   diagnosis: "",
@@ -47,6 +51,18 @@ const emptyPharmaceuticInterventionRow = {
 };
 
 export default function NesPage() {
+  const getApi = useAuthApi();
+
+  const searchMedicine = (searchText: string) => {
+    return getApi().then((api) =>
+      api
+        .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
+          params: { page: 0, searchText },
+        })
+        .then((x) => x.data._embedded.drugDcis)
+    );
+  };
+
   return (
     <div>
       {/* <Typography variant="h6" style={{ paddingBottom: "10px" }}>
@@ -161,11 +177,16 @@ export default function NesPage() {
                             />
                           </TableCell>
                           <TableCell>
-                            <Field
+                            <AsyncAutocomplete
+                              label="Medicina"
+                              field={`testing.${index}.medicine`}
+                              filter={searchMedicine}
+                            />
+                            {/* <Field
                               component={TextField}
                               name={`testing.${index}.medicine`}
                               label="Medicina"
-                            />
+                            /> */}
                           </TableCell>
                           <TableCell>
                             <Field
