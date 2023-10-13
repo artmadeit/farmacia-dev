@@ -1,6 +1,10 @@
 "use client";
 import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
+import {
+  InexactDatePicker,
+  defaultDate,
+} from "@/app/(components)/InexactDatePicker";
 import { Title } from "@/app/(components)/Title";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
@@ -45,7 +49,7 @@ const emptyHistoryRow = {
   reasonForUse: "",
   suspensionDate: null,
   restartDate: null,
-  startDate: null,
+  startDate: defaultDate,
   dose: "",
   mode: "",
   drug: "",
@@ -54,7 +58,7 @@ const emptyHistoryRow = {
 const emptyAllergyRow = {
   drug: "",
   description: "",
-  date: null,
+  date: defaultDate,
 };
 
 const emptyFoodsRow = {
@@ -191,28 +195,13 @@ export default function Pharmacotherapy() {
                               />
                             </TableCell>
                             <TableCell>
-                              <Field
-                                component={DatePicker}
-                                // slotProps={{
-                                //   textField: {
-                                //     helperText: errors.history[index].startDate
-                                //       ? errors.history[index].startDate
-                                //       : "",
-                                //   },
-                                // }}
+                              <InexactDatePicker
                                 name={`history.${index}.startDate`}
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={DatePicker}
-                                // slotProps={{
-                                //   textField: {
-                                //     helperText: errors.suspensionDate
-                                //       ? errors.suspensionDate
-                                //       : "",
-                                //   },
-                                // }}
                                 name={`history.${index}.suspensionDate`}
                               />
                             </TableCell>
@@ -390,9 +379,7 @@ export default function Pharmacotherapy() {
                             />
                           </TableCell>
                           <TableCell>
-                            <Field
-                              component={DatePicker}
-                              fullWidth
+                            <InexactDatePicker
                               name={`allergies.${index}.date`}
                             />
                           </TableCell>

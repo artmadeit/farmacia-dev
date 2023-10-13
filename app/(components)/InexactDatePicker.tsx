@@ -1,4 +1,5 @@
 "use client";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Button,
   Dialog,
@@ -16,35 +17,56 @@ import {
   Stack,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import format from "date-fns/format";
 import { isDate, isValid } from "date-fns";
+import format from "date-fns/format";
+import { useField } from "formik";
+import { useState } from "react";
 
-export default function TestPage() {
-  const [value, setValue] = useState<Date | null>(null);
-  const [dateType, setDateType] = useState("date");
+type DateType = "year" | "year-month" | "date";
+type InexactDateType = {
+  type: DateType;
+  value: Date | null;
+};
+
+export const defaultDate = {
+  type: "date",
+  value: null,
+};
+
+export function InexactDatePicker({
+  label,
+  name,
+}: {
+  label?: string;
+  name: string;
+}) {
+  const [field, _meta, helpers] = useField<InexactDateType>(name);
+
+  const { type, value } = field.value;
+
   const [open, setOpen] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDateType((event.target as HTMLInputElement).value);
+    helpers.setValue({
+      type: (event.target as HTMLInputElement).value as DateType,
+      value,
+    });
   };
-
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-        <InputLabel htmlFor="inexact-date">Fecha</InputLabel>
+      <FormControl variant="outlined">
+        {label && <InputLabel htmlFor="inexact-date">{label}</InputLabel>}
         <OutlinedInput
           id="inexact-date"
           type="text"
           readOnly
           value={
-            dateType && value && isDate(value) && isValid(value)
-              ? dateType === "year"
+            type && value && isDate(value) && isValid(value)
+              ? type === "year"
                 ? value.getFullYear()
-                : dateType === "year-month"
+                : type === "year-month"
                 ? format(value, "MM-yyyy")
                 : value.toLocaleDateString()
               : ""
@@ -60,17 +82,15 @@ export default function TestPage() {
               </IconButton>
             </InputAdornment>
           }
-          label="Password"
         />
       </FormControl>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <FormControl>
-            <FormLabel id="unspecific-date">Fecha</FormLabel>
+            {label && <FormLabel id="unspecific-date">{label}</FormLabel>}
             <RadioGroup
               aria-labelledby="unspecific-date"
-              name="radio-buttons-group"
-              value={dateType}
+              value={type}
               onChange={handleChange}
             >
               <FormControlLabel
@@ -93,11 +113,13 @@ export default function TestPage() {
           <Stack>
             <DatePicker
               value={value}
-              onChange={(newValue) => setValue(newValue)}
+              onChange={(newValue) =>
+                helpers.setValue({ type, value: newValue })
+              }
               views={
-                dateType === "year"
+                type === "year"
                   ? ["year"]
-                  : dateType === "year-month"
+                  : type === "year-month"
                   ? ["month", "year"]
                   : undefined
               }
