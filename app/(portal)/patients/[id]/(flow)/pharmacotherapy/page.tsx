@@ -231,33 +231,6 @@ export default function Pharmacotherapy() {
                                 name={`history.${index}.suspensionDate`}
                               />
                             </TableCell>
-                            {/* 
-                          
-                          
-                          <TableCell>
-                            <Field
-                              component={RadioGroup}
-                              name={`history.${index}.difficulty`}
-                            >
-                              <FormControlLabel
-                                value="Si"
-                                control={<Radio />}
-                                label="Si"
-                              />
-                              <FormControlLabel
-                                value="No"
-                                control={<Radio />}
-                                label="No"
-                              />
-                            </Field>
-                            {history.difficulty === "Si" && (
-                              <Field
-                                name={`history.${index}.difficultyJustification`}
-                                component={TextField}
-                                variant="outlined"
-                              />
-                            )}
-                          </TableCell> */}
                             <TableCell>
                               <Tooltip title="Eliminar">
                                 <IconButton
@@ -287,13 +260,12 @@ export default function Pharmacotherapy() {
                               <Stack spacing={2}>
                                 <Field
                                   component={DatePicker}
-                                  // slotProps={{
-                                  //   textField: {
-                                  //     helperText: errors.restartDate
-                                  //       ? errors.restartDate
-                                  //       : "",
-                                  //   },
-                                  // }}
+                                  slotProps={{
+                                    textField: {
+                                      fullWidth: true,
+                                      label: "Fecha rein.",
+                                    },
+                                  }}
                                   name={`history.${index}.restartDate`}
                                 />
                                 <Field
@@ -357,8 +329,10 @@ export default function Pharmacotherapy() {
                                   {history.difficulty === "Si" && (
                                     <Field
                                       name={`history.${index}.difficultyJustification`}
+                                      multiline
+                                      rows={4}
                                       component={TextField}
-                                      label="comentenos"
+                                      label="Comentarios"
                                       variant="outlined"
                                     />
                                   )}
@@ -628,10 +602,6 @@ export default function Pharmacotherapy() {
                 )}
               </FieldArray>
             </TableContainer>
-
-            {/* ¿se realizaron examenes de laboratorio u otra prueba diagnostica? si no
-examen de laboratorio o prueba diagnostica	fecha	resultado
-rango de valor normal	evaluacion/comentarios */}
             <Box
               display="flex"
               justifyContent="flex-end"
