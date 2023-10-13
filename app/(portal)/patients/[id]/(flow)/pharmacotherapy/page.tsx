@@ -149,21 +149,6 @@ export default function Pharmacotherapy() {
                         <TableCell style={{ minWidth: 200 }} align="center">
                           Fecha susp
                         </TableCell>
-                        {/* <TableCell style={{ minWidth: 200 }} align="center">
-                          Fecha rein.
-                        </TableCell> */}
-                        {/* <TableCell style={{ minWidth: 200 }} align="center">
-                          Motivo de uso
-                        </TableCell>
-                        <TableCell style={{ minWidth: 200 }} align="center">
-                          Aceptación
-                        </TableCell>
-                        <TableCell style={{ minWidth: 200 }} align="center">
-                          Administración
-                        </TableCell>
-                        <TableCell style={{ minWidth: 200 }} align="center">
-                          Dificultades para tomarlo y/o tolerarlo
-                        </TableCell> */}
                         <TableCell></TableCell>
                         <TableCell></TableCell>
                       </TableRow>
