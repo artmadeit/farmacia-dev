@@ -1,17 +1,22 @@
 "use client";
 
+import { useAuthApi } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
+import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
+import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import { formatDate } from "@/app/date";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
   Fab,
-  FormControlLabel,
   Grid,
   IconButton,
   ListSubheader,
   MenuItem,
   Paper,
-  Radio,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -22,18 +27,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
-import { RadioGroup, TextField } from "formik-mui";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { DatePicker } from "formik-mui-x-date-pickers";
-import { formatDate } from "@/app/date";
-import { Select } from "formik-mui";
+import { Select, TextField } from "formik-mui";
 import { PI_GROUPS } from "./pi-groups";
-import CloseIcon from "@mui/icons-material/Close";
-import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
-import { useAuthApi } from "@/app/(api)/api";
-import { Page } from "@/app/(api)/pagination";
-import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 
 const emptyTestingRow = {
   diagnosis: "",
@@ -65,9 +60,6 @@ export default function NesPage() {
 
   return (
     <div>
-      {/* <Typography variant="h6" style={{ paddingBottom: "10px" }}>
-        PARA LA EVALUACIÓN Y EL ANÁLISIS DE DATOS E IDENTIFICACIÓN DEL PRM.
-      </Typography> */}
       <Formik
         initialValues={{
           testing: [
@@ -109,7 +101,6 @@ export default function NesPage() {
                 <span style={{ fontSize: "14px" }}>
                   Fecha: {formatDate(new Date())}
                 </span>
-                {/* <Field component={DatePicker} sx={{ width: "180px" }} /> */}
               </Grid>
             </Grid>
 
@@ -179,7 +170,7 @@ export default function NesPage() {
                           </TableCell>
                           <TableCell>
                             <Field
-                              formControl={{ sx: { m: 1, minWidth: 140 } }}
+                              formControl={{ sx: { minWidth: 140 } }}
                               component={Select}
                               id={`testing.${index}.necessity`}
                               name={`testing.${index}.necessity`}
@@ -197,7 +188,7 @@ export default function NesPage() {
                           <TableCell>
                             <Field
                               component={Select}
-                              formControl={{ sx: { m: 1, minWidth: 140 } }}
+                              formControl={{ sx: { minWidth: 140 } }}
                               id={`testing.${index}.effectivity`}
                               name={`testing.${index}.effectivity`}
                             >
@@ -211,7 +202,7 @@ export default function NesPage() {
                           <TableCell>
                             <Field
                               component={Select}
-                              formControl={{ sx: { m: 1, minWidth: 140 } }}
+                              formControl={{ sx: { minWidth: 140 } }}
                               id={`testing.${index}.security`}
                               name={`testing.${index}.security`}
                             >
@@ -261,10 +252,8 @@ export default function NesPage() {
               <Grid xs={10} paddingBottom={2}>
                 <strong>Plan de intervención farmaceutica</strong>
               </Grid>
-              {/* <Grid container> */}
               <FieldArray name="pharmaceuticIntervention">
                 {(arrayHelpers: ArrayHelpers) => (
-                  // <Stack>
                   <Grid container>
                     {values.pharmaceuticIntervention.map((x, index) => (
                       <Grid container key={index} paddingBottom={2}>
@@ -315,10 +304,8 @@ export default function NesPage() {
                       </Box>
                     )}
                   </Grid>
-                  // </Stack>
                 )}
               </FieldArray>
-              {/* </Grid> */}
             </Grid>
             <Box
               display="flex"
