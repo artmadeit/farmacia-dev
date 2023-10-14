@@ -131,9 +131,6 @@ export default function NesPage() {
                         <TableCell sx={{ fontWeight: "bold" }} colSpan={3}>
                           Evaluación de datos de farmacoterapia
                         </TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>
-                          PRM identificado
-                        </TableCell>
                         <TableCell></TableCell>
                       </TableRow>
                       <TableRow>
@@ -146,17 +143,12 @@ export default function NesPage() {
                         </TableCell>
                         <TableCell colSpan={3}>
                           Evaluar c/u de los medicamentos si son:
-                          {/* <span style={{ fontWeight: "bold" }}>NES</span> */}
-                        </TableCell>
-                        <TableCell rowSpan={2}>
-                          De acuerdo a la evaluación realizada determinar el o
-                          los PRM identificados en el paciente
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell>N</TableCell>
-                        <TableCell>E</TableCell>
-                        <TableCell>S</TableCell>
+                        <TableCell>Necesidad</TableCell>
+                        <TableCell>Efectividad</TableCell>
+                        <TableCell>Seguridad</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -182,27 +174,31 @@ export default function NesPage() {
                               field={`testing.${index}.medicine`}
                               filter={searchMedicine}
                             />
-                            {/* <Field
-                              component={TextField}
-                              name={`testing.${index}.medicine`}
-                              label="Medicina"
-                            /> */}
                           </TableCell>
                           <TableCell>
                             <Field
                               component={RadioGroup}
                               name={`testing.${index}.necessity`}
-                              row
                             >
                               <FormControlLabel
-                                value="yes"
+                                value="yes real"
                                 control={<Radio />}
-                                label="Si"
+                                label="Si real"
                               />
                               <FormControlLabel
-                                value="no"
+                                value="yes potential"
                                 control={<Radio />}
-                                label="No"
+                                label="Si potencial"
+                              />
+                              <FormControlLabel
+                                value="no real"
+                                control={<Radio />}
+                                label="No real"
+                              />
+                              <FormControlLabel
+                                value="no potencial"
+                                control={<Radio />}
+                                label="No potencial"
                               />
                             </Field>
                           </TableCell>
@@ -210,7 +206,6 @@ export default function NesPage() {
                             <Field
                               component={RadioGroup}
                               name={`testing.${index}.effectivity`}
-                              row
                             >
                               <FormControlLabel
                                 value="yes"
@@ -218,9 +213,14 @@ export default function NesPage() {
                                 label="Si"
                               />
                               <FormControlLabel
-                                value="no"
+                                value="no real"
                                 control={<Radio />}
-                                label="No"
+                                label="No real"
+                              />
+                              <FormControlLabel
+                                value="no potencial"
+                                control={<Radio />}
+                                label="No potencial"
                               />
                             </Field>
                           </TableCell>
@@ -228,7 +228,6 @@ export default function NesPage() {
                             <Field
                               component={RadioGroup}
                               name={`testing.${index}.security`}
-                              row
                             >
                               <FormControlLabel
                                 value="yes"
@@ -236,21 +235,21 @@ export default function NesPage() {
                                 label="Si"
                               />
                               <FormControlLabel
-                                value="no"
+                                value="no real"
                                 control={<Radio />}
-                                label="No"
+                                label="No real"
                               />
-                            </Field>
-                          </TableCell>
-                          {/* <TableCell>
-                      <Field component={TextField} name="nes" label="NES" />
-                    </TableCell> */}
-                          <TableCell>
-                            <Field
+                              <FormControlLabel
+                                value="no potencial"
+                                control={<Radio />}
+                                label="No potencial"
+                              />
+                              {/* <Field
                               component={TextField}
                               name={`testing.${index}.prm`}
                               label="PRM identificado"
-                            />
+                            /> */}
+                            </Field>
                           </TableCell>
                           <TableCell>
                             <Tooltip title="Eliminar">
