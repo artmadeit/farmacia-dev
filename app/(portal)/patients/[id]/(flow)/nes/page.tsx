@@ -34,10 +34,21 @@ const emptyTestingRow = {
   diagnosis: "",
   symptoms: "",
   medicine: "",
-  necessity: "",
-  effectivity: "",
-  security: "",
-  prm: "",
+  necessity: {
+    evaluation: "",
+    justification: "",
+    prm: "",
+  },
+  effectivity: {
+    evaluation: "",
+    justification: "",
+    prm: "",
+  },
+  security: {
+    evaluation: "",
+    justification: "",
+    prm: "",
+  },
 };
 
 const emptyPharmaceuticInterventionRow = {
@@ -173,51 +184,67 @@ export default function NesPage() {
                               formControl={{ sx: { minWidth: 140 } }}
                               component={Select}
                               id={`testing.${index}.necessity`}
-                              name={`testing.${index}.necessity`}
+                              name={`testing.${index}.necessity.evaluation`}
                             >
                               <MenuItem value={"yes real"}>Si real</MenuItem>
                               <MenuItem value={"yes potential"}>
                                 Si potencial
                               </MenuItem>
                               <MenuItem value={"no real"}>No real</MenuItem>
-                              <MenuItem value={"no potencial"}>
+                              <MenuItem value={"no potential"}>
                                 No potencial
                               </MenuItem>
                             </Field>
+                            {(values.testing[index].necessity.evaluation ==
+                              "yes real" ||
+                              values.testing[index].necessity.evaluation ==
+                                "yes potential") && (
+                              <Justification
+                                name={`testing.${index}.necessity`}
+                              />
+                            )}
                           </TableCell>
                           <TableCell>
                             <Field
                               component={Select}
                               formControl={{ sx: { minWidth: 140 } }}
                               id={`testing.${index}.effectivity`}
-                              name={`testing.${index}.effectivity`}
+                              name={`testing.${index}.effectivity.evaluation`}
                             >
                               <MenuItem value={"yes"}>Si</MenuItem>
                               <MenuItem value={"no real"}>No real</MenuItem>
-                              <MenuItem value={"no potencial"}>
+                              <MenuItem value={"no potential"}>
                                 No potencial
                               </MenuItem>
                             </Field>
+                            {values.testing[index].effectivity.evaluation &&
+                              values.testing[index].effectivity.evaluation !==
+                                "yes" && (
+                                <Justification
+                                  name={`testing.${index}.effectivity`}
+                                />
+                              )}
                           </TableCell>
                           <TableCell>
                             <Field
                               component={Select}
                               formControl={{ sx: { minWidth: 140 } }}
                               id={`testing.${index}.security`}
-                              name={`testing.${index}.security`}
+                              name={`testing.${index}.security.evaluation`}
                             >
                               <MenuItem value={"yes"}>Si</MenuItem>
                               <MenuItem value={"no real"}>No real</MenuItem>
-                              <MenuItem value={"no potencial"}>
+                              <MenuItem value={"no potential"}>
                                 No potencial
                               </MenuItem>
                             </Field>
-
-                            {/* <Field
-                              component={TextField}
-                              name={`testing.${index}.prm`}
-                              label="PRM identificado"
-                            /> */}
+                            {values.testing[index].security.evaluation &&
+                              values.testing[index].security.evaluation !==
+                                "yes" && (
+                                <Justification
+                                  name={`testing.${index}.security`}
+                                />
+                              )}
                           </TableCell>
                           <TableCell>
                             <Tooltip title="Eliminar">
@@ -320,6 +347,32 @@ export default function NesPage() {
     </div>
   );
 }
+
+const Justification = ({ name }: { name: string }) => {
+  return (
+    <div>
+      {/* PRM identificado
+      <Field
+        formControl={{ sx: { minWidth: 140 } }}
+        component={Select}
+        id={`${name}.prm`}
+        name={`${name}.prm`}
+      >
+        <MenuItem value={"yes ss"}>Si s</MenuItem>
+        <MenuItem value={"yes sssstencial"}>asd</MenuItem>
+      </Field> */}
+      <Field
+        component={TextField}
+        label="Justifique"
+        name={`${name}.justification`}
+        variant="outlined"
+        multiline
+        rows={4}
+        fullWidth
+      />
+    </div>
+  );
+};
 
 const PiSelect = ({ name }: any) => {
   return (
