@@ -157,6 +157,7 @@ export default function NesPage() {
                           <TableCell>
                             <Field
                               component={TextField}
+                              fullWidth
                               name={`testing.${index}.diagnosis`}
                               label="Diagnóstico"
                             />
@@ -164,6 +165,7 @@ export default function NesPage() {
                           <TableCell>
                             <Field
                               component={TextField}
+                              fullWidth
                               name={`testing.${index}.symptoms`}
                               label="Sintomas"
                             />
@@ -177,79 +179,54 @@ export default function NesPage() {
                           </TableCell>
                           <TableCell>
                             <Field
-                              component={RadioGroup}
+                              formControl={{ sx: { m: 1, minWidth: 140 } }}
+                              component={Select}
+                              id={`testing.${index}.necessity`}
                               name={`testing.${index}.necessity`}
                             >
-                              <FormControlLabel
-                                value="yes real"
-                                control={<Radio />}
-                                label="Si real"
-                              />
-                              <FormControlLabel
-                                value="yes potential"
-                                control={<Radio />}
-                                label="Si potencial"
-                              />
-                              <FormControlLabel
-                                value="no real"
-                                control={<Radio />}
-                                label="No real"
-                              />
-                              <FormControlLabel
-                                value="no potencial"
-                                control={<Radio />}
-                                label="No potencial"
-                              />
+                              <MenuItem value={"yes real"}>Si real</MenuItem>
+                              <MenuItem value={"yes potential"}>
+                                Si potencial
+                              </MenuItem>
+                              <MenuItem value={"no real"}>No real</MenuItem>
+                              <MenuItem value={"no potencial"}>
+                                No potencial
+                              </MenuItem>
                             </Field>
                           </TableCell>
                           <TableCell>
                             <Field
-                              component={RadioGroup}
+                              component={Select}
+                              formControl={{ sx: { m: 1, minWidth: 140 } }}
+                              id={`testing.${index}.effectivity`}
                               name={`testing.${index}.effectivity`}
                             >
-                              <FormControlLabel
-                                value="yes"
-                                control={<Radio />}
-                                label="Si"
-                              />
-                              <FormControlLabel
-                                value="no real"
-                                control={<Radio />}
-                                label="No real"
-                              />
-                              <FormControlLabel
-                                value="no potencial"
-                                control={<Radio />}
-                                label="No potencial"
-                              />
+                              <MenuItem value={"yes"}>Si</MenuItem>
+                              <MenuItem value={"no real"}>No real</MenuItem>
+                              <MenuItem value={"no potencial"}>
+                                No potencial
+                              </MenuItem>
                             </Field>
                           </TableCell>
                           <TableCell>
                             <Field
-                              component={RadioGroup}
+                              component={Select}
+                              formControl={{ sx: { m: 1, minWidth: 140 } }}
+                              id={`testing.${index}.security`}
                               name={`testing.${index}.security`}
                             >
-                              <FormControlLabel
-                                value="yes"
-                                control={<Radio />}
-                                label="Si"
-                              />
-                              <FormControlLabel
-                                value="no real"
-                                control={<Radio />}
-                                label="No real"
-                              />
-                              <FormControlLabel
-                                value="no potencial"
-                                control={<Radio />}
-                                label="No potencial"
-                              />
-                              {/* <Field
+                              <MenuItem value={"yes"}>Si</MenuItem>
+                              <MenuItem value={"no real"}>No real</MenuItem>
+                              <MenuItem value={"no potencial"}>
+                                No potencial
+                              </MenuItem>
+                            </Field>
+
+                            {/* <Field
                               component={TextField}
                               name={`testing.${index}.prm`}
                               label="PRM identificado"
                             /> */}
-                            </Field>
                           </TableCell>
                           <TableCell>
                             <Tooltip title="Eliminar">
