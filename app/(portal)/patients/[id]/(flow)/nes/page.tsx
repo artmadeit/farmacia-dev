@@ -28,7 +28,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
+import {
+  ArrayHelpers,
+  Field,
+  FieldArray,
+  Form,
+  Formik,
+  useFormikContext,
+} from "formik";
 import { Select, TextField } from "formik-mui";
 import { PI_GROUPS } from "./pi-groups";
 import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
@@ -59,36 +66,25 @@ const emptyPharmaceuticInterventionRow = {
   commentaries: "",
 };
 
+const initialValues = {
+  testing: [
+    {
+      ...emptyTestingRow,
+    },
+  ],
+  pharmaceuticIntervention: [
+    {
+      ...emptyPharmaceuticInterventionRow,
+    },
+  ],
+};
+
+type NesForm = typeof initialValues;
+
 export default function NesPage() {
-  const getApi = useAuthApi();
-
-  const searchMedicine = (searchText: string) => {
-    return getApi().then((api) =>
-      api
-        .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
-          params: { page: 0, searchText },
-        })
-        .then((x) => x.data._embedded.drugDcis)
-    );
-  };
-
   return (
     <div>
-      <Formik
-        initialValues={{
-          testing: [
-            {
-              ...emptyTestingRow,
-            },
-          ],
-          pharmaceuticIntervention: [
-            {
-              ...emptyPharmaceuticInterventionRow,
-            },
-          ],
-        }}
-        onSubmit={() => {}}
-      >
+      <Formik initialValues={initialValues} onSubmit={() => {}}>
         {({ values }) => (
           <Form>
             <Grid container>
@@ -118,169 +114,7 @@ export default function NesPage() {
               </Grid>
             </Grid>
 
-            <TableContainer component={Paper}>
-              <FieldArray name="testing">
-                {(arrayHelpers: ArrayHelpers) => (
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ fontWeight: "bold" }}>
-                          Datos de Salud
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>
-                          Evaluación de datos de salud
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>
-                          Datos de farmacoterapia
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }} colSpan={3}>
-                          Evaluación de datos de farmacoterapia
-                        </TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell rowSpan={2}>Diagnóstico(s)</TableCell>
-                        <TableCell rowSpan={2}>
-                          Signos y sintomas que se relacionan con el Dx
-                        </TableCell>
-                        <TableCell rowSpan={2}>
-                          Medicamentos que consume el paciente
-                        </TableCell>
-                        <TableCell colSpan={3}>
-                          Evaluar c/u de los medicamentos si son:
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell sx={{ minWidth: 200 }}>Necesidad</TableCell>
-                        <TableCell sx={{ minWidth: 200 }}>
-                          Efectividad
-                        </TableCell>
-                        <TableCell sx={{ minWidth: 200 }}>Seguridad</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {values.testing.map((x, index) => (
-                        <TableRow key={index}>
-                          <TableCell>
-                            <Field
-                              component={TextField}
-                              fullWidth
-                              name={`testing.${index}.diagnosis`}
-                              label="Diagnóstico"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              component={TextField}
-                              fullWidth
-                              name={`testing.${index}.symptoms`}
-                              label="Sintomas"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <AsyncAutocomplete
-                              label="Medicina"
-                              field={`testing.${index}.medicine`}
-                              filter={searchMedicine}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              formControl={{ fullWidth: true }}
-                              component={Select}
-                              fullWidth
-                              id={`testing.${index}.necessity`}
-                              name={`testing.${index}.necessity.evaluation`}
-                            >
-                              <MenuItem value={"yes real"}>Si real</MenuItem>
-                              <MenuItem value={"yes potential"}>
-                                Si potencial
-                              </MenuItem>
-                              <MenuItem value={"no real"}>No real</MenuItem>
-                              <MenuItem value={"no potential"}>
-                                No potencial
-                              </MenuItem>
-                            </Field>
-                            {(values.testing[index].necessity.evaluation ==
-                              "yes real" ||
-                              values.testing[index].necessity.evaluation ==
-                                "yes potential") && (
-                              <Justification
-                                name={`testing.${index}.necessity`}
-                              />
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              component={Select}
-                              formControl={{ fullWidth: true }}
-                              id={`testing.${index}.effectivity`}
-                              name={`testing.${index}.effectivity.evaluation`}
-                            >
-                              <MenuItem value={"yes"}>Si</MenuItem>
-                              <MenuItem value={"no real"}>No real</MenuItem>
-                              <MenuItem value={"no potential"}>
-                                No potencial
-                              </MenuItem>
-                            </Field>
-                            {values.testing[index].effectivity.evaluation &&
-                              values.testing[index].effectivity.evaluation !==
-                                "yes" && (
-                                <Justification
-                                  name={`testing.${index}.effectivity`}
-                                />
-                              )}
-                          </TableCell>
-                          <TableCell>
-                            <Field
-                              component={Select}
-                              formControl={{ fullWidth: true }}
-                              id={`testing.${index}.security`}
-                              name={`testing.${index}.security.evaluation`}
-                            >
-                              <MenuItem value={"yes"}>Si</MenuItem>
-                              <MenuItem value={"no real"}>No real</MenuItem>
-                              <MenuItem value={"no potential"}>
-                                No potencial
-                              </MenuItem>
-                            </Field>
-                            {values.testing[index].security.evaluation &&
-                              values.testing[index].security.evaluation !==
-                                "yes" && (
-                                <Justification
-                                  name={`testing.${index}.security`}
-                                />
-                              )}
-                          </TableCell>
-                          <TableCell>
-                            <Tooltip title="Eliminar">
-                              <IconButton
-                                aria-label="delete"
-                                onClick={() => arrayHelpers.remove(index)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                    <TableFooter>
-                      <TableRow>
-                        <TableCell colSpan={3}>
-                          <Button
-                            startIcon={<AddIcon />}
-                            onClick={() => arrayHelpers.push(emptyTestingRow)}
-                          >
-                            Agrega Columna
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    </TableFooter>
-                  </Table>
-                )}
-              </FieldArray>
-            </TableContainer>
+            <DiagnosisNesTable />
             <Grid container pt={4}>
               <Grid xs={10} paddingBottom={2}>
                 <strong>Plan de intervención farmaceutica</strong>
@@ -353,6 +187,170 @@ export default function NesPage() {
     </div>
   );
 }
+
+const DiagnosisNesTable = () => {
+  const { values } = useFormikContext<NesForm>();
+  const getApi = useAuthApi();
+
+  const searchMedicine = (searchText: string) => {
+    return getApi().then((api) =>
+      api
+        .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
+          params: { page: 0, searchText },
+        })
+        .then((x) => x.data._embedded.drugDcis)
+    );
+  };
+
+  const name = "testing";
+
+  return (
+    <TableContainer component={Paper}>
+      <FieldArray name={name}>
+        {(arrayHelpers: ArrayHelpers) => (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold" }}>
+                  Datos de Salud
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>
+                  Evaluación de datos de salud
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>
+                  Datos de farmacoterapia
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold" }} colSpan={3}>
+                  Evaluación de datos de farmacoterapia
+                </TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell rowSpan={2}>Diagnóstico(s)</TableCell>
+                <TableCell rowSpan={2}>
+                  Signos y sintomas que se relacionan con el Dx
+                </TableCell>
+                <TableCell rowSpan={2}>
+                  Medicamentos que consume el paciente
+                </TableCell>
+                <TableCell colSpan={3}>
+                  Evaluar c/u de los medicamentos si son:
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ minWidth: 200 }}>Necesidad</TableCell>
+                <TableCell sx={{ minWidth: 200 }}>Efectividad</TableCell>
+                <TableCell sx={{ minWidth: 200 }}>Seguridad</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {values[name].map((x, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      name={`${name}.${index}.diagnosis`}
+                      label="Diagnóstico"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      name={`${name}.${index}.symptoms`}
+                      label="Sintomas"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <AsyncAutocomplete
+                      label="Medicina"
+                      field={`${name}.${index}.medicine`}
+                      filter={searchMedicine}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Field
+                      formControl={{ fullWidth: true }}
+                      component={Select}
+                      fullWidth
+                      id={`${name}.${index}.necessity`}
+                      name={`${name}.${index}.necessity.evaluation`}
+                    >
+                      <MenuItem value={"yes real"}>Si real</MenuItem>
+                      <MenuItem value={"yes potential"}>Si potencial</MenuItem>
+                      <MenuItem value={"no real"}>No real</MenuItem>
+                      <MenuItem value={"no potential"}>No potencial</MenuItem>
+                    </Field>
+                    {(values[name][index].necessity.evaluation == "yes real" ||
+                      values[name][index].necessity.evaluation ==
+                        "yes potential") && (
+                      <Justification name={`${name}.${index}.necessity`} />
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Field
+                      component={Select}
+                      formControl={{ fullWidth: true }}
+                      id={`${name}.${index}.effectivity`}
+                      name={`${name}.${index}.effectivity.evaluation`}
+                    >
+                      <MenuItem value={"yes"}>Si</MenuItem>
+                      <MenuItem value={"no real"}>No real</MenuItem>
+                      <MenuItem value={"no potential"}>No potencial</MenuItem>
+                    </Field>
+                    {values[name][index].effectivity.evaluation &&
+                      values[name][index].effectivity.evaluation !== "yes" && (
+                        <Justification name={`${name}.${index}.effectivity`} />
+                      )}
+                  </TableCell>
+                  <TableCell>
+                    <Field
+                      component={Select}
+                      formControl={{ fullWidth: true }}
+                      id={`${name}.${index}.security`}
+                      name={`${name}.${index}.security.evaluation`}
+                    >
+                      <MenuItem value={"yes"}>Si</MenuItem>
+                      <MenuItem value={"no real"}>No real</MenuItem>
+                      <MenuItem value={"no potential"}>No potencial</MenuItem>
+                    </Field>
+                    {values[name][index].security.evaluation &&
+                      values[name][index].security.evaluation !== "yes" && (
+                        <Justification name={`${name}.${index}.security`} />
+                      )}
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip title="Eliminar">
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => arrayHelpers.remove(index)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Button
+                    startIcon={<AddIcon />}
+                    onClick={() => arrayHelpers.push(emptyTestingRow)}
+                  >
+                    Agrega Columna
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        )}
+      </FieldArray>
+    </TableContainer>
+  );
+};
 
 const Justification = ({ name }: { name: string }) => {
   const groupName = name.includes("effectivity")
