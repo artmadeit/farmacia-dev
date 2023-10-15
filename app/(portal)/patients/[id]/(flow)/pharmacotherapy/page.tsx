@@ -74,6 +74,8 @@ const emptyAdverseReactionRow = {
   adverseReactionOfDrug: "",
 };
 
+const TABLE_WIDTH_DATE = 180;
+const TABLE_WIDTH_ACTION = 60;
 export default function Pharmacotherapy() {
   const getApi = useAuthApi();
   const [open, setOpen] = React.useState(false);
@@ -140,21 +142,28 @@ export default function Pharmacotherapy() {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell style={{ minWidth: 200 }}>
+                        <TableCell style={{ minWidth: 300 }}>
                           Medicamento
                         </TableCell>
-                        <TableCell>P/A</TableCell>
+                        <TableCell style={{ width: 50 }}>P/A</TableCell>
                         <TableCell style={{ minWidth: 200 }} align="center">
                           Dosis
                         </TableCell>
-                        <TableCell style={{ minWidth: 200 }} align="center">
+                        <TableCell
+                          style={{ width: TABLE_WIDTH_DATE }}
+                          align="center"
+                        >
                           Fecha inicio
                         </TableCell>
-                        <TableCell style={{ minWidth: 200 }} align="center">
+                        <TableCell
+                          style={{ width: TABLE_WIDTH_DATE }}
+                          align="center"
+                        >
                           Fecha susp
                         </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
+                        <TableCell
+                          sx={{ width: 2 * TABLE_WIDTH_ACTION }}
+                        ></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -192,6 +201,7 @@ export default function Pharmacotherapy() {
                                 name={`history.${index}.dose`}
                                 component={TextField}
                                 variant="outlined"
+                                fullWidth
                               />
                             </TableCell>
                             <TableCell>
@@ -214,8 +224,6 @@ export default function Pharmacotherapy() {
                                   <DeleteIcon />
                                 </IconButton>
                               </Tooltip>
-                            </TableCell>
-                            <TableCell>
                               <Tooltip title="Ver más">
                                 <IconButton
                                   aria-labelledby="Ver"
@@ -356,8 +364,12 @@ export default function Pharmacotherapy() {
                         <TableCell style={{ minWidth: 200 }}>
                           Descripción
                         </TableCell>
-                        <TableCell>Fecha</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell style={{ width: TABLE_WIDTH_DATE }}>
+                          Fecha
+                        </TableCell>
+                        <TableCell
+                          style={{ width: TABLE_WIDTH_ACTION }}
+                        ></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -429,8 +441,12 @@ export default function Pharmacotherapy() {
                         <TableCell style={{ minWidth: 500 }}>
                           Descripción
                         </TableCell>
-                        <TableCell>Fecha</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell style={{ width: TABLE_WIDTH_DATE }}>
+                          Fecha
+                        </TableCell>
+                        <TableCell
+                          sx={{ width: TABLE_WIDTH_ACTION }}
+                        ></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -503,17 +519,23 @@ export default function Pharmacotherapy() {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell>Fecha</TableCell>
-                        <TableCell>Medicamento</TableCell>
+                        <TableCell style={{ width: TABLE_WIDTH_DATE }}>
+                          Fecha
+                        </TableCell>
+                        <TableCell style={{ minWidth: 200 }}>
+                          Medicamento
+                        </TableCell>
                         <TableCell>Dosis</TableCell>
                         <TableCell>Reacción adversa medicamentosa</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell
+                          sx={{ width: TABLE_WIDTH_ACTION }}
+                        ></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {values.adverseReaction.map((x, index) => (
                         <TableRow key={index}>
-                          <TableCell style={{ maxWidth: 200 }}>
+                          <TableCell>
                             <Field
                               component={DatePicker}
                               name={`adverseReaction.${index}.date`}
@@ -535,7 +557,7 @@ export default function Pharmacotherapy() {
                               fullWidth
                             />
                           </TableCell>
-                          <TableCell style={{ minWidth: 300 }}>
+                          <TableCell>
                             <Field
                               component={TextField}
                               name={`adverseReaction.${index}.adverseReactionOfDrug`}
