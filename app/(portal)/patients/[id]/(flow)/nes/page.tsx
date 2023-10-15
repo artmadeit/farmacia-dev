@@ -40,7 +40,7 @@ import { Select, TextField } from "formik-mui";
 import { PI_GROUPS } from "./pi-groups";
 import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
 
-const emptyTestingRow = {
+const emptyEvaluationRow = {
   diagnosis: "",
   symptoms: "",
   medicine: "",
@@ -67,9 +67,14 @@ const emptyPharmaceuticInterventionRow = {
 };
 
 const initialValues = {
-  testing: [
+  diagnosisRelated: [
     {
-      ...emptyTestingRow,
+      ...emptyEvaluationRow,
+    },
+  ],
+  diagnosisNotRelated: [
+    {
+      ...emptyEvaluationRow,
     },
   ],
   pharmaceuticIntervention: [
@@ -114,7 +119,8 @@ export default function NesPage() {
               </Grid>
             </Grid>
 
-            <DiagnosisNesTable />
+            <EvaluationNesTable name="diagnosisRelated" />
+            <EvaluationNesTable name="diagnosisNotRelated" />
             <Grid container pt={4}>
               <Grid xs={10} paddingBottom={2}>
                 <strong>Plan de intervención farmaceutica</strong>
@@ -188,7 +194,11 @@ export default function NesPage() {
   );
 }
 
-const DiagnosisNesTable = () => {
+const EvaluationNesTable = ({
+  name,
+}: {
+  name: "diagnosisRelated" | "diagnosisNotRelated";
+}) => {
   const { values } = useFormikContext<NesForm>();
   const getApi = useAuthApi();
 
@@ -202,18 +212,18 @@ const DiagnosisNesTable = () => {
     );
   };
 
-  const name = "testing";
-
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ pt: 2 }}>
       <FieldArray name={name}>
         {(arrayHelpers: ArrayHelpers) => (
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>
-                  Datos de Salud
-                </TableCell>
+                {name === "diagnosisRelated" && (
+                  <TableCell sx={{ fontWeight: "bold" }}>
+                    Datos de Salud
+                  </TableCell>
+                )}
                 <TableCell sx={{ fontWeight: "bold" }}>
                   Evaluación de datos de salud
                 </TableCell>
@@ -226,9 +236,12 @@ const DiagnosisNesTable = () => {
                 <TableCell></TableCell>
               </TableRow>
               <TableRow>
-                <TableCell rowSpan={2}>Diagnóstico(s)</TableCell>
+                {name === "diagnosisRelated" && (
+                  <TableCell rowSpan={2}>Diagnóstico(s)</TableCell>
+                )}
                 <TableCell rowSpan={2}>
-                  Signos y sintomas que se relacionan con el Dx
+                  Signos y sintomas que {name === "diagnosisNotRelated" && "no"}{" "}
+                  se relacionan con el diagnóstico
                 </TableCell>
                 <TableCell rowSpan={2}>
                   Medicamentos que consume el paciente
@@ -246,30 +259,34 @@ const DiagnosisNesTable = () => {
             <TableBody>
               {values[name].map((x, index) => (
                 <TableRow key={index}>
-                  <TableCell>
-                    <Field
-                      component={TextField}
-                      fullWidth
-                      name={`${name}.${index}.diagnosis`}
-                      label="Diagnóstico"
-                    />
-                  </TableCell>
-                  <TableCell>
+                  {name === "diagnosisRelated" && (
+                    <TableCell sx={{ verticalAlign: "top" }}>
+                      <Field
+                        component={TextField}
+                        fullWidth
+                        name={`${name}.${index}.diagnosis`}
+                        label="Diagnóstico"
+                      />
+                    </TableCell>
+                  )}
+                  <TableCell sx={{ verticalAlign: "top" }}>
                     <Field
                       component={TextField}
                       fullWidth
                       name={`${name}.${index}.symptoms`}
                       label="Sintomas"
+                      multiline
+                      rows={4}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: "top" }}>
                     <AsyncAutocomplete
                       label="Medicina"
                       field={`${name}.${index}.medicine`}
                       filter={searchMedicine}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: "top" }}>
                     <Field
                       formControl={{ fullWidth: true }}
                       component={Select}
@@ -288,7 +305,7 @@ const DiagnosisNesTable = () => {
                       <Justification name={`${name}.${index}.necessity`} />
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: "top" }}>
                     <Field
                       component={Select}
                       formControl={{ fullWidth: true }}
@@ -304,7 +321,7 @@ const DiagnosisNesTable = () => {
                         <Justification name={`${name}.${index}.effectivity`} />
                       )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: "top" }}>
                     <Field
                       component={Select}
                       formControl={{ fullWidth: true }}
@@ -338,7 +355,7 @@ const DiagnosisNesTable = () => {
                 <TableCell colSpan={3}>
                   <Button
                     startIcon={<AddIcon />}
-                    onClick={() => arrayHelpers.push(emptyTestingRow)}
+                    onClick={() => arrayHelpers.push(emptyEvaluationRow)}
                   >
                     Agrega Columna
                   </Button>
