@@ -364,7 +364,7 @@ const Justification = ({ name }: { name: string }) => {
   const items = getItemsPerGroup(groupName);
 
   return (
-    <Stack gap={1} pt={2}>
+    <Stack gap={2} pt={2}>
       <Field
         formControl={{ sx: { width: 200 } }}
         component={Select}
