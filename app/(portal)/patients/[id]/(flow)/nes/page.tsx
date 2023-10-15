@@ -357,7 +357,7 @@ const EvaluationNesTable = ({
                     startIcon={<AddIcon />}
                     onClick={() => arrayHelpers.push(emptyEvaluationRow)}
                   >
-                    Agrega Columna
+                    Agregar fila
                   </Button>
                 </TableCell>
               </TableRow>

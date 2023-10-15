@@ -337,7 +337,7 @@ export default function Pharmacotherapy() {
                               arrayHelpers.push(emptyHistoryRow);
                             }}
                           >
-                            Agregar columna
+                            Agregar fila
                           </Button>
                         </TableCell>
                       </TableRow>
