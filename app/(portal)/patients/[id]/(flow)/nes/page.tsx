@@ -17,6 +17,7 @@ import {
   ListSubheader,
   MenuItem,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -25,10 +26,12 @@ import {
   TableHead,
   TableRow,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { Select, TextField } from "formik-mui";
 import { PI_GROUPS } from "./pi-groups";
+import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
 
 const emptyTestingRow = {
   diagnosis: "",
@@ -148,9 +151,11 @@ export default function NesPage() {
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell>Necesidad</TableCell>
-                        <TableCell>Efectividad</TableCell>
-                        <TableCell>Seguridad</TableCell>
+                        <TableCell sx={{ minWidth: 200 }}>Necesidad</TableCell>
+                        <TableCell sx={{ minWidth: 200 }}>
+                          Efectividad
+                        </TableCell>
+                        <TableCell sx={{ minWidth: 200 }}>Seguridad</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -181,8 +186,9 @@ export default function NesPage() {
                           </TableCell>
                           <TableCell>
                             <Field
-                              formControl={{ sx: { minWidth: 140 } }}
+                              formControl={{ fullWidth: true }}
                               component={Select}
+                              fullWidth
                               id={`testing.${index}.necessity`}
                               name={`testing.${index}.necessity.evaluation`}
                             >
@@ -207,7 +213,7 @@ export default function NesPage() {
                           <TableCell>
                             <Field
                               component={Select}
-                              formControl={{ sx: { minWidth: 140 } }}
+                              formControl={{ fullWidth: true }}
                               id={`testing.${index}.effectivity`}
                               name={`testing.${index}.effectivity.evaluation`}
                             >
@@ -228,7 +234,7 @@ export default function NesPage() {
                           <TableCell>
                             <Field
                               component={Select}
-                              formControl={{ sx: { minWidth: 140 } }}
+                              formControl={{ fullWidth: true }}
                               id={`testing.${index}.security`}
                               name={`testing.${index}.security.evaluation`}
                             >
@@ -349,17 +355,28 @@ export default function NesPage() {
 }
 
 const Justification = ({ name }: { name: string }) => {
+  const groupName = name.includes("effectivity")
+    ? PRM_GROUP.EFFECTIVITY
+    : name.includes("security")
+    ? PRM_GROUP.SECURITY
+    : PRM_GROUP.NECESSITY;
+
+  const items = getItemsPerGroup(groupName);
+
   return (
-    <div>
-      PRM identificado
+    <Stack gap={1} pt={2}>
       <Field
-        formControl={{ sx: { minWidth: 140 } }}
+        formControl={{ sx: { width: 200 } }}
         component={Select}
         id={`${name}.prm`}
         name={`${name}.prm`}
+        label="PRM identificado"
       >
-        <MenuItem value={"yes ss"}>Si s</MenuItem>
-        <MenuItem value={"yes sssstencial"}>asd</MenuItem>
+        {items.map((item) => (
+          <MenuItem value={item.name} key={item.name}>
+            {item.name}: {item.description}
+          </MenuItem>
+        ))}
       </Field>
       <Field
         component={TextField}
@@ -370,7 +387,7 @@ const Justification = ({ name }: { name: string }) => {
         rows={4}
         fullWidth
       />
-    </div>
+    </Stack>
   );
 };
 

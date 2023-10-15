@@ -1,16 +1,22 @@
 export type Item = { name: string; description: string };
 
+export enum PRM_GROUP {
+  NECESSITY = "Por Necesidad",
+  EFFECTIVITY = "Por Efectividad",
+  SECURITY = "Por Seguridad",
+}
+
 // PRM: es Problema Relacionado com Medicamento
 export const PRM_GROUPS = [
   {
-    group: "Por Necesidad",
+    group: PRM_GROUP.NECESSITY,
     items: [
       { name: "PRM 1", description: "Necesita medicamento que no usa" },
       { name: "PRM 2", description: "Usa medicamento que no necesita" },
     ],
   },
   {
-    group: "Por Efectividad",
+    group: PRM_GROUP.EFFECTIVITY,
     items: [
       {
         name: "PRM 3",
@@ -23,7 +29,7 @@ export const PRM_GROUPS = [
     ],
   },
   {
-    group: "Por Seguridad",
+    group: PRM_GROUP.SECURITY,
     items: [
       {
         name: "PRM 5",
@@ -36,3 +42,6 @@ export const PRM_GROUPS = [
     ],
   },
 ];
+
+export const getItemsPerGroup = (group: PRM_GROUP) =>
+  PRM_GROUPS.find((x) => x.group == group)?.items || [];
