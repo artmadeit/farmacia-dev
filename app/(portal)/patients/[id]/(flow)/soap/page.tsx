@@ -1,0 +1,87 @@
+"use client";
+
+import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, Fab, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  esES,
+} from "@mui/x-data-grid";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMemo } from "react";
+import useSWR from "swr";
+
+type Interview = {
+  id: number;
+  number: number;
+  createdDate: Date;
+};
+
+export default function SOAP({ params }: { params: { id: number } }) {
+  const { id: patientId } = params;
+  const router = useRouter();
+
+  const { data: interviews } = useSWR<Interview[]>(
+    patientId ? `/patients/${patientId}/soap` : null
+  );
+
+  const columns = useMemo(
+    () =>
+      (
+        [
+          { field: "number", headerName: "Número" },
+          { field: "createdDate", headerName: "Fecha" },
+          {
+            field: "actions",
+            type: "actions",
+            width: 80,
+            getActions: (params) => {
+              return [
+                <Tooltip title="Editar" key="edit">
+                  <GridActionsCellItem
+                    icon={<EditIcon />}
+                    label="Editar"
+                    onClick={() => router.push(`soap/${params.row.id}`)}
+                  />
+                </Tooltip>,
+              ];
+            },
+          },
+        ] as GridColDef<Interview>[]
+      ).map(withOutSorting),
+    [router]
+  );
+
+  if (!interviews) return <div>Loading</div>;
+  return (
+    <Box>
+      <Stack alignItems="start" direction="column" spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <Typography variant="h5">
+            SOAP (Subjetivo Objetivo Analisis y Plan de intervencion)
+          </Typography>
+          <Tooltip title="Registrar nueva entrevista">
+            <Link href="soap/create">
+              <Fab color="primary" aria-labelledby="add">
+                <AddIcon />
+              </Fab>
+            </Link>
+          </Tooltip>
+        </Stack>
+        <div style={{ width: "100%", height: "70vh" }}>
+          <DataGrid
+            columns={columns}
+            rowCount={interviews.length}
+            hideFooter={true}
+            rows={interviews}
+            localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          />
+        </div>
+      </Stack>
+    </Box>
+  );
+}
