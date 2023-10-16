@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { ArrayHelpers, Field, FieldArray, useFormikContext } from "formik";
+import { ArrayHelpers, Field, FieldArray, FormikErrors, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import React from "react";
@@ -20,6 +20,7 @@ import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
 import { LabTestD } from "./LabTestD";
+import { isArray, isObject, isString } from "lodash";
 
 export type LabTest = {
   name: string;
@@ -38,7 +39,7 @@ const emptyLabTest: LabTest = {
 };
 
 export const LabTests = () => {
-  const { values, setFieldValue } = useFormikContext<Anamnesis>();
+  const { values, setFieldValue, errors } = useFormikContext<Anamnesis>();
   const getApi = useAuthApi();
 
   const searchLabTest = (searchText: string) => {
@@ -56,6 +57,7 @@ export const LabTests = () => {
 
   return (
     <Box>
+      {JSON.stringify(errors)}
       <Stack spacing={2} direction="row" alignItems="center">
         <label htmlFor="existLabTests">
           ¿Se realizaron examenes de laboratorio u otra prueba diagnostica?
@@ -87,69 +89,84 @@ export const LabTests = () => {
         <FieldArray name="labTests">
           {(arrayHelpers: ArrayHelpers) => (
             <Stack spacing={2}>
-              {values.labTests.map((x, index) => (
-                <Grid container spacing={1} key={index}>
-                  {values.labTests.length > 1 && (
-                    <Grid xs={12} display="flex" justifyContent="end">
-                      <Fab
-                        color="primary"
-                        aria-label="delete"
-                        onClick={arrayHelpers.handleRemove(index)}
-                      >
-                        <CloseIcon />
-                      </Fab>
+              {values.labTests.map((x, index) => {
+                let dateHelperText: string | undefined = "";
+
+
+                if(isArray(errors.labTests)) {
+                  const labTestError: string | FormikErrors<LabTest> = errors.labTests[index]
+
+                  if(!isString(labTestError)) {
+                    dateHelperText = labTestError?.date
+                  }
+                }
+                
+                
+                return (
+                  <Grid container spacing={1} key={index}>
+                    {values.labTests.length > 1 && (
+                      <Grid xs={12} display="flex" justifyContent="end">
+                        <Fab
+                          color="primary"
+                          aria-label="delete"
+                          onClick={arrayHelpers.handleRemove(index)}
+                        >
+                          <CloseIcon />
+                        </Fab>
+                      </Grid>
+                    )}
+                    <Grid xs={6}>
+                      <AsyncAutocomplete
+                        label="Examen de laboratorio o prueba diagnostica"
+                        field={`labTests.${index}.name`}
+                        filter={searchLabTest}
+                      />
                     </Grid>
-                  )}
-                  <Grid xs={6}>
-                    <AsyncAutocomplete
-                      label="Examen de laboratorio o prueba diagnostica"
-                      field={`labTests.${index}.name`}
-                      filter={searchLabTest}
-                    />                    
+                    <Grid xs={3}>
+                      <Field
+                        component={DatePicker}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            label: "Fecha",
+                            helperText: dateHelperText,
+                          },
+                        }}
+                        name={`labTests.${index}.date`}
+                      />
+                    </Grid>
+                    <Grid xs={3}>
+                      <Field
+                        name={`labTests.${index}.result`}
+                        label="Resultado"
+                        component={TextField}
+                        variant="outlined"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid xs={6}>
+                      <Field
+                        name={`labTests.${index}.normalRange`}
+                        label="Rango de valor normal"
+                        component={TextField}
+                        variant="outlined"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid xs={6}>
+                      <Field
+                        name={`labTests.${index}.comments`}
+                        label="Evaluacion/comentarios"
+                        component={TextField}
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        rows={4}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid xs={3}>
-                    <Field
-                      component={DatePicker}
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          label: "Fecha",
-                        },
-                      }}
-                      name={`labTests.${index}.date`}
-                    />
-                  </Grid>
-                  <Grid xs={3}>
-                    <Field
-                      name={`labTests.${index}.result`}
-                      label="Resultado"
-                      component={TextField}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid xs={6}>
-                    <Field
-                      name={`labTests.${index}.normalRange`}
-                      label="Rango de valor normal"
-                      component={TextField}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid xs={6}>
-                    <Field
-                      name={`labTests.${index}.comments`}
-                      label="Evaluacion/comentarios"
-                      component={TextField}
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                    />
-                  </Grid>
-                </Grid>
-              ))}
+                );
+              })}
               {values.labTests.length > 0 && (
                 <Button
                   startIcon={<AddIcon />}

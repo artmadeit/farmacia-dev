@@ -41,6 +41,7 @@ import { debounce } from "lodash";
 import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
 import { Page } from "@/app/(api)/pagination";
 import { useAuthApi } from "@/app/(api)/api";
+import { object } from "yup";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -153,6 +154,13 @@ export default function PatientInterview() {
           pad: yup.number().required().min(30).max(160).label("PA diastólica"),
           t: yup.number().required().min(34).max(42).label("Temperatura"),
           physicalExercises: yup.string().required().label("Ejercicio físico"),
+          labTests: yup.array().of(yup.object({
+            name: yup.string().required(),
+            date: yup.date().required().max(today),
+            result: yup.string().required(),
+            normalRange: yup.string().required(),
+
+          }))
         })}
         onSubmit={() => {
           // TODO:
