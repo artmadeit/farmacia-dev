@@ -10,6 +10,7 @@ import {
   GridColDef,
   esES,
 } from "@mui/x-data-grid";
+import { format } from "date-fns";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
@@ -17,8 +18,7 @@ import useSWR from "swr";
 
 type Interview = {
   id: number;
-  number: number;
-  createdDate: Date;
+  createDate: Date;
 };
 
 export default function SOAP({ params }: { params: { id: number } }) {
@@ -29,32 +29,37 @@ export default function SOAP({ params }: { params: { id: number } }) {
     patientId ? `/patients/${patientId}/soap` : null
   );
 
-  const columns = useMemo(
-    () =>
-      (
-        [
-          { field: "number", headerName: "Número" },
-          { field: "createdDate", headerName: "Fecha" },
-          {
-            field: "actions",
-            type: "actions",
-            width: 80,
-            getActions: (params) => {
-              return [
-                <Tooltip title="Editar" key="edit">
-                  <GridActionsCellItem
-                    icon={<EditIcon />}
-                    label="Editar"
-                    onClick={() => router.push(`soap/${params.row.id}`)}
-                  />
-                </Tooltip>,
-              ];
-            },
-          },
-        ] as GridColDef<Interview>[]
-      ).map(withOutSorting),
-    [router]
-  );
+  const columns = useMemo(() => {
+    const result: GridColDef<Interview>[] = [
+      {
+        field: "createDate",
+        headerName: "Fecha de entrevista",
+        width: 140,
+        valueGetter: ({ row }) =>
+          row.createDate
+            ? format(new Date(row.createDate), "dd/MM/yyyy HH:mm")
+            : "",
+      },
+      {
+        field: "actions",
+        type: "actions",
+        width: 80,
+        getActions: (params) => {
+          return [
+            <Tooltip title="Editar" key="edit">
+              <GridActionsCellItem
+                icon={<EditIcon />}
+                label="Editar"
+                onClick={() => router.push(`soap/${params.row.id}`)}
+              />
+            </Tooltip>,
+          ];
+        },
+      },
+    ];
+
+    return result.map(withOutSorting);
+  }, [router]);
 
   if (!interviews) return <div>Loading</div>;
   return (
