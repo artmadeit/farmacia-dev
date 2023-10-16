@@ -21,7 +21,7 @@ export const VitalFunctions = () => {
         <Field
           component={TextField}
           name="fr"
-          label="Frecuencia Respiratoria (rpm):"
+          label="Frecuencia respiratoria (rpm):"
           variant="outlined"
           fullWidth
         />

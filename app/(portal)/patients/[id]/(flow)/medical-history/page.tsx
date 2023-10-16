@@ -147,11 +147,12 @@ export default function PatientInterview() {
             .label("Fecha de nacimiento"),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
-          fc: yup.number().required().min(40).max(250),
-          fr: yup.number().required().min(8).max(40),
+          fc: yup.number().required().min(40).max(250).label("Frecuencia cardíaca"),
+          fr: yup.number().required().min(8).max(40).label("Frecuencia respiratoria"),
           pas: yup.number().required().min(60).max(240).label("PA sistólica"),
           pad: yup.number().required().min(30).max(160).label("PA diastólica"),
-          t: yup.number().required().min(34).max(42),
+          t: yup.number().required().min(34).max(42).label("Temperatura"),
+          physicalExercises: yup.string().required().label("Ejercicio físico"),
         })}
         onSubmit={() => {
           // TODO:
