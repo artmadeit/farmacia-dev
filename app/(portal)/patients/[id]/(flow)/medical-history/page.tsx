@@ -154,6 +154,7 @@ export default function PatientInterview() {
           pad: yup.number().required().min(30).max(160).label("PA diastólica"),
           t: yup.number().required().min(34).max(42).label("Temperatura"),
           physicalExercises: yup.string().required().label("Ejercicio físico"),
+          existLabTests: yup.string().required(),
           labTests: yup.array().of(yup.object({
             name: yup.string().required(),
             date: yup.date().required().max(today),

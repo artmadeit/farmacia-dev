@@ -46,10 +46,10 @@ const emptyHistoryRow = {
   difficulty: "",
   difficultyJustification: "",
   acceptance: "",
-  reasonForUse: "",
-  suspensionDate: null,
-  restartDate: null,
+  reasonForUse: "",  
+  restartDate: defaultDate,
   startDate: defaultDate,
+  suspensionDate: defaultDate,
   dose: "",
   mode: "",
   drug: "",
@@ -64,11 +64,11 @@ const emptyAllergyRow = {
 const emptyFoodsRow = {
   food: "",
   description: "",
-  date: null,
+  date: defaultDate,
 };
 
 const emptyAdverseReactionRow = {
-  date: null,
+  date: defaultDate,
   medicine: "",
   dose: "",
   adverseReactionOfDrug: "",
@@ -210,8 +210,7 @@ export default function Pharmacotherapy() {
                               />
                             </TableCell>
                             <TableCell>
-                              <Field
-                                component={DatePicker}
+                              <InexactDatePicker
                                 name={`history.${index}.suspensionDate`}
                               />
                             </TableCell>
@@ -240,16 +239,10 @@ export default function Pharmacotherapy() {
                             </DialogTitle>
                             <DialogContent>
                               <Stack spacing={2}>
-                                <Field
-                                  component={DatePicker}
-                                  slotProps={{
-                                    textField: {
-                                      fullWidth: true,
-                                      label: "Fecha rein.",
-                                    },
-                                  }}
-                                  name={`history.${index}.restartDate`}
-                                />
+                               <InexactDatePicker
+                                name={`history.${index}.restartDate`}
+                                label="Fecha rein."
+                               />
                                 <Field
                                   name={`history.${index}.reasonForUse`}
                                   component={TextField}
@@ -469,11 +462,7 @@ export default function Pharmacotherapy() {
                             />
                           </TableCell>
                           <TableCell>
-                            <Field
-                              component={DatePicker}
-                              name={`foods.${index}.date`}
-                              fullWidth
-                            />
+                            <InexactDatePicker name={`foods.${index}.date`} />
                           </TableCell>
                           <TableCell>
                             <Tooltip title="Eliminar">
@@ -536,10 +525,8 @@ export default function Pharmacotherapy() {
                       {values.adverseReaction.map((x, index) => (
                         <TableRow key={index}>
                           <TableCell>
-                            <Field
-                              component={DatePicker}
+                            <InexactDatePicker
                               name={`adverseReaction.${index}.date`}
-                              fullWidth
                             />
                           </TableCell>
                           <TableCell>
