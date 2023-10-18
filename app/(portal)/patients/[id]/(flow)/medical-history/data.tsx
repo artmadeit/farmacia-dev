@@ -21,7 +21,7 @@ export type GroupItems = {
 
 export const healthProblems: GroupItems[] = [
   {
-    id: "sncProblems",
+    id: "healthProblems.snc",
     label: "SNC",
     items: [
       { label: "Tos", name: "TOS" },
