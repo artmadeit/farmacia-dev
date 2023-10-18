@@ -5,13 +5,21 @@ import {
   Box,
   Button,
   Fab,
+  FormControl,
   FormControlLabel,
+  FormHelperText,
   Radio,
   Stack,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { ArrayHelpers, Field, FieldArray, FormikErrors, useFormikContext } from "formik";
+import {
+  ArrayHelpers,
+  Field,
+  FieldArray,
+  FormikErrors,
+  useFormikContext,
+} from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import React from "react";
@@ -57,33 +65,38 @@ export const LabTests = () => {
 
   return (
     <Box>
-      {JSON.stringify(errors)}
       <Stack spacing={2} direction="row" alignItems="center">
-        <label htmlFor="existLabTests">
-          ¿Se realizaron examenes de laboratorio u otra prueba diagnostica?
-        </label>
-        <Field
-          component={RadioGroup}
-          id="existLabTests"
-          name="existLabTests"
-          row
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const existLabTests = e.target.value === "true";
-            setFieldValue("labTests", existLabTests ? [emptyLabTest] : []);
-            setFieldValue("existLabTests", existLabTests);
-          }}
-        >
-          <FormControlLabel
-            value={true}
-            control={<Radio sx={{ color: blue[700] }} />}
-            label="Si"
-          />
-          <FormControlLabel
-            value={false}
-            control={<Radio sx={{ color: blue[700] }} />}
-            label="No"
-          />
-        </Field>
+        <FormControl error={Boolean(errors.existLabTests)}>
+          <Box display="flex" alignItems="center">
+            <label htmlFor="existLabTests">
+              ¿Se realizaron examenes de laboratorio u otra prueba diagnostica?
+            </label>
+            <Field
+              component={RadioGroup}
+              id="existLabTests"
+              name="existLabTests"
+              sx={{marginLeft: "20px"}}
+              row
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const existLabTests = e.target.value === "true";
+                setFieldValue("labTests", existLabTests ? [emptyLabTest] : []);
+                setFieldValue("existLabTests", existLabTests);
+              }}
+            >
+              <FormControlLabel
+                value={true}
+                control={<Radio sx={{ color: blue[700] }} />}
+                label="Si"
+              />
+              <FormControlLabel
+                value={false}
+                control={<Radio sx={{ color: blue[700] }} />}
+                label="No"
+              />
+            </Field>
+          </Box>
+          <FormHelperText>{errors.existLabTests}</FormHelperText>
+        </FormControl>
       </Stack>
       <Stack>
         <FieldArray name="labTests">
@@ -92,16 +105,15 @@ export const LabTests = () => {
               {values.labTests.map((x, index) => {
                 let dateHelperText: string | undefined = "";
 
+                if (isArray(errors.labTests)) {
+                  const labTestError: string | FormikErrors<LabTest> =
+                    errors.labTests[index];
 
-                if(isArray(errors.labTests)) {
-                  const labTestError: string | FormikErrors<LabTest> = errors.labTests[index]
-
-                  if(!isString(labTestError)) {
-                    dateHelperText = labTestError?.date
+                  if (!isString(labTestError)) {
+                    dateHelperText = labTestError?.date;
                   }
                 }
-                
-                
+
                 return (
                   <Grid container spacing={1} key={index}>
                     {values.labTests.length > 1 && (

@@ -153,8 +153,8 @@ export default function PatientInterview() {
           pas: yup.number().required().min(60).max(240).label("PA sistólica"),
           pad: yup.number().required().min(30).max(160).label("PA diastólica"),
           t: yup.number().required().min(34).max(42).label("Temperatura"),
-          physicalExercises: yup.string().required().label("Ejercicio físico"),
-          existLabTests: yup.string().required(),
+          physicalExercises: yup.string().required().label("Ejercicio físico"),          
+          existLabTests: yup.string().required("Escoja una de las dos opciones"),
           labTests: yup.array().of(yup.object({
             name: yup.string().required(),
             date: yup.date().required().max(today),
