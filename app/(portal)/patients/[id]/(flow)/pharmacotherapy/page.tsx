@@ -38,7 +38,6 @@ import {
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
-import { DatePicker } from "formik-mui-x-date-pickers";
 import React from "react";
 
 const emptyHistoryRow = {
@@ -46,7 +45,7 @@ const emptyHistoryRow = {
   difficulty: "",
   difficultyJustification: "",
   acceptance: "",
-  reasonForUse: "",  
+  reasonForUse: "",
   restartDate: defaultDate,
   startDate: defaultDate,
   suspensionDate: defaultDate,
@@ -55,13 +54,13 @@ const emptyHistoryRow = {
   drug: "",
 };
 
-const emptyAllergyRow = {
+const emptyMedicineAllergyRow = {
   drug: "",
   description: "",
   date: defaultDate,
 };
 
-const emptyFoodsRow = {
+const emptyFoodsAllergy = {
   food: "",
   description: "",
   date: defaultDate,
@@ -111,15 +110,15 @@ export default function Pharmacotherapy() {
           history: [{ ...emptyHistoryRow }],
           allergies: [
             {
-              ...emptyAllergyRow,
+              ...emptyMedicineAllergyRow,
             },
           ],
           foods: [
             {
-              ...emptyFoodsRow,
+              ...emptyFoodsAllergy,
             },
           ],
-          adverseReaction: [
+          adverseReactions: [
             {
               ...emptyAdverseReactionRow,
             },
@@ -239,10 +238,10 @@ export default function Pharmacotherapy() {
                             </DialogTitle>
                             <DialogContent>
                               <Stack spacing={2}>
-                               <InexactDatePicker
-                                name={`history.${index}.restartDate`}
-                                label="Fecha rein."
-                               />
+                                <InexactDatePicker
+                                  name={`history.${index}.restartDate`}
+                                  label="Fecha rein."
+                                />
                                 <Field
                                   name={`history.${index}.reasonForUse`}
                                   component={TextField}
@@ -407,7 +406,7 @@ export default function Pharmacotherapy() {
                           <Button
                             startIcon={<AddIcon />}
                             onClick={() => {
-                              arrayHelpers.push(emptyAllergyRow);
+                              arrayHelpers.push(emptyMedicineAllergyRow);
                             }}
                           >
                             Agregar alergia
@@ -484,7 +483,7 @@ export default function Pharmacotherapy() {
                         <TableCell colSpan={3}>
                           <Button
                             startIcon={<AddIcon />}
-                            onClick={() => arrayHelpers.push(emptyFoodsRow)}
+                            onClick={() => arrayHelpers.push(emptyFoodsAllergy)}
                           >
                             Agregar alimento
                           </Button>
@@ -503,7 +502,7 @@ export default function Pharmacotherapy() {
               </Grid>
             </Grid>
             <TableContainer component={Paper}>
-              <FieldArray name="adverseReaction">
+              <FieldArray name="adverseReactions">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Table>
                     <TableHead>
@@ -522,24 +521,24 @@ export default function Pharmacotherapy() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {values.adverseReaction.map((x, index) => (
+                      {values.adverseReactions.map((x, index) => (
                         <TableRow key={index}>
                           <TableCell>
                             <InexactDatePicker
-                              name={`adverseReaction.${index}.date`}
+                              name={`adverseReactions.${index}.date`}
                             />
                           </TableCell>
                           <TableCell>
                             <AsyncAutocomplete
                               label="Medicamento"
-                              field={`adverseReaction.${index}.medicine`}
+                              field={`adverseReactions.${index}.medicine`}
                               filter={searchDrugDcis}
                             />
                           </TableCell>
                           <TableCell>
                             <Field
                               component={TextField}
-                              name={`adverseReaction.${index}.dose`}
+                              name={`adverseReactions.${index}.dose`}
                               variant="outlined"
                               fullWidth
                             />
@@ -547,7 +546,7 @@ export default function Pharmacotherapy() {
                           <TableCell>
                             <Field
                               component={TextField}
-                              name={`adverseReaction.${index}.adverseReactionOfDrug`}
+                              name={`adverseReactions.${index}.adverseReactionOfDrug`}
                               variant="outlined"
                               fullWidth
                             />
