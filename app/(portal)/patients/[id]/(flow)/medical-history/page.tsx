@@ -89,10 +89,12 @@ const initialValues: Anamnesis = {
     others: "",
   },
 
-  saltConsumption: "",
-  saltAddition: "",
-  foodHabits: [],
-  otherFoodHabits: "",
+  foodHabits: {
+    salt: "",
+    isSaltAddedToFood: "",
+    foodClasses: [],
+    others: "",
+  },
 
   physicalExercises: "",
   existLabTests: null,
@@ -135,10 +137,13 @@ export type Anamnesis = {
     others: string;
   };
 
-  saltConsumption: string;
-  saltAddition: string;
-  foodHabits: string[];
-  otherFoodHabits: string;
+  foodHabits: {
+    salt: string;
+    isSaltAddedToFood: string;
+    foodClasses: string[];
+    others: string;
+  };
+
   physicalExercises: string;
   existLabTests: boolean | null;
   labTests: LabTest[];
@@ -342,7 +347,7 @@ const FoodHabits = () => (
     <Grid xs={3}>
       <Field
         component={TextField}
-        name="otherFoodHabits"
+        name="foodHabits.others"
         label="Otros:"
         variant="outlined"
         multiline

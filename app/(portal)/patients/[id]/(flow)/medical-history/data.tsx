@@ -144,7 +144,7 @@ export const consumptionHabits = [
 ];
 
 export const foodConsumptions = {
-  id: "foodHabits",
+  id: "foodHabits.foodClasses",
   label: "Alimentos/consume",
   items: [
     { label: "Carnes rojas", name: "CARNES ROJAS" },
@@ -159,8 +159,8 @@ export const foodConsumptions = {
 
 export const foodHabits = [
   {
+    id: "foodHabits.salt",
     label: "Sal en dieta",
-    id: "saltConsumption",
     items: [
       { label: "Hiposódica", name: "HIPOSODICA" },
       { label: "Normosódica", name: "NORMOSODICA" },
@@ -168,8 +168,8 @@ export const foodHabits = [
     ],
   },
   {
+    id: "foodHabits.isSaltAddedToFood",
     label: "¿Adiciona a comidas?",
-    id: "saltAddition",
     items: [
       { label: "Si", name: "YES" },
       { label: "No", name: "NO" },
