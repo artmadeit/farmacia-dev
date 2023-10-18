@@ -130,7 +130,7 @@ export default function Pharmacotherapy() {
         {({ values, errors }) => (
           <Form>
             <Grid container spacing={2}>
-              <Grid xs={10} style={{ marginTop: "10px" }}>
+              <Grid xs={10} style={{ margin: "10px 0px" }}>
                 <strong>
                   3. Historia Farmacoterapéutica (P) Prescrito (A) Automedicado{" "}
                 </strong>
@@ -502,7 +502,7 @@ export default function Pharmacotherapy() {
                 </strong>
               </Grid>
             </Grid>
-            <TableContainer>
+            <TableContainer component={Paper}>
               <FieldArray name="adverseReaction">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Table>
