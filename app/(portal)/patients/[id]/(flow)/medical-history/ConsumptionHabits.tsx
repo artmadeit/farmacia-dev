@@ -44,13 +44,13 @@ export const ConsumptionHabits = () => (
       <Stack spacing={2}>
         <Field
           component={TextField}
-          name="waterConsumption"
+          name="consumptionHabits.water"
           label="Cantidad de agua que consume:"
           variant="outlined"
           fullWidth
         />
         <Field
-          name="otherConsumptionHabits"
+          name="consumptionHabits.others"
           label="Otros:"
           component={TextField}
           variant="outlined"

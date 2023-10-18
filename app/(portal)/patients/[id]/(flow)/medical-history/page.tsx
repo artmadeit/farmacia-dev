@@ -63,25 +63,31 @@ const initialValues: Anamnesis = {
   antecedents: [],
   otherAntecedents: "",
 
-  sncProblems: [],
-  digestiveProblems: [],
-  cardioProblems: [],
-  otherProblems: [],
-  locomotiveProblems: [],
-  metabolicProblems: [],
-  skinProblems: [],
+  healthProblems: {
+    cardio: [],
+    digestive: [],
+    locomotive: [],
+    snc: [],
+    metabolic: [],
+    skin: [],
+    others: [],
+  },
 
-  fc: null,
-  fr: null,
-  t: null,
-  pas: null,
-  pad: null,
+  vitalFunctions: {
+    heartRate: null,
+    breathingRate: null,
+    temperature: null,
+    bloodPressureSystolic: null,
+    bloodPressureDiastolic: null,
+  },
 
-  alcoholConsumption: "",
-  tobaccoConsumption: "",
-  teaConsumption: "",
-  waterConsumption: "",
-  otherConsumptionHabits: "",
+  consumptionHabits: {
+    alcohol: "",
+    tobacco: "",
+    tea: "",
+    water: "",
+    others: "",
+  },
 
   saltConsumption: "",
   saltAddition: "",
@@ -100,25 +106,35 @@ export type Anamnesis = {
   birthdate: Date | null;
   weight: number | null;
   size: number | null;
-  otherAntecedents: string;
   antecedents: string[];
-  otherProblems: string[];
-  cardioProblems: string[];
-  digestiveProblems: string[];
-  locomotiveProblems: string[];
-  sncProblems: string[];
-  metabolicProblems: string[];
-  skinProblems: string[];
-  fc: number | null;
-  fr: number | null;
-  t: number | null;
-  pas: number | null;
-  pad: number | null;
-  alcoholConsumption: string;
-  tobaccoConsumption: string;
-  teaConsumption: string;
-  waterConsumption: string;
-  otherConsumptionHabits: string;
+  otherAntecedents: string;
+
+  healthProblems: {
+    cardio: string[];
+    digestive: string[];
+    locomotive: string[];
+    snc: string[];
+    metabolic: string[];
+    skin: string[];
+    others: string[];
+  };
+
+  vitalFunctions: {
+    heartRate: number | null;
+    breathingRate: number | null;
+    temperature: number | null;
+    bloodPressureSystolic: number | null;
+    bloodPressureDiastolic: number | null;
+  };
+
+  consumptionHabits: {
+    alcohol: string;
+    tobacco: string;
+    tea: string;
+    water: string;
+    others: string;
+  };
+
   saltConsumption: string;
   saltAddition: string;
   foodHabits: string[];
@@ -148,22 +164,53 @@ export default function PatientInterview() {
             .label("Fecha de nacimiento"),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
-          fc: yup.number().required().min(40).max(250).label("Frecuencia cardíaca"),
-          fr: yup.number().required().min(8).max(40).label("Frecuencia respiratoria"),
-          pas: yup.number().required().min(60).max(240).label("PA sistólica"),
-          pad: yup.number().required().min(30).max(160).label("PA diastólica"),
-          t: yup.number().required().min(34).max(42).label("Temperatura"),
-          physicalExercises: yup.string().required().label("Ejercicio físico"),          
-          existLabTests: yup.string().required("Escoja una de las dos opciones"),
-          labTests: yup.array().of(yup.object({
-            name: yup.string().required(),
-            date: yup.date().required().max(today),
-            result: yup.string().required(),
-            normalRange: yup.string().required(),
-
-          }))
+          vitalFunctions: yup.object({
+            heartRate: yup
+              .number()
+              .required()
+              .min(40)
+              .max(250)
+              .label("Frecuencia cardíaca"),
+            breathingRate: yup
+              .number()
+              .required()
+              .min(8)
+              .max(40)
+              .label("Frecuencia respiratoria"),
+            bloodPressureSystolic: yup
+              .number()
+              .required()
+              .min(60)
+              .max(240)
+              .label("PA sistólica"),
+            bloodPressureDiastolic: yup
+              .number()
+              .required()
+              .min(30)
+              .max(160)
+              .label("PA diastólica"),
+            temperature: yup
+              .number()
+              .required()
+              .min(34)
+              .max(42)
+              .label("Temperatura"),
+          }),
+          physicalExercises: yup.string().required().label("Ejercicio físico"),
+          existLabTests: yup
+            .string()
+            .required("Escoja una de las dos opciones"),
+          labTests: yup.array().of(
+            yup.object({
+              name: yup.string().required(),
+              date: yup.date().required().max(today),
+              result: yup.string().required(),
+              normalRange: yup.string().required(),
+            })
+          ),
         })}
-        onSubmit={() => {
+        onSubmit={(values) => {
+          console.log(values);
           // TODO:
         }}
       >

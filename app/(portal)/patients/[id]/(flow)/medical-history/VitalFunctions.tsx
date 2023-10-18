@@ -11,7 +11,7 @@ export const VitalFunctions = () => {
       <Grid xs={4}>
         <Field
           component={TextField}
-          name="fc"
+          name="vitalFunctions.heartRate"
           label="Frecuencia cárdiaca (LPM):"
           variant="outlined"
           fullWidth
@@ -20,7 +20,7 @@ export const VitalFunctions = () => {
       <Grid xs={4}>
         <Field
           component={TextField}
-          name="fr"
+          name="vitalFunctions.breathingRate"
           label="Frecuencia respiratoria (rpm):"
           variant="outlined"
           fullWidth
@@ -29,7 +29,7 @@ export const VitalFunctions = () => {
       <Grid xs={4}>
         <Field
           component={TextField}
-          name="t"
+          name="vitalFunctions.temperature"
           label="Temperatura (C°):"
           variant="outlined"
           fullWidth
@@ -42,7 +42,7 @@ export const VitalFunctions = () => {
         <Grid xs={6}>
           <Field
             component={TextField}
-            name="pas"
+            name="vitalFunctions.bloodPressureSystolic"
             label="PA sistólica:"
             variant="outlined"
             fullWidth
@@ -51,7 +51,7 @@ export const VitalFunctions = () => {
         <Grid xs={6}>
           <Field
             component={TextField}
-            name="pad"
+            name="vitalFunctions.bloodPressureDiastolic"
             label="PA diastólica"
             variant="outlined"
             fullWidth

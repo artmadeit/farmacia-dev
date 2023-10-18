@@ -34,8 +34,8 @@ export const healthProblems: GroupItems[] = [
     ],
   },
   {
+    id: "healthProblems.digestive",
     label: "Digestivo",
-    id: "digestiveProblems",
     items: [
       {
         label: "Dolor y/o ardor de estómago",
@@ -48,8 +48,8 @@ export const healthProblems: GroupItems[] = [
     ],
   },
   {
+    id: "healthProblems.cardio",
     label: "Cardiovascular",
-    id: "cardioProblems",
     items: [
       { label: "Palpitaciones", name: "PALPITACIONES" },
       { label: "Taquicardia", name: "TAQUICARDIA" },
@@ -61,8 +61,8 @@ export const healthProblems: GroupItems[] = [
     ],
   },
   {
+    id: "healthProblems.others",
     label: "Otros",
-    id: "otherProblems",
     items: [
       { label: "Broncoespasmo", name: "BRONCOESPASMO" },
       { label: "Disgeusia", name: "DISGEUSIA" },
@@ -76,8 +76,8 @@ export const healthProblems: GroupItems[] = [
     ],
   },
   {
+    id: "healthProblems.locomotive",
     label: "Ap. Locomotor",
-    id: "locomotiveProblems",
     items: [
       { label: "Debilidad muscular", name: "DEBILIDAD MUSCULAR" },
       { label: "Dolores articulares", name: "DOLORES ARTICULARES" },
@@ -86,8 +86,8 @@ export const healthProblems: GroupItems[] = [
     ],
   },
   {
+    id: "healthProblems.metabolic",
     label: "Metabólicas",
-    id: "metabolicProblems",
     items: [
       { label: "Hiponatremia", name: "HIPONATREMIA" },
       { label: "Hipopotasemia", name: "HIPOPOTASEMIA" },
@@ -99,8 +99,8 @@ export const healthProblems: GroupItems[] = [
     ],
   },
   {
+    id: "healthProblems.skin",
     label: "Piel",
-    id: "skinProblems",
     items: [
       { label: "Erupciones", name: "ERUPCIONES" },
       { label: "Prurito", name: "PRURITO" },
@@ -111,8 +111,8 @@ export const healthProblems: GroupItems[] = [
 
 export const consumptionHabits = [
   {
+    id: "consumptionHabits.alcohol",
     label: "Alcohol",
-    id: "alcoholConsumption",
     no: { label: "No", name: "NO" },
     types: [
       { label: "Eventual", name: "EVENTUALLY" },
@@ -121,8 +121,8 @@ export const consumptionHabits = [
     ],
   },
   {
+    id: "consumptionHabits.tobacco",
     label: "Tabaco",
-    id: "tobaccoConsumption",
     no: { label: "No", name: "NO" },
     types: [
       { label: "Eventual", name: "EVENTUALLY" },
@@ -132,8 +132,8 @@ export const consumptionHabits = [
     ],
   },
   {
+    id: "consumptionHabits.tea",
     label: "Té",
-    id: "teaConsumption",
     no: { label: "No", name: "NO" },
     types: [
       { label: "Eventual", name: "EVENTUALLY" },
