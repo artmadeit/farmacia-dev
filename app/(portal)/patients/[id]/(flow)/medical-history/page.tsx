@@ -1,7 +1,7 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { formatDate, minYear, today } from "@/app/date";
+import { formatDate, minYear, parseDate, today } from "@/app/date";
 import {
   AutocompleteRenderInputParams,
   Box,
@@ -21,7 +21,7 @@ import {
   RadioGroup,
   TextField,
 } from "formik-mui";
-import React from "react";
+import React, { useEffect } from "react";
 import yup from "../../../../../validation";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { ConsumptionHabits } from "./ConsumptionHabits";
@@ -43,6 +43,8 @@ import { Page } from "@/app/(api)/pagination";
 import { useAuthApi } from "@/app/(api)/api";
 import { object } from "yup";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
+import { parse } from "date-fns";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -160,12 +162,27 @@ export default function PatientInterview({
   const getApi = useAuthApi();
   const router = useRouter();
 
+  const { data, mutate } = useSWR(`/patients/${patientId}/anamnesis`);
+
+  const formInitialValues: Anamnesis = data
+    ? {
+        ...data,
+        birthdate: parseDate(data.birthdate),
+        labTests: data.labTests.map((labTest: any) => ({
+          ...labTest,
+          date: parseDate(labTest.date),
+        })),
+        diagnosis: data.diseases,
+      }
+    : initialValues;
+
   return (
     <div>
       <Title>Ficha de anamnesis farmacológica</Title>
       <Divider />
       <Formik
-        initialValues={initialValues}
+        initialValues={formInitialValues}
+        enableReinitialize
         validationSchema={yup.object({
           occupation: yup.string().required().label("La ocupación"),
           birthdate: yup
@@ -282,10 +299,12 @@ export default function PatientInterview({
 }
 
 const Diagnosis = () => {
-  const { touched, errors } = useFormikContext<Anamnesis>();
-  const getApi = useAuthApi();
+  const { touched, errors, values } = useFormikContext<Anamnesis>();
 
-  const [diseases, setDiseases] = React.useState<DiseaseCie10[]>([]);
+  const getApi = useAuthApi();
+  const [diseases, setDiseases] = React.useState<DiseaseCie10[]>(
+    values.diagnosis
+  );
   const searchDiseases = debounce(async (newInputValue: string) => {
     if (newInputValue) {
       const api = await getApi();
@@ -344,7 +363,7 @@ const FoodHabits = () => (
           <Field component={RadioGroup} name={group.id}>
             {group.items.map((item) => (
               <FormControlLabel
-                key={item.name}
+                key={item.label}
                 value={item.name}
                 control={
                   <Radio

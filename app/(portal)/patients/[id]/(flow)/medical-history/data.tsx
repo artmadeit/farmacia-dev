@@ -171,8 +171,8 @@ export const foodHabits = [
     id: "foodHabits.isSaltAddedToFood",
     label: "¿Adiciona a comidas?",
     items: [
-      { label: "Si", name: "YES" },
-      { label: "No", name: "NO" },
+      { label: "Si", name: true },
+      { label: "No", name: false },
     ],
   },
 ];
