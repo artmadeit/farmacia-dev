@@ -42,6 +42,7 @@ import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
 import { Page } from "@/app/(api)/pagination";
 import { useAuthApi } from "@/app/(api)/api";
 import { object } from "yup";
+import { useRouter } from "next/navigation";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -147,10 +148,18 @@ export type Anamnesis = {
   physicalExercises: string;
   existLabTests: boolean | null;
   labTests: LabTest[];
-  diagnosis: string[];
+  diagnosis: DiseaseCie10[];
 };
 
-export default function PatientInterview() {
+export default function PatientInterview({
+  params,
+}: {
+  params: { id: number };
+}) {
+  const { id: patientId } = params;
+  const getApi = useAuthApi();
+  const router = useRouter();
+
   return (
     <div>
       <Title>Ficha de anamnesis farmacológica</Title>
@@ -215,9 +224,17 @@ export default function PatientInterview() {
             })
           ),
         })}
-        onSubmit={(values) => {
-          console.log(values);
-          // TODO:
+        onSubmit={async (values) => {
+          const { diagnosis, ...rest } = values;
+          const data = {
+            ...rest,
+            diseaseIds: diagnosis.map((x) => x.id),
+          };
+
+          const response = await getApi().then((api) =>
+            api.post(`patients/${patientId}/anamnesis`, data)
+          );
+          router.push(`/patients/${patientId}/pharmacotherapy`);
         }}
       >
         <Form>
