@@ -169,6 +169,7 @@ export default function PatientInterview() {
             .label("Fecha de nacimiento"),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
+          sex: yup.string().required("sexo es un campo obligatorio"),
           vitalFunctions: yup.object({
             heartRate: yup
               .number()

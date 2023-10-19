@@ -1,5 +1,10 @@
 "use client";
-import { FormControlLabel, Radio } from "@mui/material";
+import {
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Radio,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
 import { Field, useFormikContext } from "formik";
@@ -68,10 +73,13 @@ export const PersonalInformation = () => {
       </Grid>
       <Grid xs={2}>
         Sexo:
-        <Field component={RadioGroup} name="sex" row>
-          <FormControlLabel value="MALE" control={<Radio />} label="M" />
-          <FormControlLabel value="FEMALE" control={<Radio />} label="F" />
-        </Field>
+        <FormControl error={Boolean(errors.sex)}>
+          <Field component={RadioGroup} name="sex" row>
+            <FormControlLabel value="M" control={<Radio />} label="M" />
+            <FormControlLabel value="F" control={<Radio />} label="F" />
+          </Field>
+          <FormHelperText>{errors.sex}</FormHelperText>
+        </FormControl>
       </Grid>
       <Grid xs={3}>
         <Field
