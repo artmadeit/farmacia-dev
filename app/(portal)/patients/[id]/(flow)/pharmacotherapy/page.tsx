@@ -108,12 +108,12 @@ export default function Pharmacotherapy() {
       <Formik
         initialValues={{
           history: [{ ...emptyHistoryRow }],
-          allergies: [
+          drugAllergies: [
             {
               ...emptyMedicineAllergyRow,
             },
           ],
-          foods: [
+          foodAllergies: [
             {
               ...emptyFoodsAllergy,
             },
@@ -365,18 +365,18 @@ export default function Pharmacotherapy() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {values.allergies.map((x, index) => (
+                      {values.drugAllergies.map((x, index) => (
                         <TableRow key={index}>
                           <TableCell>
                             <AsyncAutocomplete
                               label="Medicamento"
-                              field={`allergies.${index}.drug`}
+                              field={`drugAllergies.${index}.drug`}
                               filter={searchDrugDcis}
                             />
                           </TableCell>
                           <TableCell>
                             <Field
-                              name={`allergies.${index}.description`}
+                              name={`drugAllergies.${index}.description`}
                               component={TextField}
                               variant="outlined"
                               fullWidth
@@ -384,7 +384,7 @@ export default function Pharmacotherapy() {
                           </TableCell>
                           <TableCell>
                             <InexactDatePicker
-                              name={`allergies.${index}.date`}
+                              name={`drugAllergies.${index}.date`}
                             />
                           </TableCell>
                           <TableCell>
@@ -442,12 +442,12 @@ export default function Pharmacotherapy() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {values.foods.map((x, index) => (
+                      {values.foodAllergies.map((x, index) => (
                         <TableRow key={index}>
                           <TableCell>
                             <Field
                               component={TextField}
-                              name={`foods.${index}.food`}
+                              name={`foodAllergies.${index}.food`}
                               variant="outlined"
                               fullWidth
                             />
@@ -455,13 +455,15 @@ export default function Pharmacotherapy() {
                           <TableCell>
                             <Field
                               component={TextField}
-                              name={`foods.${index}.description`}
+                              name={`foodAllergies.${index}.description`}
                               variant="outlined"
                               fullWidth
                             />
                           </TableCell>
                           <TableCell>
-                            <InexactDatePicker name={`foods.${index}.date`} />
+                            <InexactDatePicker
+                              name={`foodAllergies.${index}.date`}
+                            />
                           </TableCell>
                           <TableCell>
                             <Tooltip title="Eliminar">
