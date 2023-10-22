@@ -252,7 +252,7 @@ const EvaluationNesTable = ({
                   <NesTableCells
                     name={name}
                     index={index}
-                    values={values}
+                    values={x}
                     onRemove={arrayHelpers.handleRemove(index)}
                   />
                 </TableRow>

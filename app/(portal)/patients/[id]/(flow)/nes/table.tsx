@@ -84,8 +84,8 @@ export const NesTableCells = ({
           <MenuItem value={"no real"}>No real</MenuItem>
           <MenuItem value={"no potential"}>No potencial</MenuItem>
         </Field>
-        {(values[name][index].necessity.evaluation == "yes real" ||
-          values[name][index].necessity.evaluation == "yes potential") && (
+        {(values.necessity.evaluation == "yes real" ||
+          values.necessity.evaluation == "yes potential") && (
           <Justification name={`${name}.${index}.necessity`} />
         )}
       </TableCell>
@@ -100,8 +100,8 @@ export const NesTableCells = ({
           <MenuItem value={"no real"}>No real</MenuItem>
           <MenuItem value={"no potential"}>No potencial</MenuItem>
         </Field>
-        {values[name][index].effectivity.evaluation &&
-          values[name][index].effectivity.evaluation !== "yes" && (
+        {values.effectivity.evaluation &&
+          values.effectivity.evaluation !== "yes" && (
             <Justification name={`${name}.${index}.effectivity`} />
           )}
       </TableCell>
@@ -116,10 +116,9 @@ export const NesTableCells = ({
           <MenuItem value={"no real"}>No real</MenuItem>
           <MenuItem value={"no potential"}>No potencial</MenuItem>
         </Field>
-        {values[name][index].security.evaluation &&
-          values[name][index].security.evaluation !== "yes" && (
-            <Justification name={`${name}.${index}.security`} />
-          )}
+        {values.security.evaluation && values.security.evaluation !== "yes" && (
+          <Justification name={`${name}.${index}.security`} />
+        )}
       </TableCell>
       <TableCell>
         <Tooltip title="Eliminar">
