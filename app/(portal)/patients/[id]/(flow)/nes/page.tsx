@@ -202,9 +202,11 @@ const EvaluationNesTable = ({
               </TableRow>
               <TableRow>
                 {name === "diagnosisRelated" && (
-                  <TableCell rowSpan={2}>Diagnóstico(s)</TableCell>
+                  <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
+                    Diagnóstico(s)
+                  </TableCell>
                 )}
-                <TableCell rowSpan={2}>
+                <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
                   Signos y sintomas que {name === "diagnosisNotRelated" && "no"}{" "}
                   se relacionan con el diagnóstico
                 </TableCell>

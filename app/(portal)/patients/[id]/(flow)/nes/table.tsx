@@ -38,10 +38,10 @@ export const nesTableCellsHead1 = [
 ];
 
 export const nesTableCellsHead2 = [
-  <TableCell key={1} rowSpan={2}>
+  <TableCell key={1} rowSpan={2} sx={{ minWidth: 300 }}>
     Medicamentos que consume el paciente
   </TableCell>,
-  <TableCell key={2} colSpan={3}>
+  <TableCell key={2} colSpan={3} sx={{ minWidth: 600 }}>
     Evaluar c/u de los medicamentos si son:
   </TableCell>,
 ];
