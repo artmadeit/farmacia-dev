@@ -24,8 +24,7 @@ export default function MedicalFlowLayout({
       <Typography variant="h6" gutterBottom>
         Paciente: {patient.firstName} {patient.lastName}, código: {patient.code}
       </Typography>
-      <HorizontalStepper />
-
+      <HorizontalStepper patientId={id} />
       {children}
     </div>
   );

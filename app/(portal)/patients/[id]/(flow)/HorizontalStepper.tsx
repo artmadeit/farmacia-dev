@@ -15,29 +15,28 @@ const steps = [
   { path: "medical-history", label: "Anamnesis" },
   { path: "pharmacotherapy", label: "Farmacoterapia" },
   { path: "nes", label: "NES" },
-  { path: "pico", label: "PICO" },
+  // { path: "pico", label: "PICO" },
   { path: "soap", label: "SOAP" },
 ];
 
-const getParent = (path: string) => {
-  const pathSplit = path.split("/");
-  pathSplit.pop();
-  return pathSplit.join("/");
-};
+// const getParent = (path: string) => {
+//   const pathSplit = path.split("/");
+//   pathSplit.pop();
+//   return pathSplit.join("/");
+// };
 
-export function HorizontalStepper() {
+export function HorizontalStepper({ patientId }: { patientId: number }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const currentRoute = pathname.split("/").pop();
-  const activeStep: number = steps.findIndex((x) => x.path === currentRoute);
+  const activeStep: number = steps.findIndex((x) => pathname.includes(x.path));
 
   const [completed] = React.useState<{
     [k: number]: boolean;
   }>({});
 
   const handleStep = (step: Step) => () => {
-    router.push(getParent(pathname) + "/" + step.path);
+    router.push(`/patients/${patientId}/${step.path}`);
   };
 
   return (
