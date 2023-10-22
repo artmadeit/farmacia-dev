@@ -1,7 +1,7 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { Divider } from "@mui/material";
+import { Divider, Table, TableBody, TableHead, TableRow } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Field, Form, Formik } from "formik";
 import {
@@ -9,6 +9,11 @@ import {
   emptyHistoryRow,
 } from "../../pharmacotherapy/PharmacotherapyTable";
 import { TextField } from "formik-mui";
+import {
+  nesTableCellsHead1,
+  nesTableCellsHead2,
+  nesTableCellsHead3,
+} from "../../nes/table";
 
 export default function CreateSoap() {
   return (
@@ -33,6 +38,9 @@ export default function CreateSoap() {
               </Grid>
               <Grid xs={12}>
                 <PharmacotherapyTable name="history" values={values} />
+              </Grid>
+              <Grid xs={12}>
+                <NesTable />
               </Grid>
               <Grid xs={12} container spacing={1}>
                 <Grid xs={1} alignItems="center" display="flex">
@@ -91,3 +99,16 @@ export default function CreateSoap() {
     </div>
   );
 }
+
+const NesTable = () => {
+  return (
+    <Table>
+      <TableHead>
+        <TableRow>{nesTableCellsHead1}</TableRow>
+        <TableRow>{nesTableCellsHead2}</TableRow>
+        <TableRow>{nesTableCellsHead3}</TableRow>
+      </TableHead>
+      <TableBody></TableBody>
+    </Table>
+  );
+};

@@ -39,6 +39,11 @@ import {
 import { Select, TextField } from "formik-mui";
 import { PI_GROUPS } from "./pi-groups";
 import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
+import {
+  nesTableCellsHead1,
+  nesTableCellsHead2,
+  nesTableCellsHead3,
+} from "./table";
 
 const emptyEvaluationRow = {
   diagnosis: "",
@@ -227,13 +232,7 @@ const EvaluationNesTable = ({
                 <TableCell sx={{ fontWeight: "bold" }}>
                   Evaluación de datos de salud
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>
-                  Datos de farmacoterapia
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }} colSpan={3}>
-                  Evaluación de datos de farmacoterapia
-                </TableCell>
-                <TableCell></TableCell>
+                {nesTableCellsHead1}
               </TableRow>
               <TableRow>
                 {name === "diagnosisRelated" && (
@@ -243,18 +242,9 @@ const EvaluationNesTable = ({
                   Signos y sintomas que {name === "diagnosisNotRelated" && "no"}{" "}
                   se relacionan con el diagnóstico
                 </TableCell>
-                <TableCell rowSpan={2}>
-                  Medicamentos que consume el paciente
-                </TableCell>
-                <TableCell colSpan={3}>
-                  Evaluar c/u de los medicamentos si son:
-                </TableCell>
+                {nesTableCellsHead2}
               </TableRow>
-              <TableRow>
-                <TableCell sx={{ minWidth: 200 }}>Necesidad</TableCell>
-                <TableCell sx={{ minWidth: 200 }}>Efectividad</TableCell>
-                <TableCell sx={{ minWidth: 200 }}>Seguridad</TableCell>
-              </TableRow>
+              <TableRow>{nesTableCellsHead3}</TableRow>
             </TableHead>
             <TableBody>
               {values[name].map((x, index) => (
