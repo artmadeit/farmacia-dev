@@ -10,22 +10,12 @@ import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
   IconButton,
   Paper,
-  Radio,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -37,22 +27,9 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
-import { RadioGroup, TextField } from "formik-mui";
+import { TextField } from "formik-mui";
 import React from "react";
-
-const emptyHistoryRow = {
-  administration: "",
-  difficulty: "",
-  difficultyJustification: "",
-  acceptance: "",
-  reasonForUse: "",
-  restartDate: defaultDate,
-  startDate: defaultDate,
-  suspensionDate: defaultDate,
-  dose: "",
-  mode: "",
-  drug: "",
-};
+import { PharmacotherapyTable, emptyHistoryRow } from "./PharmacotherapyTable";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -73,15 +50,10 @@ const emptyAdverseReactionRow = {
   adverseReactionOfDrug: "",
 };
 
-const TABLE_WIDTH_DATE = 180;
-const TABLE_WIDTH_ACTION = 60;
+export const TABLE_WIDTH_DATE = 180;
+export const TABLE_WIDTH_ACTION = 60;
 export default function Pharmacotherapy() {
   const getApi = useAuthApi();
-  const [open, setOpen] = React.useState(false);
-
-  const onClose = () => {
-    setOpen(false);
-  };
 
   const searchDrugDcis = (searchText: string) =>
     getApi().then((api) =>
@@ -90,15 +62,6 @@ export default function Pharmacotherapy() {
           params: { page: 0, searchText },
         })
         .then((x) => x.data._embedded.drugDcis)
-    );
-
-  const searchDrugPharmaceuticalProducts = (searchText: string) =>
-    getApi().then((api) =>
-      api
-        .get<Page<Drug>>("drugPharmaceuticalProducts/search/findByFullName", {
-          params: { page: 0, searchText },
-        })
-        .then((x) => x.data._embedded.drugPharmaceuticalProducts)
     );
 
   return (
@@ -135,210 +98,7 @@ export default function Pharmacotherapy() {
                 </strong>
               </Grid>
             </Grid>
-            <TableContainer component={Paper}>
-              <FieldArray name="history">
-                {(arrayHelpers: ArrayHelpers) => (
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell style={{ minWidth: 300 }}>
-                          Medicamento
-                        </TableCell>
-                        <TableCell style={{ width: 50 }}>P/A</TableCell>
-                        <TableCell style={{ minWidth: 200 }} align="center">
-                          Dosis
-                        </TableCell>
-                        <TableCell
-                          style={{ width: TABLE_WIDTH_DATE }}
-                          align="center"
-                        >
-                          Fecha inicio
-                        </TableCell>
-                        <TableCell
-                          style={{ width: TABLE_WIDTH_DATE }}
-                          align="center"
-                        >
-                          Fecha susp
-                        </TableCell>
-                        <TableCell
-                          sx={{ width: 2 * TABLE_WIDTH_ACTION }}
-                        ></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {values.history.map((history, index) => (
-                        <React.Fragment key={index}>
-                          <TableRow>
-                            <TableCell>
-                              <AsyncAutocomplete
-                                label="Medicamento"
-                                field={`history.${index}.drug`}
-                                getLabel={(option) => option.fullName}
-                                filter={searchDrugPharmaceuticalProducts}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                component={RadioGroup}
-                                name={`history.${index}.mode`}
-                                row
-                              >
-                                <FormControlLabel
-                                  value="P"
-                                  control={<Radio />}
-                                  label="P"
-                                />
-                                <FormControlLabel
-                                  value="A"
-                                  control={<Radio />}
-                                  label="A"
-                                />
-                              </Field>
-                            </TableCell>
-                            <TableCell>
-                              <Field
-                                name={`history.${index}.dose`}
-                                component={TextField}
-                                variant="outlined"
-                                fullWidth
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <InexactDatePicker
-                                name={`history.${index}.startDate`}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <InexactDatePicker
-                                name={`history.${index}.suspensionDate`}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Tooltip title="Eliminar">
-                                <IconButton
-                                  aria-labelledby="eliminar"
-                                  onClick={() => arrayHelpers.remove(index)}
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="Ver más">
-                                <IconButton
-                                  aria-labelledby="Ver"
-                                  onClick={() => setOpen(true)}
-                                >
-                                  <SearchIcon />
-                                </IconButton>
-                              </Tooltip>
-                            </TableCell>
-                          </TableRow>
-                          <Dialog open={open} onClose={onClose}>
-                            <DialogTitle style={{ fontSize: "1rem" }}>
-                              Otra información
-                            </DialogTitle>
-                            <DialogContent>
-                              <Stack spacing={2}>
-                                <InexactDatePicker
-                                  name={`history.${index}.restartDate`}
-                                  label="Fecha rein."
-                                />
-                                <Field
-                                  name={`history.${index}.reasonForUse`}
-                                  component={TextField}
-                                  variant="outlined"
-                                  label="Motivo de uso"
-                                />
-                                <FormControl>
-                                  <FormLabel id="acceptance-radio-group">
-                                    Aceptación
-                                  </FormLabel>
-                                  <Field
-                                    component={RadioGroup}
-                                    name={`history.${index}.acceptance`}
-                                    row
-                                  >
-                                    <FormControlLabel
-                                      value="Si"
-                                      control={<Radio />}
-                                      label="Si"
-                                    />
-                                    <FormControlLabel
-                                      value="No"
-                                      control={<Radio />}
-                                      label="No"
-                                    />
-                                    <FormControlLabel
-                                      value="No aplica"
-                                      control={<Radio />}
-                                      label="No aplica"
-                                    />
-                                  </Field>
-                                </FormControl>
-                                <Field
-                                  name={`history.${index}.administration`}
-                                  component={TextField}
-                                  label="Administración"
-                                  variant="outlined"
-                                />
-                                <FormControl>
-                                  <FormLabel id="difficulty-radio-group">
-                                    Dificultades para tomarlo y/o tolerarlo
-                                  </FormLabel>
-                                  <Field
-                                    component={RadioGroup}
-                                    name={`history.${index}.difficulty`}
-                                    row
-                                  >
-                                    <FormControlLabel
-                                      value="Si"
-                                      control={<Radio />}
-                                      label="Si"
-                                    />
-                                    <FormControlLabel
-                                      value="No"
-                                      control={<Radio />}
-                                      label="No"
-                                    />
-                                  </Field>
-                                  {history.difficulty === "Si" && (
-                                    <Field
-                                      name={`history.${index}.difficultyJustification`}
-                                      multiline
-                                      rows={4}
-                                      component={TextField}
-                                      label="Comentarios"
-                                      variant="outlined"
-                                    />
-                                  )}
-                                </FormControl>
-                              </Stack>
-                            </DialogContent>
-                            <DialogActions sx={{ padding: "20px 24px" }}>
-                              <Button variant="contained">Guardar</Button>
-                            </DialogActions>
-                          </Dialog>
-                        </React.Fragment>
-                      ))}
-                    </TableBody>
-                    <TableFooter>
-                      <TableRow>
-                        <TableCell colSpan={3}>
-                          <Button
-                            startIcon={<AddIcon />}
-                            onClick={() => {
-                              arrayHelpers.push(emptyHistoryRow);
-                            }}
-                          >
-                            Agregar fila
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    </TableFooter>
-                  </Table>
-                )}
-              </FieldArray>
-            </TableContainer>
-
+            <PharmacotherapyTable name="history" values={values} />
             <Grid container spacing={2} pt={4}>
               <Grid xs={10} style={{ margin: "10px 0px" }}>
                 <strong>3.1 Alergias</strong>
