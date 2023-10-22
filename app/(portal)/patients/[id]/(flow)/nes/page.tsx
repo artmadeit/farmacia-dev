@@ -1,23 +1,16 @@
 "use client";
 
-import { useAuthApi } from "@/app/(api)/api";
-import { Page } from "@/app/(api)/pagination";
-import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
-import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import { formatDate } from "@/app/date";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
   Fab,
   Grid,
-  IconButton,
   ListSubheader,
   MenuItem,
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -25,8 +18,6 @@ import {
   TableFooter,
   TableHead,
   TableRow,
-  Tooltip,
-  Typography,
 } from "@mui/material";
 import {
   ArrayHelpers,
@@ -38,8 +29,8 @@ import {
 } from "formik";
 import { Select, TextField } from "formik-mui";
 import { PI_GROUPS } from "./pi-groups";
-import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
 import {
+  NesTableCells,
   nesTableCellsHead1,
   nesTableCellsHead2,
   nesTableCellsHead3,
@@ -205,17 +196,6 @@ const EvaluationNesTable = ({
   name: "diagnosisRelated" | "diagnosisNotRelated";
 }) => {
   const { values } = useFormikContext<NesForm>();
-  const getApi = useAuthApi();
-
-  const searchMedicine = (searchText: string) => {
-    return getApi().then((api) =>
-      api
-        .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
-          params: { page: 0, searchText },
-        })
-        .then((x) => x.data._embedded.drugDcis)
-    );
-  };
 
   return (
     <TableContainer component={Paper} sx={{ pt: 2 }}>
@@ -269,74 +249,12 @@ const EvaluationNesTable = ({
                       rows={4}
                     />
                   </TableCell>
-                  <TableCell sx={{ verticalAlign: "top" }}>
-                    <AsyncAutocomplete
-                      label="Medicina"
-                      field={`${name}.${index}.medicine`}
-                      filter={searchMedicine}
-                    />
-                  </TableCell>
-                  <TableCell sx={{ verticalAlign: "top" }}>
-                    <Field
-                      formControl={{ fullWidth: true }}
-                      component={Select}
-                      fullWidth
-                      id={`${name}.${index}.necessity`}
-                      name={`${name}.${index}.necessity.evaluation`}
-                    >
-                      <MenuItem value={"yes real"}>Si real</MenuItem>
-                      <MenuItem value={"yes potential"}>Si potencial</MenuItem>
-                      <MenuItem value={"no real"}>No real</MenuItem>
-                      <MenuItem value={"no potential"}>No potencial</MenuItem>
-                    </Field>
-                    {(values[name][index].necessity.evaluation == "yes real" ||
-                      values[name][index].necessity.evaluation ==
-                        "yes potential") && (
-                      <Justification name={`${name}.${index}.necessity`} />
-                    )}
-                  </TableCell>
-                  <TableCell sx={{ verticalAlign: "top" }}>
-                    <Field
-                      component={Select}
-                      formControl={{ fullWidth: true }}
-                      id={`${name}.${index}.effectivity`}
-                      name={`${name}.${index}.effectivity.evaluation`}
-                    >
-                      <MenuItem value={"yes"}>Si</MenuItem>
-                      <MenuItem value={"no real"}>No real</MenuItem>
-                      <MenuItem value={"no potential"}>No potencial</MenuItem>
-                    </Field>
-                    {values[name][index].effectivity.evaluation &&
-                      values[name][index].effectivity.evaluation !== "yes" && (
-                        <Justification name={`${name}.${index}.effectivity`} />
-                      )}
-                  </TableCell>
-                  <TableCell sx={{ verticalAlign: "top" }}>
-                    <Field
-                      component={Select}
-                      formControl={{ fullWidth: true }}
-                      id={`${name}.${index}.security`}
-                      name={`${name}.${index}.security.evaluation`}
-                    >
-                      <MenuItem value={"yes"}>Si</MenuItem>
-                      <MenuItem value={"no real"}>No real</MenuItem>
-                      <MenuItem value={"no potential"}>No potencial</MenuItem>
-                    </Field>
-                    {values[name][index].security.evaluation &&
-                      values[name][index].security.evaluation !== "yes" && (
-                        <Justification name={`${name}.${index}.security`} />
-                      )}
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip title="Eliminar">
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => arrayHelpers.remove(index)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
+                  <NesTableCells
+                    name={name}
+                    index={index}
+                    values={values}
+                    onRemove={arrayHelpers.handleRemove(index)}
+                  />
                 </TableRow>
               ))}
             </TableBody>
@@ -356,43 +274,6 @@ const EvaluationNesTable = ({
         )}
       </FieldArray>
     </TableContainer>
-  );
-};
-
-const Justification = ({ name }: { name: string }) => {
-  const groupName = name.includes("effectivity")
-    ? PRM_GROUP.EFFECTIVITY
-    : name.includes("security")
-    ? PRM_GROUP.SECURITY
-    : PRM_GROUP.NECESSITY;
-
-  const items = getItemsPerGroup(groupName);
-
-  return (
-    <Stack gap={2} pt={2}>
-      <Field
-        formControl={{ sx: { width: 200 } }}
-        component={Select}
-        id={`${name}.prm`}
-        name={`${name}.prm`}
-        label="PRM identificado"
-      >
-        {items.map((item) => (
-          <MenuItem value={item.name} key={item.name}>
-            {item.name}: {item.description}
-          </MenuItem>
-        ))}
-      </Field>
-      <Field
-        component={TextField}
-        label="Justifique"
-        name={`${name}.justification`}
-        variant="outlined"
-        multiline
-        rows={4}
-        fullWidth
-      />
-    </Stack>
   );
 };
 
