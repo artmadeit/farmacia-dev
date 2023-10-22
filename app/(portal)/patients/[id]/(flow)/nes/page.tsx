@@ -34,27 +34,13 @@ import {
   nesTableCellsHead1,
   nesTableCellsHead2,
   nesTableCellsHead3,
+  emptyDrugNesEvaluation,
 } from "./table";
 
 const emptyEvaluationRow = {
   diagnosis: "",
   symptoms: "",
-  medicine: "",
-  necessity: {
-    evaluation: "",
-    justification: "",
-    prm: "",
-  },
-  effectivity: {
-    evaluation: "",
-    justification: "",
-    prm: "",
-  },
-  security: {
-    evaluation: "",
-    justification: "",
-    prm: "",
-  },
+  ...emptyDrugNesEvaluation,
 };
 
 const emptyPharmaceuticInterventionRow = {

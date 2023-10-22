@@ -1,35 +1,56 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
-import { Divider, Table, TableBody, TableHead, TableRow } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { Field, Form, Formik } from "formik";
+import {
+  ArrayHelpers,
+  Field,
+  FieldArray,
+  Form,
+  Formik,
+  useFormikContext,
+} from "formik";
 import {
   PharmacotherapyTable,
   emptyHistoryRow,
 } from "../../pharmacotherapy/PharmacotherapyTable";
 import { TextField } from "formik-mui";
 import {
+  NesTableCells,
+  emptyDrugNesEvaluation,
   nesTableCellsHead1,
   nesTableCellsHead2,
   nesTableCellsHead3,
 } from "../../nes/table";
+import AddIcon from "@mui/icons-material/Add";
+
+const initialValues = {
+  history: [{ ...emptyHistoryRow }],
+  drugEvaluations: [{ ...emptyDrugNesEvaluation }],
+  subjective: "",
+  objective: "",
+  analysis: "",
+  plan: "",
+};
+
+type Soap = typeof initialValues;
 
 export default function CreateSoap() {
   return (
     <div>
       <Title>Hoja de seguimiento</Title>
       <Divider />
-      <Formik
-        initialValues={{
-          history: [{ ...emptyHistoryRow }],
-          subjective: "",
-          objective: "",
-          analysis: "",
-          plan: "",
-        }}
-        onSubmit={() => {}}
-      >
+      <Formik initialValues={initialValues} onSubmit={() => {}}>
         {({ values, errors }) => (
           <Form>
             <Grid container spacing={4}>
@@ -101,14 +122,44 @@ export default function CreateSoap() {
 }
 
 const NesTable = () => {
+  const { values } = useFormikContext<Soap>();
+  const name = "drugEvaluations";
   return (
-    <Table>
-      <TableHead>
-        <TableRow>{nesTableCellsHead1}</TableRow>
-        <TableRow>{nesTableCellsHead2}</TableRow>
-        <TableRow>{nesTableCellsHead3}</TableRow>
-      </TableHead>
-      <TableBody></TableBody>
-    </Table>
+    <FieldArray name={name}>
+      {(arrayHelpers: ArrayHelpers) => (
+        <Table>
+          <TableHead>
+            <TableRow>{nesTableCellsHead1}</TableRow>
+            <TableRow>{nesTableCellsHead2}</TableRow>
+            <TableRow>{nesTableCellsHead3}</TableRow>
+          </TableHead>
+          <TableBody>
+            {values[name].map((x, index) => (
+              <TableRow key={index}>
+                <NesTableCells
+                  name={name}
+                  index={index}
+                  values={x}
+                  onRemove={arrayHelpers.handleRemove(index)}
+                />
+              </TableRow>
+            ))}
+          </TableBody>
+
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={3}>
+                <Button
+                  startIcon={<AddIcon />}
+                  onClick={() => arrayHelpers.push(emptyDrugNesEvaluation)}
+                >
+                  Agregar fila
+                </Button>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      )}
+    </FieldArray>
   );
 };

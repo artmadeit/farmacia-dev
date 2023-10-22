@@ -8,6 +8,25 @@ import { Field } from "formik";
 import { Select, TextField } from "formik-mui";
 import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
 
+export const emptyDrugNesEvaluation = {
+  medicine: "",
+  necessity: {
+    evaluation: "",
+    justification: "",
+    prm: "",
+  },
+  effectivity: {
+    evaluation: "",
+    justification: "",
+    prm: "",
+  },
+  security: {
+    evaluation: "",
+    justification: "",
+    prm: "",
+  },
+};
+
 export const nesTableCellsHead1 = [
   <TableCell key={1} sx={{ fontWeight: "bold" }}>
     Datos de farmacoterapia
