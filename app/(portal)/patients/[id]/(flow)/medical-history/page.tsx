@@ -331,7 +331,7 @@ const Diagnosis = () => {
       options={diseases}
       renderInput={(params: AutocompleteRenderInputParams) => (
         <MuiTextField
-          label="Diagnosis"
+          placeholder="Ingrese una o varias enfermedades"
           variant="outlined"
           {...params}
           name={name}
