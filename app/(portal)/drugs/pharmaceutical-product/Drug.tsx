@@ -1,4 +1,4 @@
-export type Drug = {
+export type DrugProduct = {
   id?: number;
   name: string;
   concentration: string;

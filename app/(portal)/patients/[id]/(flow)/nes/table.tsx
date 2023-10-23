@@ -1,7 +1,7 @@
 import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
-import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, MenuItem, Stack, TableCell, Tooltip } from "@mui/material";
 import { Field } from "formik";
@@ -74,9 +74,12 @@ export const NesTableCells = ({
   const searchMedicine = (searchText: string) => {
     return getApi().then((api) =>
       api
-        .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
-          params: { page: 0, searchText },
-        })
+        .get<Page<DrugProduct>>(
+          "drugDcis/search/findByNameContainingIgnoringCase",
+          {
+            params: { page: 0, searchText },
+          }
+        )
         .then((x) => x.data._embedded.drugDcis)
     );
   };

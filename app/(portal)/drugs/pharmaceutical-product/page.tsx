@@ -7,12 +7,12 @@ import { Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef, esES } from "@mui/x-data-grid";
 import React from "react";
 import useSWR from "swr";
-import { Drug } from "./Drug";
+import { DrugProduct } from "./Drug";
 
 const DrugsPage = () => {
   const { paginationModel, setPaginationModel } = usePagination();
 
-  const { data: drugs, isLoading } = useSWR<Page<Drug>>([
+  const { data: drugs, isLoading } = useSWR<Page<DrugProduct>>([
     "/drugPharmaceuticalProducts",
     { params: { page: paginationModel.page, size: paginationModel.pageSize } },
   ]);
@@ -24,7 +24,7 @@ const DrugsPage = () => {
           { field: "name", headerName: "Nombre", width: 150 },
           { field: "concentration", headerName: "Concentración", width: 150 },
           { field: "form", headerName: "Forma", width: 150 },
-        ] as GridColDef<Drug>[]
+        ] as GridColDef<DrugProduct>[]
       ).map(withOutSorting),
     []
   );

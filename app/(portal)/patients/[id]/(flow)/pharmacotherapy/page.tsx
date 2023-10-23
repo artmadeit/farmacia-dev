@@ -3,11 +3,12 @@ import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
 import {
   InexactDatePicker,
+  InexactDateType,
   defaultDate,
 } from "@/app/(components)/InexactDatePicker";
 import { Title } from "@/app/(components)/Title";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
-import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
@@ -29,7 +30,13 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import React from "react";
-import { PharmacotherapyTable, emptyHistoryRow } from "./PharmacotherapyTable";
+import {
+  PharmaceuticHistoryRow,
+  PharmacotherapyTable,
+  emptyHistoryRow,
+} from "./PharmacotherapyTable";
+import { isString, xor } from "lodash";
+import { useRouter } from "next/navigation";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -50,17 +57,65 @@ const emptyAdverseReactionRow = {
   adverseReactionOfDrug: "",
 };
 
+type Pharmacoterapy = {
+  history: PharmaceuticHistoryRow[];
+  drugAllergies: {
+    drug: string | DrugProduct;
+    description: string;
+    date: InexactDateType;
+  }[];
+  foodAllergies: {
+    food: string;
+    description: string;
+    date: InexactDateType;
+  }[];
+  adverseReactions: {
+    date: InexactDateType;
+    medicine: string | DrugProduct;
+    dose: string;
+    adverseReactionOfDrug: string;
+  }[];
+};
+
+const initialValues: Pharmacoterapy = {
+  history: [{ ...emptyHistoryRow }],
+  drugAllergies: [
+    {
+      ...emptyMedicineAllergyRow,
+    },
+  ],
+  foodAllergies: [
+    {
+      ...emptyFoodsAllergy,
+    },
+  ],
+  adverseReactions: [
+    {
+      ...emptyAdverseReactionRow,
+    },
+  ],
+};
+
 export const TABLE_WIDTH_DATE = 180;
 export const TABLE_WIDTH_ACTION = 60;
-export default function Pharmacotherapy() {
+export default function Pharmacotherapy({
+  params,
+}: {
+  params: { id: number };
+}) {
+  const { id: patientId } = params;
   const getApi = useAuthApi();
+  const router = useRouter();
 
   const searchDrugDcis = (searchText: string) =>
     getApi().then((api) =>
       api
-        .get<Page<Drug>>("drugDcis/search/findByNameContainingIgnoringCase", {
-          params: { page: 0, searchText },
-        })
+        .get<Page<DrugProduct>>(
+          "drugDcis/search/findByNameContainingIgnoringCase",
+          {
+            params: { page: 0, searchText },
+          }
+        )
         .then((x) => x.data._embedded.drugDcis)
     );
 
@@ -69,25 +124,55 @@ export default function Pharmacotherapy() {
       <Title>Hoja Farmacoterapéutica</Title>
       <Divider />
       <Formik
-        initialValues={{
-          history: [{ ...emptyHistoryRow }],
-          drugAllergies: [
-            {
-              ...emptyMedicineAllergyRow,
-            },
-          ],
-          foodAllergies: [
-            {
-              ...emptyFoodsAllergy,
-            },
-          ],
-          adverseReactions: [
-            {
-              ...emptyAdverseReactionRow,
-            },
-          ],
+        initialValues={initialValues}
+        onSubmit={async (values) => {
+          console.log(values);
+
+          const data = {
+            adverseReactions: values.adverseReactions.map((x) => {
+              if (isString(x.medicine)) {
+                throw "Medicina incorrecta";
+              }
+
+              return {
+                medicineId: x.medicine.id,
+                date: x.date,
+                dose: x.dose,
+                adverseReactionOfDrug: x.adverseReactionOfDrug,
+              };
+            }),
+
+            drugAllergies: values.drugAllergies.map((x) => {
+              if (isString(x.drug)) {
+                throw "Medicina no válida";
+              }
+
+              return {
+                drugId: x.drug.id,
+                description: x.description,
+                date: x.date,
+              };
+            }),
+
+            foodAllergies: values.foodAllergies,
+
+            history: values.history.map(({ drug, ...rest }) => {
+              if (isString(drug)) {
+                throw "Medicina incorrecta";
+              }
+
+              return {
+                ...rest,
+                drugId: drug.id,
+              };
+            }),
+          };
+
+          const response = getApi().then((api) =>
+            api.post(`patients/${patientId}/pharmacoterapy`, data)
+          );
+          router.push(`/patients/${patientId}/nes`);
         }}
-        onSubmit={() => {}}
       >
         {({ values, errors }) => (
           <Form>

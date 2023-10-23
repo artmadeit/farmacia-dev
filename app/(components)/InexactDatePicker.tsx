@@ -23,12 +23,12 @@ import { useField } from "formik";
 import { useState } from "react";
 
 type DateType = "year" | "year-month" | "date";
-type InexactDateType = {
+export type InexactDateType = {
   type: DateType;
   value: Date | null;
 };
 
-export const defaultDate = {
+export const defaultDate: InexactDateType = {
   type: "date",
   value: null,
 };

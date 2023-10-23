@@ -3,10 +3,11 @@ import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
 import {
   InexactDatePicker,
+  InexactDateType,
   defaultDate,
 } from "@/app/(components)/InexactDatePicker";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
-import { Drug } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
@@ -51,7 +52,19 @@ export const emptyHistoryRow = {
   drug: "",
 };
 
-export type PharmaceuticHistoryRow = typeof emptyHistoryRow;
+export type PharmaceuticHistoryRow = {
+  administration: string;
+  difficulty: string;
+  difficultyJustification: string;
+  acceptance: string;
+  reasonForUse: string;
+  restartDate: InexactDateType;
+  startDate: InexactDateType;
+  suspensionDate: InexactDateType;
+  dose: string;
+  mode: string;
+  drug: string | DrugProduct;
+};
 
 export const PharmacotherapyTable = <T extends string>({
   values,
@@ -72,9 +85,12 @@ export const PharmacotherapyTable = <T extends string>({
   const searchDrugPharmaceuticalProducts = (searchText: string) =>
     getApi().then((api) =>
       api
-        .get<Page<Drug>>("drugPharmaceuticalProducts/search/findByFullName", {
-          params: { page: 0, searchText },
-        })
+        .get<Page<DrugProduct>>(
+          "drugPharmaceuticalProducts/search/findByFullName",
+          {
+            params: { page: 0, searchText },
+          }
+        )
         .then((x) => x.data._embedded.drugPharmaceuticalProducts)
     );
 
@@ -246,7 +262,9 @@ export const PharmacotherapyTable = <T extends string>({
                       </Stack>
                     </DialogContent>
                     <DialogActions sx={{ padding: "20px 24px" }}>
-                      <Button variant="contained">Guardar</Button>
+                      <Button variant="contained" onClick={onClose}>
+                        Guardar
+                      </Button>
                     </DialogActions>
                   </Dialog>
                 </React.Fragment>
