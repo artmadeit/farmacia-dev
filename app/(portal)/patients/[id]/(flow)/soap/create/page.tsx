@@ -20,10 +20,8 @@ import {
   Formik,
   useFormikContext,
 } from "formik";
-import {
-  PharmacotherapyTable,
-  emptyHistoryRow,
-} from "../../pharmacotherapy/PharmacotherapyTable";
+import { PharmacotherapyTable } from "../../pharmacotherapy/PharmacotherapyTable";
+import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
 import { TextField } from "formik-mui";
 import {
   NesTableCells,
@@ -37,15 +35,16 @@ import AddIcon from "@mui/icons-material/Add";
 const initialValues = {
   history: [{ ...emptyHistoryRow }],
   drugEvaluations: [{ ...emptyDrugNesEvaluation }],
+  problem: "",
   subjective: "",
   objective: "",
   analysis: "",
   plan: "",
 };
 
-type Soap = typeof initialValues;
+type TrackingSheet = typeof initialValues;
 
-export default function CreateSoap() {
+export default function CreateTrackingSheet() {
   return (
     <div>
       <Title>Hoja de seguimiento</Title>
@@ -64,6 +63,15 @@ export default function CreateSoap() {
                 <NesTable />
               </Grid>
               <Grid xs={12} container spacing={1}>
+                <Grid xs={12}>
+                  <Field
+                    component={TextField}
+                    name="problem"
+                    label="Problema"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
                 <Grid xs={1} alignItems="center" display="flex">
                   S
                 </Grid>
@@ -122,7 +130,7 @@ export default function CreateSoap() {
 }
 
 const NesTable = () => {
-  const { values } = useFormikContext<Soap>();
+  const { values } = useFormikContext<TrackingSheet>();
   const name = "drugEvaluations";
   return (
     <FieldArray name={name}>

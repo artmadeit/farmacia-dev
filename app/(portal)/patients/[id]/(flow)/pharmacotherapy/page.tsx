@@ -33,8 +33,8 @@ import React from "react";
 import {
   PharmaceuticHistoryRow,
   PharmacotherapyTable,
-  emptyHistoryRow,
 } from "./PharmacotherapyTable";
+import { emptyHistoryRow } from "./emptyHistoryRow";
 import { isString, xor } from "lodash";
 import { useRouter } from "next/navigation";
 
