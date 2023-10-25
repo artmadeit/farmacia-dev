@@ -39,6 +39,9 @@ import {
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import { isString } from "lodash";
 import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
+import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
+import { useAuthApi } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
 
 const emptyEvaluationRow = {
   diagnosis: "",
@@ -266,6 +269,20 @@ const EvaluationNesTable = ({
   name: "diagnosisRelated" | "diagnosisNotRelated";
 }) => {
   const { values } = useFormikContext<NesForm>();
+  const getApi = useAuthApi();
+
+  const searchDiseases = (searchText: string) => {
+    return getApi().then((api) =>
+      api
+        .get<Page<DiseaseCie10>>(
+          "/diseases/search/findByNameContainingIgnoringCase",
+          {
+            params: { page: 0, searchText },
+          }
+        )
+        .then((x) => x.data._embedded.diseases)
+    );
+  };
 
   return (
     <TableContainer component={Paper} sx={{ pt: 2 }}>
@@ -303,11 +320,16 @@ const EvaluationNesTable = ({
                 <TableRow key={index}>
                   {name === "diagnosisRelated" && (
                     <TableCell sx={{ verticalAlign: "top" }}>
-                      <Field
+                      {/* <Field
                         component={TextField}
                         fullWidth
                         name={`${name}.${index}.diagnosis`}
                         label="Diagnóstico"
+                      /> */}
+                      <AsyncAutocomplete
+                        label="Diagnóstico"
+                        field={`${name}.${index}.diagnosis`}
+                        filter={searchDiseases}
                       />
                     </TableCell>
                   )}
