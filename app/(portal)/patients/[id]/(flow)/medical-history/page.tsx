@@ -167,11 +167,6 @@ export default function PatientInterview({
   const formInitialValues: Anamnesis = data
     ? {
         ...data,
-        birthdate: parseDate(data.birthdate),
-        labTests: data.labTests.map((labTest: any) => ({
-          ...labTest,
-          date: parseDate(labTest.date),
-        })),
         diagnosis: data.diseases,
       }
     : initialValues;

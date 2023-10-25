@@ -124,38 +124,7 @@ export default function Pharmacotherapy({
         .then((x) => x.data._embedded.drugDcis)
     );
 
-  const initialValues: Pharmacoterapy = data
-    ? {
-        adverseReactions: data.adverseReactions.map((adverseR: any) => {
-          return {
-            ...adverseR,
-            date: {
-              type: adverseR.date.type,
-              value: parseDate(adverseR.date.value),
-            },
-          };
-        }),
-        foodAllergies: data.foodAllergies.map((foodAl: any) => {
-          return {
-            ...foodAl,
-            date: {
-              type: foodAl.date.type,
-              value: parseDate(foodAl.date.value),
-            },
-          };
-        }),
-        drugAllergies: data.drugAllergies.map((drugAl: any) => {
-          return {
-            ...drugAl,
-            date: {
-              type: drugAl.date.type,
-              value: parseDate(drugAl.date.value),
-            },
-          };
-        }),
-        history: data.history,
-      }
-    : emptyInitialValues;
+  const initialValues: Pharmacoterapy = data || emptyInitialValues;
 
   return (
     <div>
