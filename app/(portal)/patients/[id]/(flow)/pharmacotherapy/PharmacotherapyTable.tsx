@@ -4,7 +4,6 @@ import { Page } from "@/app/(api)/pagination";
 import {
   InexactDatePicker,
   InexactDateType,
-  defaultDate,
 } from "@/app/(components)/InexactDatePicker";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
@@ -37,20 +36,7 @@ import { ArrayHelpers, Field, FieldArray } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import React from "react";
 import { TABLE_WIDTH_DATE, TABLE_WIDTH_ACTION } from "./page";
-
-export const emptyHistoryRow = {
-  administration: "",
-  difficulty: "",
-  difficultyJustification: "",
-  acceptance: "",
-  reasonForUse: "",
-  restartDate: defaultDate,
-  startDate: defaultDate,
-  suspensionDate: defaultDate,
-  dose: "",
-  mode: "",
-  drug: "",
-};
+import { emptyHistoryRow } from "./emptyHistoryRow";
 
 export type PharmaceuticHistoryRow = {
   administration: string;
