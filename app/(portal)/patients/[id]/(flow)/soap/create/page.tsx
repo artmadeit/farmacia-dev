@@ -1,15 +1,18 @@
 "use client";
 
 import { Title } from "@/app/(components)/Title";
+import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
   Divider,
+  Fab,
   Table,
   TableBody,
   TableCell,
   TableFooter,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import {
@@ -20,8 +23,6 @@ import {
   Formik,
   useFormikContext,
 } from "formik";
-import { PharmacotherapyTable } from "../../pharmacotherapy/PharmacotherapyTable";
-import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
 import { TextField } from "formik-mui";
 import {
   NesTableCells,
@@ -30,16 +31,22 @@ import {
   nesTableCellsHead2,
   nesTableCellsHead3,
 } from "../../nes/table";
-import AddIcon from "@mui/icons-material/Add";
+import { PharmacotherapyTable } from "../../pharmacotherapy/PharmacotherapyTable";
+import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
+import CloseIcon from "@mui/icons-material/Close";
 
-const initialValues = {
-  history: [{ ...emptyHistoryRow }],
-  drugEvaluations: [{ ...emptyDrugNesEvaluation }],
+const emptySoapRow = {
   problem: "",
   subjective: "",
   objective: "",
   analysis: "",
   plan: "",
+};
+
+const initialValues = {
+  history: [{ ...emptyHistoryRow }],
+  drugEvaluations: [{ ...emptyDrugNesEvaluation }],
+  soapRows: [{ ...emptySoapRow }],
 };
 
 type TrackingSheet = typeof initialValues;
@@ -62,64 +69,98 @@ export default function CreateTrackingSheet() {
               <Grid xs={12}>
                 <NesTable />
               </Grid>
-              <Grid xs={12} container spacing={1}>
-                <Grid xs={12}>
-                  <Field
-                    component={TextField}
-                    name="problem"
-                    label="Problema"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid xs={1} alignItems="center" display="flex">
-                  S
-                </Grid>
-                <Grid xs={11}>
-                  <Field
-                    component={TextField}
-                    name="subjective"
-                    label="Subjetivo"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid xs={1} alignItems="center" display="flex">
-                  O
-                </Grid>
-                <Grid xs={11}>
-                  <Field
-                    component={TextField}
-                    name="objective"
-                    label="Objetivo"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid xs={1} alignItems="center" display="flex">
-                  A
-                </Grid>
-                <Grid xs={11}>
-                  <Field
-                    component={TextField}
-                    name="analysis"
-                    label="Análisis"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid xs={1} alignItems="center" display="flex">
-                  P
-                </Grid>
-                <Grid xs={11}>
-                  <Field
-                    component={TextField}
-                    name="plan"
-                    label="Plan"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
+              <Grid xs={12}>
+                <Typography variant="h5">SOAP</Typography>
+              </Grid>
+              <Grid xs={12} container>
+                <FieldArray name="soapRows">
+                  {(arrayHelpers: ArrayHelpers) => (
+                    <Grid xs={12} container spacing={1}>
+                      {values.soapRows.map((x, index) => (
+                        <Grid xs={12} container spacing={1} key={index}>
+                          {values.soapRows.length > 1 && (
+                            <Grid xs={12} display="flex" justifyContent="end">
+                              <Fab
+                                color="primary"
+                                aria-label="delete"
+                                onClick={arrayHelpers.handleRemove(index)}
+                              >
+                                <CloseIcon />
+                              </Fab>
+                            </Grid>
+                          )}
+                          <Grid xs={12}>
+                            <Field
+                              component={TextField}
+                              name={`soapRows.${index}.problem`}
+                              label="Problema"
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid xs={1} alignItems="center" display="flex">
+                            S
+                          </Grid>
+                          <Grid xs={11}>
+                            <Field
+                              component={TextField}
+                              name={`soapRows.${index}subjective`}
+                              label="Subjetivo"
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid xs={1} alignItems="center" display="flex">
+                            O
+                          </Grid>
+                          <Grid xs={11}>
+                            <Field
+                              component={TextField}
+                              name={`soapRows.${index}.objective`}
+                              label="Objetivo"
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid xs={1} alignItems="center" display="flex">
+                            A
+                          </Grid>
+                          <Grid xs={11}>
+                            <Field
+                              component={TextField}
+                              name={`soapRows.${index}.analysis`}
+                              label="Análisis"
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid xs={1} alignItems="center" display="flex">
+                            P
+                          </Grid>
+                          <Grid xs={11}>
+                            <Field
+                              component={TextField}
+                              name={`soapRows.${index}plan`}
+                              label="Plan"
+                              variant="outlined"
+                              fullWidth
+                            />
+                          </Grid>
+                        </Grid>
+                      ))}
+                      <Grid xs={12}>
+                        <Button
+                          startIcon={<AddIcon />}
+                          onClick={() => {
+                            arrayHelpers.push(emptySoapRow);
+                          }}
+                        >
+                          Agregar otra fila
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  )}
+                </FieldArray>
               </Grid>
             </Grid>
           </Form>
