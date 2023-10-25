@@ -42,6 +42,7 @@ import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
+import { useRouter } from "next/navigation";
 
 const emptyEvaluationRow = {
   diagnosis: "",
@@ -92,7 +93,6 @@ type NesForm = {
       justification: string;
       prm: string;
     };
-    diagnosis: string | DiseaseCie10;
     symptoms: string;
   }[];
   pharmaceuticIntervention: {
@@ -121,23 +121,32 @@ const initialValues: NesForm = {
 
 // type NesForm = typeof initialValues;
 
-export default function NesPage() {
+export default function NesPage({ params }: { params: { id: number } }) {
+  const { id: patientId } = params;
+  const getApi = useAuthApi();
+  const router = useRouter();
+
   return (
     <div>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
           console.log(values);
 
           const data = {
             diagnosisRelated: values.diagnosisRelated.map(
-              ({ medicine, ...rest }) => {
+              ({ medicine, diagnosis, ...rest }) => {
                 if (isString(medicine)) {
                   throw "Medicina inválida";
                 }
 
+                if (isString(diagnosis)) {
+                  throw "Diagnóstico inválido";
+                }
+
                 return {
                   ...rest,
+                  diseaseId: diagnosis.id,
                   medicineId: medicine.id,
                 };
               }
@@ -155,6 +164,11 @@ export default function NesPage() {
               }
             ),
           };
+          const response = getApi().then((api) =>
+            api.post(`patients/${patientId}/nes`, data)
+          );
+
+          router.push(`/patients/${patientId}/soap`);
         }}
       >
         {({ values }) => (
