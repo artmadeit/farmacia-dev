@@ -36,6 +36,9 @@ import {
   nesTableCellsHead3,
   emptyDrugNesEvaluation,
 } from "./table";
+import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import { isString } from "lodash";
+import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
 
 const emptyEvaluationRow = {
   diagnosis: "",
@@ -48,7 +51,54 @@ const emptyPharmaceuticInterventionRow = {
   commentaries: "",
 };
 
-const initialValues = {
+type NesForm = {
+  diagnosisRelated: {
+    medicine: string | DrugProduct;
+    necessity: {
+      evaluation: string;
+      justification: string;
+      prm: string;
+    };
+    effectivity: {
+      evaluation: string;
+      justification: string;
+      prm: string;
+    };
+    security: {
+      evaluation: string;
+      justification: string;
+      prm: string;
+    };
+    diagnosis: string | DiseaseCie10;
+    symptoms: string;
+  }[];
+  diagnosisNotRelated: {
+    medicine: string | DrugProduct;
+    necessity: {
+      evaluation: string;
+      justification: string;
+      prm: string;
+    };
+    effectivity: {
+      evaluation: string;
+      justification: string;
+      prm: string;
+    };
+    security: {
+      evaluation: string;
+      justification: string;
+      prm: string;
+    };
+    diagnosis: string | DiseaseCie10;
+    symptoms: string;
+  }[];
+  pharmaceuticIntervention: {
+    pharmaceuticIntervention: string;
+    commentaries: string;
+  }[];
+};
+
+const initialValues: NesForm = {
   diagnosisRelated: [
     {
       ...emptyEvaluationRow,
@@ -66,12 +116,44 @@ const initialValues = {
   ],
 };
 
-type NesForm = typeof initialValues;
+// type NesForm = typeof initialValues;
 
 export default function NesPage() {
   return (
     <div>
-      <Formik initialValues={initialValues} onSubmit={() => {}}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values) => {
+          console.log(values);
+
+          const data = {
+            diagnosisRelated: values.diagnosisRelated.map(
+              ({ medicine, ...rest }) => {
+                if (isString(medicine)) {
+                  throw "Medicina inválida";
+                }
+
+                return {
+                  ...rest,
+                  medicineId: medicine.id,
+                };
+              }
+            ),
+            diagnosisNotRelated: values.diagnosisNotRelated.map(
+              ({ medicine, ...rest }) => {
+                if (isString(medicine)) {
+                  throw "Medicina inválida";
+                }
+
+                return {
+                  ...rest,
+                  medicineId: medicine.id,
+                };
+              }
+            ),
+          };
+        }}
+      >
         {({ values }) => (
           <Form>
             <Grid container>
@@ -167,7 +249,9 @@ export default function NesPage() {
               justifyContent="flex-end"
               sx={{ marginTop: "10px" }}
             >
-              <Button variant="contained">Guardar</Button>
+              <Button variant="contained" type="submit">
+                Guardar
+              </Button>
             </Box>
           </Form>
         )}
