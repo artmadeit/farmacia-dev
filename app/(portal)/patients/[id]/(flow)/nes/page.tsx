@@ -43,6 +43,7 @@ import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
 
 const emptyEvaluationRow = {
   diagnosis: "",
@@ -95,7 +96,7 @@ type NesForm = {
     };
     symptoms: string;
   }[];
-  pharmaceuticIntervention: {
+  pharmaceuticInterventions: {
     pharmaceuticIntervention: string;
     commentaries: string;
   }[];
@@ -112,7 +113,7 @@ const initialValues: NesForm = {
       ...emptyEvaluationRow,
     },
   ],
-  pharmaceuticIntervention: [
+  pharmaceuticInterventions: [
     {
       ...emptyPharmaceuticInterventionRow,
     },
@@ -126,10 +127,26 @@ export default function NesPage({ params }: { params: { id: number } }) {
   const getApi = useAuthApi();
   const router = useRouter();
 
+  const { data, mutate } = useSWR(`/patients/${patientId}/nes`);
+
+  const formInitialValues: NesForm = data
+    ? {
+        diagnosisRelated: data.diagnosisRelated.map((diagnosisR: any) => {
+          return {
+            ...diagnosisR,
+            diagnosis: diagnosisR.disease,
+          };
+        }),
+        diagnosisNotRelated: data.diagnosisNotRelated,
+        pharmaceuticInterventions: data.pharmaceuticInterventions,
+      }
+    : initialValues;
+
   return (
     <div>
       <Formik
-        initialValues={initialValues}
+        initialValues={formInitialValues}
+        enableReinitialize
         onSubmit={async (values) => {
           console.log(values);
 
@@ -163,6 +180,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                 };
               }
             ),
+            pharmaceuticInterventions: values.pharmaceuticInterventions,
           };
           const response = getApi().then((api) =>
             api.post(`patients/${patientId}/nes`, data)
@@ -209,9 +227,9 @@ export default function NesPage({ params }: { params: { id: number } }) {
               <FieldArray name="pharmaceuticIntervention">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Grid container>
-                    {values.pharmaceuticIntervention.map((x, index) => (
+                    {values.pharmaceuticInterventions.map((x, index) => (
                       <Grid container key={index} paddingBottom={2}>
-                        {values.pharmaceuticIntervention.length > 1 && (
+                        {values.pharmaceuticInterventions.length > 1 && (
                           <Grid
                             xs={12}
                             display="flex"
@@ -245,7 +263,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                         </Grid>
                       </Grid>
                     ))}
-                    {values.pharmaceuticIntervention.length > 0 && (
+                    {values.pharmaceuticInterventions.length > 0 && (
                       <Box textAlign="center">
                         <Button
                           startIcon={<AddIcon />}
@@ -334,12 +352,6 @@ const EvaluationNesTable = ({
                 <TableRow key={index}>
                   {name === "diagnosisRelated" && (
                     <TableCell sx={{ verticalAlign: "top" }}>
-                      {/* <Field
-                        component={TextField}
-                        fullWidth
-                        name={`${name}.${index}.diagnosis`}
-                        label="Diagnóstico"
-                      /> */}
                       <AsyncAutocomplete
                         label="Diagnóstico"
                         field={`${name}.${index}.diagnosis`}

@@ -106,8 +106,8 @@ export const NesTableCells = ({
           <MenuItem value={"no real"}>No real</MenuItem>
           <MenuItem value={"no potential"}>No potencial</MenuItem>
         </Field>
-        {(values.necessity.evaluation == "yes real" ||
-          values.necessity.evaluation == "yes potential") && (
+        {(values.necessity.evaluation === "yes real" ||
+          values.necessity.evaluation === "yes potential") && (
           <Justification name={`${name}.${index}.necessity`} />
         )}
       </TableCell>
