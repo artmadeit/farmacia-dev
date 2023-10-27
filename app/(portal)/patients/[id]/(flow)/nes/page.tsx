@@ -264,16 +264,23 @@ export default function NesPage({ params }: { params: { id: number } }) {
                       </Grid>
                     ))}
                     {values.pharmaceuticInterventions.length > 0 && (
-                      <Box textAlign="center">
-                        <Button
-                          startIcon={<AddIcon />}
-                          onClick={() =>
-                            arrayHelpers.push(emptyPharmaceuticInterventionRow)
-                          }
-                        >
-                          Agregar otra intervención farmaceutica
-                        </Button>
-                      </Box>
+                      <div>
+                        <Box textAlign="center">
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() =>
+                              arrayHelpers.push(
+                                emptyPharmaceuticInterventionRow
+                              )
+                            }
+                          >
+                            Agregar otra intervención farmaceutica
+                          </Button>
+                        </Box>
+                        <Box sx={{ mt: 2 }}>
+                          <Button startIcon={<AddIcon />}> Agregar pico</Button>
+                        </Box>
+                      </div>
                     )}
                   </Grid>
                 )}
