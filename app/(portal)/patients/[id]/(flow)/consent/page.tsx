@@ -4,18 +4,18 @@ import { Title } from "@/app/(components)/Title";
 import Uppy from "@uppy/core";
 import { DragDrop, StatusBar } from "@uppy/react";
 
+import { useAuthApi } from "@/app/(api)/api";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Button, IconButton, Stack } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import "@uppy/core/dist/style.min.css";
-import "@uppy/status-bar/dist/style.min.css";
 import "@uppy/drag-drop/dist/style.min.css";
 import Spanish from "@uppy/locales/lib/es_ES";
+import "@uppy/status-bar/dist/style.min.css";
 import Transloadit from "@uppy/transloadit";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import useSWR from "swr";
-import { Box, Button, IconButton, Stack } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { useRouter } from "next/navigation";
-import { useAuthApi } from "@/app/(api)/api";
 
 function createUppy(patientId: number) {
   return new Uppy({
@@ -72,7 +72,7 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
 
   return (
     <div>
-      <Title>Firma de consentimiento</Title>
+      <Title date={new Date()}>Firma de consentimiento</Title>
       <Grid container spacing={4}>
         <Grid xs={6} pt={8}>
           <DragDrop uppy={uppy} height={height} />

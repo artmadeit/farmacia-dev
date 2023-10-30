@@ -43,6 +43,7 @@ import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
 import { useRouter } from "next/navigation";
+import { Title } from "@/app/(components)/Title";
 
 const emptyEvaluationRow = {
   diagnosis: "",
@@ -128,11 +129,13 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
   return (
     <div>
+      <Title date={new Date()}>
+        Para la evaluación y el análisis de datos e identificación del PRM
+      </Title>
+
       <Formik
         initialValues={initialValues}
         onSubmit={async (values) => {
-          console.log(values);
-
           const data = {
             diagnosisRelated: values.diagnosisRelated.map(
               ({ medicine, diagnosis, ...rest }) => {
@@ -173,33 +176,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
       >
         {({ values }) => (
           <Form>
-            <Grid container>
-              <Grid
-                xs={8}
-                style={{
-                  marginBottom: "10px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <strong>
-                  PARA LA EVALUACIÓN Y EL ANÁLISIS DE DATOS E IDENTIFICACIÓN DEL
-                  PRM.
-                </strong>
-              </Grid>
-              <Grid
-                xs={4}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{ pb: 1 }}
-              >
-                <span style={{ fontSize: "14px" }}>
-                  Fecha: {formatDate(new Date())}
-                </span>
-              </Grid>
-            </Grid>
-
             <EvaluationNesTable name="diagnosisRelated" />
             <EvaluationNesTable name="diagnosisNotRelated" />
             <Grid container pt={4}>

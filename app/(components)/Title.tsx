@@ -2,15 +2,7 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import { formatDate } from "../date";
 
-export const Title = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <Typography variant="h5" gutterBottom>
-      {children}
-    </Typography>
-  );
-};
-
-export const Title2 = ({
+export const Title = ({
   children,
   date,
 }: {

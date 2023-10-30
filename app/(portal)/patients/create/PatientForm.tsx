@@ -1,12 +1,11 @@
 "use client";
 
-import { Button, FormLabel, Grid, Stack } from "@mui/material";
+import { useAuthApi } from "@/app/(api)/api";
+import { Button, FormLabel, Grid, Stack, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { useRouter } from "next/navigation";
 import { Patient } from "./Patient";
-import { Title } from "@/app/(components)/Title";
-import { useAuthApi } from "@/app/(api)/api";
 
 type PatientFormProps = {
   patient: Patient;
@@ -33,7 +32,9 @@ const PatientForm = ({ patient: patient }: PatientFormProps) => {
     >
       <Form>
         <Stack spacing={2}>
-          <Title>Datos generales del paciente</Title>
+          <Typography variant="h5" gutterBottom>
+            Datos generales del paciente
+          </Typography>
           <Grid container rowGap={2}>
             <Grid item xs={12} sm={2} sx={inline}>
               <FormLabel required>Código</FormLabel>

@@ -2,9 +2,9 @@
 
 import { Title } from "@/app/(components)/Title";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Button,
-  Divider,
   Fab,
   Table,
   TableBody,
@@ -33,7 +33,6 @@ import {
 } from "../../nes/table";
 import { PharmacotherapyTable } from "../../pharmacotherapy/PharmacotherapyTable";
 import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
-import CloseIcon from "@mui/icons-material/Close";
 
 const emptySoapRow = {
   problem: "",
@@ -54,8 +53,7 @@ type TrackingSheet = typeof initialValues;
 export default function CreateTrackingSheet() {
   return (
     <div>
-      <Title>Hoja de seguimiento</Title>
-      <Divider />
+      <Title date={new Date()}>Hoja de seguimiento</Title>
       <Formik initialValues={initialValues} onSubmit={() => {}}>
         {({ values, errors }) => (
           <Form>

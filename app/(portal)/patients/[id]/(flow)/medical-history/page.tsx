@@ -1,16 +1,18 @@
 "use client";
 
-import { Title, Title2 } from "@/app/(components)/Title";
-import { formatDate, minYear, parseDate, today } from "@/app/date";
+import { useAuthApi } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
+import { Title } from "@/app/(components)/Title";
+import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
+import { minYear, today } from "@/app/date";
 import {
   AutocompleteRenderInputParams,
   Box,
   Button,
-  Divider,
   FormControlLabel,
+  TextField as MuiTextField,
   Radio,
   Stack,
-  TextField as MuiTextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
@@ -21,7 +23,10 @@ import {
   RadioGroup,
   TextField,
 } from "formik-mui";
-import React, { useEffect } from "react";
+import { debounce } from "lodash";
+import { useRouter } from "next/navigation";
+import React from "react";
+import useSWR from "swr";
 import yup from "../../../../../validation";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { ConsumptionHabits } from "./ConsumptionHabits";
@@ -37,14 +42,6 @@ import {
   foodHabits,
   healthProblems,
 } from "./data";
-import { debounce } from "lodash";
-import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
-import { Page } from "@/app/(api)/pagination";
-import { useAuthApi } from "@/app/(api)/api";
-import { object } from "yup";
-import { useRouter } from "next/navigation";
-import useSWR from "swr";
-import { parse } from "date-fns";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -173,7 +170,7 @@ export default function PatientInterview({
 
   return (
     <div>
-      <Title2 date={new Date()}>Ficha de anamnesis farmacológica</Title2>
+      <Title date={new Date()}>Ficha de anamnesis farmacológica</Title>
       <Formik
         initialValues={formInitialValues}
         enableReinitialize

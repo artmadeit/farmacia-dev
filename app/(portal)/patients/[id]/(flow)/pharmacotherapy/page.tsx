@@ -29,16 +29,14 @@ import {
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
-import React from "react";
+import { isString } from "lodash";
+import { useRouter } from "next/navigation";
+import useSWR from "swr";
 import {
   PharmaceuticHistoryRow,
   PharmacotherapyTable,
 } from "./PharmacotherapyTable";
 import { emptyHistoryRow } from "./emptyHistoryRow";
-import { isString, xor } from "lodash";
-import { useRouter } from "next/navigation";
-import useSWR from "swr";
-import { parseDate } from "@/app/date";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -128,8 +126,7 @@ export default function Pharmacotherapy({
 
   return (
     <div>
-      <Title>Hoja Farmacoterapéutica</Title>
-      <Divider />
+      <Title date={new Date()}>Hoja Farmacoterapéutica</Title>
       <Formik
         initialValues={initialValues}
         enableReinitialize
