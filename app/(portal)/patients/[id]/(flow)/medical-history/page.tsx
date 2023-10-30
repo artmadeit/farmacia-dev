@@ -1,6 +1,6 @@
 "use client";
 
-import { Title } from "@/app/(components)/Title";
+import { Title, Title2 } from "@/app/(components)/Title";
 import { formatDate, minYear, parseDate, today } from "@/app/date";
 import {
   AutocompleteRenderInputParams,
@@ -173,8 +173,7 @@ export default function PatientInterview({
 
   return (
     <div>
-      <Title>Ficha de anamnesis farmacológica</Title>
-      <Divider />
+      <Title2 date={new Date()}>Ficha de anamnesis farmacológica</Title2>
       <Formik
         initialValues={formInitialValues}
         enableReinitialize
@@ -255,7 +254,6 @@ export default function PatientInterview({
               <Grid xs={10}>
                 <Subtitle component="h4">1. Datos personales</Subtitle>
               </Grid>
-              <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
             </Grid>
             <PersonalInformation />
             <Subtitle component="h4">2. Historia de salud</Subtitle>
