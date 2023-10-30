@@ -152,6 +152,8 @@ export type Anamnesis = {
   diagnosis: DiseaseCie10[];
 };
 
+const requiredMessage = "Campo obligatorio";
+
 export default function PatientInterview({
   params,
 }: {
@@ -182,6 +184,7 @@ export default function PatientInterview({
           occupation: yup.string().required().label("La ocupación"),
           birthdate: yup
             .date()
+            .required()
             .min(
               minYear,
               `La fecha de nacimiento no puede ser menor del año ${minYear.getFullYear()}`
@@ -190,7 +193,7 @@ export default function PatientInterview({
             .label("Fecha de nacimiento"),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
-          sex: yup.string().required("sexo es un campo obligatorio"),
+          sex: yup.string().required(requiredMessage),
           vitalFunctions: yup.object({
             heartRate: yup
               .number()
@@ -236,8 +239,13 @@ export default function PatientInterview({
             })
           ),
           foodHabits: yup.object({
-            salt: yup.string().required(),
-            isSaltAddedToFood: yup.string().required(),
+            salt: yup.string().required(requiredMessage),
+            isSaltAddedToFood: yup.string().required(requiredMessage),
+          }),
+          consumptionHabits: yup.object({
+            alcohol: yup.string().required(requiredMessage),
+            tobacco: yup.string().required(requiredMessage),
+            tea: yup.string().required(requiredMessage),
           }),
         })}
         onSubmit={async (values) => {
