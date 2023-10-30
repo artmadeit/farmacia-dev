@@ -6,6 +6,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Fab,
   Grid,
   ListSubheader,
@@ -44,6 +47,7 @@ import { useAuthApi } from "@/app/(api)/api";
 import { Page } from "@/app/(api)/pagination";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
+import React from "react";
 
 const emptyEvaluationRow = {
   diagnosis: "",
@@ -126,6 +130,11 @@ export default function NesPage({ params }: { params: { id: number } }) {
   const { id: patientId } = params;
   const getApi = useAuthApi();
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const { data, mutate } = useSWR(`/patients/${patientId}/nes`);
 
@@ -278,10 +287,21 @@ export default function NesPage({ params }: { params: { id: number } }) {
                           </Button>
                         </Box>
                         <Box sx={{ mt: 2 }}>
-                          <Button startIcon={<AddIcon />}> Agregar pico</Button>
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() => setOpen(true)}
+                          >
+                            Agregar pico
+                          </Button>
                         </Box>
                       </div>
                     )}
+                    <Dialog open={open} onClose={handleClose}>
+                      <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle>
+                      <DialogContent>
+                        <h1>Tabla</h1>
+                      </DialogContent>
+                    </Dialog>
                   </Grid>
                 )}
               </FieldArray>
