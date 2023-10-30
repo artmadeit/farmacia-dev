@@ -23,6 +23,7 @@ import format from "date-fns/format";
 import { useField } from "formik";
 import { useState } from "react";
 import yup from "../validation";
+import { requiredMessage } from "./helpers/requiredMessage";
 
 type DateType = "year" | "year-month" | "date";
 export type InexactDateType = {
@@ -38,7 +39,7 @@ export const defaultDate: InexactDateType = {
 export const inexactDateSchema = () =>
   yup.object({
     type: yup.string().required(),
-    value: yup.date().required(),
+    value: yup.date().required(requiredMessage),
   });
 
 export function InexactDatePicker({

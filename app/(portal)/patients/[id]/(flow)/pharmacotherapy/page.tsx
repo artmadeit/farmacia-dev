@@ -39,6 +39,7 @@ import {
 } from "./PharmacotherapyTable";
 import { emptyHistoryRow } from "./emptyHistoryRow";
 import yup from "@/app/validation";
+import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -110,7 +111,6 @@ export default function Pharmacotherapy({
   const router = useRouter();
 
   const { data } = useSWR(`/patients/${patientId}/pharmacoterapy`);
-  console.log(data);
 
   const searchDrugDcis = (searchText: string) =>
     getApi().then((api) =>
@@ -135,39 +135,39 @@ export default function Pharmacotherapy({
         validationSchema={yup.object({
           history: yup.array().of(
             yup.object({
-              administration: yup.string().required(),
-              difficulty: yup.string().required(),
-              difficultyJustification: yup.string().required(),
-              acceptance: yup.string().required(),
-              reasonForUse: yup.string().required(),
+              administration: yup.string().required(requiredMessage),
+              difficulty: yup.string().required(requiredMessage),
+              difficultyJustification: yup.string().required(requiredMessage),
+              acceptance: yup.string().required(requiredMessage),
+              reasonForUse: yup.string().required(requiredMessage),
               startDate: inexactDateSchema().required(),
               restartDate: inexactDateSchema(),
               suspensionDate: inexactDateSchema(),
-              dose: yup.string().required(),
-              mode: yup.string().required(),
-              drug: yup.object().required(),
+              dose: yup.string().required(requiredMessage),
+              mode: yup.string().required(requiredMessage),
+              drug: yup.object().required(requiredMessage),
             })
           ),
           drugAllergies: yup.array().of(
             yup.object({
-              drug: yup.object().required(),
-              description: yup.string().required(),
+              drug: yup.object().required(requiredMessage),
+              description: yup.string().required(requiredMessage),
               date: inexactDateSchema().required(),
             })
           ),
           foodAllergies: yup.array().of(
             yup.object({
-              food: yup.string().required(),
-              description: yup.string().required(),
+              food: yup.string().required(requiredMessage),
+              description: yup.string().required(requiredMessage),
               date: inexactDateSchema().required(),
             })
           ),
           adverseReactions: yup.array().of(
             yup.object({
               date: inexactDateSchema().required(),
-              medicine: yup.object().required(),
-              dose: yup.string().required(),
-              adverseReactionOfDrug: yup.string().required(),
+              medicine: yup.object().required(requiredMessage),
+              dose: yup.string().required(requiredMessage),
+              adverseReactionOfDrug: yup.string().required(requiredMessage),
             })
           ),
         })}

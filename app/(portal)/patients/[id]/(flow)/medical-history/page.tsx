@@ -44,6 +44,7 @@ import {
   foodHabits,
   healthProblems,
 } from "./data";
+import { requiredMessage } from "../../../../../(components)/helpers/requiredMessage";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -151,8 +152,6 @@ export type Anamnesis = {
   labTests: LabTest[];
   diagnosis: DiseaseCie10[];
 };
-
-const requiredMessage = "Campo obligatorio";
 
 export default function PatientInterview({
   params,
