@@ -259,7 +259,7 @@ export default function Pharmacotherapy({
                           <TableCell>
                             <AsyncAutocomplete
                               label="Medicamento"
-                              field={`drugAllergies.${index}.drug`}
+                              name={`drugAllergies.${index}.drug`}
                               filter={searchDrugDcis}
                             />
                           </TableCell>
@@ -422,7 +422,7 @@ export default function Pharmacotherapy({
                           <TableCell>
                             <AsyncAutocomplete
                               label="Medicamento"
-                              field={`adverseReactions.${index}.medicine`}
+                              name={`adverseReactions.${index}.medicine`}
                               filter={searchDrugDcis}
                             />
                           </TableCell>

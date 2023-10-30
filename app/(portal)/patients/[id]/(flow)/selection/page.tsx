@@ -59,7 +59,7 @@ const DrugAutocomplete = () => {
   return (
     <AsyncAutocomplete
       label="Medicamento"
-      field="drug"
+      name="drug"
       filter={(searchText) =>
         getApi().then((api) =>
           api

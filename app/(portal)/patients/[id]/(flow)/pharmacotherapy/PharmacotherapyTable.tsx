@@ -108,7 +108,7 @@ export const PharmacotherapyTable = <T extends string>({
                     <TableCell>
                       <AsyncAutocomplete
                         label="Medicamento"
-                        field={`${name}.${index}.drug`}
+                        name={`${name}.${index}.drug`}
                         getLabel={(option) => option.fullName}
                         filter={searchDrugPharmaceuticalProducts}
                       />

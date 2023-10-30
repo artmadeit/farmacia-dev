@@ -357,7 +357,7 @@ const EvaluationNesTable = ({
                     <TableCell sx={{ verticalAlign: "top" }}>
                       <AsyncAutocomplete
                         label="Diagnóstico"
-                        field={`${name}.${index}.diagnosis`}
+                        name={`${name}.${index}.diagnosis`}
                         filter={searchDiseases}
                       />
                     </TableCell>
