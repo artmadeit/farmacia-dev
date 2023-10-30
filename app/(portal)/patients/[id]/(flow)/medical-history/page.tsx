@@ -170,7 +170,9 @@ export default function PatientInterview({
 
   return (
     <div>
-      <Title date={new Date()}>Ficha de anamnesis farmacológica</Title>
+      <Title date={data?.createDate || new Date()}>
+        Ficha de anamnesis farmacológica
+      </Title>
       <Formik
         initialValues={formInitialValues}
         enableReinitialize
