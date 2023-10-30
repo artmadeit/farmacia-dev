@@ -47,7 +47,8 @@ const emptyLabTest: LabTest = {
 };
 
 export const LabTests = () => {
-  const { values, setFieldValue, errors } = useFormikContext<Anamnesis>();
+  const { values, setFieldValue, errors, touched } =
+    useFormikContext<Anamnesis>();
   const getApi = useAuthApi();
 
   const searchLabTest = (searchText: string) => {
@@ -66,7 +67,9 @@ export const LabTests = () => {
   return (
     <Box>
       <Stack spacing={2} direction="row" alignItems="center">
-        <FormControl error={Boolean(errors.existLabTests)}>
+        <FormControl
+          error={Boolean(touched.existLabTests && errors.existLabTests)}
+        >
           <Box display="flex" alignItems="center">
             <label htmlFor="existLabTests">
               ¿Se realizaron examenes de laboratorio u otra prueba diagnostica?
@@ -75,7 +78,7 @@ export const LabTests = () => {
               component={RadioGroup}
               id="existLabTests"
               name="existLabTests"
-              sx={{marginLeft: "20px"}}
+              sx={{ marginLeft: "20px" }}
               row
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 const existLabTests = e.target.value === "true";
@@ -95,7 +98,9 @@ export const LabTests = () => {
               />
             </Field>
           </Box>
-          <FormHelperText>{errors.existLabTests}</FormHelperText>
+          <FormHelperText>
+            {touched.existLabTests && errors.existLabTests}
+          </FormHelperText>
         </FormControl>
       </Stack>
       <Stack>

@@ -14,10 +14,12 @@ import { OutlinedPaper } from "./OutlinedPaper";
 import { Anamnesis } from "./page";
 
 export const PhysicalExercises = () => {
-  const { errors } = useFormikContext<Anamnesis>();
+  const { errors, touched } = useFormikContext<Anamnesis>();
 
   return (
-    <FormControl error={Boolean(errors.physicalExercises)}>
+    <FormControl
+      error={Boolean(touched.physicalExercises && errors.physicalExercises)}
+    >
       <Field component={RadioGroup} name="physicalExercises">
         <Grid container component={OutlinedPaper}>
           <Grid xs>
@@ -87,7 +89,9 @@ export const PhysicalExercises = () => {
           </Grid>
         </Grid>
       </Field>
-      <FormHelperText>{errors.physicalExercises}</FormHelperText>
+      <FormHelperText>
+        {touched.physicalExercises && errors.physicalExercises}
+      </FormHelperText>
     </FormControl>
   );
 };

@@ -4,18 +4,18 @@ import { Title } from "@/app/(components)/Title";
 import Uppy from "@uppy/core";
 import { DragDrop, StatusBar } from "@uppy/react";
 
+import { useAuthApi } from "@/app/(api)/api";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Button, IconButton, Stack } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import "@uppy/core/dist/style.min.css";
-import "@uppy/status-bar/dist/style.min.css";
 import "@uppy/drag-drop/dist/style.min.css";
 import Spanish from "@uppy/locales/lib/es_ES";
+import "@uppy/status-bar/dist/style.min.css";
 import Transloadit from "@uppy/transloadit";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { useState } from "react";
-import useSWR from "swr";
-import { Box, Button, IconButton, Stack } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { useRouter } from "next/navigation";
-import { useAuthApi } from "@/app/(api)/api";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
 
 function createUppy(patientId: number) {
   return new Uppy({
@@ -43,27 +43,37 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
   const [uppy] = useState(() => createUppy(patientId));
   const router = useRouter();
 
-  const { data: signedUrl, mutate } = useSWR(`patients/${patientId}/consent`, {
+  const { data, mutate } = useSWR(`patients/${patientId}/consent`, {
     revalidateOnFocus: false,
   });
 
-  uppy.on("transloadit:result", (stepName, result: any) => {
-    const file = uppy.getFile(result.localId);
+  useEffect(() => {
+    const saveConsent = (_stepName: string, result: any) => {
+      const file = uppy.getFile(result.localId);
 
-    const reader = new FileReader();
-    reader.onload = async function (e) {
-      if (e.target) {
-        await getApi().then((api) => api.post(`patients/${patientId}/consent`));
-        mutate();
-        // Useful if we want to save the url, setUploadUrl(e.target.result); check console.log(file) and result
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+        if (e.target) {
+          await getApi().then((api) =>
+            api.post(`patients/${patientId}/consent`)
+          );
+          mutate();
+          // Useful if we want to save the url, setUploadUrl(e.target.result); check console.log(file) and result
 
-        // remove file so user can upload again
-        // replacing the file
-        uppy.removeFile(result.localId);
-      }
+          // remove file so user can upload again
+          // replacing the file
+          uppy.removeFile(result.localId);
+        }
+      };
+      reader.readAsDataURL(file.data);
     };
-    reader.readAsDataURL(file.data);
-  });
+
+    uppy.on("transloadit:result", saveConsent);
+
+    return () => {
+      uppy.off("transloadit:result", saveConsent);
+    };
+  }, [getApi, mutate, patientId, uppy]);
 
   const deleteConsent = async () => {
     await getApi().then((api) => api.delete(`patients/${patientId}/consent`));
@@ -72,21 +82,27 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
 
   return (
     <div>
-      <Title>Firma de consentimiento</Title>
+      <Title date={data?.createDate || new Date()}>
+        Firma de consentimiento
+      </Title>
       <Grid container spacing={4}>
         <Grid xs={6} pt={8}>
           <DragDrop uppy={uppy} height={height} />
           <StatusBar uppy={uppy} />
         </Grid>
         <Grid xs={6}>
-          {signedUrl && (
+          {data && (
             <Stack>
               <Box display="flex" justifyContent="end">
                 <IconButton aria-label="delete" onClick={deleteConsent}>
                   <CloseIcon />
                 </IconButton>
               </Box>
-              <embed src={signedUrl} height={height} type="application/pdf" />
+              <embed
+                src={data.signedUrl}
+                height={height}
+                type="application/pdf"
+              />
             </Stack>
           )}
         </Grid>

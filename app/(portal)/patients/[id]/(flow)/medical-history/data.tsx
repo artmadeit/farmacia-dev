@@ -111,7 +111,7 @@ export const healthProblems: GroupItems[] = [
 
 export const consumptionHabits = [
   {
-    id: "consumptionHabits.alcohol",
+    id: "alcohol",
     label: "Alcohol",
     no: { label: "No", name: "NO" },
     types: [
@@ -121,7 +121,7 @@ export const consumptionHabits = [
     ],
   },
   {
-    id: "consumptionHabits.tobacco",
+    id: "tobacco",
     label: "Tabaco",
     no: { label: "No", name: "NO" },
     types: [
@@ -132,7 +132,7 @@ export const consumptionHabits = [
     ],
   },
   {
-    id: "consumptionHabits.tea",
+    id: "tea",
     label: "Té",
     no: { label: "No", name: "NO" },
     types: [
@@ -159,7 +159,7 @@ export const foodConsumptions = {
 
 export const foodHabits = [
   {
-    id: "foodHabits.salt",
+    id: "salt",
     label: "Sal en dieta",
     items: [
       { label: "Hiposódica", name: "HIPOSODICA" },
@@ -168,7 +168,7 @@ export const foodHabits = [
     ],
   },
   {
-    id: "foodHabits.isSaltAddedToFood",
+    id: "isSaltAddedToFood",
     label: "¿Adiciona a comidas?",
     items: [
       { label: "Si", name: true },

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthApi } from "@/app/(api)/api";
 import { Title } from "@/app/(components)/Title";
 import {
   Box,
@@ -22,11 +23,11 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { Page } from "../../../../../(api)/pagination";
 import { AsyncAutocomplete } from "../../../../../(components)/autocomplete";
-import { Drug } from "../../../../drugs/narrow-margin/Drug";
 import yup from "../../../../../validation";
+import { Drug } from "../../../../drugs/narrow-margin/Drug";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
-import { useAuthApi } from "@/app/(api)/api";
+import { PatientDocument } from "../PatientDocument";
 
 const PrmSelect = () => {
   return (
@@ -112,7 +113,7 @@ export default function PatientSelectionPage({
   params: { id: number };
 }) {
   const { id: patientId } = params;
-  const { data, mutate } = useSWR<SelectionForm>(
+  const { data, mutate } = useSWR<SelectionForm & PatientDocument>(
     `/patients/${patientId}/selection-forms`
   );
   const router = useRouter();
@@ -120,7 +121,9 @@ export default function PatientSelectionPage({
 
   return (
     <>
-      <Title>Criterios de selección de pacientes</Title>
+      <Title date={data?.createDate || new Date()}>
+        Criterios de selección de pacientes
+      </Title>
       <Formik
         initialValues={data || initialValues}
         enableReinitialize

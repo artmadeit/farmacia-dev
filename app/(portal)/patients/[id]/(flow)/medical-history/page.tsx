@@ -1,16 +1,20 @@
 "use client";
 
+import { useAuthApi } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
 import { Title } from "@/app/(components)/Title";
-import { formatDate, minYear, parseDate, today } from "@/app/date";
+import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
+import { minYear, today } from "@/app/date";
 import {
   AutocompleteRenderInputParams,
   Box,
   Button,
-  Divider,
+  FormControl,
   FormControlLabel,
+  FormHelperText,
+  TextField as MuiTextField,
   Radio,
   Stack,
-  TextField as MuiTextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
@@ -21,7 +25,10 @@ import {
   RadioGroup,
   TextField,
 } from "formik-mui";
-import React, { useEffect } from "react";
+import { debounce } from "lodash";
+import { useRouter } from "next/navigation";
+import React from "react";
+import useSWR from "swr";
 import yup from "../../../../../validation";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { ConsumptionHabits } from "./ConsumptionHabits";
@@ -37,14 +44,6 @@ import {
   foodHabits,
   healthProblems,
 } from "./data";
-import { debounce } from "lodash";
-import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
-import { Page } from "@/app/(api)/pagination";
-import { useAuthApi } from "@/app/(api)/api";
-import { object } from "yup";
-import { useRouter } from "next/navigation";
-import useSWR from "swr";
-import { parse } from "date-fns";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -153,6 +152,8 @@ export type Anamnesis = {
   diagnosis: DiseaseCie10[];
 };
 
+const requiredMessage = "Campo obligatorio";
+
 export default function PatientInterview({
   params,
 }: {
@@ -173,8 +174,9 @@ export default function PatientInterview({
 
   return (
     <div>
-      <Title>Ficha de anamnesis farmacológica</Title>
-      <Divider />
+      <Title date={data?.createDate || new Date()}>
+        Ficha de anamnesis farmacológica
+      </Title>
       <Formik
         initialValues={formInitialValues}
         enableReinitialize
@@ -182,6 +184,7 @@ export default function PatientInterview({
           occupation: yup.string().required().label("La ocupación"),
           birthdate: yup
             .date()
+            .required()
             .min(
               minYear,
               `La fecha de nacimiento no puede ser menor del año ${minYear.getFullYear()}`
@@ -190,7 +193,7 @@ export default function PatientInterview({
             .label("Fecha de nacimiento"),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
-          sex: yup.string().required("sexo es un campo obligatorio"),
+          sex: yup.string().required(requiredMessage),
           vitalFunctions: yup.object({
             heartRate: yup
               .number()
@@ -235,6 +238,15 @@ export default function PatientInterview({
               normalRange: yup.string().required(),
             })
           ),
+          foodHabits: yup.object({
+            salt: yup.string().required(requiredMessage),
+            isSaltAddedToFood: yup.string().required(requiredMessage),
+          }),
+          consumptionHabits: yup.object({
+            alcohol: yup.string().required(requiredMessage),
+            tobacco: yup.string().required(requiredMessage),
+            tea: yup.string().required(requiredMessage),
+          }),
         })}
         onSubmit={async (values) => {
           const { diagnosis, ...rest } = values;
@@ -255,7 +267,6 @@ export default function PatientInterview({
               <Grid xs={10}>
                 <Subtitle component="h4">1. Datos personales</Subtitle>
               </Grid>
-              <Grid xs={2}>Fecha: {formatDate(new Date())}</Grid>
             </Grid>
             <PersonalInformation />
             <Subtitle component="h4">2. Historia de salud</Subtitle>
@@ -349,46 +360,61 @@ const Diagnosis = () => {
   );
 };
 
-const FoodHabits = () => (
-  <Grid container component={OutlinedPaper}>
-    <Grid xs={3}>
-      {foodHabits.map((group) => (
-        <React.Fragment key={group.id}>
-          <Subtitle component="h6">{group.label}</Subtitle>
-          <Field component={RadioGroup} name={group.id}>
-            {group.items.map((item) => (
-              <FormControlLabel
-                key={item.label}
-                value={item.name}
-                control={
-                  <Radio
-                    sx={{
-                      color: blue[700],
-                    }}
-                  />
-                }
-                label={item.label}
-              />
-            ))}
-          </Field>
-        </React.Fragment>
-      ))}
+const FoodHabits = () => {
+  const { errors, touched } = useFormikContext<{
+    foodHabits: { [key: string]: string };
+  }>();
+
+  return (
+    <Grid container component={OutlinedPaper}>
+      <Grid xs={3}>
+        {foodHabits.map((group) => (
+          <FormControl
+            required
+            error={Boolean(
+              touched.foodHabits?.[group.id] && errors.foodHabits?.[group.id]
+            )}
+            key={group.id}
+          >
+            <Subtitle component="h6">{group.label}</Subtitle>
+            <Field component={RadioGroup} name={"foodHabits." + group.id}>
+              {group.items.map((item) => (
+                <FormControlLabel
+                  key={item.label}
+                  value={item.name}
+                  control={
+                    <Radio
+                      sx={{
+                        color: blue[700],
+                      }}
+                    />
+                  }
+                  label={item.label}
+                />
+              ))}
+            </Field>
+            <FormHelperText>
+              {touched.foodHabits?.[group.id] && errors.foodHabits?.[group.id]}
+            </FormHelperText>
+          </FormControl>
+        ))}
+      </Grid>
+      <CheckboxGroup group={foodConsumptionsGroup1} />
+      <CheckboxGroup group={foodConsumptionsGroup2} />
+      <Grid xs={3}>
+        <Field
+          component={TextField}
+          name="foodHabits.others"
+          label="Otros:"
+          variant="outlined"
+          multiline
+          rows={4}
+          fullWidth
+        />
+      </Grid>
     </Grid>
-    <CheckboxGroup group={foodConsumptionsGroup1} />
-    <CheckboxGroup group={foodConsumptionsGroup2} />
-    <Grid xs={3}>
-      <Field
-        component={TextField}
-        name="foodHabits.others"
-        label="Otros:"
-        variant="outlined"
-        multiline
-        rows={4}
-        fullWidth
-      />
-    </Grid>
-  </Grid>
-);
+  );
+};
 
 const HealthProblems = () => (
   <Grid container component={OutlinedPaper}>
