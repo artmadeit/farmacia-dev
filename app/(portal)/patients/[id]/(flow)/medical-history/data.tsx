@@ -159,7 +159,7 @@ export const foodConsumptions = {
 
 export const foodHabits = [
   {
-    id: "foodHabits.salt",
+    id: "salt",
     label: "Sal en dieta",
     items: [
       { label: "Hiposódica", name: "HIPOSODICA" },
@@ -168,7 +168,7 @@ export const foodHabits = [
     ],
   },
   {
-    id: "foodHabits.isSaltAddedToFood",
+    id: "isSaltAddedToFood",
     label: "¿Adiciona a comidas?",
     items: [
       { label: "Si", name: true },

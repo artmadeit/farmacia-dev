@@ -9,7 +9,9 @@ import {
   AutocompleteRenderInputParams,
   Box,
   Button,
+  FormControl,
   FormControlLabel,
+  FormHelperText,
   TextField as MuiTextField,
   Radio,
   Stack,
@@ -233,6 +235,10 @@ export default function PatientInterview({
               normalRange: yup.string().required(),
             })
           ),
+          foodHabits: yup.object({
+            salt: yup.string().required(),
+            isSaltAddedToFood: yup.string().required(),
+          }),
         })}
         onSubmit={async (values) => {
           const { diagnosis, ...rest } = values;
@@ -346,46 +352,61 @@ const Diagnosis = () => {
   );
 };
 
-const FoodHabits = () => (
-  <Grid container component={OutlinedPaper}>
-    <Grid xs={3}>
-      {foodHabits.map((group) => (
-        <React.Fragment key={group.id}>
-          <Subtitle component="h6">{group.label}</Subtitle>
-          <Field component={RadioGroup} name={group.id}>
-            {group.items.map((item) => (
-              <FormControlLabel
-                key={item.label}
-                value={item.name}
-                control={
-                  <Radio
-                    sx={{
-                      color: blue[700],
-                    }}
-                  />
-                }
-                label={item.label}
-              />
-            ))}
-          </Field>
-        </React.Fragment>
-      ))}
+const FoodHabits = () => {
+  const { errors, touched } = useFormikContext<{
+    foodHabits: { [key: string]: string };
+  }>();
+
+  return (
+    <Grid container component={OutlinedPaper}>
+      <Grid xs={3}>
+        {foodHabits.map((group) => (
+          <FormControl
+            required
+            error={Boolean(
+              touched.foodHabits?.[group.id] && errors.foodHabits?.[group.id]
+            )}
+            key={group.id}
+          >
+            <Subtitle component="h6">{group.label}</Subtitle>
+            <Field component={RadioGroup} name={"foodHabits." + group.id}>
+              {group.items.map((item) => (
+                <FormControlLabel
+                  key={item.label}
+                  value={item.name}
+                  control={
+                    <Radio
+                      sx={{
+                        color: blue[700],
+                      }}
+                    />
+                  }
+                  label={item.label}
+                />
+              ))}
+            </Field>
+            <FormHelperText>
+              {touched.foodHabits?.[group.id] && errors.foodHabits?.[group.id]}
+            </FormHelperText>
+          </FormControl>
+        ))}
+      </Grid>
+      <CheckboxGroup group={foodConsumptionsGroup1} />
+      <CheckboxGroup group={foodConsumptionsGroup2} />
+      <Grid xs={3}>
+        <Field
+          component={TextField}
+          name="foodHabits.others"
+          label="Otros:"
+          variant="outlined"
+          multiline
+          rows={4}
+          fullWidth
+        />
+      </Grid>
     </Grid>
-    <CheckboxGroup group={foodConsumptionsGroup1} />
-    <CheckboxGroup group={foodConsumptionsGroup2} />
-    <Grid xs={3}>
-      <Field
-        component={TextField}
-        name="foodHabits.others"
-        label="Otros:"
-        variant="outlined"
-        multiline
-        rows={4}
-        fullWidth
-      />
-    </Grid>
-  </Grid>
-);
+  );
+};
 
 const HealthProblems = () => (
   <Grid container component={OutlinedPaper}>
