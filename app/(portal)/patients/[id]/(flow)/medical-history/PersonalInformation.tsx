@@ -3,6 +3,7 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  FormLabel,
   Radio,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
@@ -40,7 +41,7 @@ function calculateAge(date: Date) {
 }
 
 export const PersonalInformation = () => {
-  const { values, errors } = useFormikContext<Anamnesis>();
+  const { values, errors, touched } = useFormikContext<Anamnesis>();
 
   return (
     <Grid container spacing={2}>
@@ -62,7 +63,9 @@ export const PersonalInformation = () => {
             textField: {
               fullWidth: true,
               label: "Fecha de Nacimiento",
-              helperText: errors.birthdate ? errors.birthdate : "",
+              error: touched.birthdate && !!errors.birthdate,
+              helperText:
+                touched.birthdate && errors.birthdate ? errors.birthdate : "",
             },
           }}
           name="birthdate"
@@ -72,13 +75,13 @@ export const PersonalInformation = () => {
         Edad: {values.birthdate ? calculateAge(values.birthdate) : EMPTY}
       </Grid>
       <Grid xs={2}>
-        Sexo:
-        <FormControl error={Boolean(errors.sex)}>
+        <FormControl error={Boolean(touched.sex && errors.sex)}>
+          <FormLabel>Sexo:</FormLabel>
           <Field component={RadioGroup} name="sex" row>
             <FormControlLabel value="M" control={<Radio />} label="M" />
             <FormControlLabel value="F" control={<Radio />} label="F" />
           </Field>
-          <FormHelperText>{errors.sex}</FormHelperText>
+          <FormHelperText>{touched.sex && errors.sex}</FormHelperText>
         </FormControl>
       </Grid>
       <Grid xs={3}>
