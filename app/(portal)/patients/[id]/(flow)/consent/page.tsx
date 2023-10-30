@@ -14,7 +14,7 @@ import Spanish from "@uppy/locales/lib/es_ES";
 import "@uppy/status-bar/dist/style.min.css";
 import Transloadit from "@uppy/transloadit";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 function createUppy(patientId: number) {
@@ -47,23 +47,33 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
     revalidateOnFocus: false,
   });
 
-  uppy.on("transloadit:result", (stepName, result: any) => {
-    const file = uppy.getFile(result.localId);
+  useEffect(() => {
+    const saveConsent = (_stepName: string, result: any) => {
+      const file = uppy.getFile(result.localId);
 
-    const reader = new FileReader();
-    reader.onload = async function (e) {
-      if (e.target) {
-        await getApi().then((api) => api.post(`patients/${patientId}/consent`));
-        mutate();
-        // Useful if we want to save the url, setUploadUrl(e.target.result); check console.log(file) and result
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+        if (e.target) {
+          await getApi().then((api) =>
+            api.post(`patients/${patientId}/consent`)
+          );
+          mutate();
+          // Useful if we want to save the url, setUploadUrl(e.target.result); check console.log(file) and result
 
-        // remove file so user can upload again
-        // replacing the file
-        uppy.removeFile(result.localId);
-      }
+          // remove file so user can upload again
+          // replacing the file
+          uppy.removeFile(result.localId);
+        }
+      };
+      reader.readAsDataURL(file.data);
     };
-    reader.readAsDataURL(file.data);
-  });
+
+    uppy.on("transloadit:result", saveConsent);
+
+    return () => {
+      uppy.off("transloadit:result", saveConsent);
+    };
+  }, [getApi, mutate, patientId, uppy]);
 
   const deleteConsent = async () => {
     await getApi().then((api) => api.delete(`patients/${patientId}/consent`));
