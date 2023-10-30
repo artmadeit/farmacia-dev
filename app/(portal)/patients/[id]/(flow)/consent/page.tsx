@@ -43,7 +43,7 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
   const [uppy] = useState(() => createUppy(patientId));
   const router = useRouter();
 
-  const { data: signedUrl, mutate } = useSWR(`patients/${patientId}/consent`, {
+  const { data, mutate } = useSWR(`patients/${patientId}/consent`, {
     revalidateOnFocus: false,
   });
 
@@ -72,21 +72,27 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
 
   return (
     <div>
-      <Title date={new Date()}>Firma de consentimiento</Title>
+      <Title date={data?.createDate || new Date()}>
+        Firma de consentimiento
+      </Title>
       <Grid container spacing={4}>
         <Grid xs={6} pt={8}>
           <DragDrop uppy={uppy} height={height} />
           <StatusBar uppy={uppy} />
         </Grid>
         <Grid xs={6}>
-          {signedUrl && (
+          {data && (
             <Stack>
               <Box display="flex" justifyContent="end">
                 <IconButton aria-label="delete" onClick={deleteConsent}>
                   <CloseIcon />
                 </IconButton>
               </Box>
-              <embed src={signedUrl} height={height} type="application/pdf" />
+              <embed
+                src={data.signedUrl}
+                height={height}
+                type="application/pdf"
+              />
             </Stack>
           )}
         </Grid>
