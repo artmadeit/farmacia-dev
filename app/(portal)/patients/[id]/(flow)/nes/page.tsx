@@ -275,7 +275,50 @@ export default function NesPage({ params }: { params: { id: number } }) {
                     <Dialog open={open} onClose={handleClose}>
                       <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle>
                       <DialogContent>
-                        <h1>Tabla</h1>
+                        <TableContainer component={Paper}>
+                          <Table>
+                            <TableHead>
+                              <TableRow>
+                                <TableCell></TableCell>
+                                <TableCell>Español</TableCell>
+                                <TableCell>Inglés</TableCell>
+                                <TableCell>Término Mesh</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell>P</TableCell>
+                                <TableCell>
+                                  {/* <Field
+                                    component={TextField}
+                                    name=""
+                                    variant="outlined"
+                                  /> */}
+                                </TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell>I</TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell>C</TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell>O</TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
                       </DialogContent>
                     </Dialog>
                   </Grid>
