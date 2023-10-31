@@ -5,6 +5,7 @@ import {
   InexactDatePicker,
   InexactDateType,
   defaultDate,
+  inexactDateSchema,
 } from "@/app/(components)/InexactDatePicker";
 import { Title } from "@/app/(components)/Title";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
@@ -37,6 +38,7 @@ import {
   PharmacotherapyTable,
 } from "./PharmacotherapyTable";
 import { emptyHistoryRow } from "./emptyHistoryRow";
+import yup from "@/app/validation";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -130,6 +132,45 @@ export default function Pharmacotherapy({
       <Formik
         initialValues={initialValues}
         enableReinitialize
+        validationSchema={yup.object({
+          history: yup.array().of(
+            yup.object({
+              administration: yup.string().required(),
+              difficulty: yup.string().required(),
+              difficultyJustification: yup.string().required(),
+              acceptance: yup.string().required(),
+              reasonForUse: yup.string().required(),
+              startDate: inexactDateSchema().required(),
+              restartDate: inexactDateSchema(),
+              suspensionDate: inexactDateSchema(),
+              dose: yup.string().required(),
+              mode: yup.string().required(),
+              drug: yup.object().required(),
+            })
+          ),
+          drugAllergies: yup.array().of(
+            yup.object({
+              drug: yup.object().required(),
+              description: yup.string().required(),
+              date: inexactDateSchema().required(),
+            })
+          ),
+          foodAllergies: yup.array().of(
+            yup.object({
+              food: yup.string().required(),
+              description: yup.string().required(),
+              date: inexactDateSchema().required(),
+            })
+          ),
+          adverseReactions: yup.array().of(
+            yup.object({
+              date: inexactDateSchema().required(),
+              medicine: yup.object().required(),
+              dose: yup.string().required(),
+              adverseReactionOfDrug: yup.string().required(),
+            })
+          ),
+        })}
         onSubmit={async (values) => {
           const data = {
             adverseReactions: values.adverseReactions.map((x) => {
