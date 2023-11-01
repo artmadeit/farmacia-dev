@@ -53,8 +53,8 @@ export const AsyncAutocomplete = <T, F>({
           variant="outlined"
           {...params}
           name={name}
-          error={meta.touched && !!meta.error}
-          helperText={meta.error as string}
+          error={Boolean(meta.touched && meta.error)}
+          helperText={meta.touched ? meta.error : ""}
         />
       )}
       getOptionLabel={(option: any) =>

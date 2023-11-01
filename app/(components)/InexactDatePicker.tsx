@@ -67,7 +67,10 @@ export function InexactDatePicker({
 
   return (
     <div>
-      <FormControl variant="outlined" error={Boolean(meta.error)}>
+      <FormControl
+        variant="outlined"
+        error={Boolean(meta.touched && meta.error)}
+      >
         {label && <InputLabel htmlFor="inexact-date">{label}</InputLabel>}
         <OutlinedInput
           id="inexact-date"
@@ -94,7 +97,9 @@ export function InexactDatePicker({
             </InputAdornment>
           }
         />
-        <FormHelperText>{(meta.error as any)?.value}</FormHelperText>
+        <FormHelperText>
+          {meta.touched ? (meta.error as any)?.value : ""}
+        </FormHelperText>
       </FormControl>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
