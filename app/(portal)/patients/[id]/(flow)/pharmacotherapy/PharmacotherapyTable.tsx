@@ -10,6 +10,7 @@ import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import {
   Button,
   Dialog,
@@ -96,7 +97,7 @@ export const PharmacotherapyTable = <T extends string>({
                 <TableCell style={{ width: TABLE_WIDTH_DATE }} align="center">
                   Fecha susp
                 </TableCell>
-                <TableCell sx={{ width: 2 * TABLE_WIDTH_ACTION }}></TableCell>
+                <TableCell sx={{ width: 3 * TABLE_WIDTH_ACTION }}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -212,6 +213,8 @@ const OtherInformationDialog = ({
   const onClose = () => {
     setOpen(false);
   };
+  const rowErrors = (errors[name] as any)?.[index];
+  const rowTouched = (touched[name] as any)?.[index];
 
   return (
     <>
@@ -220,6 +223,23 @@ const OtherInformationDialog = ({
           <SearchIcon />
         </IconButton>
       </Tooltip>
+      {rowTouched?.acceptance &&
+        (rowErrors?.restartDate ||
+          rowErrors?.reasonForUse ||
+          rowErrors?.acceptance ||
+          rowErrors?.acceptance ||
+          rowErrors?.administration ||
+          rowErrors?.difficulty) && (
+          <Tooltip title="Hay errores, vea más">
+            <IconButton
+              aria-labelledby="Ver"
+              onClick={() => setOpen(true)}
+              color="error"
+            >
+              <ErrorOutlineIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       <Dialog open={open} onClose={onClose}>
         <DialogTitle style={{ fontSize: "1rem" }}>Otra información</DialogTitle>
         <DialogContent>
@@ -236,10 +256,7 @@ const OtherInformationDialog = ({
             />
             <FormControl
               variant="outlined"
-              error={Boolean(
-                (touched[name] as any)?.[index]?.acceptance &&
-                  (errors[name] as any)?.[index]?.acceptance
-              )}
+              error={Boolean(rowTouched?.acceptance && rowErrors?.acceptance)}
             >
               <FormLabel id="acceptance-radio-group">Aceptación</FormLabel>
               <Field
@@ -257,8 +274,7 @@ const OtherInformationDialog = ({
               </Field>
 
               <FormHelperText>
-                {(touched[name] as any)?.[index]?.acceptance &&
-                  (errors[name] as any)?.[index]?.acceptance}
+                {rowTouched?.acceptance && rowErrors?.acceptance}
               </FormHelperText>
             </FormControl>
             <Field
@@ -269,10 +285,7 @@ const OtherInformationDialog = ({
             />
             <FormControl
               variant="outlined"
-              error={Boolean(
-                (touched[name] as any)?.[index]?.difficulty &&
-                  (errors[name] as any)?.[index]?.difficulty
-              )}
+              error={Boolean(rowTouched?.difficulty && rowErrors?.difficulty)}
             >
               <FormLabel id="difficulty-radio-group">
                 Dificultades para tomarlo y/o tolerarlo
@@ -286,8 +299,7 @@ const OtherInformationDialog = ({
                 <FormControlLabel value="No" control={<Radio />} label="No" />
               </Field>
               <FormHelperText>
-                {(touched[name] as any)?.[index]?.difficulty &&
-                  (errors[name] as any)?.[index]?.difficulty}
+                {rowTouched?.difficulty && rowErrors?.difficulty}
               </FormHelperText>
             </FormControl>
             {item.difficulty === "Si" && (
