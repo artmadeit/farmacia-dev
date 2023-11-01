@@ -137,10 +137,16 @@ export default function Pharmacotherapy({
             yup.object({
               administration: yup.string().required(requiredMessage),
               difficulty: yup.string().required(requiredMessage),
-              difficultyJustification: yup.string().required(requiredMessage),
+              difficultyJustification: yup.string().when("difficulty", {
+                is: "Si",
+                then: (schema) => schema.required(requiredMessage),
+                otherwise: (schema) => schema.notRequired(),
+              }),
               acceptance: yup.string().required(requiredMessage),
               reasonForUse: yup.string().required(requiredMessage),
-              startDate: inexactDateSchema().required(),
+              startDate: inexactDateSchema((value) =>
+                value.required(requiredMessage)
+              ),
               restartDate: inexactDateSchema(),
               suspensionDate: inexactDateSchema(),
               dose: yup.string().required(requiredMessage),
@@ -152,19 +158,25 @@ export default function Pharmacotherapy({
             yup.object({
               drug: yup.object().required(requiredMessage),
               description: yup.string().required(requiredMessage),
-              date: inexactDateSchema().required(),
+              date: inexactDateSchema((value) =>
+                value.required(requiredMessage)
+              ),
             })
           ),
           foodAllergies: yup.array().of(
             yup.object({
               food: yup.string().required(requiredMessage),
               description: yup.string().required(requiredMessage),
-              date: inexactDateSchema().required(),
+              date: inexactDateSchema((value) =>
+                value.required(requiredMessage)
+              ),
             })
           ),
           adverseReactions: yup.array().of(
             yup.object({
-              date: inexactDateSchema().required(),
+              date: inexactDateSchema((value) =>
+                value.required(requiredMessage)
+              ),
               medicine: yup.object().required(requiredMessage),
               dose: yup.string().required(requiredMessage),
               adverseReactionOfDrug: yup.string().required(requiredMessage),

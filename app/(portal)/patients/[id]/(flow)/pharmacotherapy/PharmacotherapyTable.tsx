@@ -18,6 +18,7 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   IconButton,
   Paper,
@@ -32,7 +33,7 @@ import {
   TableRow,
   Tooltip,
 } from "@mui/material";
-import { ArrayHelpers, Field, FieldArray } from "formik";
+import { ArrayHelpers, Field, FieldArray, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import React from "react";
 import { TABLE_WIDTH_DATE, TABLE_WIDTH_ACTION } from "./page";
@@ -61,6 +62,8 @@ export const PharmacotherapyTable = <T extends string>({
     [key in T]: PharmaceuticHistoryRow[];
   };
 }) => {
+  const { touched, errors } = useFormikContext<any>();
+
   const getApi = useAuthApi();
   const [open, setOpen] = React.useState(false);
 
@@ -114,22 +117,34 @@ export const PharmacotherapyTable = <T extends string>({
                       />
                     </TableCell>
                     <TableCell>
-                      <Field
-                        component={RadioGroup}
-                        name={`${name}.${index}.mode`}
-                        row
+                      <FormControl
+                        variant="outlined"
+                        error={Boolean(
+                          (touched[name] as any)?.[index]?.mode &&
+                            (errors[name] as any)?.[index]?.mode
+                        )}
                       >
-                        <FormControlLabel
-                          value="P"
-                          control={<Radio />}
-                          label="P"
-                        />
-                        <FormControlLabel
-                          value="A"
-                          control={<Radio />}
-                          label="A"
-                        />
-                      </Field>
+                        <Field
+                          component={RadioGroup}
+                          name={`${name}.${index}.mode`}
+                          row
+                        >
+                          <FormControlLabel
+                            value="P"
+                            control={<Radio />}
+                            label="P"
+                          />
+                          <FormControlLabel
+                            value="A"
+                            control={<Radio />}
+                            label="A"
+                          />
+                        </Field>
+                        <FormHelperText>
+                          {(touched[name] as any)?.[index]?.mode &&
+                            (errors[name] as any)?.[index]?.mode}
+                        </FormHelperText>
+                      </FormControl>
                     </TableCell>
                     <TableCell>
                       <Field
@@ -182,7 +197,13 @@ export const PharmacotherapyTable = <T extends string>({
                           variant="outlined"
                           label="Motivo de uso"
                         />
-                        <FormControl>
+                        <FormControl
+                          variant="outlined"
+                          error={Boolean(
+                            (touched[name] as any)?.[index]?.acceptance &&
+                              (errors[name] as any)?.[index]?.acceptance
+                          )}
+                        >
                           <FormLabel id="acceptance-radio-group">
                             Aceptación
                           </FormLabel>
@@ -207,6 +228,11 @@ export const PharmacotherapyTable = <T extends string>({
                               label="No aplica"
                             />
                           </Field>
+
+                          <FormHelperText>
+                            {(touched[name] as any)?.[index]?.acceptance &&
+                              (errors[name] as any)?.[index]?.acceptance}
+                          </FormHelperText>
                         </FormControl>
                         <Field
                           name={`${name}.${index}.administration`}
@@ -214,7 +240,13 @@ export const PharmacotherapyTable = <T extends string>({
                           label="Administración"
                           variant="outlined"
                         />
-                        <FormControl>
+                        <FormControl
+                          variant="outlined"
+                          error={Boolean(
+                            (touched[name] as any)?.[index]?.difficulty &&
+                              (errors[name] as any)?.[index]?.difficulty
+                          )}
+                        >
                           <FormLabel id="difficulty-radio-group">
                             Dificultades para tomarlo y/o tolerarlo
                           </FormLabel>
@@ -234,17 +266,21 @@ export const PharmacotherapyTable = <T extends string>({
                               label="No"
                             />
                           </Field>
-                          {item.difficulty === "Si" && (
-                            <Field
-                              name={`${name}.${index}.difficultyJustification`}
-                              multiline
-                              rows={4}
-                              component={TextField}
-                              label="Comentarios"
-                              variant="outlined"
-                            />
-                          )}
+                          <FormHelperText>
+                            {(touched[name] as any)?.[index]?.difficulty &&
+                              (errors[name] as any)?.[index]?.difficulty}
+                          </FormHelperText>
                         </FormControl>
+                        {item.difficulty === "Si" && (
+                          <Field
+                            name={`${name}.${index}.difficultyJustification`}
+                            multiline
+                            rows={4}
+                            component={TextField}
+                            label="Comentarios"
+                            variant="outlined"
+                          />
+                        )}
                       </Stack>
                     </DialogContent>
                     <DialogActions sx={{ padding: "20px 24px" }}>

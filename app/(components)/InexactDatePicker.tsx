@@ -36,10 +36,12 @@ export const defaultDate: InexactDateType = {
   value: null,
 };
 
-export const inexactDateSchema = () =>
+export const inexactDateSchema = (
+  callback = (x: yup.DateSchema) => x.notRequired()
+) =>
   yup.object({
     type: yup.string().required(),
-    value: yup.date().required(requiredMessage),
+    value: callback(yup.date()),
   });
 
 export function InexactDatePicker({
