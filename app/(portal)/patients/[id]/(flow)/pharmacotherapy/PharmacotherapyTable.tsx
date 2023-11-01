@@ -65,11 +65,6 @@ export const PharmacotherapyTable = <T extends string>({
   const { touched, errors } = useFormikContext<any>();
 
   const getApi = useAuthApi();
-  const [open, setOpen] = React.useState(false);
-
-  const onClose = () => {
-    setOpen(false);
-  };
 
   const searchDrugPharmaceuticalProducts = (searchText: string) =>
     getApi().then((api) =>
@@ -171,124 +166,13 @@ export const PharmacotherapyTable = <T extends string>({
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Ver más">
-                        <IconButton
-                          aria-labelledby="Ver"
-                          onClick={() => setOpen(true)}
-                        >
-                          <SearchIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <OtherInformationDialog
+                        name={name}
+                        index={index}
+                        item={item}
+                      />
                     </TableCell>
                   </TableRow>
-                  <Dialog open={open} onClose={onClose}>
-                    <DialogTitle style={{ fontSize: "1rem" }}>
-                      Otra información
-                    </DialogTitle>
-                    <DialogContent>
-                      <Stack spacing={2}>
-                        <InexactDatePicker
-                          name={`${name}.${index}.restartDate`}
-                          label="Fecha rein."
-                        />
-                        <Field
-                          name={`${name}.${index}.reasonForUse`}
-                          component={TextField}
-                          variant="outlined"
-                          label="Motivo de uso"
-                        />
-                        <FormControl
-                          variant="outlined"
-                          error={Boolean(
-                            (touched[name] as any)?.[index]?.acceptance &&
-                              (errors[name] as any)?.[index]?.acceptance
-                          )}
-                        >
-                          <FormLabel id="acceptance-radio-group">
-                            Aceptación
-                          </FormLabel>
-                          <Field
-                            component={RadioGroup}
-                            name={`${name}.${index}.acceptance`}
-                            row
-                          >
-                            <FormControlLabel
-                              value="Si"
-                              control={<Radio />}
-                              label="Si"
-                            />
-                            <FormControlLabel
-                              value="No"
-                              control={<Radio />}
-                              label="No"
-                            />
-                            <FormControlLabel
-                              value="No aplica"
-                              control={<Radio />}
-                              label="No aplica"
-                            />
-                          </Field>
-
-                          <FormHelperText>
-                            {(touched[name] as any)?.[index]?.acceptance &&
-                              (errors[name] as any)?.[index]?.acceptance}
-                          </FormHelperText>
-                        </FormControl>
-                        <Field
-                          name={`${name}.${index}.administration`}
-                          component={TextField}
-                          label="Administración"
-                          variant="outlined"
-                        />
-                        <FormControl
-                          variant="outlined"
-                          error={Boolean(
-                            (touched[name] as any)?.[index]?.difficulty &&
-                              (errors[name] as any)?.[index]?.difficulty
-                          )}
-                        >
-                          <FormLabel id="difficulty-radio-group">
-                            Dificultades para tomarlo y/o tolerarlo
-                          </FormLabel>
-                          <Field
-                            component={RadioGroup}
-                            name={`${name}.${index}.difficulty`}
-                            row
-                          >
-                            <FormControlLabel
-                              value="Si"
-                              control={<Radio />}
-                              label="Si"
-                            />
-                            <FormControlLabel
-                              value="No"
-                              control={<Radio />}
-                              label="No"
-                            />
-                          </Field>
-                          <FormHelperText>
-                            {(touched[name] as any)?.[index]?.difficulty &&
-                              (errors[name] as any)?.[index]?.difficulty}
-                          </FormHelperText>
-                        </FormControl>
-                        {item.difficulty === "Si" && (
-                          <Field
-                            name={`${name}.${index}.difficultyJustification`}
-                            multiline
-                            rows={4}
-                            component={TextField}
-                            label="Comentarios"
-                            variant="outlined"
-                          />
-                        )}
-                      </Stack>
-                    </DialogContent>
-                    <DialogActions sx={{ padding: "20px 24px" }}>
-                      <Button variant="contained" onClick={onClose}>
-                        Guardar
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
                 </React.Fragment>
               ))}
             </TableBody>
@@ -310,5 +194,120 @@ export const PharmacotherapyTable = <T extends string>({
         )}
       </FieldArray>
     </TableContainer>
+  );
+};
+
+const OtherInformationDialog = ({
+  name,
+  index,
+  item,
+}: {
+  name: string;
+  index: number;
+  item: any;
+}) => {
+  const { touched, errors } = useFormikContext<any>();
+  const [open, setOpen] = React.useState(false);
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Tooltip title="Ver más">
+        <IconButton aria-labelledby="Ver" onClick={() => setOpen(true)}>
+          <SearchIcon />
+        </IconButton>
+      </Tooltip>
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle style={{ fontSize: "1rem" }}>Otra información</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2}>
+            <InexactDatePicker
+              name={`${name}.${index}.restartDate`}
+              label="Fecha rein."
+            />
+            <Field
+              name={`${name}.${index}.reasonForUse`}
+              component={TextField}
+              variant="outlined"
+              label="Motivo de uso"
+            />
+            <FormControl
+              variant="outlined"
+              error={Boolean(
+                (touched[name] as any)?.[index]?.acceptance &&
+                  (errors[name] as any)?.[index]?.acceptance
+              )}
+            >
+              <FormLabel id="acceptance-radio-group">Aceptación</FormLabel>
+              <Field
+                component={RadioGroup}
+                name={`${name}.${index}.acceptance`}
+                row
+              >
+                <FormControlLabel value="Si" control={<Radio />} label="Si" />
+                <FormControlLabel value="No" control={<Radio />} label="No" />
+                <FormControlLabel
+                  value="No aplica"
+                  control={<Radio />}
+                  label="No aplica"
+                />
+              </Field>
+
+              <FormHelperText>
+                {(touched[name] as any)?.[index]?.acceptance &&
+                  (errors[name] as any)?.[index]?.acceptance}
+              </FormHelperText>
+            </FormControl>
+            <Field
+              name={`${name}.${index}.administration`}
+              component={TextField}
+              label="Administración"
+              variant="outlined"
+            />
+            <FormControl
+              variant="outlined"
+              error={Boolean(
+                (touched[name] as any)?.[index]?.difficulty &&
+                  (errors[name] as any)?.[index]?.difficulty
+              )}
+            >
+              <FormLabel id="difficulty-radio-group">
+                Dificultades para tomarlo y/o tolerarlo
+              </FormLabel>
+              <Field
+                component={RadioGroup}
+                name={`${name}.${index}.difficulty`}
+                row
+              >
+                <FormControlLabel value="Si" control={<Radio />} label="Si" />
+                <FormControlLabel value="No" control={<Radio />} label="No" />
+              </Field>
+              <FormHelperText>
+                {(touched[name] as any)?.[index]?.difficulty &&
+                  (errors[name] as any)?.[index]?.difficulty}
+              </FormHelperText>
+            </FormControl>
+            {item.difficulty === "Si" && (
+              <Field
+                name={`${name}.${index}.difficultyJustification`}
+                multiline
+                rows={4}
+                component={TextField}
+                label="Comentarios"
+                variant="outlined"
+              />
+            )}
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ padding: "20px 24px" }}>
+          <Button variant="contained" onClick={onClose}>
+            Guardar
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
