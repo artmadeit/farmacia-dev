@@ -246,7 +246,7 @@ export default function Pharmacotherapy({
               </Grid>
             </Grid>
             <TableContainer component={Paper}>
-              <FieldArray name="allergies">
+              <FieldArray name="drugAllergies">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Table>
                     <TableHead>
@@ -325,7 +325,7 @@ export default function Pharmacotherapy({
               </Grid>
             </Grid>
             <TableContainer component={Paper}>
-              <FieldArray name="foods">
+              <FieldArray name="foodAllergies">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Table>
                     <TableHead>
@@ -457,7 +457,7 @@ export default function Pharmacotherapy({
                           <TableCell>
                             <Tooltip title="Eliminar">
                               <IconButton
-                                aria-labelledby="delete"
+                                aria-label="delete"
                                 onClick={() => arrayHelpers.remove(index)}
                               >
                                 <DeleteIcon />
