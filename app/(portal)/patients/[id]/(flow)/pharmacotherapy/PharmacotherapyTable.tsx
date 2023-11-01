@@ -10,6 +10,7 @@ import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import {
   Button,
   Dialog,
@@ -18,6 +19,7 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   IconButton,
   Paper,
@@ -32,7 +34,7 @@ import {
   TableRow,
   Tooltip,
 } from "@mui/material";
-import { ArrayHelpers, Field, FieldArray } from "formik";
+import { ArrayHelpers, Field, FieldArray, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import React from "react";
 import { TABLE_WIDTH_DATE, TABLE_WIDTH_ACTION } from "./page";
@@ -61,12 +63,9 @@ export const PharmacotherapyTable = <T extends string>({
     [key in T]: PharmaceuticHistoryRow[];
   };
 }) => {
-  const getApi = useAuthApi();
-  const [open, setOpen] = React.useState(false);
+  const { touched, errors } = useFormikContext<any>();
 
-  const onClose = () => {
-    setOpen(false);
-  };
+  const getApi = useAuthApi();
 
   const searchDrugPharmaceuticalProducts = (searchText: string) =>
     getApi().then((api) =>
@@ -98,7 +97,7 @@ export const PharmacotherapyTable = <T extends string>({
                 <TableCell style={{ width: TABLE_WIDTH_DATE }} align="center">
                   Fecha susp
                 </TableCell>
-                <TableCell sx={{ width: 2 * TABLE_WIDTH_ACTION }}></TableCell>
+                <TableCell sx={{ width: 3 * TABLE_WIDTH_ACTION }}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -108,28 +107,40 @@ export const PharmacotherapyTable = <T extends string>({
                     <TableCell>
                       <AsyncAutocomplete
                         label="Medicamento"
-                        field={`${name}.${index}.drug`}
+                        name={`${name}.${index}.drug`}
                         getLabel={(option) => option.fullName}
                         filter={searchDrugPharmaceuticalProducts}
                       />
                     </TableCell>
                     <TableCell>
-                      <Field
-                        component={RadioGroup}
-                        name={`${name}.${index}.mode`}
-                        row
+                      <FormControl
+                        variant="outlined"
+                        error={Boolean(
+                          (touched[name] as any)?.[index]?.mode &&
+                            (errors[name] as any)?.[index]?.mode
+                        )}
                       >
-                        <FormControlLabel
-                          value="P"
-                          control={<Radio />}
-                          label="P"
-                        />
-                        <FormControlLabel
-                          value="A"
-                          control={<Radio />}
-                          label="A"
-                        />
-                      </Field>
+                        <Field
+                          component={RadioGroup}
+                          name={`${name}.${index}.mode`}
+                          row
+                        >
+                          <FormControlLabel
+                            value="P"
+                            control={<Radio />}
+                            label="P"
+                          />
+                          <FormControlLabel
+                            value="A"
+                            control={<Radio />}
+                            label="A"
+                          />
+                        </Field>
+                        <FormHelperText>
+                          {(touched[name] as any)?.[index]?.mode &&
+                            (errors[name] as any)?.[index]?.mode}
+                        </FormHelperText>
+                      </FormControl>
                     </TableCell>
                     <TableCell>
                       <Field
@@ -156,103 +167,13 @@ export const PharmacotherapyTable = <T extends string>({
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Ver más">
-                        <IconButton
-                          aria-labelledby="Ver"
-                          onClick={() => setOpen(true)}
-                        >
-                          <SearchIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <OtherInformationDialog
+                        name={name}
+                        index={index}
+                        item={item}
+                      />
                     </TableCell>
                   </TableRow>
-                  <Dialog open={open} onClose={onClose}>
-                    <DialogTitle style={{ fontSize: "1rem" }}>
-                      Otra información
-                    </DialogTitle>
-                    <DialogContent>
-                      <Stack spacing={2}>
-                        <InexactDatePicker
-                          name={`${name}.${index}.restartDate`}
-                          label="Fecha rein."
-                        />
-                        <Field
-                          name={`${name}.${index}.reasonForUse`}
-                          component={TextField}
-                          variant="outlined"
-                          label="Motivo de uso"
-                        />
-                        <FormControl>
-                          <FormLabel id="acceptance-radio-group">
-                            Aceptación
-                          </FormLabel>
-                          <Field
-                            component={RadioGroup}
-                            name={`${name}.${index}.acceptance`}
-                            row
-                          >
-                            <FormControlLabel
-                              value="Si"
-                              control={<Radio />}
-                              label="Si"
-                            />
-                            <FormControlLabel
-                              value="No"
-                              control={<Radio />}
-                              label="No"
-                            />
-                            <FormControlLabel
-                              value="No aplica"
-                              control={<Radio />}
-                              label="No aplica"
-                            />
-                          </Field>
-                        </FormControl>
-                        <Field
-                          name={`${name}.${index}.administration`}
-                          component={TextField}
-                          label="Administración"
-                          variant="outlined"
-                        />
-                        <FormControl>
-                          <FormLabel id="difficulty-radio-group">
-                            Dificultades para tomarlo y/o tolerarlo
-                          </FormLabel>
-                          <Field
-                            component={RadioGroup}
-                            name={`${name}.${index}.difficulty`}
-                            row
-                          >
-                            <FormControlLabel
-                              value="Si"
-                              control={<Radio />}
-                              label="Si"
-                            />
-                            <FormControlLabel
-                              value="No"
-                              control={<Radio />}
-                              label="No"
-                            />
-                          </Field>
-                          {item.difficulty === "Si" && (
-                            <Field
-                              name={`${name}.${index}.difficultyJustification`}
-                              multiline
-                              rows={4}
-                              component={TextField}
-                              label="Comentarios"
-                              variant="outlined"
-                            />
-                          )}
-                        </FormControl>
-                      </Stack>
-                    </DialogContent>
-                    <DialogActions sx={{ padding: "20px 24px" }}>
-                      <Button variant="contained" onClick={onClose}>
-                        Guardar
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
                 </React.Fragment>
               ))}
             </TableBody>
@@ -274,5 +195,131 @@ export const PharmacotherapyTable = <T extends string>({
         )}
       </FieldArray>
     </TableContainer>
+  );
+};
+
+const OtherInformationDialog = ({
+  name,
+  index,
+  item,
+}: {
+  name: string;
+  index: number;
+  item: any;
+}) => {
+  const { touched, errors } = useFormikContext<any>();
+  const [open, setOpen] = React.useState(false);
+
+  const onClose = () => {
+    setOpen(false);
+  };
+  const rowErrors = (errors[name] as any)?.[index];
+  const rowTouched = (touched[name] as any)?.[index];
+
+  return (
+    <>
+      <Tooltip title="Ver más">
+        <IconButton aria-labelledby="Ver" onClick={() => setOpen(true)}>
+          <SearchIcon />
+        </IconButton>
+      </Tooltip>
+      {rowTouched?.acceptance &&
+        (rowErrors?.restartDate ||
+          rowErrors?.reasonForUse ||
+          rowErrors?.acceptance ||
+          rowErrors?.acceptance ||
+          rowErrors?.administration ||
+          rowErrors?.difficulty) && (
+          <Tooltip title="Hay errores, vea más">
+            <IconButton
+              aria-labelledby="Ver"
+              onClick={() => setOpen(true)}
+              color="error"
+            >
+              <ErrorOutlineIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle style={{ fontSize: "1rem" }}>Otra información</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2}>
+            <InexactDatePicker
+              name={`${name}.${index}.restartDate`}
+              label="Fecha rein."
+            />
+            <Field
+              name={`${name}.${index}.reasonForUse`}
+              component={TextField}
+              variant="outlined"
+              label="Motivo de uso"
+            />
+            <FormControl
+              variant="outlined"
+              error={Boolean(rowTouched?.acceptance && rowErrors?.acceptance)}
+            >
+              <FormLabel id="acceptance-radio-group">Aceptación</FormLabel>
+              <Field
+                component={RadioGroup}
+                name={`${name}.${index}.acceptance`}
+                row
+              >
+                <FormControlLabel value="Si" control={<Radio />} label="Si" />
+                <FormControlLabel value="No" control={<Radio />} label="No" />
+                <FormControlLabel
+                  value="No aplica"
+                  control={<Radio />}
+                  label="No aplica"
+                />
+              </Field>
+
+              <FormHelperText>
+                {rowTouched?.acceptance && rowErrors?.acceptance}
+              </FormHelperText>
+            </FormControl>
+            <Field
+              name={`${name}.${index}.administration`}
+              component={TextField}
+              label="Administración"
+              variant="outlined"
+            />
+            <FormControl
+              variant="outlined"
+              error={Boolean(rowTouched?.difficulty && rowErrors?.difficulty)}
+            >
+              <FormLabel id="difficulty-radio-group">
+                Dificultades para tomarlo y/o tolerarlo
+              </FormLabel>
+              <Field
+                component={RadioGroup}
+                name={`${name}.${index}.difficulty`}
+                row
+              >
+                <FormControlLabel value="Si" control={<Radio />} label="Si" />
+                <FormControlLabel value="No" control={<Radio />} label="No" />
+              </Field>
+              <FormHelperText>
+                {rowTouched?.difficulty && rowErrors?.difficulty}
+              </FormHelperText>
+            </FormControl>
+            {item.difficulty === "Si" && (
+              <Field
+                name={`${name}.${index}.difficultyJustification`}
+                multiline
+                rows={4}
+                component={TextField}
+                label="Comentarios"
+                variant="outlined"
+              />
+            )}
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ padding: "20px 24px" }}>
+          <Button variant="contained" onClick={onClose}>
+            Guardar
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };

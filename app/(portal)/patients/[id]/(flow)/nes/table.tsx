@@ -89,7 +89,7 @@ export const NesTableCells = ({
       <TableCell sx={{ verticalAlign: "top" }}>
         <AsyncAutocomplete
           label="Medicina"
-          field={`${name}.${index}.medicine`}
+          name={`${name}.${index}.medicine`}
           filter={searchMedicine}
         />
       </TableCell>

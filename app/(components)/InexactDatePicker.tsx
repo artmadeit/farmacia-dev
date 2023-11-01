@@ -23,6 +23,7 @@ import format from "date-fns/format";
 import { useField } from "formik";
 import { useState } from "react";
 import yup from "../validation";
+import { requiredMessage } from "./helpers/requiredMessage";
 
 type DateType = "year" | "year-month" | "date";
 export type InexactDateType = {
@@ -35,10 +36,12 @@ export const defaultDate: InexactDateType = {
   value: null,
 };
 
-export const inexactDateSchema = () =>
+export const inexactDateSchema = (
+  callback = (x: yup.DateSchema) => x.notRequired()
+) =>
   yup.object({
     type: yup.string().required(),
-    value: yup.date().required(),
+    value: callback(yup.date()),
   });
 
 export function InexactDatePicker({
@@ -64,7 +67,10 @@ export function InexactDatePicker({
 
   return (
     <div>
-      <FormControl variant="outlined" error={Boolean(meta.error)}>
+      <FormControl
+        variant="outlined"
+        error={Boolean(meta.touched && meta.error)}
+      >
         {label && <InputLabel htmlFor="inexact-date">{label}</InputLabel>}
         <OutlinedInput
           id="inexact-date"
@@ -91,7 +97,9 @@ export function InexactDatePicker({
             </InputAdornment>
           }
         />
-        <FormHelperText>{(meta.error as any)?.value}</FormHelperText>
+        <FormHelperText>
+          {meta.touched ? (meta.error as any)?.value : ""}
+        </FormHelperText>
       </FormControl>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>

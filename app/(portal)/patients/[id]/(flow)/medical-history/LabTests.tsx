@@ -135,7 +135,7 @@ export const LabTests = () => {
                     <Grid xs={6}>
                       <AsyncAutocomplete
                         label="Examen de laboratorio o prueba diagnostica"
-                        field={`labTests.${index}.name`}
+                        name={`labTests.${index}.name`}
                         filter={searchLabTest}
                       />
                     </Grid>

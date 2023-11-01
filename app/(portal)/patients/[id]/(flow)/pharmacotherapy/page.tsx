@@ -39,6 +39,7 @@ import {
 } from "./PharmacotherapyTable";
 import { emptyHistoryRow } from "./emptyHistoryRow";
 import yup from "@/app/validation";
+import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -110,7 +111,6 @@ export default function Pharmacotherapy({
   const router = useRouter();
 
   const { data } = useSWR(`/patients/${patientId}/pharmacoterapy`);
-  console.log(data);
 
   const searchDrugDcis = (searchText: string) =>
     getApi().then((api) =>
@@ -135,39 +135,51 @@ export default function Pharmacotherapy({
         validationSchema={yup.object({
           history: yup.array().of(
             yup.object({
-              administration: yup.string().required(),
-              difficulty: yup.string().required(),
-              difficultyJustification: yup.string().required(),
-              acceptance: yup.string().required(),
-              reasonForUse: yup.string().required(),
-              startDate: inexactDateSchema().required(),
+              administration: yup.string().required(requiredMessage),
+              difficulty: yup.string().required(requiredMessage),
+              difficultyJustification: yup.string().when("difficulty", {
+                is: "Si",
+                then: (schema) => schema.required(requiredMessage),
+                otherwise: (schema) => schema.notRequired(),
+              }),
+              acceptance: yup.string().required(requiredMessage),
+              reasonForUse: yup.string().required(requiredMessage),
+              startDate: inexactDateSchema((value) =>
+                value.required(requiredMessage)
+              ),
               restartDate: inexactDateSchema(),
               suspensionDate: inexactDateSchema(),
-              dose: yup.string().required(),
-              mode: yup.string().required(),
-              drug: yup.object().required(),
+              dose: yup.string().required(requiredMessage),
+              mode: yup.string().required(requiredMessage),
+              drug: yup.object().required(requiredMessage),
             })
           ),
           drugAllergies: yup.array().of(
             yup.object({
-              drug: yup.object().required(),
-              description: yup.string().required(),
-              date: inexactDateSchema().required(),
+              drug: yup.object().required(requiredMessage),
+              description: yup.string().required(requiredMessage),
+              date: inexactDateSchema((value) =>
+                value.required(requiredMessage)
+              ),
             })
           ),
           foodAllergies: yup.array().of(
             yup.object({
-              food: yup.string().required(),
-              description: yup.string().required(),
-              date: inexactDateSchema().required(),
+              food: yup.string().required(requiredMessage),
+              description: yup.string().required(requiredMessage),
+              date: inexactDateSchema((value) =>
+                value.required(requiredMessage)
+              ),
             })
           ),
           adverseReactions: yup.array().of(
             yup.object({
-              date: inexactDateSchema().required(),
-              medicine: yup.object().required(),
-              dose: yup.string().required(),
-              adverseReactionOfDrug: yup.string().required(),
+              date: inexactDateSchema((value) =>
+                value.required(requiredMessage)
+              ),
+              medicine: yup.object().required(requiredMessage),
+              dose: yup.string().required(requiredMessage),
+              adverseReactionOfDrug: yup.string().required(requiredMessage),
             })
           ),
         })}
@@ -234,7 +246,7 @@ export default function Pharmacotherapy({
               </Grid>
             </Grid>
             <TableContainer component={Paper}>
-              <FieldArray name="allergies">
+              <FieldArray name="drugAllergies">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Table>
                     <TableHead>
@@ -259,7 +271,7 @@ export default function Pharmacotherapy({
                           <TableCell>
                             <AsyncAutocomplete
                               label="Medicamento"
-                              field={`drugAllergies.${index}.drug`}
+                              name={`drugAllergies.${index}.drug`}
                               filter={searchDrugDcis}
                             />
                           </TableCell>
@@ -313,7 +325,7 @@ export default function Pharmacotherapy({
               </Grid>
             </Grid>
             <TableContainer component={Paper}>
-              <FieldArray name="foods">
+              <FieldArray name="foodAllergies">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Table>
                     <TableHead>
@@ -422,7 +434,7 @@ export default function Pharmacotherapy({
                           <TableCell>
                             <AsyncAutocomplete
                               label="Medicamento"
-                              field={`adverseReactions.${index}.medicine`}
+                              name={`adverseReactions.${index}.medicine`}
                               filter={searchDrugDcis}
                             />
                           </TableCell>
@@ -445,7 +457,7 @@ export default function Pharmacotherapy({
                           <TableCell>
                             <Tooltip title="Eliminar">
                               <IconButton
-                                aria-labelledby="delete"
+                                aria-label="delete"
                                 onClick={() => arrayHelpers.remove(index)}
                               >
                                 <DeleteIcon />

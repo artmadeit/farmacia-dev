@@ -245,7 +245,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
               <Grid xs={10} paddingBottom={2}>
                 <strong>Plan de intervención farmaceutica</strong>
               </Grid>
-              <FieldArray name="pharmaceuticIntervention">
+              <FieldArray name="pharmaceuticInterventions">
                 {(arrayHelpers: ArrayHelpers) => (
                   <Grid container>
                     {values.pharmaceuticInterventions.map((x, index) => (
@@ -268,13 +268,13 @@ export default function NesPage({ params }: { params: { id: number } }) {
                         )}
                         <Grid item xs={6} sx={{ paddingRight: "20px" }}>
                           <PiSelect
-                            name={`pharmaceuticIntervention.${index}.pharmaceuticIntervention`}
+                            name={`pharmaceuticInterventions.${index}.pharmaceuticIntervention`}
                           />
                         </Grid>
                         <Grid item xs={6}>
                           <Field
                             component={TextField}
-                            name={`pharmaceuticIntervention.${index}.commentaries`}
+                            name={`pharmaceuticInterventions.${index}.commentaries`}
                             label="Comentarios"
                             variant="outlined"
                             multiline
@@ -502,7 +502,7 @@ const EvaluationNesTable = ({
                     <TableCell sx={{ verticalAlign: "top" }}>
                       <AsyncAutocomplete
                         label="Diagnóstico"
-                        field={`${name}.${index}.diagnosis`}
+                        name={`${name}.${index}.diagnosis`}
                         filter={searchDiseases}
                       />
                     </TableCell>
