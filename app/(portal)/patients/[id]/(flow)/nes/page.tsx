@@ -476,9 +476,11 @@ const EvaluationNesTable = ({
                     Datos de Salud
                   </TableCell>
                 )}
-                <TableCell sx={{ fontWeight: "bold" }}>
-                  Evaluación de datos de salud
-                </TableCell>
+                {name === "diagnosisNotRelated" && (
+                  <TableCell sx={{ fontWeight: "bold" }}>
+                    Evaluación de datos de salud
+                  </TableCell>
+                )}
                 {nesTableCellsHead1}
               </TableRow>
               <TableRow>
@@ -487,10 +489,11 @@ const EvaluationNesTable = ({
                     Diagnóstico(s)
                   </TableCell>
                 )}
-                <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
-                  Signos y sintomas que {name === "diagnosisNotRelated" && "no"}{" "}
-                  se relacionan con el diagnóstico
-                </TableCell>
+                {name === "diagnosisNotRelated" && (
+                  <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
+                    Signos y sintomas que no se relacionan con el diagnóstico
+                  </TableCell>
+                )}
                 {nesTableCellsHead2}
               </TableRow>
               <TableRow>{nesTableCellsHead3}</TableRow>
@@ -507,16 +510,18 @@ const EvaluationNesTable = ({
                       />
                     </TableCell>
                   )}
-                  <TableCell sx={{ verticalAlign: "top" }}>
-                    <Field
-                      component={TextField}
-                      fullWidth
-                      name={`${name}.${index}.symptoms`}
-                      label="Sintomas"
-                      multiline
-                      rows={4}
-                    />
-                  </TableCell>
+                  {name === "diagnosisNotRelated" && (
+                    <TableCell sx={{ verticalAlign: "top" }}>
+                      <Field
+                        component={TextField}
+                        fullWidth
+                        name={`${name}.${index}.symptoms`}
+                        label="Sintomas"
+                        multiline
+                        rows={4}
+                      />
+                    </TableCell>
+                  )}
                   <NesTableCells
                     name={name}
                     index={index}
