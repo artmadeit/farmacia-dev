@@ -432,23 +432,26 @@ export default function NesPage({ params }: { params: { id: number } }) {
                             </TableBody>
                           </Table>
                         </TableContainer>
-                        <Field
-                          component={TextField}
-                          name="a"
-                          label="Pregunta clínica"
-                          variant="outlined"
-                          fullWidth
-                        />
-                        <Field
-                          component={TextField}
-                          name="b"
-                          multiline
-                          variant="outlined"
-                          label="Estrategia(s) Búsqueda"
-                          placeholder="Describa las palabras claves y los motores de búsqueda que utilizó"
-                          rows={4}
-                          fullWidth
-                        />
+                        <Box>
+                          <Field
+                            component={TextField}
+                            name="a"
+                            label="Pregunta clínica"
+                            variant="outlined"
+                            fullWidth
+                            sx={{ margin: "10px 0px" }}
+                          />
+                          <Field
+                            component={TextField}
+                            name="b"
+                            multiline
+                            variant="outlined"
+                            label="Estrategia(s) Búsqueda"
+                            placeholder="Describa las palabras claves y los motores de búsqueda que utilizó"
+                            rows={4}
+                            fullWidth
+                          />
+                        </Box>
                       </DialogContent>
                     </Dialog>
                   </Grid>
