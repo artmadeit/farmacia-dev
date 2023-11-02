@@ -501,65 +501,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
   );
 }
 
-// {
-//   values.pico.map((x, index) => (
-//     <Box key={index}>
-//       <TableRow>
-//         <TableCell>P</TableCell>
-//         <TableCell>
-//           <Field
-//             component={TextField}
-//             name={`pico.${index}.patient.spanish`}
-//             variant="outlined"
-//           />
-//         </TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="pi" variant="outlined" />
-//         </TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="pm" variant="outlined" />
-//         </TableCell>
-//       </TableRow>
-//       <TableRow>
-//         <TableCell>I</TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="ie" variant="outlined" />
-//         </TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="ii" variant="outlined" />
-//         </TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="im" variant="outlined" />
-//         </TableCell>
-//       </TableRow>
-//       <TableRow>
-//         <TableCell>C</TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="ce" variant="outlined" />
-//         </TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="ci" variant="outlined" />
-//         </TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="cm" variant="outlined" />
-//         </TableCell>
-//       </TableRow>
-//       <TableRow>
-//         <TableCell>O</TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="oe" variant="outlined" />
-//         </TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="oi" variant="outlined" />
-//         </TableCell>
-//         <TableCell>
-//           <Field component={TextField} name="om" variant="outlined" />
-//         </TableCell>
-//       </TableRow>
-//     </Box>
-//   ));
-// }
-
 const DiagnosisTable = () => {
   const { values } = useFormikContext<NesForm>();
   const getApi = useAuthApi();
