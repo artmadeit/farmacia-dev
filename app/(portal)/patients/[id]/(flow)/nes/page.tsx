@@ -86,6 +86,10 @@ const emptyPicoRow = {
 };
 
 type NesForm = {
+  diagnosis: {
+    diagnosis: string | DiseaseCie10;
+    symptoms: string;
+  }[];
   diagnosisRelated: {
     medicine: string | DrugProduct;
     necessity: {
@@ -104,7 +108,6 @@ type NesForm = {
       prm: string;
     };
     diagnosis: string | DiseaseCie10;
-    symptoms: string;
   }[];
   diagnosisNotRelated: {
     medicine: string | DrugProduct;
@@ -137,7 +140,13 @@ type NesForm = {
   }[];
 };
 
+const emptyDiagnosis = {
+  diagnosis: "",
+  symptoms: "",
+};
+
 const initialValues: NesForm = {
+  diagnosis: [{ ...emptyDiagnosis }],
   diagnosisRelated: [
     {
       ...emptyEvaluationRow,
@@ -176,6 +185,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
   const formInitialValues: NesForm = data
     ? {
+        diagnosis: data.diagnosis,
         diagnosisRelated: data.diagnosisRelated.map((diagnosisR: any) => {
           return {
             ...diagnosisR,
@@ -239,6 +249,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
       >
         {({ values }) => (
           <Form>
+            <DiagnosisTable />
             <EvaluationNesTable name="diagnosisRelated" />
             <EvaluationNesTable name="diagnosisNotRelated" />
             <Grid container pt={4}>
@@ -459,6 +470,76 @@ export default function NesPage({ params }: { params: { id: number } }) {
     </div>
   );
 }
+
+const DiagnosisTable = () => {
+  const { values } = useFormikContext<NesForm>();
+  const getApi = useAuthApi();
+
+  const searchDiseases = (searchText: string) => {
+    return getApi().then((api) =>
+      api
+        .get<Page<DiseaseCie10>>(
+          "/diseases/search/findByNameContainingIgnoringCase",
+          {
+            params: { page: 0, searchText },
+          }
+        )
+        .then((x) => x.data._embedded.diseases)
+    );
+  };
+
+  return (
+    <TableContainer component={Paper} sx={{ pt: 2 }}>
+      <FieldArray name="diagnosis">
+        {(arrayHelpers: ArrayHelpers) => (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold" }}>
+                  Datos de Salud
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>
+                  Evaluación de datos de salud
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
+                  Diagnóstico(s)
+                </TableCell>
+                <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
+                  Signos y sintomas que no se relacionan con el diagnóstico
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {values.diagnosis.map((x, index) => (
+                <TableRow key={index}>
+                  <TableCell sx={{ verticalAlign: "top" }}>
+                    <AsyncAutocomplete
+                      label="Diagnóstico"
+                      name={`${name}.${index}.disease`}
+                      filter={searchDiseases}
+                    />
+                  </TableCell>
+                  <TableCell sx={{ verticalAlign: "top" }}>
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      name={`${name}.${index}.symptoms`}
+                      label="Sintomas"
+                      multiline
+                      rows={4}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </FieldArray>
+    </TableContainer>
+  );
+};
 
 const EvaluationNesTable = ({
   name,
