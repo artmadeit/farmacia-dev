@@ -83,6 +83,8 @@ const emptyPicoRow = {
     english: "",
     meshTerm: "",
   },
+  clinicalQ: "",
+  strategy: "",
 };
 
 type NesForm = {
@@ -137,6 +139,8 @@ type NesForm = {
     intervention: PicoRow;
     comparison: PicoRow;
     outcome: PicoRow;
+    clinicalQ: string;
+    strategy: string;
   }[];
 };
 
@@ -322,136 +326,159 @@ export default function NesPage({ params }: { params: { id: number } }) {
                     <Dialog open={open} onClose={handleClose}>
                       <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle>
                       <DialogContent>
-                        <TableContainer component={Paper}>
-                          <Table>
-                            <TableHead>
-                              <TableRow>
-                                <TableCell></TableCell>
-                                <TableCell>Español</TableCell>
-                                <TableCell>Inglés</TableCell>
-                                <TableCell>Término Mesh</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell>P</TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="pe"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="pi"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="pm"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell>I</TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="ie"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="ii"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="im"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell>C</TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="ce"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="ci"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="cm"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell>O</TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="oe"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="oi"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    component={TextField}
-                                    name="om"
-                                    variant="outlined"
-                                  />
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                        <Box>
-                          <Field
-                            component={TextField}
-                            name="a"
-                            label="Pregunta clínica"
-                            variant="outlined"
-                            fullWidth
-                            sx={{ margin: "10px 0px" }}
-                          />
-                          <Field
-                            component={TextField}
-                            name="b"
-                            multiline
-                            variant="outlined"
-                            label="Estrategia(s) Búsqueda"
-                            placeholder="Describa las palabras claves y los motores de búsqueda que utilizó"
-                            rows={4}
-                            fullWidth
-                          />
-                        </Box>
+                        <FieldArray name="pico">
+                          {(arrayHelpers: ArrayHelpers) => (
+                            <>
+                              {values.pico.map((x, index) => (
+                                <>
+                                  <TableContainer component={Paper}>
+                                    <Table>
+                                      <TableHead>
+                                        <TableRow>
+                                          <TableCell></TableCell>
+                                          <TableCell>Español</TableCell>
+                                          <TableCell>Inglés</TableCell>
+                                          <TableCell>Término Mesh</TableCell>
+                                        </TableRow>
+                                      </TableHead>
+                                      <TableBody>
+                                        <React.Fragment key={index}>
+                                          <TableRow>
+                                            <TableCell>P</TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name={`pico.${index}.patient.spanish`}
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="pi"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="pm"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell>I</TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="ie"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="ii"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="im"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell>C</TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="ce"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="ci"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="cm"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell>O</TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="oe"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="oi"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                            <TableCell>
+                                              <Field
+                                                component={TextField}
+                                                name="om"
+                                                variant="outlined"
+                                              />
+                                            </TableCell>
+                                          </TableRow>
+                                        </React.Fragment>
+                                      </TableBody>
+                                    </Table>
+                                  </TableContainer>
+                                  <Box>
+                                    <Field
+                                      component={TextField}
+                                      name={`pico.${index}.clinicalQ`}
+                                      label="Pregunta clínica"
+                                      variant="outlined"
+                                      fullWidth
+                                      sx={{ margin: "10px 0px" }}
+                                    />
+                                    <Field
+                                      component={TextField}
+                                      name={`pico.${index}.strategy`}
+                                      multiline
+                                      variant="outlined"
+                                      label="Estrategia(s) Búsqueda"
+                                      placeholder="Describa las palabras claves y los motores de búsqueda que utilizó"
+                                      rows={4}
+                                      fullWidth
+                                    />
+                                  </Box>
+                                </>
+                              ))}
+
+                              <Box>
+                                <Button
+                                  startIcon={<AddIcon />}
+                                  onClick={() =>
+                                    arrayHelpers.push(emptyPicoRow)
+                                  }
+                                >
+                                  Agregar otra fila
+                                </Button>
+                              </Box>
+                            </>
+                          )}
+                        </FieldArray>
                       </DialogContent>
                     </Dialog>
                   </Grid>
@@ -473,6 +500,65 @@ export default function NesPage({ params }: { params: { id: number } }) {
     </div>
   );
 }
+
+// {
+//   values.pico.map((x, index) => (
+//     <Box key={index}>
+//       <TableRow>
+//         <TableCell>P</TableCell>
+//         <TableCell>
+//           <Field
+//             component={TextField}
+//             name={`pico.${index}.patient.spanish`}
+//             variant="outlined"
+//           />
+//         </TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="pi" variant="outlined" />
+//         </TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="pm" variant="outlined" />
+//         </TableCell>
+//       </TableRow>
+//       <TableRow>
+//         <TableCell>I</TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="ie" variant="outlined" />
+//         </TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="ii" variant="outlined" />
+//         </TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="im" variant="outlined" />
+//         </TableCell>
+//       </TableRow>
+//       <TableRow>
+//         <TableCell>C</TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="ce" variant="outlined" />
+//         </TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="ci" variant="outlined" />
+//         </TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="cm" variant="outlined" />
+//         </TableCell>
+//       </TableRow>
+//       <TableRow>
+//         <TableCell>O</TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="oe" variant="outlined" />
+//         </TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="oi" variant="outlined" />
+//         </TableCell>
+//         <TableCell>
+//           <Field component={TextField} name="om" variant="outlined" />
+//         </TableCell>
+//       </TableRow>
+//     </Box>
+//   ));
+// }
 
 const DiagnosisTable = () => {
   const { values } = useFormikContext<NesForm>();
