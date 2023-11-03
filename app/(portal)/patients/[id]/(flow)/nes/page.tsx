@@ -331,6 +331,12 @@ export default function NesPage({ params }: { params: { id: number } }) {
                             <>
                               {values.pico.map((x, index) => (
                                 <>
+                                  <Fab
+                                    aria-label="delete"
+                                    sx={{ margin: "10px 0px" }}
+                                  >
+                                    <CloseIcon />
+                                  </Fab>
                                   <TableContainer component={Paper}>
                                     <Table>
                                       <TableHead>
