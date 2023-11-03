@@ -21,6 +21,7 @@ import {
   TableFooter,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import {
   ArrayHelpers,
@@ -331,12 +332,27 @@ export default function NesPage({ params }: { params: { id: number } }) {
                             <>
                               {values.pico.map((x, index) => (
                                 <>
-                                  <Fab
-                                    aria-label="delete"
-                                    sx={{ margin: "10px 0px" }}
-                                  >
-                                    <CloseIcon />
-                                  </Fab>
+                                  {values.pico.length > 1 && (
+                                    <Grid
+                                      xs={12}
+                                      display="flex"
+                                      justifyContent="end"
+                                    >
+                                      <Tooltip title="Eliminar">
+                                        <Fab
+                                          aria-label="delete"
+                                          sx={{ margin: "10px 0px" }}
+                                          color="primary"
+                                          onClick={arrayHelpers.handleRemove(
+                                            index
+                                          )}
+                                        >
+                                          <CloseIcon />
+                                        </Fab>
+                                      </Tooltip>
+                                    </Grid>
+                                  )}
+
                                   <TableContainer component={Paper}>
                                     <Table>
                                       <TableHead>
