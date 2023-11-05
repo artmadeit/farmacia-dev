@@ -258,8 +258,11 @@ export default function NesPage({ params }: { params: { id: number } }) {
         {({ values }) => (
           <Form>
             <DiagnosisTable />
-            <EvaluationNesTable name="diagnosisRelated" />
-            <EvaluationNesTable name="diagnosisNotRelated" />
+            <EvaluationNesTable name="diagnosisRelated" anamnesis={anamnesis} />
+            <EvaluationNesTable
+              name="diagnosisNotRelated"
+              anamnesis={anamnesis}
+            />
             <Grid container pt={4}>
               <Grid xs={10} paddingBottom={2}>
                 <strong>Plan de intervención farmaceutica</strong>
@@ -599,22 +602,16 @@ const DiagnosisTable = () => {
 
 const EvaluationNesTable = ({
   name,
+  anamnesis,
 }: {
   name: "diagnosisRelated" | "diagnosisNotRelated";
+  anamnesis: any;
 }) => {
   const { values } = useFormikContext<NesForm>();
-  const getApi = useAuthApi();
 
   const searchDiseases = (searchText: string) => {
-    return getApi().then((api) =>
-      api
-        .get<Page<DiseaseCie10>>(
-          "/diseases/search/findByNameContainingIgnoringCase",
-          {
-            params: { page: 0, searchText },
-          }
-        )
-        .then((x) => x.data._embedded.diseases)
+    return anamnesis.diseases.filter((x: any) =>
+      x.name.toLowerCase().includes(searchText.toLowerCase())
     );
   };
 
