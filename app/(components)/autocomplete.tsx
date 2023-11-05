@@ -1,7 +1,5 @@
 import {
   AutocompleteRenderInputParams,
-  FormControl,
-  FormHelperText,
   TextField as MuiTextField,
 } from "@mui/material";
 import { Field, useField } from "formik";
@@ -14,6 +12,7 @@ type AsyncAutocompleteProps<T, F> = {
   name: string;
   filter: (searchText: string) => Promise<T[]>;
   getLabel?: (option: any) => string;
+  disabled?: boolean;
 };
 
 // export const getTextParams = <T,>(
@@ -28,6 +27,7 @@ export const AsyncAutocomplete = <T, F>({
   name,
   filter,
   getLabel = (option) => option.name,
+  disabled = false,
 }: AsyncAutocompleteProps<T, F>) => {
   const [field, meta, helpers] = useField<F>(name);
 
@@ -43,6 +43,7 @@ export const AsyncAutocomplete = <T, F>({
 
   return (
     <Field
+      disabled={disabled}
       name={name}
       component={Autocomplete}
       freeSolo

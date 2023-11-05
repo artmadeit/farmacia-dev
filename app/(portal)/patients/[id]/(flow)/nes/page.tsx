@@ -145,35 +145,6 @@ type NesForm = {
   }[];
 };
 
-const emptyDiagnosis = {
-  diagnosis: "",
-  symptoms: "",
-};
-
-const initialValues: NesForm = {
-  diagnosis: [{ ...emptyDiagnosis }],
-  diagnosisRelated: [
-    {
-      ...emptyEvaluationRow,
-    },
-  ],
-  diagnosisNotRelated: [
-    {
-      ...emptyEvaluationRow,
-    },
-  ],
-  pharmaceuticInterventions: [
-    {
-      ...emptyPharmaceuticInterventionRow,
-    },
-  ],
-  pico: [
-    {
-      ...emptyPicoRow,
-    },
-  ],
-};
-
 // type NesForm = typeof initialValues;
 
 export default function NesPage({ params }: { params: { id: number } }) {
@@ -185,8 +156,41 @@ export default function NesPage({ params }: { params: { id: number } }) {
   const handleClose = () => {
     setOpen(false);
   };
+  const { data: anamnesis } = useSWR(`/patients/${patientId}/anamnesis`);
+  const { data, mutate } = useSWR(
+    anamnesis ? `/patients/${patientId}/nes` : null
+  );
 
-  const { data, mutate } = useSWR(`/patients/${patientId}/nes`);
+  if (!anamnesis) {
+    return <div>Complete hoja de anamnesis</div>;
+  }
+
+  const initialValues: NesForm = {
+    diagnosis: anamnesis.diseases.map((disease: any) => ({
+      disease,
+      symptoms: "",
+    })),
+    diagnosisRelated: [
+      {
+        ...emptyEvaluationRow,
+      },
+    ],
+    diagnosisNotRelated: [
+      {
+        ...emptyEvaluationRow,
+      },
+    ],
+    pharmaceuticInterventions: [
+      {
+        ...emptyPharmaceuticInterventionRow,
+      },
+    ],
+    pico: [
+      {
+        ...emptyPicoRow,
+      },
+    ],
+  };
 
   const formInitialValues: NesForm = data
     ? {
@@ -208,7 +212,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
       <Title date={new Date()}>
         Para la evaluación y el análisis de datos e identificación del PRM
       </Title>
-
       <Formik
         initialValues={formInitialValues}
         enableReinitialize
@@ -559,7 +562,7 @@ const DiagnosisTable = () => {
                   Diagnóstico(s)
                 </TableCell>
                 <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
-                  Signos y sintomas que no se relacionan con el diagnóstico
+                  Signos y sintomas que se relacionan con el diagnóstico
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -569,15 +572,16 @@ const DiagnosisTable = () => {
                   <TableCell sx={{ verticalAlign: "top" }}>
                     <AsyncAutocomplete
                       label="Diagnóstico"
-                      name={`${name}.${index}.disease`}
+                      name={`diagnosis.${index}.disease`}
                       filter={searchDiseases}
+                      disabled
                     />
                   </TableCell>
                   <TableCell sx={{ verticalAlign: "top" }}>
                     <Field
                       component={TextField}
                       fullWidth
-                      name={`${name}.${index}.symptoms`}
+                      name={`diagnosis.${index}.symptoms`}
                       label="Sintomas"
                       multiline
                       rows={4}
