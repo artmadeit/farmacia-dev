@@ -52,6 +52,7 @@ import { Title } from "@/app/(components)/Title";
 import useSWR from "swr";
 import React from "react";
 import { PicoRow } from "./PicoRow";
+import ClinicalQuestionDialog from "./clinicalQuestionDialog";
 
 const emptyEvaluationRow = {
   diagnosis: "",
@@ -64,7 +65,7 @@ const emptyPharmaceuticInterventionRow = {
   commentaries: "",
 };
 
-const emptyPicoRow = {
+export const emptyPicoRow = {
   patient: {
     spanish: "",
     english: "",
@@ -315,7 +316,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                         </Box>
                       </div>
                     )}
-                    <Dialog open={open} onClose={handleClose}>
+                    {/* <Dialog open={open} onClose={handleClose}>
                       <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle>
                       <DialogContent>
                         <FieldArray name="pico">
@@ -493,7 +494,12 @@ export default function NesPage({ params }: { params: { id: number } }) {
                           )}
                         </FieldArray>
                       </DialogContent>
-                    </Dialog>
+                    </Dialog> */}
+                    <ClinicalQuestionDialog
+                      open={open}
+                      handleClose={handleClose}
+                      values={values.pico}
+                    />
                   </Grid>
                 )}
               </FieldArray>
