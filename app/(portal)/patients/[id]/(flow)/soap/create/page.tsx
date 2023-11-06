@@ -33,6 +33,7 @@ import {
 } from "../../nes/table";
 import { PharmacotherapyTable } from "../../pharmacotherapy/PharmacotherapyTable";
 import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
+import useSWR from "swr";
 
 const emptySoapRow = {
   problem: "",
@@ -42,19 +43,34 @@ const emptySoapRow = {
   plan: "",
 };
 
-const initialValues = {
+const emptyInitialValues = {
   history: [{ ...emptyHistoryRow }],
   drugEvaluations: [{ ...emptyDrugNesEvaluation }],
   soapRows: [{ ...emptySoapRow }],
 };
 
-type TrackingSheet = typeof initialValues;
+type TrackingSheet = typeof emptyInitialValues;
 
-export default function CreateTrackingSheet() {
+export default function CreateTrackingSheet({
+  params,
+}: {
+  params: { id: number };
+}) {
+  const { id: patientId } = params;
+
+  const { data: lastInterview } = useSWR<TrackingSheet>(
+    patientId ? `/patients/${patientId}/soap/last` : null
+  );
+  const initialValues = lastInterview || emptyInitialValues;
+
   return (
     <div>
       <Title date={new Date()}>Hoja de seguimiento</Title>
-      <Formik initialValues={initialValues} onSubmit={() => {}}>
+      <Formik
+        initialValues={initialValues}
+        enableReinitialize
+        onSubmit={() => {}}
+      >
         {({ values, errors }) => (
           <Form>
             <Grid container spacing={4}>
@@ -102,7 +118,7 @@ export default function CreateTrackingSheet() {
                           <Grid xs={11}>
                             <Field
                               component={TextField}
-                              name={`soapRows.${index}subjective`}
+                              name={`soapRows.${index}.subjective`}
                               label="Subjetivo"
                               variant="outlined"
                               fullWidth
@@ -138,7 +154,7 @@ export default function CreateTrackingSheet() {
                           <Grid xs={11}>
                             <Field
                               component={TextField}
-                              name={`soapRows.${index}plan`}
+                              name={`soapRows.${index}.plan`}
                               label="Plan"
                               variant="outlined"
                               fullWidth
