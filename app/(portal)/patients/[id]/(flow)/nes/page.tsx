@@ -22,6 +22,7 @@ import {
   TableHead,
   TableRow,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import {
   ArrayHelpers,
@@ -88,49 +89,19 @@ const emptyPicoRow = {
   strategy: "",
 };
 
+type NesRow = {
+  evaluation: string;
+  justification: string;
+  prm: string;
+};
+
 type NesForm = {
-  diagnosis: {
-    diagnosis: string | DiseaseCie10;
-    symptoms: string;
-  }[];
   diagnosisRelated: {
-    medicine: string | DrugProduct;
-    necessity: {
-      evaluation: string;
-      justification: string;
-      prm: string;
-    };
-    effectivity: {
-      evaluation: string;
-      justification: string;
-      prm: string;
-    };
-    security: {
-      evaluation: string;
-      justification: string;
-      prm: string;
-    };
     diagnosis: string | DiseaseCie10;
-  }[];
-  diagnosisNotRelated: {
-    medicine: string | DrugProduct;
-    necessity: {
-      evaluation: string;
-      justification: string;
-      prm: string;
-    };
-    effectivity: {
-      evaluation: string;
-      justification: string;
-      prm: string;
-    };
-    security: {
-      evaluation: string;
-      justification: string;
-      prm: string;
-    };
     symptoms: string;
+    drugEvaluations: DrugEvaluation[];
   }[];
+  diagnosisNotRelated: ({ symptoms: string } & DrugEvaluation)[];
   pharmaceuticInterventions: {
     pharmaceuticIntervention: string;
     commentaries: string;
@@ -143,6 +114,13 @@ type NesForm = {
     clinicalQ: string;
     strategy: string;
   }[];
+};
+
+type DrugEvaluation = {
+  medicine: string | DrugProduct;
+  necessity: NesRow;
+  effectivity: NesRow;
+  security: NesRow;
 };
 
 // type NesForm = typeof initialValues;
@@ -166,15 +144,15 @@ export default function NesPage({ params }: { params: { id: number } }) {
   }
 
   const initialValues: NesForm = {
-    diagnosis: anamnesis.diseases.map((disease: any) => ({
+    diagnosisRelated: anamnesis.diseases.map((disease: any) => ({
       disease,
       symptoms: "",
+      drugEvaluations: [
+        {
+          ...emptyEvaluationRow,
+        },
+      ],
     })),
-    diagnosisRelated: [
-      {
-        ...emptyEvaluationRow,
-      },
-    ],
     diagnosisNotRelated: [
       {
         ...emptyEvaluationRow,
@@ -194,7 +172,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
   const formInitialValues: NesForm = data
     ? {
-        diagnosis: data.diagnosis,
         diagnosisRelated: data.diagnosisRelated.map((diagnosisR: any) => {
           return {
             ...diagnosisR,
@@ -217,23 +194,24 @@ export default function NesPage({ params }: { params: { id: number } }) {
         enableReinitialize
         onSubmit={async (values) => {
           const data = {
-            diagnosisRelated: values.diagnosisRelated.map(
-              ({ medicine, diagnosis, ...rest }) => {
-                if (isString(medicine)) {
-                  throw "Medicina inválida";
-                }
+            // TODO:
+            // diagnosisRelated: values.diagnosisRelated.map(
+            //   ({ medicine, diagnosis, ...rest }) => {
+            //     if (isString(medicine)) {
+            //       throw "Medicina inválida";
+            //     }
 
-                if (isString(diagnosis)) {
-                  throw "Diagnóstico inválido";
-                }
+            //     if (isString(diagnosis)) {
+            //       throw "Diagnóstico inválido";
+            //     }
 
-                return {
-                  ...rest,
-                  diseaseId: diagnosis.id,
-                  medicineId: medicine.id,
-                };
-              }
-            ),
+            //     return {
+            //       ...rest,
+            //       diseaseId: diagnosis.id,
+            //       medicineId: medicine.id,
+            //     };
+            //   }
+            // ),
             diagnosisNotRelated: values.diagnosisNotRelated.map(
               ({ medicine, ...rest }) => {
                 if (isString(medicine)) {
@@ -257,11 +235,22 @@ export default function NesPage({ params }: { params: { id: number } }) {
       >
         {({ values }) => (
           <Form>
+            <Typography variant="h6" pt={4}>
+              Evaluación de medicamentos relacionados al diagnóstico
+            </Typography>
             <DiagnosisTable anamnesis={anamnesis} />
-            <EvaluationNesTable name="diagnosisNotRelated" />
+            <Typography variant="h6" pt={4}>
+              Evaluación de medicamentos que no se relacionan con el diagnóstico
+            </Typography>
+            <EvaluationNesTable
+              values={values.diagnosisNotRelated}
+              name="diagnosisNotRelated"
+            />
             <Grid container pt={4}>
               <Grid xs={10} paddingBottom={2}>
-                <strong>Plan de intervención farmaceutica</strong>
+                <Typography variant="h6" pt={2}>
+                  Plan de intervención farmaceutica
+                </Typography>
               </Grid>
               <FieldArray name="pharmaceuticInterventions">
                 {(arrayHelpers: ArrayHelpers) => (
@@ -566,13 +555,13 @@ const DiagnosisTable = ({ anamnesis }: { anamnesis: any }) => {
               </TableRow>
             </TableHead> */}
             <TableBody>
-              {values.diagnosis.map((x, index) => (
+              {values.diagnosisRelated.map((x, index) => (
                 <React.Fragment key={index}>
                   <TableRow>
                     <TableCell sx={{ verticalAlign: "top" }}>
                       <AsyncAutocomplete
                         label="Diagnóstico"
-                        name={`diagnosis.${index}.disease`}
+                        name={`diagnosisRelated.${index}.disease`}
                         filter={searchDiseases}
                         disabled
                       />
@@ -581,7 +570,7 @@ const DiagnosisTable = ({ anamnesis }: { anamnesis: any }) => {
                       <Field
                         component={TextField}
                         fullWidth
-                        name={`diagnosis.${index}.symptoms`}
+                        name={`diagnosisRelated.${index}.symptoms`}
                         label="Signos y sintomas que se relacionan con el diagnóstico"
                         multiline
                         rows={4}
@@ -590,7 +579,10 @@ const DiagnosisTable = ({ anamnesis }: { anamnesis: any }) => {
                   </TableRow>
                   <TableRow>
                     <TableCell colSpan={2}>
-                      <EvaluationNesTable name="diagnosisRelated" />
+                      <EvaluationNesTable
+                        values={values.diagnosisRelated[index].drugEvaluations}
+                        name={`diagnosisRelated.${index}.drugEvaluations`}
+                      />
                     </TableCell>
                   </TableRow>
                 </React.Fragment>
@@ -603,13 +595,7 @@ const DiagnosisTable = ({ anamnesis }: { anamnesis: any }) => {
   );
 };
 
-const EvaluationNesTable = ({
-  name,
-}: {
-  name: "diagnosisRelated" | "diagnosisNotRelated";
-}) => {
-  const { values } = useFormikContext<NesForm>();
-
+const EvaluationNesTable = ({ name, values }: { name: any; values: any[] }) => {
   return (
     <TableContainer component={Paper} sx={{ pt: 2 }}>
       <FieldArray name={name}>
@@ -635,7 +621,7 @@ const EvaluationNesTable = ({
               <TableRow>{nesTableCellsHead3}</TableRow>
             </TableHead>
             <TableBody>
-              {values[name].map((x, index) => (
+              {values.map((x, index) => (
                 <TableRow key={index}>
                   {name === "diagnosisNotRelated" && (
                     <TableCell sx={{ verticalAlign: "top" }}>
