@@ -1,6 +1,11 @@
 "use client";
 
-import { formatDate } from "@/app/date";
+import { useAuthApi } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
+import { Title } from "@/app/(components)/Title";
+import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
+import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
+import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -33,28 +38,20 @@ import {
   useFormikContext,
 } from "formik";
 import { Select, TextField } from "formik-mui";
+import { isString } from "lodash";
+import { useRouter } from "next/navigation";
+import React from "react";
+import useSWR from "swr";
+import { PicoRow } from "./PicoRow";
 import { PI_GROUPS } from "./pi-groups";
 import {
   NesTableCells,
-  nesTableCellsHead1,
+  emptyDrugNesEvaluation,
   nesTableCellsHead2,
   nesTableCellsHead3,
-  emptyDrugNesEvaluation,
 } from "./table";
-import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
-import { isString } from "lodash";
-import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
-import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
-import { useAuthApi } from "@/app/(api)/api";
-import { Page } from "@/app/(api)/pagination";
-import { useRouter } from "next/navigation";
-import { Title } from "@/app/(components)/Title";
-import useSWR from "swr";
-import React from "react";
-import { PicoRow } from "./PicoRow";
 
 const emptyEvaluationRow = {
-  diagnosis: "",
   symptoms: "",
   ...emptyDrugNesEvaluation,
 };
@@ -97,7 +94,7 @@ type NesRow = {
 
 type NesForm = {
   diagnosisRelated: {
-    diagnosis: string | DiseaseCie10;
+    disease: string | DiseaseCie10;
     symptoms: string;
     drugEvaluations: DrugEvaluation[];
   }[];
@@ -194,24 +191,28 @@ export default function NesPage({ params }: { params: { id: number } }) {
         enableReinitialize
         onSubmit={async (values) => {
           const data = {
-            // TODO:
-            // diagnosisRelated: values.diagnosisRelated.map(
-            //   ({ medicine, diagnosis, ...rest }) => {
-            //     if (isString(medicine)) {
-            //       throw "Medicina inválida";
-            //     }
+            diagnosisRelated: values.diagnosisRelated.map(
+              ({ disease, drugEvaluations, ...rest }) => {
+                if (isString(disease)) {
+                  throw "Diagnóstico inválido";
+                }
 
-            //     if (isString(diagnosis)) {
-            //       throw "Diagnóstico inválido";
-            //     }
+                return {
+                  ...rest,
+                  diseaseId: disease.id,
+                  drugEvaluations: drugEvaluations.map((drugEvaluation) => {
+                    if (isString(drugEvaluation.medicine)) {
+                      throw "Medicina inválida";
+                    }
 
-            //     return {
-            //       ...rest,
-            //       diseaseId: diagnosis.id,
-            //       medicineId: medicine.id,
-            //     };
-            //   }
-            // ),
+                    return {
+                      ...drugEvaluation,
+                      medicineId: drugEvaluation.medicine.id,
+                    };
+                  }),
+                };
+              }
+            ),
             diagnosisNotRelated: values.diagnosisNotRelated.map(
               ({ medicine, ...rest }) => {
                 if (isString(medicine)) {
