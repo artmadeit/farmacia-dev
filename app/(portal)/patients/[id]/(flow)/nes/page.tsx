@@ -257,12 +257,8 @@ export default function NesPage({ params }: { params: { id: number } }) {
       >
         {({ values }) => (
           <Form>
-            <DiagnosisTable />
-            <EvaluationNesTable name="diagnosisRelated" anamnesis={anamnesis} />
-            <EvaluationNesTable
-              name="diagnosisNotRelated"
-              anamnesis={anamnesis}
-            />
+            <DiagnosisTable anamnesis={anamnesis} />
+            <EvaluationNesTable name="diagnosisNotRelated" />
             <Grid container pt={4}>
               <Grid xs={10} paddingBottom={2}>
                 <strong>Plan de intervención farmaceutica</strong>
@@ -529,7 +525,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
   );
 }
 
-const DiagnosisTable = () => {
+const DiagnosisTable = ({ anamnesis }: { anamnesis: any }) => {
   const { values } = useFormikContext<NesForm>();
   const getApi = useAuthApi();
 
@@ -551,7 +547,7 @@ const DiagnosisTable = () => {
       <FieldArray name="diagnosis">
         {(arrayHelpers: ArrayHelpers) => (
           <Table>
-            <TableHead>
+            {/* <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: "bold" }}>
                   Datos de Salud
@@ -568,29 +564,36 @@ const DiagnosisTable = () => {
                   Signos y sintomas que se relacionan con el diagnóstico
                 </TableCell>
               </TableRow>
-            </TableHead>
+            </TableHead> */}
             <TableBody>
               {values.diagnosis.map((x, index) => (
-                <TableRow key={index}>
-                  <TableCell sx={{ verticalAlign: "top" }}>
-                    <AsyncAutocomplete
-                      label="Diagnóstico"
-                      name={`diagnosis.${index}.disease`}
-                      filter={searchDiseases}
-                      disabled
-                    />
-                  </TableCell>
-                  <TableCell sx={{ verticalAlign: "top" }}>
-                    <Field
-                      component={TextField}
-                      fullWidth
-                      name={`diagnosis.${index}.symptoms`}
-                      label="Sintomas"
-                      multiline
-                      rows={4}
-                    />
-                  </TableCell>
-                </TableRow>
+                <React.Fragment key={index}>
+                  <TableRow>
+                    <TableCell sx={{ verticalAlign: "top" }}>
+                      <AsyncAutocomplete
+                        label="Diagnóstico"
+                        name={`diagnosis.${index}.disease`}
+                        filter={searchDiseases}
+                        disabled
+                      />
+                    </TableCell>
+                    <TableCell sx={{ verticalAlign: "top" }}>
+                      <Field
+                        component={TextField}
+                        fullWidth
+                        name={`diagnosis.${index}.symptoms`}
+                        label="Signos y sintomas que se relacionan con el diagnóstico"
+                        multiline
+                        rows={4}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2}>
+                      <EvaluationNesTable name="diagnosisRelated" />
+                    </TableCell>
+                  </TableRow>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
@@ -602,18 +605,10 @@ const DiagnosisTable = () => {
 
 const EvaluationNesTable = ({
   name,
-  anamnesis,
 }: {
   name: "diagnosisRelated" | "diagnosisNotRelated";
-  anamnesis: any;
 }) => {
   const { values } = useFormikContext<NesForm>();
-
-  const searchDiseases = (searchText: string) => {
-    return anamnesis.diseases.filter((x: any) =>
-      x.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-  };
 
   return (
     <TableContainer component={Paper} sx={{ pt: 2 }}>
@@ -621,25 +616,15 @@ const EvaluationNesTable = ({
         {(arrayHelpers: ArrayHelpers) => (
           <Table>
             <TableHead>
-              <TableRow>
-                {name === "diagnosisRelated" && (
-                  <TableCell sx={{ fontWeight: "bold" }}>
-                    Datos de Salud
-                  </TableCell>
-                )}
+              {/* <TableRow>
                 {name === "diagnosisNotRelated" && (
                   <TableCell sx={{ fontWeight: "bold" }}>
                     Evaluación de datos de salud
                   </TableCell>
                 )}
                 {nesTableCellsHead1}
-              </TableRow>
+              </TableRow> */}
               <TableRow>
-                {name === "diagnosisRelated" && (
-                  <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
-                    Diagnóstico(s)
-                  </TableCell>
-                )}
                 {name === "diagnosisNotRelated" && (
                   <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
                     Signos y sintomas que no se relacionan con el diagnóstico
@@ -652,15 +637,6 @@ const EvaluationNesTable = ({
             <TableBody>
               {values[name].map((x, index) => (
                 <TableRow key={index}>
-                  {name === "diagnosisRelated" && (
-                    <TableCell sx={{ verticalAlign: "top" }}>
-                      <AsyncAutocomplete
-                        label="Diagnóstico"
-                        name={`${name}.${index}.diagnosis`}
-                        filter={searchDiseases}
-                      />
-                    </TableCell>
-                  )}
                   {name === "diagnosisNotRelated" && (
                     <TableCell sx={{ verticalAlign: "top" }}>
                       <Field
@@ -689,7 +665,7 @@ const EvaluationNesTable = ({
                     startIcon={<AddIcon />}
                     onClick={() => arrayHelpers.push(emptyEvaluationRow)}
                   >
-                    Agregar fila
+                    Agregar medicamento
                   </Button>
                 </TableCell>
               </TableRow>
