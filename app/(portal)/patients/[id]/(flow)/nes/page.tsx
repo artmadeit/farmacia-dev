@@ -11,9 +11,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   Fab,
   Grid,
   ListSubheader,
@@ -26,7 +23,6 @@ import {
   TableFooter,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import {
@@ -42,7 +38,7 @@ import { isString } from "lodash";
 import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
-import { PicoRow } from "./PicoRow";
+import { PicoRow, picoRowSchema } from "./PicoRow";
 import { PI_GROUPS } from "./pi-groups";
 import {
   NesTableCells,
@@ -51,7 +47,9 @@ import {
   nesTableCellsHead3,
 } from "./table";
 
+import yup from "@/app/validation";
 import ClinicalQuestionDialog from "./clinicalQuestionDialog";
+import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 
 const emptyEvaluationRow = {
   symptoms: "",
@@ -92,6 +90,23 @@ type NesRow = {
   evaluation: string;
   justification: string;
   prm: string;
+};
+
+const newsRowSchema = () => {
+  return yup.object({
+    evaluation: yup.string().required(requiredMessage),
+    justification: yup.string(),
+    prm: yup.string(),
+  });
+};
+
+const drugEvaluationSchema = () => {
+  return {
+    medicine: yup.object().required(requiredMessage),
+    necessity: newsRowSchema(),
+    effectivity: newsRowSchema(),
+    security: newsRowSchema(),
+  };
 };
 
 type NesForm = {
@@ -191,6 +206,39 @@ export default function NesPage({ params }: { params: { id: number } }) {
       <Formik
         initialValues={formInitialValues}
         enableReinitialize
+        validationSchema={yup.object({
+          diagnosisRelated: yup.array().of(
+            yup.object({
+              disease: yup.object().required(requiredMessage),
+              symptoms: yup.string().required(requiredMessage),
+              drugEvaluations: yup
+                .array()
+                .of(yup.object(drugEvaluationSchema())),
+            })
+          ),
+          diagnosisNotRelated: yup.array().of(
+            yup.object({
+              symptoms: yup.string().required(requiredMessage),
+              ...drugEvaluationSchema(),
+            })
+          ),
+          pharmaceuticInterventions: yup.array().of(
+            yup.object({
+              pharmaceuticIntervention: yup.string().required(requiredMessage),
+              commentaries: yup.string().required(requiredMessage),
+            })
+          ),
+          pico: yup.array().of(
+            yup.object({
+              patient: picoRowSchema(),
+              intervention: picoRowSchema(),
+              comparison: picoRowSchema(),
+              outcome: picoRowSchema(),
+              clinicalQ: yup.string().required(requiredMessage),
+              strategy: yup.string().required(requiredMessage),
+            })
+          ),
+        })}
         onSubmit={async (values) => {
           const data = {
             diagnosisRelated: values.diagnosisRelated.map(
