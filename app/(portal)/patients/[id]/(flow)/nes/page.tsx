@@ -51,6 +51,8 @@ import {
   nesTableCellsHead3,
 } from "./table";
 
+import ClinicalQuestionDialog from "./clinicalQuestionDialog";
+
 const emptyEvaluationRow = {
   symptoms: "",
   ...emptyDrugNesEvaluation,
@@ -61,7 +63,7 @@ const emptyPharmaceuticInterventionRow = {
   commentaries: "",
 };
 
-const emptyPicoRow = {
+export const emptyPicoRow = {
   patient: {
     spanish: "",
     english: "",
@@ -316,7 +318,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                         </Box>
                       </div>
                     )}
-                    <Dialog open={open} onClose={handleClose}>
+                    {/* <Dialog open={open} onClose={handleClose}>
                       <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle>
                       <DialogContent>
                         <FieldArray name="pico">
@@ -494,7 +496,12 @@ export default function NesPage({ params }: { params: { id: number } }) {
                           )}
                         </FieldArray>
                       </DialogContent>
-                    </Dialog>
+                    </Dialog> */}
+                    <ClinicalQuestionDialog
+                      open={open}
+                      handleClose={handleClose}
+                      values={values.pico}
+                    />
                   </Grid>
                 )}
               </FieldArray>

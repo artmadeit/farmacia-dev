@@ -1,0 +1,219 @@
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Fab,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import React from "react";
+import { ArrayHelpers, Field, FieldArray } from "formik";
+import { TextField } from "formik-mui";
+import { emptyPicoRow } from "./page";
+import { PicoRow } from "./PicoRow";
+
+type ClinicalQuestionDialogProps = {
+  open: boolean;
+  handleClose: () => void;
+  values: {
+    patient: PicoRow;
+    intervention: PicoRow;
+    comparison: PicoRow;
+    outcome: PicoRow;
+    clinicalQ: string;
+    strategy: string;
+  }[];
+};
+
+export const ClinicalQuestionDialog = ({
+  open,
+  handleClose,
+  values,
+}: ClinicalQuestionDialogProps) => {
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle>
+      <DialogContent>
+        <FieldArray name="pico">
+          {(arrayHelpers: ArrayHelpers) => (
+            <>
+              {values.map((x, index) => (
+                <>
+                  {values.length > 1 && (
+                    <Grid xs={12} display="flex" justifyContent="end">
+                      <Tooltip title="Eliminar">
+                        <Fab
+                          aria-label="delete"
+                          sx={{ margin: "10px 0px" }}
+                          color="primary"
+                          onClick={arrayHelpers.handleRemove(index)}
+                        >
+                          <CloseIcon />
+                        </Fab>
+                      </Tooltip>
+                    </Grid>
+                  )}
+
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell></TableCell>
+                          <TableCell>Español</TableCell>
+                          <TableCell>Inglés</TableCell>
+                          <TableCell>Término Mesh</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <React.Fragment key={index}>
+                          <TableRow>
+                            <TableCell>P</TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name={`pico.${index}.patient.spanish`}
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="pi"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="pm"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>I</TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="ie"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="ii"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="im"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>C</TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="ce"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="ci"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="cm"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>O</TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="oe"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="oi"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                component={TextField}
+                                name="om"
+                                variant="outlined"
+                              />
+                            </TableCell>
+                          </TableRow>
+                        </React.Fragment>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <Box>
+                    <Field
+                      component={TextField}
+                      name={`pico.${index}.clinicalQ`}
+                      label="Pregunta clínica"
+                      variant="outlined"
+                      fullWidth
+                      sx={{ margin: "10px 0px" }}
+                    />
+                    <Field
+                      component={TextField}
+                      name={`pico.${index}.strategy`}
+                      multiline
+                      variant="outlined"
+                      label="Estrategia(s) Búsqueda"
+                      placeholder="Describa las palabras claves y los motores de búsqueda que utilizó"
+                      rows={4}
+                      fullWidth
+                    />
+                  </Box>
+                </>
+              ))}
+
+              <Box>
+                <Button
+                  startIcon={<AddIcon />}
+                  onClick={() => arrayHelpers.push(emptyPicoRow)}
+                >
+                  Agregar otra fila
+                </Button>
+              </Box>
+            </>
+          )}
+        </FieldArray>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default ClinicalQuestionDialog;
