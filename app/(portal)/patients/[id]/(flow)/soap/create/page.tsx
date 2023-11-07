@@ -4,6 +4,7 @@ import { Title } from "@/app/(components)/Title";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  Box,
   Button,
   Fab,
   Table,
@@ -69,7 +70,9 @@ export default function CreateTrackingSheet({
       <Formik
         initialValues={initialValues}
         enableReinitialize
-        onSubmit={() => {}}
+        onSubmit={(values) => {
+          console.log(values);
+        }}
       >
         {({ values, errors }) => (
           <Form>
@@ -177,6 +180,15 @@ export default function CreateTrackingSheet({
                 </FieldArray>
               </Grid>
             </Grid>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ marginTop: "10px" }}
+            >
+              <Button variant="contained" type="submit">
+                Guardar
+              </Button>
+            </Box>
           </Form>
         )}
       </Formik>
