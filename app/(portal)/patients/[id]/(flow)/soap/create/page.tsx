@@ -4,6 +4,7 @@ import { Title } from "@/app/(components)/Title";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  Box,
   Button,
   Fab,
   Table,
@@ -33,6 +34,7 @@ import {
 } from "../../nes/table";
 import { PharmacotherapyTable } from "../../pharmacotherapy/PharmacotherapyTable";
 import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
+import React from "react";
 
 const emptySoapRow = {
   problem: "",
@@ -51,6 +53,8 @@ const initialValues = {
 type TrackingSheet = typeof initialValues;
 
 export default function CreateTrackingSheet() {
+  const [open, setOpen] = React.useState(false);
+
   return (
     <div>
       <Title date={new Date()}>Hoja de seguimiento</Title>
@@ -146,16 +150,26 @@ export default function CreateTrackingSheet() {
                           </Grid>
                         </Grid>
                       ))}
-                      <Grid xs={12}>
-                        <Button
-                          startIcon={<AddIcon />}
-                          onClick={() => {
-                            arrayHelpers.push(emptySoapRow);
-                          }}
-                        >
-                          Agregar otra fila
-                        </Button>
-                      </Grid>
+                      <div>
+                        <Box sx={{ mt: 2 }}>
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() => {
+                              arrayHelpers.push(emptySoapRow);
+                            }}
+                          >
+                            Agregar otra fila
+                          </Button>
+                        </Box>
+                        <Box sx={{ mt: 2 }}>
+                          <Button
+                            startIcon={<AddIcon />}
+                            onClick={() => setOpen(true)}
+                          >
+                            Agregar Pico
+                          </Button>
+                        </Box>
+                      </div>
                     </Grid>
                   )}
                 </FieldArray>
