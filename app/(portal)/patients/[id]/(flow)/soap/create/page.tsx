@@ -36,6 +36,8 @@ import { PharmacotherapyTable } from "../../pharmacotherapy/PharmacotherapyTable
 import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
 import React from "react";
 import useSWR from "swr";
+import ClinicalQuestionDialog from "../../nes/clinicalQuestionDialog";
+import { emptyPicoRow } from "../../nes/page";
 
 const emptySoapRow = {
   problem: "",
@@ -49,6 +51,7 @@ const emptyInitialValues = {
   history: [{ ...emptyHistoryRow }],
   drugEvaluations: [{ ...emptyDrugNesEvaluation }],
   soapRows: [{ ...emptySoapRow }],
+  pico: [{ ...emptyPicoRow }],
 };
 
 type TrackingSheet = typeof emptyInitialValues;
@@ -65,6 +68,10 @@ export default function CreateTrackingSheet({
   );
   const initialValues = lastInterview || emptyInitialValues;
   const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -187,6 +194,11 @@ export default function CreateTrackingSheet({
                           </Button>
                         </Box>
                       </div>
+                      <ClinicalQuestionDialog
+                        open={open}
+                        handleClose={handleClose}
+                        values={values.pico}
+                      />
                     </Grid>
                   )}
                 </FieldArray>
