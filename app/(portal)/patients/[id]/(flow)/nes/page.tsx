@@ -50,6 +50,7 @@ import {
 import yup from "@/app/validation";
 import ClinicalQuestionDialog from "./clinicalQuestionDialog";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
+import { PicoMedicine } from "./PicoMedicine";
 
 const emptyEvaluationRow = {
   symptoms: "",
@@ -120,14 +121,7 @@ type NesForm = {
     pharmaceuticIntervention: string;
     commentaries: string;
   }[];
-  pico: {
-    patient: PicoRow;
-    intervention: PicoRow;
-    comparison: PicoRow;
-    outcome: PicoRow;
-    clinicalQ: string;
-    strategy: string;
-  }[];
+  pico: PicoMedicine[];
 };
 
 type DrugEvaluation = {

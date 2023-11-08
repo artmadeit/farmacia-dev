@@ -38,6 +38,11 @@ import React from "react";
 import useSWR from "swr";
 import ClinicalQuestionDialog from "../../nes/clinicalQuestionDialog";
 import { emptyPicoRow } from "../../nes/page";
+import { InexactDateType } from "@/app/(components)/InexactDatePicker";
+import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import { PicoRow } from "../../nes/PicoRow";
+import { PicoMedicine } from "../../nes/PicoMedicine";
+import { DrugTest } from "./DrugTest";
 
 const emptySoapRow = {
   problem: "",
@@ -47,15 +52,43 @@ const emptySoapRow = {
   plan: "",
 };
 
-const emptyInitialValues = {
+// type TrackingSheet = typeof emptyInitialValues;
+type TrackingSheet = {
+  history: {
+    administration: string;
+    difficulty: string;
+    difficultyJustification: string;
+    acceptance: string;
+    reasonForUse: string;
+    restartDate: InexactDateType;
+    startDate: InexactDateType;
+    suspensionDate: InexactDateType;
+    dose: string;
+    mode: string;
+    drug: string | DrugProduct;
+  }[];
+  drugEvaluations: {
+    medicine: string | DrugProduct;
+    necessity: DrugTest;
+    effectivity: DrugTest;
+    security: DrugTest;
+  }[];
+  soapRows: {
+    problem: string;
+    subjective: string;
+    objective: string;
+    analysis: string;
+    plan: string;
+  }[];
+  pico: PicoMedicine[];
+};
+
+const emptyInitialValues: TrackingSheet = {
   history: [{ ...emptyHistoryRow }],
   drugEvaluations: [{ ...emptyDrugNesEvaluation }],
   soapRows: [{ ...emptySoapRow }],
   pico: [{ ...emptyPicoRow }],
 };
-
-type TrackingSheet = typeof emptyInitialValues;
-
 export default function CreateTrackingSheet({
   params,
 }: {
