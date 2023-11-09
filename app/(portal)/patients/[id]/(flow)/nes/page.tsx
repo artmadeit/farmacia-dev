@@ -222,14 +222,14 @@ export default function NesPage({ params }: { params: { id: number } }) {
               commentaries: yup.string().required(requiredMessage),
             })
           ),
-          pico: yup.array().of(
+          picoSheets: yup.array().of(
             yup.object({
               patient: picoRowSchema(),
               intervention: picoRowSchema(),
               comparison: picoRowSchema(),
               outcome: picoRowSchema(),
-              clinicalQ: yup.string().required(requiredMessage),
-              strategy: yup.string().required(requiredMessage),
+              clinicalQuestion: yup.string().required(requiredMessage),
+              searchStrategy: yup.string().required(requiredMessage),
             })
           ),
         })}

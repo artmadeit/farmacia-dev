@@ -30,7 +30,7 @@ import { LabTestD } from "./LabTestD";
 import { Anamnesis } from "./page";
 
 export type LabTest = {
-  name: string;
+  labTest?: LabTestD;
   date: Date | null;
   result: string;
   normalRange: string;
@@ -38,7 +38,7 @@ export type LabTest = {
 };
 
 const emptyLabTest: LabTest = {
-  name: "",
+  labTest: undefined,
   date: null,
   result: "",
   normalRange: "",
@@ -126,7 +126,7 @@ export const LabTests = () => {
                     <Grid xs={6}>
                       <AsyncAutocomplete
                         label="Examen de laboratorio o prueba diagnostica"
-                        name={`labTests.${index}.name`}
+                        name={`labTests.${index}.labTest`}
                         filter={searchLabTest}
                       />
                     </Grid>

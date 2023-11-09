@@ -231,7 +231,7 @@ export default function PatientInterview({
             .required("Escoja una de las dos opciones"),
           labTests: yup.array().of(
             yup.object({
-              name: yup.object().required(requiredMessage),
+              labTest: yup.object().required(requiredMessage),
               date: yup.date().required(requiredMessage).max(today),
               result: yup.string().required(requiredMessage),
               normalRange: yup.string().required(requiredMessage),
@@ -248,10 +248,14 @@ export default function PatientInterview({
           }),
         })}
         onSubmit={async (values) => {
-          const { diagnosis, ...rest } = values;
+          const { diagnosis, labTests, ...rest } = values;
           const data = {
             ...rest,
             diseaseIds: diagnosis.map((x) => x.id),
+            labTests: labTests.map((x) => ({
+              ...x,
+              name: x.labTest?.name,
+            })),
           };
 
           const response = await getApi().then((api) =>
