@@ -83,8 +83,8 @@ export const emptyPicoRow = {
     english: "",
     meshTerm: "",
   },
-  clinicalQ: "",
-  strategy: "",
+  clinicalQuestion: "",
+  searchStrategy: "",
 };
 
 type NesRow = {

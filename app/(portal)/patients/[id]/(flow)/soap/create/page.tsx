@@ -43,6 +43,9 @@ import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import { PicoRow } from "../../nes/PicoRow";
 import { PicoMedicine } from "../../nes/PicoMedicine";
 import { DrugTest } from "./DrugTest";
+import { isString } from "lodash";
+import { useAuthApi } from "@/app/(api)/api";
+import { useRouter } from "next/navigation";
 
 const emptySoapRow = {
   problem: "",
@@ -80,14 +83,14 @@ type TrackingSheet = {
     analysis: string;
     plan: string;
   }[];
-  pico: PicoMedicine[];
+  picoSheets: PicoMedicine[];
 };
 
 const emptyInitialValues: TrackingSheet = {
   history: [{ ...emptyHistoryRow }],
   drugEvaluations: [{ ...emptyDrugNesEvaluation }],
   soapRows: [{ ...emptySoapRow }],
-  pico: [{ ...emptyPicoRow }],
+  picoSheets: [{ ...emptyPicoRow }],
 };
 export default function CreateTrackingSheet({
   params,
@@ -101,6 +104,8 @@ export default function CreateTrackingSheet({
   );
   const initialValues = lastInterview || emptyInitialValues;
   const [open, setOpen] = React.useState(false);
+  const getApi = useAuthApi();
+  const router = useRouter();
 
   const handleClose = () => {
     setOpen(false);
@@ -112,8 +117,36 @@ export default function CreateTrackingSheet({
       <Formik
         initialValues={initialValues}
         enableReinitialize
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          const data = {
+            history: values.history.map(({ drug, ...rest }) => {
+              if (isString(drug)) {
+                throw "Medicina inválida";
+              }
+
+              return {
+                ...rest,
+                drugId: drug.id,
+              };
+            }),
+            drugEvaluations: values.drugEvaluations.map(
+              ({ medicine, ...rest }) => {
+                if (isString(medicine)) {
+                  throw "Medicina inválida";
+                }
+
+                return {
+                  ...rest,
+                  medicineId: medicine.id,
+                };
+              }
+            ),
+            soapRows: values.soapRows,
+            picoSheets: values.picoSheets,
+            patientId: patientId,
+          };
+          const response = getApi().then((api) => api.post("soap", data));
+          router.push(`/patients/${patientId}/soap`);
         }}
       >
         {({ values, errors }) => (
@@ -230,7 +263,7 @@ export default function CreateTrackingSheet({
                       <ClinicalQuestionDialog
                         open={open}
                         handleClose={handleClose}
-                        values={values.pico}
+                        values={values.picoSheets}
                       />
                     </Grid>
                   )}

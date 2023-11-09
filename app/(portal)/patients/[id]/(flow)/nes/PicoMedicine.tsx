@@ -5,6 +5,6 @@ export type PicoMedicine = {
   intervention: PicoRow;
   comparison: PicoRow;
   outcome: PicoRow;
-  clinicalQ: string;
-  strategy: string;
+  clinicalQuestion: string;
+  searchStrategy: string;
 };

@@ -22,18 +22,12 @@ import { ArrayHelpers, Field, FieldArray } from "formik";
 import { TextField } from "formik-mui";
 import { emptyPicoRow } from "./page";
 import { PicoRow } from "./PicoRow";
+import { PicoMedicine } from "./PicoMedicine";
 
 type ClinicalQuestionDialogProps = {
   open: boolean;
   handleClose: () => void;
-  values: {
-    patient: PicoRow;
-    intervention: PicoRow;
-    comparison: PicoRow;
-    outcome: PicoRow;
-    clinicalQ: string;
-    strategy: string;
-  }[];
+  values: PicoMedicine[];
 };
 
 export const ClinicalQuestionDialog = ({
@@ -45,7 +39,7 @@ export const ClinicalQuestionDialog = ({
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle>
       <DialogContent>
-        <FieldArray name="pico">
+        <FieldArray name="picoSheets">
           {(arrayHelpers: ArrayHelpers) => (
             <>
               {values.map((x, index) => (
@@ -82,21 +76,21 @@ export const ClinicalQuestionDialog = ({
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name={`pico.${index}.patient.spanish`}
+                                name={`picoSheets.${index}.patient.spanish`}
                                 variant="outlined"
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="pi"
+                                name={`picoSheets.${index}.patient.english`}
                                 variant="outlined"
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="pm"
+                                name={`picoSheets.${index}.patient.meshTerm`}
                                 variant="outlined"
                               />
                             </TableCell>
@@ -106,21 +100,21 @@ export const ClinicalQuestionDialog = ({
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="ie"
+                                name={`picoSheets.${index}.intervention.spanish`}
                                 variant="outlined"
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="ii"
+                                name={`picoSheets.${index}.intervention.english`}
                                 variant="outlined"
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="im"
+                                name={`picoSheets.${index}.intervention.meshTerm`}
                                 variant="outlined"
                               />
                             </TableCell>
@@ -130,21 +124,21 @@ export const ClinicalQuestionDialog = ({
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="ce"
+                                name={`picoSheets.${index}.comparison.spanish`}
                                 variant="outlined"
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="ci"
+                                name={`picoSheets.${index}.comparison.english`}
                                 variant="outlined"
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="cm"
+                                name={`picoSheets.${index}.comparison.meshTerm`}
                                 variant="outlined"
                               />
                             </TableCell>
@@ -154,21 +148,21 @@ export const ClinicalQuestionDialog = ({
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="oe"
+                                name={`picoSheets.${index}.outcome.spanish`}
                                 variant="outlined"
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="oi"
+                                name={`picoSheets.${index}.outcome.english`}
                                 variant="outlined"
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 component={TextField}
-                                name="om"
+                                name={`picoSheets.${index}.outcome.meshTerm`}
                                 variant="outlined"
                               />
                             </TableCell>
@@ -180,7 +174,7 @@ export const ClinicalQuestionDialog = ({
                   <Box>
                     <Field
                       component={TextField}
-                      name={`pico.${index}.clinicalQ`}
+                      name={`picoSheets.${index}.clinicalQuestion`}
                       label="Pregunta clínica"
                       variant="outlined"
                       fullWidth
@@ -188,7 +182,7 @@ export const ClinicalQuestionDialog = ({
                     />
                     <Field
                       component={TextField}
-                      name={`pico.${index}.strategy`}
+                      name={`picoSheets.${index}.searchStrategy`}
                       multiline
                       variant="outlined"
                       label="Estrategia(s) Búsqueda"
