@@ -121,7 +121,7 @@ type NesForm = {
     pharmaceuticIntervention: string;
     commentaries: string;
   }[];
-  pico: PicoMedicine[];
+  picoSheets: PicoMedicine[];
 };
 
 type DrugEvaluation = {
@@ -171,7 +171,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
         ...emptyPharmaceuticInterventionRow,
       },
     ],
-    pico: [
+    picoSheets: [
       {
         ...emptyPicoRow,
       },
@@ -188,7 +188,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
         }),
         diagnosisNotRelated: data.diagnosisNotRelated,
         pharmaceuticInterventions: data.pharmaceuticInterventions,
-        pico: data.pico,
+        picoSheets: data.picoSheets,
       }
     : initialValues;
 
@@ -363,7 +363,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                     <ClinicalQuestionDialog
                       open={open}
                       handleClose={handleClose}
-                      values={values.pico}
+                      values={values.picoSheets}
                     />
                   </Grid>
                 )}
