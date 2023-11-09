@@ -1,4 +1,7 @@
 "use client";
+import { useAuthApi } from "@/app/(api)/api";
+import { Page } from "@/app/(api)/pagination";
+import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -17,18 +20,14 @@ import {
   ArrayHelpers,
   Field,
   FieldArray,
-  FormikErrors,
+  getIn,
   useFormikContext,
 } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import React from "react";
-import { Anamnesis } from "./page";
-import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
-import { useAuthApi } from "@/app/(api)/api";
-import { Page } from "@/app/(api)/pagination";
 import { LabTestD } from "./LabTestD";
-import { isArray, isObject, isString } from "lodash";
+import { Anamnesis } from "./page";
 
 export type LabTest = {
   name: string;
@@ -108,16 +107,8 @@ export const LabTests = () => {
           {(arrayHelpers: ArrayHelpers) => (
             <Stack spacing={2}>
               {values.labTests.map((x, index) => {
-                let dateHelperText: string | undefined = "";
-
-                if (isArray(errors.labTests)) {
-                  const labTestError: string | FormikErrors<LabTest> =
-                    errors.labTests[index];
-
-                  if (!isString(labTestError)) {
-                    dateHelperText = labTestError?.date;
-                  }
-                }
+                const touch = getIn(touched, `labTests[${index}]`);
+                const error = getIn(errors, `labTests[${index}]`);
 
                 return (
                   <Grid container spacing={1} key={index}>
@@ -146,7 +137,9 @@ export const LabTests = () => {
                           textField: {
                             fullWidth: true,
                             label: "Fecha",
-                            helperText: dateHelperText,
+                            error: touch?.date && !!error?.date,
+                            helperText:
+                              touch?.date && error?.date ? error?.date : "",
                           },
                         }}
                         name={`labTests.${index}.date`}

@@ -231,10 +231,10 @@ export default function PatientInterview({
             .required("Escoja una de las dos opciones"),
           labTests: yup.array().of(
             yup.object({
-              name: yup.string().required(),
-              date: yup.date().required().max(today),
-              result: yup.string().required(),
-              normalRange: yup.string().required(),
+              name: yup.object().required(requiredMessage),
+              date: yup.date().required(requiredMessage).max(today),
+              result: yup.string().required(requiredMessage),
+              normalRange: yup.string().required(requiredMessage),
             })
           ),
           foodHabits: yup.object({
