@@ -37,7 +37,7 @@ import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
 import React from "react";
 import useSWR from "swr";
 import ClinicalQuestionDialog from "../../nes/clinicalQuestionDialog";
-import { emptyPicoRow } from "../../nes/page";
+import { drugEvaluationSchema, emptyPicoRow } from "../../nes/page";
 import { InexactDateType } from "@/app/(components)/InexactDatePicker";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import { PicoRow } from "../../nes/PicoRow";
@@ -46,6 +46,10 @@ import { DrugTest } from "./DrugTest";
 import { isString } from "lodash";
 import { useAuthApi } from "@/app/(api)/api";
 import { useRouter } from "next/navigation";
+import yup from "@/app/validation";
+import { historySchema } from "../../pharmacotherapy/historySchema";
+import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
+import { picoSheetsSchema } from "../../nes/picoSheetsSchema";
 
 const emptySoapRow = {
   problem: "",
@@ -117,6 +121,20 @@ export default function CreateTrackingSheet({
       <Formik
         initialValues={initialValues}
         enableReinitialize
+        validationSchema={yup.object({
+          history: historySchema,
+          drugEvaluations: yup.array().of(yup.object(drugEvaluationSchema())),
+          soapRows: yup.array().of(
+            yup.object({
+              problem: yup.string().required(requiredMessage),
+              subjective: yup.string().required(requiredMessage),
+              objective: yup.string().required(requiredMessage),
+              analysis: yup.string().required(requiredMessage),
+              plan: yup.string().required(requiredMessage),
+            })
+          ),
+          picoSheets: picoSheetsSchema,
+        })}
         onSubmit={async (values) => {
           const data = {
             history: values.history.map(({ drug, ...rest }) => {
@@ -146,6 +164,7 @@ export default function CreateTrackingSheet({
             patientId: patientId,
           };
           const response = getApi().then((api) => api.post("soap", data));
+          console.log(data);
           router.push(`/patients/${patientId}/soap`);
         }}
       >

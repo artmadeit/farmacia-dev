@@ -51,6 +51,7 @@ import yup from "@/app/validation";
 import ClinicalQuestionDialog from "./clinicalQuestionDialog";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 import { PicoMedicine } from "./PicoMedicine";
+import { picoSheetsSchema } from "./picoSheetsSchema";
 
 const emptyEvaluationRow = {
   symptoms: "",
@@ -101,7 +102,7 @@ const newsRowSchema = () => {
   });
 };
 
-const drugEvaluationSchema = () => {
+export const drugEvaluationSchema = () => {
   return {
     medicine: yup.object().required(requiredMessage),
     necessity: newsRowSchema(),
@@ -222,16 +223,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
               commentaries: yup.string().required(requiredMessage),
             })
           ),
-          picoSheets: yup.array().of(
-            yup.object({
-              patient: picoRowSchema(),
-              intervention: picoRowSchema(),
-              comparison: picoRowSchema(),
-              outcome: picoRowSchema(),
-              clinicalQuestion: yup.string().required(requiredMessage),
-              searchStrategy: yup.string().required(requiredMessage),
-            })
-          ),
+          picoSheets: picoSheetsSchema,
         })}
         onSubmit={async (values) => {
           const data = {

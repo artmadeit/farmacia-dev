@@ -40,6 +40,7 @@ import {
 import { emptyHistoryRow } from "./emptyHistoryRow";
 import yup from "@/app/validation";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
+import { historySchema } from "./historySchema";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -133,27 +134,7 @@ export default function Pharmacotherapy({
         initialValues={initialValues}
         enableReinitialize
         validationSchema={yup.object({
-          history: yup.array().of(
-            yup.object({
-              administration: yup.string().required(requiredMessage),
-              difficulty: yup.string().required(requiredMessage),
-              difficultyJustification: yup.string().when("difficulty", {
-                is: "Si",
-                then: (schema) => schema.required(requiredMessage),
-                otherwise: (schema) => schema.notRequired(),
-              }),
-              acceptance: yup.string().required(requiredMessage),
-              reasonForUse: yup.string().required(requiredMessage),
-              startDate: inexactDateSchema((value) =>
-                value.required(requiredMessage)
-              ),
-              restartDate: inexactDateSchema(),
-              suspensionDate: inexactDateSchema(),
-              dose: yup.string().required(requiredMessage),
-              mode: yup.string().required(requiredMessage),
-              drug: yup.object().required(requiredMessage),
-            })
-          ),
+          history: historySchema,
           drugAllergies: yup.array().of(
             yup.object({
               drug: yup.object().required(requiredMessage),
