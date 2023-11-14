@@ -259,6 +259,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
               }
             ),
             pharmaceuticInterventions: values.pharmaceuticInterventions,
+            picoSheets: values.picoSheets,
           };
           const response = getApi().then((api) =>
             api.post(`patients/${patientId}/nes`, data)

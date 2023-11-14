@@ -173,6 +173,7 @@ export const ClinicalQuestionDialog = ({
                   </TableContainer>
                   <Box>
                     <Field
+                      required
                       component={TextField}
                       name={`picoSheets.${index}.clinicalQuestion`}
                       label="Pregunta clínica"
@@ -181,6 +182,7 @@ export const ClinicalQuestionDialog = ({
                       sx={{ margin: "10px 0px" }}
                     />
                     <Field
+                      required
                       component={TextField}
                       name={`picoSheets.${index}.searchStrategy`}
                       multiline
