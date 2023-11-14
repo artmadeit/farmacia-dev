@@ -43,7 +43,7 @@ export const ClinicalQuestionDialog = ({
           {(arrayHelpers: ArrayHelpers) => (
             <>
               {values.map((x, index) => (
-                <>
+                <React.Fragment key={index}>
                   {values.length > 1 && (
                     <Grid xs={12} display="flex" justifyContent="end">
                       <Tooltip title="Eliminar">
@@ -191,7 +191,7 @@ export const ClinicalQuestionDialog = ({
                       fullWidth
                     />
                   </Box>
-                </>
+                </React.Fragment>
               ))}
 
               <Box>
