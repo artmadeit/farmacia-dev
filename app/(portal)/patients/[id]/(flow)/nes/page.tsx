@@ -13,7 +13,6 @@ import {
   Button,
   Fab,
   Grid,
-  IconButton,
   ListSubheader,
   MenuItem,
   Paper,
@@ -24,7 +23,6 @@ import {
   TableFooter,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import {
@@ -36,11 +34,10 @@ import {
   useFormikContext,
 } from "formik";
 import { Select, TextField } from "formik-mui";
-import { isEqual, isString } from "lodash";
+import { isString } from "lodash";
 import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
-import { PicoRow, picoRowSchema } from "./PicoRow";
 import { PI_GROUPS } from "./pi-groups";
 import {
   NesTableCells,
@@ -49,13 +46,11 @@ import {
   nesTableCellsHead3,
 } from "./table";
 
-import yup from "@/app/validation";
-import ClinicalQuestionDialog from "./clinicalQuestionDialog";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
+import yup from "@/app/validation";
 import { PicoMedicine } from "./PicoMedicine";
+import ClinicalQuestionDialog from "./clinicalQuestionDialog";
 import { picoSheetsSchema } from "./picoSheetsSchema";
-
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const emptyEvaluationRow = {
   symptoms: "",
@@ -142,7 +137,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
   const { id: patientId } = params;
   const getApi = useAuthApi();
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
 
   const { data: anamnesis } = useSWR(`/patients/${patientId}/anamnesis`);
   const { data, mutate } = useSWR(
@@ -268,7 +262,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
           router.push(`/patients/${patientId}/soap`);
         }}
       >
-        {({ values, setFieldValue, errors, touched }) => (
+        {({ values }) => (
           <Form>
             <Typography variant="h6" pt={4}>
               Evaluación de medicamentos relacionados al diagnóstico
@@ -340,59 +334,9 @@ export default function NesPage({ params }: { params: { id: number } }) {
                             Agregar otra intervención farmaceutica
                           </Button>
                         </Box>
-                        <Box sx={{ mt: 2 }}>
-                          <Button
-                            startIcon={<AddIcon />}
-                            onClick={() => {
-                              if (values.picoSheets.length === 0) {
-                                setFieldValue("picoSheets", [
-                                  {
-                                    ...emptyPicoRow,
-                                  },
-                                ]);
-                              }
-                              setOpen(true);
-                            }}
-                          >
-                            Agregar pico
-                          </Button>
-                          {touched.picoSheets && errors.picoSheets && (
-                            <Tooltip title="Hay errores, vea más">
-                              <IconButton
-                                aria-labelledby="Ver"
-                                onClick={() => {
-                                  if (values.picoSheets.length === 0) {
-                                    setFieldValue("picoSheets", [
-                                      {
-                                        ...emptyPicoRow,
-                                      },
-                                    ]);
-                                  }
-                                  setOpen(true);
-                                }}
-                                color="error"
-                              >
-                                <ErrorOutlineIcon />
-                              </IconButton>
-                            </Tooltip>
-                          )}
-                        </Box>
+                        <ClinicalQuestionDialog />
                       </div>
                     )}
-                    <ClinicalQuestionDialog
-                      open={open}
-                      handleClose={() => {
-                        if (
-                          values.picoSheets.length === 1 &&
-                          isEqual(values.picoSheets[0], emptyPicoRow)
-                        ) {
-                          setFieldValue("picoSheets", []);
-                        }
-
-                        setOpen(false);
-                      }}
-                      values={values.picoSheets}
-                    />
                   </Grid>
                 )}
               </FieldArray>

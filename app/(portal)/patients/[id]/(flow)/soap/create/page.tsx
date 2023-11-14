@@ -1,6 +1,11 @@
 "use client";
 
+import { useAuthApi } from "@/app/(api)/api";
+import { InexactDateType } from "@/app/(components)/InexactDatePicker";
 import { Title } from "@/app/(components)/Title";
+import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
+import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import yup from "@/app/validation";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -25,6 +30,14 @@ import {
   useFormikContext,
 } from "formik";
 import { TextField } from "formik-mui";
+import { isString } from "lodash";
+import { useRouter } from "next/navigation";
+import React from "react";
+import useSWR from "swr";
+import { PicoMedicine } from "../../nes/PicoMedicine";
+import ClinicalQuestionDialog from "../../nes/clinicalQuestionDialog";
+import { drugEvaluationSchema, emptyPicoRow } from "../../nes/page";
+import { picoSheetsSchema } from "../../nes/picoSheetsSchema";
 import {
   NesTableCells,
   emptyDrugNesEvaluation,
@@ -34,22 +47,8 @@ import {
 } from "../../nes/table";
 import { PharmacotherapyTable } from "../../pharmacotherapy/PharmacotherapyTable";
 import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
-import React from "react";
-import useSWR from "swr";
-import ClinicalQuestionDialog from "../../nes/clinicalQuestionDialog";
-import { drugEvaluationSchema, emptyPicoRow } from "../../nes/page";
-import { InexactDateType } from "@/app/(components)/InexactDatePicker";
-import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
-import { PicoRow } from "../../nes/PicoRow";
-import { PicoMedicine } from "../../nes/PicoMedicine";
-import { DrugTest } from "./DrugTest";
-import { isString } from "lodash";
-import { useAuthApi } from "@/app/(api)/api";
-import { useRouter } from "next/navigation";
-import yup from "@/app/validation";
 import { historySchema } from "../../pharmacotherapy/historySchema";
-import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
-import { picoSheetsSchema } from "../../nes/picoSheetsSchema";
+import { DrugTest } from "./DrugTest";
 
 const emptySoapRow = {
   problem: "",
@@ -94,7 +93,7 @@ const emptyInitialValues: TrackingSheet = {
   history: [{ ...emptyHistoryRow }],
   drugEvaluations: [{ ...emptyDrugNesEvaluation }],
   soapRows: [{ ...emptySoapRow }],
-  picoSheets: [{ ...emptyPicoRow }],
+  picoSheets: [],
 };
 export default function CreateTrackingSheet({
   params,
@@ -164,7 +163,6 @@ export default function CreateTrackingSheet({
             patientId: patientId,
           };
           const response = getApi().then((api) => api.post("soap", data));
-          console.log(data);
           router.push(`/patients/${patientId}/soap`);
         }}
       >
@@ -270,20 +268,8 @@ export default function CreateTrackingSheet({
                             Agregar otra fila
                           </Button>
                         </Box>
-                        <Box sx={{ mt: 2 }}>
-                          <Button
-                            startIcon={<AddIcon />}
-                            onClick={() => setOpen(true)}
-                          >
-                            Agregar Pico
-                          </Button>
-                        </Box>
+                        <ClinicalQuestionDialog />
                       </div>
-                      <ClinicalQuestionDialog
-                        open={open}
-                        handleClose={handleClose}
-                        values={values.picoSheets}
-                      />
                     </Grid>
                   )}
                 </FieldArray>
