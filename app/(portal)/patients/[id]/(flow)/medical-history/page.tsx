@@ -231,7 +231,7 @@ export default function PatientInterview({
             .required("Escoja una de las dos opciones"),
           labTests: yup.array().of(
             yup.object({
-              labTest: yup.object().required(requiredMessage),
+              name: yup.string().required(requiredMessage),
               date: yup.date().required(requiredMessage).max(today),
               result: yup.string().required(requiredMessage),
               normalRange: yup.string().required(requiredMessage),
@@ -254,7 +254,7 @@ export default function PatientInterview({
             diseaseIds: diagnosis.map((x) => x.id),
             labTests: labTests.map((x) => ({
               ...x,
-              name: x.labTest?.name,
+              name: x.name,
             })),
           };
 
