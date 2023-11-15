@@ -37,7 +37,7 @@ import {
 import { ArrayHelpers, Field, FieldArray, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import React from "react";
-import { TABLE_WIDTH_DATE, TABLE_WIDTH_ACTION } from "./page";
+import { TABLE_WIDTH_DATE, TABLE_WIDTH_ACTION } from "./table";
 import { emptyHistoryRow } from "./emptyHistoryRow";
 
 export type PharmaceuticHistoryRow = {
