@@ -85,7 +85,12 @@ export const ClinicalQuestionDialog = () => {
       </Box>
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle>
+        {/* <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle> */}
+        <Grid xs={12} display="flex" justifyContent="flex-end">
+          <IconButton aria-label="close" onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </Grid>
         <DialogContent>
           <FieldArray name="picoSheets">
             {(arrayHelpers: ArrayHelpers) => (
@@ -106,7 +111,15 @@ export const ClinicalQuestionDialog = () => {
                         </Tooltip>
                       </Grid>
                     )}
-
+                    <Field
+                      required
+                      component={TextField}
+                      name={`picoSheets.${index}.clinicalQuestion`}
+                      label="Pregunta clínica"
+                      variant="outlined"
+                      fullWidth
+                      sx={{ margin: "10px 0px" }}
+                    />
                     <TableContainer component={Paper}>
                       <Table>
                         <TableHead>
@@ -223,18 +236,10 @@ export const ClinicalQuestionDialog = () => {
                       <Field
                         required
                         component={TextField}
-                        name={`picoSheets.${index}.clinicalQuestion`}
-                        label="Pregunta clínica"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ margin: "10px 0px" }}
-                      />
-                      <Field
-                        required
-                        component={TextField}
                         name={`picoSheets.${index}.searchStrategy`}
                         multiline
                         variant="outlined"
+                        sx={{ margin: "10px 0px" }}
                         label="Estrategia(s) Búsqueda"
                         placeholder="Describa las palabras claves y los motores de búsqueda que utilizó"
                         rows={4}
