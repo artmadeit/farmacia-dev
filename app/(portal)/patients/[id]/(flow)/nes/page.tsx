@@ -51,6 +51,7 @@ import yup from "@/app/validation";
 import { PicoMedicine } from "./PicoMedicine";
 import ClinicalQuestionDialog from "./clinicalQuestionDialog";
 import { picoSheetsSchema } from "./picoSheetsSchema";
+import { drugEvaluationSchema } from "./drugEvaluationSchema";
 
 const emptyEvaluationRow = {
   symptoms: "",
@@ -62,52 +63,18 @@ const emptyPharmaceuticInterventionRow = {
   commentaries: "",
 };
 
-export const emptyPicoRow = {
-  patient: {
-    spanish: "",
-    english: "",
-    meshTerm: "",
-  },
-  intervention: {
-    spanish: "",
-    english: "",
-    meshTerm: "",
-  },
-  comparison: {
-    spanish: "",
-    english: "",
-    meshTerm: "",
-  },
-  outcome: {
-    spanish: "",
-    english: "",
-    meshTerm: "",
-  },
-  clinicalQuestion: "",
-  searchStrategy: "",
-};
-
 type NesRow = {
   evaluation: string;
   justification: string;
   prm: string;
 };
 
-const newsRowSchema = () => {
+export const newsRowSchema = () => {
   return yup.object({
     evaluation: yup.string().required(requiredMessage),
     justification: yup.string(),
     prm: yup.string(),
   });
-};
-
-export const drugEvaluationSchema = () => {
-  return {
-    medicine: yup.object().required(requiredMessage),
-    necessity: newsRowSchema(),
-    effectivity: newsRowSchema(),
-    security: newsRowSchema(),
-  };
 };
 
 type NesForm = {

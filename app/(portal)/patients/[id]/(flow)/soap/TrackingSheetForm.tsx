@@ -10,7 +10,7 @@ import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import React from "react";
 import ClinicalQuestionDialog from "../nes/clinicalQuestionDialog";
-import { drugEvaluationSchema } from "../nes/page";
+import { drugEvaluationSchema } from "../nes/drugEvaluationSchema";
 import { picoSheetsSchema } from "../nes/picoSheetsSchema";
 import { PharmacotherapyTable } from "../pharmacotherapy/PharmacotherapyTable";
 import { historySchema } from "../pharmacotherapy/historySchema";
