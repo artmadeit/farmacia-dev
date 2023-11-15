@@ -249,12 +249,15 @@ export const ClinicalQuestionDialog = () => {
                   </React.Fragment>
                 ))}
 
-                <Box>
+                <Box display="flex" justifyContent="space-between">
                   <Button
                     startIcon={<AddIcon />}
                     onClick={() => arrayHelpers.push(emptyPicoRow)}
                   >
                     Agregar otra fila
+                  </Button>
+                  <Button variant="contained" onClick={handleClose}>
+                    Guardar
                   </Button>
                 </Box>
               </>
