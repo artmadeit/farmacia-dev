@@ -69,14 +69,6 @@ type NesRow = {
   prm: string;
 };
 
-export const newsRowSchema = () => {
-  return yup.object({
-    evaluation: yup.string().required(requiredMessage),
-    justification: yup.string(),
-    prm: yup.string(),
-  });
-};
-
 type NesForm = {
   diagnosisRelated: {
     disease: string | DiseaseCie10;
