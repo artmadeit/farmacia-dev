@@ -186,7 +186,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
   return (
     <div>
-      <Title date={new Date()}>
+      <Title date={data?.createDate || new Date()}>
         Para la evaluación y el análisis de datos e identificación del PRM
       </Title>
       <Formik

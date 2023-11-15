@@ -21,12 +21,12 @@ export const TrackingSheetForm = ({
   initialValues,
   onSubmit,
 }: {
-  initialValues: TrackingSheet;
+  initialValues: TrackingSheet & { createDate: Date };
   onSubmit: (values: TrackingSheet) => Promise<void>;
 }) => {
   return (
     <div>
-      <Title date={new Date()}>Hoja de seguimiento</Title>
+      <Title date={initialValues.createDate}>Hoja de seguimiento</Title>
       <Formik
         initialValues={initialValues}
         enableReinitialize

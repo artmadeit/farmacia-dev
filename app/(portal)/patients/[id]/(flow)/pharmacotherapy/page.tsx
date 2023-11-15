@@ -129,7 +129,9 @@ export default function Pharmacotherapy({
 
   return (
     <div>
-      <Title date={new Date()}>Hoja Farmacoterapéutica</Title>
+      <Title date={data?.createDate || new Date()}>
+        Hoja Farmacoterapéutica
+      </Title>
       <Formik
         initialValues={initialValues}
         enableReinitialize

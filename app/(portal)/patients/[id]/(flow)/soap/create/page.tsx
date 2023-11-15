@@ -14,6 +14,7 @@ const emptyInitialValues: TrackingSheet = {
   drugEvaluations: [{ ...emptyDrugNesEvaluation }],
   soapRows: [{ ...emptySoapRow }],
   picoSheets: [],
+  createDate: new Date(),
 };
 export default function CreateTrackingSheet({
   params,
@@ -60,6 +61,9 @@ export default function CreateTrackingSheet({
   };
 
   return (
-    <TrackingSheetForm initialValues={initialValues} onSubmit={handleSubmit} />
+    <TrackingSheetForm
+      initialValues={{ ...initialValues, createDate: new Date() }}
+      onSubmit={handleSubmit}
+    />
   );
 }
