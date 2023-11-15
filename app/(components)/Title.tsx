@@ -1,6 +1,6 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
-import { formatDate } from "../date";
+import { formatDateTime } from "../date";
 
 export const Title = ({
   children,
@@ -15,7 +15,7 @@ export const Title = ({
         <Typography variant="h5" gutterBottom>
           {children}
         </Typography>
-        <Typography>Fecha: {formatDate(date)}</Typography>
+        <Typography>Fecha: {formatDateTime(date)}</Typography>
       </Box>
       <Divider />
     </Stack>
