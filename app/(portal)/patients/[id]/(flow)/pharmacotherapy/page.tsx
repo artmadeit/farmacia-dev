@@ -41,6 +41,7 @@ import { emptyHistoryRow } from "./emptyHistoryRow";
 import yup from "@/app/validation";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 import { historySchema } from "./historySchema";
+import { TABLE_WIDTH_ACTION, TABLE_WIDTH_DATE } from "./table";
 
 const emptyMedicineAllergyRow = {
   drug: "",
