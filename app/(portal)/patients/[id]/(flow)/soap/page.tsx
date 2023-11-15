@@ -32,6 +32,11 @@ export default function SOAP({ params }: { params: { id: number } }) {
   const columns = useMemo(() => {
     const result: GridColDef<Interview>[] = [
       {
+        field: "numberOfInterview",
+        headerName: "Número de entrevista",
+        width: 180,
+      },
+      {
         field: "createDate",
         headerName: "Fecha de entrevista",
         width: 140,
