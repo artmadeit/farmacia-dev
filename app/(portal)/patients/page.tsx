@@ -46,10 +46,10 @@ export default function ListPatients() {
             width: 80,
             getActions: (params) => {
               return [
-                <Tooltip title="Editar" key="edit">
+                <Tooltip title="Ver" key="edit">
                   <GridActionsCellItem
                     icon={<SearchIcon />}
-                    label="Editar"
+                    label="ver"
                     // onClick={() => router.push(`patients/${params.row.id}`)}
                     onClick={() =>
                       router.push(`patients/${params.row.id}/selection`)
