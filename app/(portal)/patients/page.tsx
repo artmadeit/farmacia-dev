@@ -5,6 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -47,9 +48,12 @@ export default function ListPatients() {
               return [
                 <Tooltip title="Editar" key="edit">
                   <GridActionsCellItem
-                    icon={<EditIcon />}
+                    icon={<SearchIcon />}
                     label="Editar"
-                    onClick={() => router.push(`patients/${params.row.id}`)}
+                    // onClick={() => router.push(`patients/${params.row.id}`)}
+                    onClick={() =>
+                      router.push(`patients/${params.row.id}/selection`)
+                    }
                   />
                 </Tooltip>,
               ];
