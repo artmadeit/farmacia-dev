@@ -27,7 +27,7 @@ import { emptyPicoRow } from "./emptyPicoRow";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { isEqual } from "lodash";
 
-export const ClinicalQuestionDialog = () => {
+export const PicoDialog = () => {
   const [open, setOpen] = React.useState(false);
 
   const { values, setFieldValue, errors, touched } = useFormikContext<{
@@ -269,4 +269,4 @@ export const ClinicalQuestionDialog = () => {
   );
 };
 
-export default ClinicalQuestionDialog;
+export default PicoDialog;

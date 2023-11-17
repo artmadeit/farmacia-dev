@@ -49,7 +49,7 @@ import {
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 import yup from "@/app/validation";
 import { PicoMedicine } from "./PicoMedicine";
-import ClinicalQuestionDialog from "./clinicalQuestionDialog";
+import PicoDialog from "./PicoDialog";
 import { picoSheetsSchema } from "./picoSheetsSchema";
 import { drugEvaluationSchema } from "./drugEvaluationSchema";
 
@@ -293,7 +293,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                             Agregar otra intervención farmaceutica
                           </Button>
                         </Box>
-                        <ClinicalQuestionDialog />
+                        <PicoDialog />
                       </div>
                     )}
                   </Grid>

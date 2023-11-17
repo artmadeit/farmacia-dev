@@ -13,8 +13,14 @@ export default function EditSoap({
 
   const { data } = useSWR<TrackingSheet>(soapId ? `/soap/${soapId}` : null);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values: TrackingSheet) => {
     // TODO:
+    // const data = {
+    //   history: values.history.map(({,...rest })=> {
+    //     return {
+    //     }
+    //   })
+    // }
   };
 
   if (!data) return <div>Loading...</div>;

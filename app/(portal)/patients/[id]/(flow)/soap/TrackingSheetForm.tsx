@@ -9,7 +9,7 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import React from "react";
-import ClinicalQuestionDialog from "../nes/clinicalQuestionDialog";
+import PicoDialog from "../nes/PicoDialog";
 import { drugEvaluationSchema } from "../nes/drugEvaluationSchema";
 import { picoSheetsSchema } from "../nes/picoSheetsSchema";
 import { PharmacotherapyTable } from "../pharmacotherapy/PharmacotherapyTable";
@@ -148,7 +148,7 @@ export const TrackingSheetForm = ({
                             Agregar otra fila
                           </Button>
                         </Box>
-                        <ClinicalQuestionDialog />
+                        <PicoDialog />
                       </div>
                     </Grid>
                   )}
