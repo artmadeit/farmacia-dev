@@ -9,13 +9,6 @@ import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
 import { TrackingSheet, emptySoapRow } from "../TrackingSheet";
 import { TrackingSheetForm } from "../TrackingSheetForm";
 
-const emptyInitialValues: TrackingSheet = {
-  history: [{ ...emptyHistoryRow }],
-  drugEvaluations: [{ ...emptyDrugNesEvaluation }],
-  soapRows: [{ ...emptySoapRow }],
-  picoSheets: [],
-  createDate: new Date(),
-};
 export default function CreateTrackingSheet({
   params,
 }: {
@@ -23,10 +16,14 @@ export default function CreateTrackingSheet({
 }) {
   const { id: patientId } = params;
 
-  const { data: lastInterview } = useSWR<TrackingSheet>(
-    patientId ? `/patients/${patientId}/soap/last` : null
+  const { data: pharmacoterapy } = useSWR(
+    patientId ? `/patients/${patientId}/pharmacoterapy` : null
   );
-  const initialValues = lastInterview || emptyInitialValues;
+  const { data: nes } = useSWR(patientId ? `/patients/${patientId}/nes` : null);
+
+  const { data: lastInterview } = useSWR<TrackingSheet>(
+    pharmacoterapy && nes ? `/patients/${patientId}/soap/last` : null
+  );
   const getApi = useAuthApi();
   const router = useRouter();
 
@@ -60,9 +57,12 @@ export default function CreateTrackingSheet({
     router.push(`/patients/${patientId}/soap`);
   };
 
+  if (!lastInterview) {
+    return <div>Complete las hojas de farmacoterapia y NES</div>;
+  }
   return (
     <TrackingSheetForm
-      initialValues={{ ...initialValues, createDate: new Date() }}
+      initialValues={{ ...lastInterview, createDate: new Date() }}
       onSubmit={handleSubmit}
     />
   );
