@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/app/(components)/Loading";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -66,7 +67,7 @@ export default function SOAP({ params }: { params: { id: number } }) {
     return result.map(withOutSorting);
   }, [router]);
 
-  if (!interviews) return <div>Loading</div>;
+  if (!interviews) return <Loading />;
   return (
     <Box>
       <Stack alignItems="start" direction="column" spacing={2}>

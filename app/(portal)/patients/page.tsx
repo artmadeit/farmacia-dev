@@ -18,6 +18,7 @@ import { Patient } from "./create/Patient";
 import useSWR from "swr";
 import { Page } from "../../(api)/pagination";
 import { usePagination } from "../../(components)/hook-customization/usePagination";
+import Loading from "@/app/(components)/Loading";
 
 export default function ListPatients() {
   const router = useRouter();
@@ -64,7 +65,7 @@ export default function ListPatients() {
     [router]
   );
 
-  if (!patients) return <div>Loading</div>;
+  if (!patients) return <Loading />;
   return (
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>

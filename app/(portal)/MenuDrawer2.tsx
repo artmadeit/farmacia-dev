@@ -23,6 +23,7 @@ import { styled } from "@mui/material/styles";
 import NextLink from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import * as React from "react";
+import Loading from "../(components)/Loading";
 
 const appName = "Atención farmacéutica";
 
@@ -68,7 +69,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
 
   const [pillOpen, setPillOpen] = React.useState(true);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (!isAuthenticated) return redirect("/");
 
   const drawer = (

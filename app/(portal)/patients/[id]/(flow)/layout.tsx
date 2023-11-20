@@ -7,6 +7,7 @@ import { Patient } from "../../create/Patient";
 import useSWR from "swr";
 import EditIcon from "@mui/icons-material/Edit";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/(components)/Loading";
 
 export default function MedicalFlowLayout({
   params,
@@ -22,7 +23,7 @@ export default function MedicalFlowLayout({
 
   const router = useRouter();
 
-  if (isLoading || !patient) return <div>Loading</div>;
+  if (isLoading || !patient) return <Loading />;
   return (
     <div>
       <Box display="flex" alignItems="center">

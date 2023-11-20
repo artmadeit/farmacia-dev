@@ -6,6 +6,7 @@ import { TrackingSheet } from "../TrackingSheet";
 import { isString } from "lodash";
 import { useAuthApi } from "@/app/(api)/api";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/(components)/Loading";
 
 export default function EditSoap({
   params,
@@ -49,6 +50,6 @@ export default function EditSoap({
     console.log(data);
   };
 
-  if (!data) return <div>Loading...</div>;
+  if (!data) return <Loading />;
   return <TrackingSheetForm initialValues={data} onSubmit={handleSubmit} />;
 }

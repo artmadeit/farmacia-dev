@@ -8,6 +8,7 @@ import { usePagination } from "@/app/(components)/hook-customization/usePaginati
 import { DrugDci } from "./DrugDci";
 import useSWR from "swr";
 import { Page } from "@/app/(api)/pagination";
+import Loading from "@/app/(components)/Loading";
 
 const DciList = () => {
   const { paginationModel, setPaginationModel } = usePagination();
@@ -27,7 +28,7 @@ const DciList = () => {
     []
   );
 
-  if (!drugDcis) return <div>Loading</div>;
+  if (!drugDcis) return <Loading />;
   return (
     <Stack spacing={2}>
       <Stack spacing={2}>

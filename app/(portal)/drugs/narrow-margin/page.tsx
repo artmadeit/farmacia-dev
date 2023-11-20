@@ -17,6 +17,7 @@ import { Page } from "@/app/(api)/pagination";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import DialogDelete from "@/app/(components)/DialogDelete";
 import { useAuthApi } from "@/app/(api)/api";
+import Loading from "@/app/(components)/Loading";
 
 const DrugsPage = () => {
   const router = useRouter();
@@ -79,7 +80,7 @@ const DrugsPage = () => {
     [router]
   );
 
-  if (!drugs) return <div>Loading</div>;
+  if (!drugs) return <Loading />;
 
   return (
     <Stack direction="column" spacing={2}>
