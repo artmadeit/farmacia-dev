@@ -60,7 +60,11 @@ export const PicoDialog = () => {
             setOpen(true);
           }}
         >
-          Agregar pico
+          {values.picoSheets.length === 0 ||
+          (values.picoSheets.length === 1 &&
+            isEqual(values.picoSheets[0], emptyPicoRow))
+            ? "Agregar PICO"
+            : "Ver PICOs"}
         </Button>
         {touched.picoSheets && errors.picoSheets && (
           <Tooltip title="Hay errores, vea más">
@@ -257,7 +261,7 @@ export const PicoDialog = () => {
                     Agregar otra fila
                   </Button>
                   <Button variant="contained" onClick={handleClose}>
-                    Guardar
+                    Aceptar
                   </Button>
                 </Box>
               </>
