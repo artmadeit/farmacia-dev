@@ -1,6 +1,13 @@
 "use client";
 
-import { Fab, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Fab,
+  InputAdornment,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import React from "react";
@@ -10,6 +17,8 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridColDef,
+  GridToolbar,
+  GridToolbarQuickFilter,
   esES,
 } from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
@@ -77,6 +86,18 @@ export default function ListPatients() {
           </Link>
         </Tooltip>
       </Stack>
+      <TextField
+        placeholder="Buscar..."
+        variant="outlined"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+        fullWidth
+      />
       <div style={{ height: "70vh", width: "100%" }}>
         <DataGrid
           columns={columns}
@@ -84,6 +105,7 @@ export default function ListPatients() {
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
+          disableColumnFilter
           rows={patients._embedded.patients}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
