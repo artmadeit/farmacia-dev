@@ -101,6 +101,7 @@ const DrugsPage = () => {
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
+          disableColumnFilter
           rows={drugs._embedded.drugNarrowMargins}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />

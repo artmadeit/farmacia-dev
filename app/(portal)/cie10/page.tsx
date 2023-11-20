@@ -42,6 +42,7 @@ const Cie10 = () => {
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
+          disableColumnFilter
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
