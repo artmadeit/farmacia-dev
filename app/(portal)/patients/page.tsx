@@ -30,7 +30,9 @@ import useDebounce from "@/app/(components)/helpers/useDebounce";
 export default function ListPatients() {
   const router = useRouter();
   const { paginationModel, setPaginationModel } = usePagination();
-  const [searchText, setSearchText] = useQueryState("searchText");
+  const [searchText, setSearchText] = useQueryState("searchText", {
+    defaultValue: "",
+  });
   const debouncedSearch = useDebounce(searchText, 1000);
 
   const { data: patients, isLoading } = useSWR<Page<Patient>>([
@@ -113,7 +115,7 @@ export default function ListPatients() {
         <DataGrid
           loading={isLoading}
           columns={columns}
-          rowCount={patients?.page.totalElements}
+          rowCount={patients?.page.totalElements || 0}
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
