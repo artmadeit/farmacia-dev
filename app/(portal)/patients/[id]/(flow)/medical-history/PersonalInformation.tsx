@@ -13,6 +13,7 @@ import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { Anamnesis } from "./page";
 import { minYear, today } from "@/app/date";
+import { isNumber, isString } from "lodash";
 
 const EMPTY = "-";
 
@@ -20,10 +21,10 @@ const getImc = ({
   size,
   weight,
 }: {
-  size: number | null;
-  weight: number | null;
+  size?: number | string;
+  weight?: number | string;
 }) => {
-  if (size && weight) {
+  if (size && weight && isNumber(size) && isNumber(weight)) {
     return (weight / size ** 2).toFixed(1);
   }
 
@@ -72,7 +73,10 @@ export const PersonalInformation = () => {
         />
       </Grid>
       <Grid xs={2} p={3}>
-        Edad: {values.birthdate ? calculateAge(values.birthdate) : EMPTY}
+        Edad:{" "}
+        {values.birthdate && !isString(values.birthdate)
+          ? calculateAge(values.birthdate)
+          : EMPTY}
       </Grid>
       <Grid xs={2}>
         <FormControl error={Boolean(touched.sex && errors.sex)}>

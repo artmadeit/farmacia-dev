@@ -9,6 +9,7 @@ import {
   AutocompleteRenderInputParams,
   Box,
   Button,
+  Chip,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -60,9 +61,8 @@ const initialValues: Anamnesis = {
   occupation: "",
   sex: "",
   birthdate: null,
-  weight: null,
-  size: null,
-
+  weight: "",
+  size: "",
   antecedents: [],
   otherAntecedents: "",
 
@@ -77,11 +77,11 @@ const initialValues: Anamnesis = {
   },
 
   vitalFunctions: {
-    heartRate: null,
-    breathingRate: null,
-    temperature: null,
-    bloodPressureSystolic: null,
-    bloodPressureDiastolic: null,
+    heartRate: "",
+    breathingRate: "",
+    temperature: "",
+    bloodPressureSystolic: "",
+    bloodPressureDiastolic: "",
   },
 
   consumptionHabits: {
@@ -109,8 +109,8 @@ export type Anamnesis = {
   occupation: string;
   sex: string;
   birthdate: Date | null;
-  weight: number | null;
-  size: number | null;
+  weight: number | string;
+  size: number | string;
   antecedents: string[];
   otherAntecedents: string;
 
@@ -125,11 +125,11 @@ export type Anamnesis = {
   };
 
   vitalFunctions: {
-    heartRate: number | null;
-    breathingRate: number | null;
-    temperature: number | null;
-    bloodPressureSystolic: number | null;
-    bloodPressureDiastolic: number | null;
+    heartRate: number | string;
+    breathingRate: number | string;
+    temperature: number | string;
+    bloodPressureSystolic: number | string;
+    bloodPressureDiastolic: number | string;
   };
 
   consumptionHabits: {
@@ -331,13 +331,18 @@ const Diagnosis = () => {
     }
   }, 500);
 
+  const totalDiseases = [...values.diagnosis, ...diseases];
+
+  const getOptionLabel = (option: any) =>
+    typeof option === "string" ? option : option.name;
+
   const name = "diagnosis";
   return (
     <Field
       name={name}
       multiple
       component={Autocomplete}
-      options={diseases}
+      options={totalDiseases}
       renderInput={(params: AutocompleteRenderInputParams) => (
         <MuiTextField
           placeholder="Ingrese una o varias enfermedades"
@@ -348,9 +353,29 @@ const Diagnosis = () => {
           helperText={errors[name] as string}
         />
       )}
-      getOptionLabel={(option: any) =>
-        typeof option === "string" ? option : option.name
-      }
+      // to solve bug with keys:
+      // obtained from: https://stackoverflow.com/questions/75818761/material-ui-autocomplete-warning-a-props-object-containing-a-key-prop-is-be
+      renderOption={(props: any, option: any) => {
+        return (
+          <li {...props} key={option.id}>
+            {getOptionLabel(option)}
+          </li>
+        );
+      }}
+      renderTags={(tagValue: any[], getTagProps: any) => {
+        return (
+          <>
+            {tagValue.map((option, index) => (
+              <Chip
+                {...getTagProps({ index })}
+                key={option.id}
+                label={getOptionLabel(option)}
+              />
+            ))}
+          </>
+        );
+      }}
+      getOptionLabel={getOptionLabel}
       isOptionEqualToValue={(option: DiseaseCie10, value: DiseaseCie10) =>
         option.id === value.id
       }
