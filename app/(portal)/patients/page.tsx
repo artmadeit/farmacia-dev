@@ -1,5 +1,7 @@
 "use client";
 
+import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Fab,
   InputAdornment,
@@ -8,33 +10,33 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import Link from "next/link";
-import React from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import SearchIcon from "@mui/icons-material/Search";
 import {
   DataGrid,
   GridActionsCellItem,
   GridColDef,
-  GridToolbar,
-  GridToolbarQuickFilter,
   esES,
 } from "@mui/x-data-grid";
-import { useRouter } from "next/navigation";
-import { withOutSorting } from "../../(components)/helpers/withOutSorting";
-import { Patient } from "./create/Patient";
+import { useQueryState } from "next-usequerystate";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import React from "react";
 import useSWR from "swr";
 import { Page } from "../../(api)/pagination";
+import { withOutSorting } from "../../(components)/helpers/withOutSorting";
 import { usePagination } from "../../(components)/hook-customization/usePagination";
-import Loading from "@/app/(components)/Loading";
+import { Patient } from "./create/Patient";
+import useDebounce from "@/app/(components)/helpers/useDebounce";
 
 export default function ListPatients() {
   const router = useRouter();
   const { paginationModel, setPaginationModel } = usePagination();
+  const [searchText, setSearchText] = useQueryState("searchText");
+  const debouncedSearch = useDebounce(searchText, 1000);
 
-  const { data: patients } = useSWR<Page<Patient>>([
-    "/patients",
+  const { data: patients, isLoading } = useSWR<Page<Patient>>([
+    debouncedSearch
+      ? `/patients/search/findByName?searchText=${debouncedSearch}`
+      : "/patients",
     {
       params: {
         page: paginationModel.page,
@@ -74,7 +76,13 @@ export default function ListPatients() {
     [router]
   );
 
-  if (!patients) return <Loading />;
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (event) => {
+    const searchText = event.target.value;
+    setSearchText(searchText);
+  };
+
   return (
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
@@ -90,6 +98,8 @@ export default function ListPatients() {
       <TextField
         placeholder="Buscar..."
         variant="outlined"
+        value={searchText}
+        onChange={handleChange}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -101,13 +111,14 @@ export default function ListPatients() {
       />
       <div style={{ height: "70vh", width: "100%" }}>
         <DataGrid
+          loading={isLoading}
           columns={columns}
-          rowCount={patients.page.totalElements}
+          rowCount={patients?.page.totalElements}
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
           disableColumnFilter
-          rows={patients._embedded.patients}
+          rows={patients?._embedded.patients || []}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
