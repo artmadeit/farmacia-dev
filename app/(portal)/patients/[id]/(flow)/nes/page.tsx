@@ -235,7 +235,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
               name="diagnosisNotRelated"
             />
             <Grid container pt={4}>
-              <Grid xs={10} paddingBottom={2}>
+              <Grid item xs={10} paddingBottom={2}>
                 <Typography variant="h6" pt={2}>
                   Plan de intervención farmaceutica
                 </Typography>
@@ -247,6 +247,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                       <Grid container key={index} paddingBottom={2}>
                         {values.pharmaceuticInterventions.length > 1 && (
                           <Grid
+                            item
                             xs={12}
                             display="flex"
                             justifyContent="end"
@@ -278,6 +279,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                           />
                         </Grid>
                       </Grid>
+                      // <Box key={index}>Hola</Box>
                     ))}
                     {values.pharmaceuticInterventions.length > 0 && (
                       <div>

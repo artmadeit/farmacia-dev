@@ -87,7 +87,7 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
       </Title>
       <Grid container spacing={4}>
         <Grid xs={6} pt={8}>
-          <DragDrop uppy={uppy} height={height} />
+          <DragDrop uppy={uppy} height={String(height)} />
           <StatusBar uppy={uppy} />
         </Grid>
         <Grid xs={6}>

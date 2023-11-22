@@ -90,7 +90,7 @@ export const PicoDialog = () => {
 
       <Dialog open={open} onClose={handleClose}>
         {/* <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle> */}
-        <Grid xs={12} display="flex" justifyContent="flex-end">
+        <Grid item xs={12} display="flex" justifyContent="flex-end">
           <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
           </IconButton>
@@ -102,7 +102,7 @@ export const PicoDialog = () => {
                 {values.picoSheets.map((x, index) => (
                   <React.Fragment key={index}>
                     {values.picoSheets.length > 1 && (
-                      <Grid xs={12} display="flex" justifyContent="end">
+                      <Grid item xs={12} display="flex" justifyContent="end">
                         <Tooltip title="Eliminar">
                           <Fab
                             aria-label="delete"
