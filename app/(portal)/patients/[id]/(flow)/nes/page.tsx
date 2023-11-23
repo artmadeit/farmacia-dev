@@ -52,6 +52,7 @@ import { PicoMedicine } from "./PicoMedicine";
 import PicoDialog from "./PicoDialog";
 import { picoSheetsSchema } from "./picoSheetsSchema";
 import { drugEvaluationSchema } from "./drugEvaluationSchema";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 
 const emptyEvaluationRow = {
   symptoms: "",
@@ -96,6 +97,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
   const { id: patientId } = params;
   const getApi = useAuthApi();
   const router = useRouter();
+  const alert = React.useContext(SnackbarContext);
 
   const { data: anamnesis } = useSWR(`/patients/${patientId}/anamnesis`);
   const { data, mutate } = useSWR(
@@ -217,7 +219,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
           const response = getApi().then((api) =>
             api.post(`patients/${patientId}/nes`, data)
           );
-
+          alert.showMessage("Información guardada exitosamente");
           router.push(`/patients/${patientId}/soap`);
         }}
       >

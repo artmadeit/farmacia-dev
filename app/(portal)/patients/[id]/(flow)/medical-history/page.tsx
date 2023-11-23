@@ -46,6 +46,7 @@ import {
   healthProblems,
 } from "./data";
 import { requiredMessage } from "../../../../../(components)/helpers/requiredMessage";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -161,6 +162,7 @@ export default function PatientInterview({
   const { id: patientId } = params;
   const getApi = useAuthApi();
   const router = useRouter();
+  const alert = React.useContext(SnackbarContext);
 
   const { data, mutate } = useSWR(`/patients/${patientId}/anamnesis`);
 
@@ -261,6 +263,7 @@ export default function PatientInterview({
           const response = await getApi().then((api) =>
             api.post(`patients/${patientId}/anamnesis`, data)
           );
+          alert.showMessage("Información guardada");
           router.push(`/patients/${patientId}/pharmacotherapy`);
         }}
       >

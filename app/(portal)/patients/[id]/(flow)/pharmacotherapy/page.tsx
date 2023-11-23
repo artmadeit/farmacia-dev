@@ -42,6 +42,8 @@ import yup from "@/app/validation";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 import { historySchema } from "./historySchema";
 import { TABLE_WIDTH_ACTION, TABLE_WIDTH_DATE } from "./table";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
+import React from "react";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -109,6 +111,7 @@ export default function Pharmacotherapy({
   const { id: patientId } = params;
   const getApi = useAuthApi();
   const router = useRouter();
+  const alert = React.useContext(SnackbarContext);
 
   const { data } = useSWR(`/patients/${patientId}/pharmacoterapy`);
 
@@ -209,6 +212,7 @@ export default function Pharmacotherapy({
           const response = getApi().then((api) =>
             api.post(`patients/${patientId}/pharmacoterapy`, data)
           );
+          alert.showMessage("Información guardada exitosamente");
           router.push(`/patients/${patientId}/nes`);
         }}
       >
