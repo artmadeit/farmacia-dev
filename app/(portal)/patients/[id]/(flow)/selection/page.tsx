@@ -28,6 +28,8 @@ import { Drug } from "../../../../drugs/narrow-margin/Drug";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
 import { PatientDocument } from "../PatientDocument";
+import React from "react";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 
 const PrmSelect = () => {
   return (
@@ -117,6 +119,7 @@ export default function PatientSelectionPage({
     `/patients/${patientId}/selection-forms`
   );
   const router = useRouter();
+  const alert = React.useContext(SnackbarContext);
   const getApi = useAuthApi();
 
   return (
@@ -152,7 +155,7 @@ export default function PatientSelectionPage({
             })
           );
           mutate(response.data);
-
+          alert.showMessage("Información guardada exitosamente");
           router.push(`/patients/${patientId}/consent`);
         }}
       >
