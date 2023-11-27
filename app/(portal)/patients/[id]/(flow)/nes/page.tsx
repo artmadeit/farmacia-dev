@@ -216,9 +216,10 @@ export default function NesPage({ params }: { params: { id: number } }) {
             pharmaceuticInterventions: values.pharmaceuticInterventions,
             picoSheets: values.picoSheets,
           };
-          const response = getApi().then((api) =>
+          const response = await getApi().then((api) =>
             api.post(`patients/${patientId}/nes`, data)
           );
+          mutate();
           alert.showMessage("Información guardada exitosamente");
           router.push(`/patients/${patientId}/soap`);
         }}

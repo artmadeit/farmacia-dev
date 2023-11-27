@@ -113,7 +113,7 @@ export default function Pharmacotherapy({
   const router = useRouter();
   const alert = React.useContext(SnackbarContext);
 
-  const { data } = useSWR(`/patients/${patientId}/pharmacoterapy`);
+  const { data, mutate } = useSWR(`/patients/${patientId}/pharmacoterapy`);
 
   const searchDrugDcis = (searchText: string) =>
     getApi().then((api) =>
@@ -209,9 +209,10 @@ export default function Pharmacotherapy({
             }),
           };
 
-          const response = getApi().then((api) =>
+          const response = await getApi().then((api) =>
             api.post(`patients/${patientId}/pharmacoterapy`, data)
           );
+          mutate();
           alert.showMessage("Información guardada exitosamente");
           router.push(`/patients/${patientId}/nes`);
         }}

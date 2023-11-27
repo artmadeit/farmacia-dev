@@ -263,6 +263,8 @@ export default function PatientInterview({
           const response = await getApi().then((api) =>
             api.post(`patients/${patientId}/anamnesis`, data)
           );
+
+          mutate(response.data);
           alert.showMessage("Información guardada exitosamente");
           router.push(`/patients/${patientId}/pharmacotherapy`);
         }}
