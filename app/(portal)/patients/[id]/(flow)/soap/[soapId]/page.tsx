@@ -16,7 +16,9 @@ export default function EditSoap({
   const { id: patientId, soapId } = params;
   const getApi = useAuthApi();
   const router = useRouter();
-  const { data } = useSWR<TrackingSheet>(soapId ? `/soap/${soapId}` : null);
+  const { data, mutate } = useSWR<TrackingSheet>(
+    soapId ? `/soap/${soapId}` : null
+  );
 
   const handleSubmit = async (values: TrackingSheet) => {
     // TODO:
@@ -45,7 +47,10 @@ export default function EditSoap({
       picoSheets: values.picoSheets,
       patientId: patientId,
     };
-    const response = getApi().then((api) => api.put(`soap/${soapId}`, data));
+    const response = await getApi().then((api) =>
+      api.put(`soap/${soapId}`, data)
+    );
+    mutate(response.data);
     router.push(`/patients/${patientId}/soap`);
     console.log(data);
   };

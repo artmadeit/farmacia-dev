@@ -21,7 +21,7 @@ export default function CreateTrackingSheet({
   );
   const { data: nes } = useSWR(patientId ? `/patients/${patientId}/nes` : null);
 
-  const { data: lastInterview } = useSWR<TrackingSheet>(
+  const { data: lastInterview, mutate } = useSWR<TrackingSheet>(
     pharmacoterapy && nes ? `/patients/${patientId}/soap/last` : null
   );
   const getApi = useAuthApi();
@@ -53,7 +53,8 @@ export default function CreateTrackingSheet({
       picoSheets: values.picoSheets,
       patientId: patientId,
     };
-    const response = getApi().then((api) => api.post("soap", data));
+    const response = await getApi().then((api) => api.post("soap", data));
+    mutate(response.data);
     router.push(`/patients/${patientId}/soap`);
   };
 
