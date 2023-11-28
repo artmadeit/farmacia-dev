@@ -54,7 +54,7 @@ export default function CreateTrackingSheet({
       patientId: patientId,
     };
     const response = await getApi().then((api) => api.post("soap", data));
-    mutate(response.data);
+    mutate();
     router.push(`/patients/${patientId}/soap`);
   };
 
