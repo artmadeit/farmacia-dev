@@ -7,6 +7,7 @@ import { isString } from "lodash";
 import { useAuthApi } from "@/app/(api)/api";
 import { useRouter } from "next/navigation";
 import Loading from "@/app/(components)/Loading";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 
 export default function EditSoap({
   params,
@@ -16,6 +17,7 @@ export default function EditSoap({
   const { id: patientId, soapId } = params;
   const getApi = useAuthApi();
   const router = useRouter();
+  const alert = React.useContext(SnackbarContext);
   const { data, mutate } = useSWR<TrackingSheet>(
     soapId ? `/soap/${soapId}` : null
   );
@@ -51,6 +53,7 @@ export default function EditSoap({
       api.put(`soap/${soapId}`, data)
     );
     mutate();
+    alert.showMessage("Información correctamente editada");
     router.push(`/patients/${patientId}/soap`);
   };
 
