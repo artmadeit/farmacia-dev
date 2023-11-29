@@ -16,11 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import useSWR from "swr";
-
-type Interview = {
-  id: number;
-  createDate: Date;
-};
+import { Interview } from "./Interview";
 
 export default function SOAP({ params }: { params: { id: number } }) {
   const { id: patientId } = params;

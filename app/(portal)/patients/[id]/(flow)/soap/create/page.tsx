@@ -4,10 +4,9 @@ import { useAuthApi } from "@/app/(api)/api";
 import { isString } from "lodash";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
-import { emptyDrugNesEvaluation } from "../../nes/table";
-import { emptyHistoryRow } from "../../pharmacotherapy/emptyHistoryRow";
-import { TrackingSheet, emptySoapRow } from "../TrackingSheet";
+import { TrackingSheet } from "../TrackingSheet";
 import { TrackingSheetForm } from "../TrackingSheetForm";
+import { Interview } from "../Interview";
 
 export default function CreateTrackingSheet({
   params,
@@ -19,11 +18,16 @@ export default function CreateTrackingSheet({
   const { data: pharmacoterapy } = useSWR(
     patientId ? `/patients/${patientId}/pharmacoterapy` : null
   );
+
+  const { mutate: getSoapInterviews } = useSWR<Interview[]>(
+    patientId ? `/patients/${patientId}/soap` : null
+  );
   const { data: nes } = useSWR(patientId ? `/patients/${patientId}/nes` : null);
 
-  const { data: lastInterview, mutate } = useSWR<TrackingSheet>(
-    pharmacoterapy && nes ? `/patients/${patientId}/soap/last` : null
-  );
+  const { data: lastInterview, mutate: getLastInterview } =
+    useSWR<TrackingSheet>(
+      pharmacoterapy && nes ? `/patients/${patientId}/soap/last` : null
+    );
   const getApi = useAuthApi();
   const router = useRouter();
 
@@ -53,8 +57,9 @@ export default function CreateTrackingSheet({
       picoSheets: values.picoSheets,
       patientId: patientId,
     };
-    const response = await getApi().then((api) => api.post("soap", data));
-    mutate();
+    await getApi().then((api) => api.post("soap", data));
+    getLastInterview();
+    getSoapInterviews();
     router.push(`/patients/${patientId}/soap`);
   };
 
