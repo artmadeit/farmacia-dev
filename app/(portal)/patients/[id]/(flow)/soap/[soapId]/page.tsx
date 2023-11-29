@@ -50,9 +50,8 @@ export default function EditSoap({
     const response = await getApi().then((api) =>
       api.put(`soap/${soapId}`, data)
     );
-    mutate(response.data);
+    mutate();
     router.push(`/patients/${patientId}/soap`);
-    console.log(data);
   };
 
   if (!data) return <Loading />;
