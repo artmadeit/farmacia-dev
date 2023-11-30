@@ -7,6 +7,8 @@ import useSWR from "swr";
 import { TrackingSheet } from "../TrackingSheet";
 import { TrackingSheetForm } from "../TrackingSheetForm";
 import { Interview } from "../Interview";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
+import React from "react";
 
 export default function CreateTrackingSheet({
   params,
@@ -29,6 +31,7 @@ export default function CreateTrackingSheet({
       pharmacoterapy && nes ? `/patients/${patientId}/soap/last` : null
     );
   const getApi = useAuthApi();
+  const alert = React.useContext(SnackbarContext);
   const router = useRouter();
 
   const handleSubmit = async (values: TrackingSheet) => {
@@ -60,6 +63,7 @@ export default function CreateTrackingSheet({
     await getApi().then((api) => api.post("soap", data));
     getLastInterview();
     getSoapInterviews();
+    alert.showMessage("Información guardad exitosamente");
     router.push(`/patients/${patientId}/soap`);
   };
 
