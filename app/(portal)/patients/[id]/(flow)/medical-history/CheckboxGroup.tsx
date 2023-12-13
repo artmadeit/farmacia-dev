@@ -8,7 +8,13 @@ import React from "react";
 import { GroupItems } from "./data";
 import { Subtitle } from "./Subtitle";
 
-export const CheckboxGroup = ({ group }: { group: GroupItems }) => {
+export const CheckboxGroup = ({
+  group,
+  children,
+}: {
+  group: GroupItems;
+  children?: React.ReactNode;
+}) => {
   return (
     <Grid xs={3}>
       <Subtitle component="h6">{group.label}</Subtitle>
@@ -26,6 +32,7 @@ export const CheckboxGroup = ({ group }: { group: GroupItems }) => {
             }}
           />
         ))}
+        {children}
       </Stack>
     </Grid>
   );

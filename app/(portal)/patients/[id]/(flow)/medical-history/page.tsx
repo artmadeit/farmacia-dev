@@ -75,6 +75,7 @@ const initialValues: Anamnesis = {
     metabolic: [],
     skin: [],
     others: [],
+    otherSymptoms: "",
   },
 
   vitalFunctions: {
@@ -123,6 +124,7 @@ export type Anamnesis = {
     metabolic: string[];
     skin: string[];
     others: string[];
+    otherSymptoms: string;
   };
 
   vitalFunctions: {
@@ -452,7 +454,20 @@ const FoodHabits = () => {
 const HealthProblems = () => (
   <Grid container component={OutlinedPaper}>
     {healthProblems.map((group, index) => (
-      <CheckboxGroup key={index} group={group} />
+      <CheckboxGroup key={index} group={group}>
+        {group.id === "healthProblems.others" && (
+          <Field
+            sx={{ my: 2 }}
+            name="healthProblems.otherSymptoms"
+            label="Otros sintomas:"
+            component={TextField}
+            variant="outlined"
+            multiline
+            rows={4}
+            fullWidth
+          />
+        )}
+      </CheckboxGroup>
     ))}
   </Grid>
 );
