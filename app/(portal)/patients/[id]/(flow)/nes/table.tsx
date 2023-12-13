@@ -101,13 +101,14 @@ export const NesTableCells = ({
           id={`${name}.${index}.necessity`}
           name={`${name}.${index}.necessity.evaluation`}
         >
+          <MenuItem value={"yes"}>Si</MenuItem>
           <MenuItem value={"yes real"}>Si real</MenuItem>
           <MenuItem value={"yes potential"}>Si potencial</MenuItem>
           <MenuItem value={"no real"}>No real</MenuItem>
           <MenuItem value={"no potential"}>No potencial</MenuItem>
         </Field>
-        {(values.necessity.evaluation === "yes real" ||
-          values.necessity.evaluation === "yes potential") && (
+        {(values.necessity.evaluation === "no real" ||
+          values.necessity.evaluation === "no potential") && (
           <Justification name={`${name}.${index}.necessity`} />
         )}
       </TableCell>
@@ -122,10 +123,10 @@ export const NesTableCells = ({
           <MenuItem value={"no real"}>No real</MenuItem>
           <MenuItem value={"no potential"}>No potencial</MenuItem>
         </Field>
-        {values.effectivity.evaluation &&
-          values.effectivity.evaluation !== "yes" && (
-            <Justification name={`${name}.${index}.effectivity`} />
-          )}
+        {(values.effectivity.evaluation === "no real" ||
+          values.effectivity.evaluation === "no potential") && (
+          <Justification name={`${name}.${index}.effectivity`} />
+        )}
       </TableCell>
       <TableCell sx={{ verticalAlign: "top" }}>
         <Field
@@ -138,7 +139,8 @@ export const NesTableCells = ({
           <MenuItem value={"no real"}>No real</MenuItem>
           <MenuItem value={"no potential"}>No potencial</MenuItem>
         </Field>
-        {values.security.evaluation && values.security.evaluation !== "yes" && (
+        {(values.security.evaluation === "no real" ||
+          values.security.evaluation === "no potential") && (
           <Justification name={`${name}.${index}.security`} />
         )}
       </TableCell>
