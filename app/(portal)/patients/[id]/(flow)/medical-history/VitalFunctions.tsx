@@ -58,8 +58,6 @@ export const VitalFunctions = () => {
           />
         </Grid>
       </Grid>
-
-      {/* </Grid> */}
     </Grid>
   );
 };

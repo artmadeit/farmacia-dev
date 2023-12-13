@@ -198,31 +198,31 @@ export default function PatientInterview({
           vitalFunctions: yup.object({
             heartRate: yup
               .number()
-              .required()
+              .notRequired()
               .min(40)
               .max(250)
               .label("Frecuencia cardíaca"),
             breathingRate: yup
               .number()
-              .required()
+              .notRequired()
               .min(8)
               .max(40)
               .label("Frecuencia respiratoria"),
             bloodPressureSystolic: yup
               .number()
-              .required()
+              .notRequired()
               .min(60)
               .max(240)
               .label("PA sistólica"),
             bloodPressureDiastolic: yup
               .number()
-              .required()
+              .notRequired()
               .min(30)
               .max(160)
               .label("PA diastólica"),
             temperature: yup
               .number()
-              .required()
+              .notRequired()
               .min(34)
               .max(42)
               .label("Temperatura"),
