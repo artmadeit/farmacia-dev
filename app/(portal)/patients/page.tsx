@@ -36,9 +36,7 @@ export default function ListPatients() {
   const debouncedSearch = useDebounce(searchText, 1000);
 
   const { data: patients, isLoading } = useSWR<Page<Patient>>([
-    debouncedSearch
-      ? `/patients/search/findByName?searchText=${debouncedSearch}`
-      : "/patients",
+    `/patients?searchText=${debouncedSearch}`,
     {
       params: {
         page: paginationModel.page,
