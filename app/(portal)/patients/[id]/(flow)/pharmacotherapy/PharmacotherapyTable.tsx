@@ -4,6 +4,7 @@ import { Page } from "@/app/(api)/pagination";
 import {
   InexactDatePicker,
   InexactDateType,
+  defaultDate,
 } from "@/app/(components)/InexactDatePicker";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
@@ -12,7 +13,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import {
+  Box,
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -35,8 +38,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import { ArrayHelpers, Field, FieldArray, useFormikContext } from "formik";
-import { RadioGroup, TextField } from "formik-mui";
-import React from "react";
+import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
+import React, { ChangeEvent } from "react";
 import { TABLE_WIDTH_DATE, TABLE_WIDTH_ACTION } from "./table";
 import { emptyHistoryRow } from "./emptyHistoryRow";
 
@@ -49,6 +52,7 @@ export type PharmaceuticHistoryRow = {
   restartDate: InexactDateType;
   startDate: InexactDateType;
   suspensionDate: InexactDateType;
+  hasSuspensionDate: boolean;
   dose: string;
   mode: string;
   drug: string | DrugProduct;
@@ -63,7 +67,7 @@ export const PharmacotherapyTable = <T extends string>({
     [key in T]: PharmaceuticHistoryRow[];
   };
 }) => {
-  const { touched, errors } = useFormikContext<any>();
+  const { touched, errors, setFieldValue } = useFormikContext<any>();
 
   const getApi = useAuthApi();
 
@@ -95,87 +99,116 @@ export const PharmacotherapyTable = <T extends string>({
                   Fecha inicio
                 </TableCell>
                 <TableCell style={{ width: TABLE_WIDTH_DATE }} align="center">
-                  Fecha susp
+                  Fecha suspensión
                 </TableCell>
                 <TableCell sx={{ width: 3 * TABLE_WIDTH_ACTION }}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {values[name].map((item, index) => (
-                <React.Fragment key={index}>
-                  <TableRow>
-                    <TableCell>
-                      <AsyncAutocomplete
-                        label="Medicamento"
-                        name={`${name}.${index}.drug`}
-                        getLabel={(option) => option.fullName}
-                        filter={searchDrugPharmaceuticalProducts}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <FormControl
-                        variant="outlined"
-                        error={Boolean(
-                          (touched[name] as any)?.[index]?.mode &&
-                            (errors[name] as any)?.[index]?.mode
-                        )}
-                      >
+              {values[name].map((item, index) => {
+                const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+                  const newValue = !Boolean(event.target.checked);
+                  if (!newValue) {
+                    setFieldValue(
+                      `${name}.${index}.suspensionDate`,
+                      defaultDate
+                    );
+                  }
+                  setFieldValue(
+                    `${name}.${index}.hasSuspensionDate`,
+                    !newValue
+                  );
+                };
+
+                return (
+                  <React.Fragment key={index}>
+                    <TableRow>
+                      <TableCell sx={{ verticalAlign: "top" }}>
+                        <AsyncAutocomplete
+                          label="Medicamento"
+                          name={`${name}.${index}.drug`}
+                          getLabel={(option) => option.fullName}
+                          filter={searchDrugPharmaceuticalProducts}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ verticalAlign: "top" }}>
+                        <FormControl
+                          variant="outlined"
+                          error={Boolean(
+                            (touched[name] as any)?.[index]?.mode &&
+                              (errors[name] as any)?.[index]?.mode
+                          )}
+                        >
+                          <Field
+                            component={RadioGroup}
+                            name={`${name}.${index}.mode`}
+                            row
+                          >
+                            <FormControlLabel
+                              value="P"
+                              control={<Radio />}
+                              label="P"
+                            />
+                            <FormControlLabel
+                              value="A"
+                              control={<Radio />}
+                              label="A"
+                            />
+                          </Field>
+                          <FormHelperText>
+                            {(touched[name] as any)?.[index]?.mode &&
+                              (errors[name] as any)?.[index]?.mode}
+                          </FormHelperText>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell sx={{ verticalAlign: "top" }}>
                         <Field
-                          component={RadioGroup}
-                          name={`${name}.${index}.mode`}
-                          row
-                        >
-                          <FormControlLabel
-                            value="P"
-                            control={<Radio />}
-                            label="P"
-                          />
-                          <FormControlLabel
-                            value="A"
-                            control={<Radio />}
-                            label="A"
-                          />
-                        </Field>
-                        <FormHelperText>
-                          {(touched[name] as any)?.[index]?.mode &&
-                            (errors[name] as any)?.[index]?.mode}
-                        </FormHelperText>
-                      </FormControl>
-                    </TableCell>
-                    <TableCell>
-                      <Field
-                        name={`${name}.${index}.dose`}
-                        component={TextField}
-                        variant="outlined"
-                        fullWidth
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <InexactDatePicker name={`${name}.${index}.startDate`} />
-                    </TableCell>
-                    <TableCell>
-                      <InexactDatePicker
-                        name={`${name}.${index}.suspensionDate`}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip title="Eliminar">
-                        <IconButton
-                          aria-labelledby="eliminar"
-                          onClick={() => arrayHelpers.remove(index)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <OtherInformationDialog
-                        name={name}
-                        index={index}
-                        item={item}
-                      />
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              ))}
+                          name={`${name}.${index}.dose`}
+                          component={TextField}
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </TableCell>
+                      <TableCell sx={{ verticalAlign: "top" }}>
+                        <InexactDatePicker
+                          name={`${name}.${index}.startDate`}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ verticalAlign: "top" }}>
+                        <InexactDatePicker
+                          name={`${name}.${index}.suspensionDate`}
+                          disabled={item.hasSuspensionDate}
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              value={true}
+                              checked={item.hasSuspensionDate}
+                              onChange={handleChange}
+                            />
+                          }
+                          label="Continúa"
+                        />
+                      </TableCell>
+                      <TableCell sx={{ verticalAlign: "top" }}>
+                        <Tooltip title="Eliminar">
+                          <IconButton
+                            aria-labelledby="eliminar"
+                            onClick={() => arrayHelpers.remove(index)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <OtherInformationDialog
+                          name={name}
+                          index={index}
+                          item={item}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
+                );
+              })}
             </TableBody>
             <TableFooter>
               <TableRow>
@@ -244,10 +277,12 @@ const OtherInformationDialog = ({
         <DialogTitle style={{ fontSize: "1rem" }}>Otra información</DialogTitle>
         <DialogContent>
           <Stack spacing={2}>
-            <InexactDatePicker
-              name={`${name}.${index}.restartDate`}
-              label="Fecha rein."
-            />
+            {item.suspensionDate.value !== null && (
+              <InexactDatePicker
+                name={`${name}.${index}.restartDate`}
+                label="Fecha rein."
+              />
+            )}
             <Field
               name={`${name}.${index}.reasonForUse`}
               component={TextField}

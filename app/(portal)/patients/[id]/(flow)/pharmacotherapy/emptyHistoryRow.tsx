@@ -10,6 +10,7 @@ export const emptyHistoryRow = {
   restartDate: defaultDate,
   startDate: defaultDate,
   suspensionDate: defaultDate,
+  hasSuspensionDate: true,
   dose: "",
   mode: "",
   drug: "",

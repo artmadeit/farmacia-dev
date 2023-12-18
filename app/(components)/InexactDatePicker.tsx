@@ -47,9 +47,11 @@ export const inexactDateSchema = (
 export function InexactDatePicker({
   label,
   name,
+  disabled = false,
 }: {
   label?: string;
   name: string;
+  disabled?: boolean;
 }) {
   const [field, meta, helpers] = useField<InexactDateType>(name);
 
@@ -91,6 +93,7 @@ export function InexactDatePicker({
                 aria-label="edit"
                 onClick={() => setOpen(true)}
                 edge="end"
+                disabled={disabled}
               >
                 <EditIcon />
               </IconButton>
