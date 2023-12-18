@@ -41,7 +41,11 @@ export const inexactDateSchema = (
 ) =>
   yup.object({
     type: yup.string().required(),
-    value: callback(yup.date()),
+    value: yup.date().when("type", {
+      is: (val: DateType) => val === "unknown",
+      then: (schema) => schema.notRequired(),
+      otherwise: (schema) => callback(schema),
+    }),
   });
 
 export function InexactDatePicker({
