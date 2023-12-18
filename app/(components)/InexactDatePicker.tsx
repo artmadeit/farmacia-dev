@@ -25,7 +25,7 @@ import { useState } from "react";
 import yup from "../validation";
 import { requiredMessage } from "./helpers/requiredMessage";
 
-type DateType = "year" | "year-month" | "date";
+type DateType = "year" | "year-month" | "date" | "unknown";
 export type InexactDateType = {
   type: DateType;
   value: Date | null;
@@ -58,9 +58,10 @@ export function InexactDatePicker({
   const [open, setOpen] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const type = (event.target as HTMLInputElement).value as DateType;
     helpers.setValue({
-      type: (event.target as HTMLInputElement).value as DateType,
-      value,
+      type,
+      value: type === "unknown" ? null : value,
     });
   };
   const handleClose = () => setOpen(false);
@@ -74,7 +75,9 @@ export function InexactDatePicker({
           type="text"
           readOnly
           value={
-            type && value && isDate(value) && isValid(value)
+            type === "unknown"
+              ? "-"
+              : type && value && isDate(value) && isValid(value)
               ? type === "year"
                 ? value.getFullYear()
                 : type === "year-month"
@@ -106,6 +109,11 @@ export function InexactDatePicker({
               onChange={handleChange}
             >
               <FormControlLabel
+                value="unknown"
+                control={<Radio />}
+                label="Desconocido"
+              />
+              <FormControlLabel
                 value="year"
                 control={<Radio />}
                 label="Solo sé el año"
@@ -123,19 +131,21 @@ export function InexactDatePicker({
             </RadioGroup>
           </FormControl>
           <Stack>
-            <DatePicker
-              value={value}
-              onChange={(newValue) =>
-                helpers.setValue({ type, value: newValue })
-              }
-              views={
-                type === "year"
-                  ? ["year"]
-                  : type === "year-month"
-                  ? ["month", "year"]
-                  : undefined
-              }
-            />
+            {type !== "unknown" && (
+              <DatePicker
+                value={value}
+                onChange={(newValue) =>
+                  helpers.setValue({ type, value: newValue })
+                }
+                views={
+                  type === "year"
+                    ? ["year"]
+                    : type === "year-month"
+                    ? ["month", "year"]
+                    : undefined
+                }
+              />
+            )}
           </Stack>
         </DialogContent>
         <DialogActions>
