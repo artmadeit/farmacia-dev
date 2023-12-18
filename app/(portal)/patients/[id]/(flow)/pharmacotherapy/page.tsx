@@ -48,17 +48,17 @@ import React from "react";
 const emptyMedicineAllergyRow = {
   drug: "",
   description: "",
-  date: defaultDate,
+  date: { ...defaultDate },
 };
 
 const emptyFoodsAllergy = {
   food: "",
   description: "",
-  date: defaultDate,
+  date: { ...defaultDate },
 };
 
 const emptyAdverseReactionRow = {
-  date: defaultDate,
+  date: { ...defaultDate },
   medicine: "",
   dose: "",
   adverseReactionOfDrug: "",
@@ -217,7 +217,7 @@ export default function Pharmacotherapy({
           router.push(`/patients/${patientId}/nes`);
         }}
       >
-        {({ values, errors }) => (
+        {({ values, errors, touched }) => (
           <Form>
             <Grid container spacing={2}>
               <Grid xs={10} style={{ margin: "10px 0px" }}>

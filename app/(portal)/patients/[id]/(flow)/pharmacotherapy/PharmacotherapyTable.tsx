@@ -109,10 +109,9 @@ export const PharmacotherapyTable = <T extends string>({
                 const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
                   const newValue = !Boolean(event.target.checked);
                   if (!newValue) {
-                    setFieldValue(
-                      `${name}.${index}.suspensionDate`,
-                      defaultDate
-                    );
+                    setFieldValue(`${name}.${index}.suspensionDate`, {
+                      ...defaultDate,
+                    });
                   }
                   setFieldValue(
                     `${name}.${index}.hasSuspensionDate`,

@@ -53,10 +53,13 @@ export function InexactDatePicker({
   name: string;
   disabled?: boolean;
 }) {
-  const [valueField, valueMeta, valueHelpers] = useField<Date | null>(
-    `${name}.value`
+  const [_value, _meta, _helpers] = useField<InexactDateType>(name);
+  const [valueField, valueMeta, valueHelpers] = useField<
+    InexactDateType["value"]
+  >(`${name}.value`);
+  const [typeField, typeMeta, typeHelpers] = useField<InexactDateType["type"]>(
+    `${name}.type`
   );
-  const [typeField, typeMeta, typeHelpers] = useField<DateType>(`${name}.type`);
 
   const type = typeField.value;
   const value = valueField.value;
@@ -66,6 +69,7 @@ export function InexactDatePicker({
     const type = (event.target as HTMLInputElement).value as DateType;
     valueHelpers.setValue(type === "unknown" ? null : value);
     typeHelpers.setValue(type);
+    typeHelpers.setTouched(true);
   };
   const handleClose = () => setOpen(false);
 
@@ -73,7 +77,9 @@ export function InexactDatePicker({
     <div>
       <FormControl
         variant="outlined"
-        error={Boolean(valueMeta.error && valueMeta.touched)}
+        error={Boolean(
+          valueMeta.error && (valueMeta.touched || typeMeta.touched)
+        )}
       >
         {label && <InputLabel htmlFor="inexact-date">{label}</InputLabel>}
         <OutlinedInput
@@ -105,7 +111,7 @@ export function InexactDatePicker({
           }
         />
         <FormHelperText>
-          {valueMeta.touched ? valueMeta.error : ""}
+          {valueMeta.touched || typeMeta.touched ? valueMeta.error : ""}
         </FormHelperText>
       </FormControl>
       <Dialog open={open} onClose={handleClose}>
@@ -143,7 +149,10 @@ export function InexactDatePicker({
             {type !== "unknown" && (
               <DatePicker
                 value={value}
-                onChange={(newValue) => valueHelpers.setValue(newValue)}
+                onChange={(newValue) => {
+                  valueHelpers.setValue(newValue);
+                  valueHelpers.setTouched(true);
+                }}
                 views={
                   type === "year"
                     ? ["year"]
