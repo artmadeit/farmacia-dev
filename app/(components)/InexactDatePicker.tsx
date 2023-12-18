@@ -53,24 +53,28 @@ export function InexactDatePicker({
   name: string;
   disabled?: boolean;
 }) {
-  const [field, meta, helpers] = useField<InexactDateType>(name);
+  const [valueField, valueMeta, valueHelpers] = useField<Date | null>(
+    `${name}.value`
+  );
+  const [typeField, typeMeta, typeHelpers] = useField<DateType>(`${name}.type`);
 
-  const { type, value } = field.value;
-
+  const type = typeField.value;
+  const value = valueField.value;
   const [open, setOpen] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const type = (event.target as HTMLInputElement).value as DateType;
-    helpers.setValue({
-      type,
-      value: type === "unknown" ? null : value,
-    });
+    valueHelpers.setValue(type === "unknown" ? null : value);
+    typeHelpers.setValue(type);
   };
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <FormControl variant="outlined" error={Boolean(meta.error)}>
+      <FormControl
+        variant="outlined"
+        error={Boolean(valueMeta.error && valueMeta.touched)}
+      >
         {label && <InputLabel htmlFor="inexact-date">{label}</InputLabel>}
         <OutlinedInput
           id="inexact-date"
@@ -100,7 +104,9 @@ export function InexactDatePicker({
             </InputAdornment>
           }
         />
-        <FormHelperText>{(meta.error as any)?.value || ""}</FormHelperText>
+        <FormHelperText>
+          {valueMeta.touched ? valueMeta.error : ""}
+        </FormHelperText>
       </FormControl>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
@@ -137,9 +143,7 @@ export function InexactDatePicker({
             {type !== "unknown" && (
               <DatePicker
                 value={value}
-                onChange={(newValue) =>
-                  helpers.setValue({ type, value: newValue })
-                }
+                onChange={(newValue) => valueHelpers.setValue(newValue)}
                 views={
                   type === "year"
                     ? ["year"]
