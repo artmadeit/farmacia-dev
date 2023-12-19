@@ -1,25 +1,12 @@
 "use client";
-import { InexactDateType } from "@/app/(components)/InexactDatePicker";
+
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import { PicoMedicine } from "../nes/PicoMedicine";
 import { DrugTest } from "./create/DrugTest";
-
-// type TrackingSheet = typeof emptyInitialValues;
+import { PharmaceuticHistoryRow } from "../pharmacotherapy/PharmacotherapyTable";
 
 export type TrackingSheet = {
-  history: {
-    administration: string;
-    difficulty: string;
-    difficultyJustification: string;
-    acceptance: string;
-    reasonForUse: string;
-    restartDate: InexactDateType;
-    startDate: InexactDateType;
-    suspensionDate: InexactDateType;
-    dose: string;
-    mode: string;
-    drug: string | DrugProduct;
-  }[];
+  history: PharmaceuticHistoryRow[];
   drugEvaluations: {
     medicine: string | DrugProduct;
     necessity: DrugTest;
