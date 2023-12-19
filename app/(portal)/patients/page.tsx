@@ -118,11 +118,7 @@ export default function ListPatients() {
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
           disableColumnFilter
-          rows={
-            patients?.page.totalElements === 0
-              ? patients?._embedded.patients
-              : []
-          }
+          rows={patients?._embedded?.patients || []}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
