@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { Field, useFormikContext } from "formik";
+import { FastField, Field, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import React from "react";
 import { consumptionHabits } from "./data";
@@ -34,7 +34,7 @@ export const ConsumptionHabits = () => {
               )}
               key={group.id}
             >
-              <Field
+              <FastField
                 component={RadioGroup}
                 name={"consumptionHabits." + group.id}
               >
@@ -58,7 +58,7 @@ export const ConsumptionHabits = () => {
                     label={type.label}
                   />
                 ))}
-              </Field>
+              </FastField>
 
               <FormHelperText>
                 {touched.consumptionHabits?.[group.id] &&
@@ -70,14 +70,14 @@ export const ConsumptionHabits = () => {
       </Grid>
       <Grid xs={4}>
         <Stack spacing={2}>
-          <Field
+          <FastField
             component={TextField}
             name="consumptionHabits.water"
             label="Cantidad de agua que consume:"
             variant="outlined"
             fullWidth
           />
-          <Field
+          <FastField
             name="consumptionHabits.others"
             label="Otros:"
             component={TextField}

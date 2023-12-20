@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
-import { Field, useFormikContext } from "formik";
+import { FastField, Field, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { Anamnesis } from "./page";
@@ -47,7 +47,7 @@ export const PersonalInformation = () => {
   return (
     <Grid container spacing={2}>
       <Grid xs={3}>
-        <Field
+        <FastField
           label="Ocupación"
           name="occupation"
           fullWidth
@@ -56,7 +56,7 @@ export const PersonalInformation = () => {
         />
       </Grid>
       <Grid xs={3}>
-        <Field
+        <FastField
           component={DatePicker}
           minDate={minYear}
           maxDate={today}
@@ -81,15 +81,15 @@ export const PersonalInformation = () => {
       <Grid xs={2}>
         <FormControl error={Boolean(touched.sex && errors.sex)}>
           <FormLabel>Sexo:</FormLabel>
-          <Field component={RadioGroup} name="sex" row>
+          <FastField component={RadioGroup} name="sex" row>
             <FormControlLabel value="M" control={<Radio />} label="M" />
             <FormControlLabel value="F" control={<Radio />} label="F" />
-          </Field>
+          </FastField>
           <FormHelperText>{touched.sex && errors.sex}</FormHelperText>
         </FormControl>
       </Grid>
       <Grid xs={3}>
-        <Field
+        <FastField
           label="Peso (kg):"
           name="weight"
           component={TextField}
@@ -99,7 +99,7 @@ export const PersonalInformation = () => {
         />
       </Grid>
       <Grid xs={3}>
-        <Field
+        <FastField
           label="Talla (m):"
           name="size"
           component={TextField}

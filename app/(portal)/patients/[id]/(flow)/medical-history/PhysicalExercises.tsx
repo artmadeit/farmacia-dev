@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { Field, useFormikContext } from "formik";
+import { FastField, useFormikContext } from "formik";
 import { RadioGroup } from "formik-mui";
 import React from "react";
 import { OutlinedPaper } from "./OutlinedPaper";
@@ -20,7 +20,7 @@ export const PhysicalExercises = () => {
     <FormControl
       error={Boolean(touched.physicalExercises && errors.physicalExercises)}
     >
-      <Field component={RadioGroup} name="physicalExercises">
+      <FastField component={RadioGroup} name="physicalExercises">
         <Grid container component={OutlinedPaper}>
           <Grid xs>
             <FormControlLabel
@@ -88,7 +88,7 @@ export const PhysicalExercises = () => {
             />
           </Grid>
         </Grid>
-      </Field>
+      </FastField>
       <FormHelperText>
         {touched.physicalExercises && errors.physicalExercises}
       </FormHelperText>

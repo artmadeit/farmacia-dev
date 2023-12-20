@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { Field, Form, Formik, useFormikContext } from "formik";
+import { FastField, Field, Form, Formik, useFormikContext } from "formik";
 import {
   Autocomplete,
   CheckboxWithLabel,
@@ -415,7 +415,7 @@ const FoodHabits = () => {
             key={group.id}
           >
             <Subtitle component="h6">{group.label}</Subtitle>
-            <Field component={RadioGroup} name={"foodHabits." + group.id}>
+            <FastField component={RadioGroup} name={"foodHabits." + group.id}>
               {group.items.map((item) => (
                 <FormControlLabel
                   key={item.label}
@@ -430,7 +430,7 @@ const FoodHabits = () => {
                   label={item.label}
                 />
               ))}
-            </Field>
+            </FastField>
             <FormHelperText>
               {touched.foodHabits?.[group.id] && errors.foodHabits?.[group.id]}
             </FormHelperText>
@@ -440,7 +440,7 @@ const FoodHabits = () => {
       <CheckboxGroup group={foodConsumptionsGroup1} />
       <CheckboxGroup group={foodConsumptionsGroup2} />
       <Grid xs={3}>
-        <Field
+        <FastField
           component={TextField}
           name="foodHabits.others"
           label="Otros:"
@@ -458,7 +458,7 @@ const HealthProblems = () => (
   <Grid container component={OutlinedPaper} spacing={4}>
     {healthProblems.map((group, index) => (
       <CheckboxGroup key={index} group={{ ...group, id: group.id + ".items" }}>
-        <Field
+        <FastField
           sx={{ my: 2 }}
           name={`${group.id}.additionalComments`}
           label="Comentarios adicionales"
@@ -478,7 +478,7 @@ const PathologicalAntecedents = () => (
     <Grid xs={8} container>
       {antecedents.map((item) => (
         <Grid xs={4} key={item.name}>
-          <Field
+          <FastField
             component={CheckboxWithLabel}
             type="checkbox"
             name="antecedents"
@@ -492,7 +492,7 @@ const PathologicalAntecedents = () => (
       ))}
     </Grid>
     <Grid xs={4}>
-      <Field
+      <FastField
         name="otherAntecedents"
         label="Otros:"
         component={TextField}

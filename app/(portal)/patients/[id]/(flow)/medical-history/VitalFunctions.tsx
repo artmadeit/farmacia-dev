@@ -1,7 +1,7 @@
 "use client";
 import { Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { Field } from "formik";
+import { FastField } from "formik";
 import { TextField } from "formik-mui";
 import React from "react";
 
@@ -9,7 +9,7 @@ export const VitalFunctions = () => {
   return (
     <Grid container spacing={2}>
       <Grid xs={4}>
-        <Field
+        <FastField
           component={TextField}
           name="vitalFunctions.heartRate"
           label="Frecuencia cárdiaca (LPM):"
@@ -18,7 +18,7 @@ export const VitalFunctions = () => {
         />
       </Grid>
       <Grid xs={4}>
-        <Field
+        <FastField
           component={TextField}
           name="vitalFunctions.breathingRate"
           label="Frecuencia respiratoria (rpm):"
@@ -27,7 +27,7 @@ export const VitalFunctions = () => {
         />
       </Grid>
       <Grid xs={4}>
-        <Field
+        <FastField
           component={TextField}
           name="vitalFunctions.temperature"
           label="Temperatura (C°):"
@@ -40,7 +40,7 @@ export const VitalFunctions = () => {
           <Typography>Presión arterial (PA)</Typography>
         </Grid>
         <Grid xs={6}>
-          <Field
+          <FastField
             component={TextField}
             name="vitalFunctions.bloodPressureSystolic"
             label="PA sistólica:"
@@ -49,7 +49,7 @@ export const VitalFunctions = () => {
           />
         </Grid>
         <Grid xs={6}>
-          <Field
+          <FastField
             component={TextField}
             name="vitalFunctions.bloodPressureDiastolic"
             label="PA diastólica"

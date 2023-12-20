@@ -2,7 +2,7 @@
 import { Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { Field } from "formik";
+import { FastField, Field } from "formik";
 import { CheckboxWithLabel } from "formik-mui";
 import React from "react";
 import { GroupItems } from "./data";
@@ -20,7 +20,7 @@ export const CheckboxGroup = ({
       <Subtitle component="h6">{group.label}</Subtitle>
       <Stack>
         {group.items.map((item, idx) => (
-          <Field
+          <FastField
             key={idx}
             component={CheckboxWithLabel}
             type="checkbox"
