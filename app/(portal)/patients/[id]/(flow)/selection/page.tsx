@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthApi } from "@/app/(api)/api";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import { Title } from "@/app/(components)/Title";
 import {
   Box,
@@ -17,19 +18,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Field, Form, Formik, useFormikContext } from "formik";
-import { Checkbox, Select, TextField } from "formik-mui";
+import { Checkbox, Select } from "formik-mui";
 import { isObject, sum } from "lodash";
 import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import useSWR from "swr";
 import { Page } from "../../../../../(api)/pagination";
 import { AsyncAutocomplete } from "../../../../../(components)/autocomplete";
 import yup from "../../../../../validation";
 import { Drug } from "../../../../drugs/narrow-margin/Drug";
+import { PatientDocument } from "../PatientDocument";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
-import { PatientDocument } from "../PatientDocument";
-import React, { useEffect } from "react";
-import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 
 const PrmSelect = ({ disabled }: { disabled: boolean }) => {
   const { setFieldValue } = useFormikContext();
@@ -66,13 +66,6 @@ const PrmSelect = ({ disabled }: { disabled: boolean }) => {
 
 const DrugAutocomplete = ({ disabled }: { disabled: boolean }) => {
   const getApi = useAuthApi();
-  const { setFieldValue } = useFormikContext();
-
-  // useEffect(() => {
-  //   if (disabled) {
-  //     setFieldValue("drug", "");
-  //   }
-  // }, [disabled, setFieldValue]);
 
   return (
     <AsyncAutocomplete
@@ -176,9 +169,8 @@ export default function PatientSelectionPage({
           router.push(`/patients/${patientId}/consent`);
         }}
       >
-        {({ values, setFieldValue }) => (
+        {({ values }) => (
           <Form>
-            {JSON.stringify(values)}
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
