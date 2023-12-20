@@ -16,8 +16,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Field, Form, Formik } from "formik";
-import { Checkbox, Select } from "formik-mui";
+import { Field, Form, Formik, useFormikContext } from "formik";
+import { Checkbox, Select, TextField } from "formik-mui";
 import { isObject, sum } from "lodash";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
@@ -28,10 +28,18 @@ import { Drug } from "../../../../drugs/narrow-margin/Drug";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
 import { PatientDocument } from "../PatientDocument";
-import React from "react";
+import React, { useEffect } from "react";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 
-const PrmSelect = () => {
+const PrmSelect = ({ disabled }: { disabled: boolean }) => {
+  const { setFieldValue } = useFormikContext();
+
+  useEffect(() => {
+    if (disabled) {
+      setFieldValue("prm", "");
+    }
+  }, [disabled, setFieldValue]);
+
   return (
     <Field
       component={Select}
@@ -39,6 +47,7 @@ const PrmSelect = () => {
       id="prm"
       name="prm"
       label="PRM"
+      disabled={disabled}
     >
       <MenuItem value="">
         <em>Ninguno</em>
@@ -55,13 +64,21 @@ const PrmSelect = () => {
   );
 };
 
-const DrugAutocomplete = () => {
+const DrugAutocomplete = ({ disabled }: { disabled: boolean }) => {
   const getApi = useAuthApi();
+  const { setFieldValue } = useFormikContext();
+
+  // useEffect(() => {
+  //   if (disabled) {
+  //     setFieldValue("drug", "");
+  //   }
+  // }, [disabled, setFieldValue]);
 
   return (
     <AsyncAutocomplete
       label="Medicamento"
       name="drug"
+      disabled={disabled}
       filter={(searchText) =>
         getApi().then((api) =>
           api
@@ -159,8 +176,9 @@ export default function PatientSelectionPage({
           router.push(`/patients/${patientId}/consent`);
         }}
       >
-        {({ values }) => (
+        {({ values, setFieldValue }) => (
           <Form>
+            {JSON.stringify(values)}
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -181,8 +199,8 @@ export default function PatientSelectionPage({
                       <TableCell>
                         <Field
                           component={Checkbox}
-                          type="checkbox"
                           name="criterionList"
+                          type="checkbox"
                           value={String(row.id)}
                         />
                       </TableCell>
@@ -192,7 +210,12 @@ export default function PatientSelectionPage({
                       <TableCell>{row.name}</TableCell>
                       <TableCell align="right">{row.score}</TableCell>
                       <TableCell sx={{ width: "500px" }}>
-                        <HelpReference criteriaId={row.id} />
+                        <HelpReference
+                          criteriaId={row.id}
+                          disabled={
+                            !values.criterionList.includes(String(row.id))
+                          }
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -216,14 +239,20 @@ export default function PatientSelectionPage({
   );
 }
 
-const HelpReference = ({ criteriaId }: { criteriaId: number }) => {
+const HelpReference = ({
+  criteriaId,
+  disabled,
+}: {
+  criteriaId: number;
+  disabled: boolean;
+}) => {
   const data = helpReferences.find((x) => x.criteriaId == criteriaId);
   if (!data) return "";
   const Component = data.component;
 
   return (
     <div>
-      <Component />
+      <Component disabled={disabled} />
     </div>
   );
 };

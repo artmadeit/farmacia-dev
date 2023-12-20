@@ -5,7 +5,7 @@ import {
 import { Field, useField } from "formik";
 import { Autocomplete } from "formik-mui";
 import { debounce } from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 
 type AsyncAutocompleteProps<T, F> = {
   label: React.ReactNode;
@@ -29,9 +29,18 @@ export const AsyncAutocomplete = <T, F>({
   getLabel = (option) => option.name,
   disabled = false,
 }: AsyncAutocompleteProps<T, F>) => {
-  const [field, meta, helpers] = useField<F>(name);
+  const [field, meta, helpers] = useField<F | null>(name);
 
   const [items, setItems] = React.useState<T[]>([]);
+
+  useEffect(() => {
+    if (disabled) {
+      console.log("lalala");
+      helpers.setValue(null);
+      setItems([]);
+    }
+  }, [disabled, helpers]);
+
   const searchItems = debounce(async (newInputValue: string) => {
     if (newInputValue) {
       const data = await filter(newInputValue);
