@@ -68,14 +68,13 @@ const initialValues: Anamnesis = {
   otherAntecedents: "",
 
   healthProblems: {
-    cardio: [],
-    digestive: [],
-    locomotive: [],
-    snc: [],
-    metabolic: [],
-    skin: [],
-    others: [],
-    otherSymptoms: "",
+    cardio: { items: [], additionalComments: "" },
+    digestive: { items: [], additionalComments: "" },
+    locomotive: { items: [], additionalComments: "" },
+    snc: { items: [], additionalComments: "" },
+    metabolic: { items: [], additionalComments: "" },
+    skin: { items: [], additionalComments: "" },
+    others: { items: [], additionalComments: "" },
   },
 
   vitalFunctions: {
@@ -107,6 +106,11 @@ const initialValues: Anamnesis = {
   diagnosis: [],
 };
 
+type HealthProblemsByCategory = {
+  items: string[];
+  additionalComments: string;
+};
+
 export type Anamnesis = {
   occupation: string;
   sex: string;
@@ -117,14 +121,13 @@ export type Anamnesis = {
   otherAntecedents: string;
 
   healthProblems: {
-    cardio: string[];
-    digestive: string[];
-    locomotive: string[];
-    snc: string[];
-    metabolic: string[];
-    skin: string[];
-    others: string[];
-    otherSymptoms: string;
+    cardio: HealthProblemsByCategory;
+    digestive: HealthProblemsByCategory;
+    locomotive: HealthProblemsByCategory;
+    snc: HealthProblemsByCategory;
+    metabolic: HealthProblemsByCategory;
+    skin: HealthProblemsByCategory;
+    others: HealthProblemsByCategory;
   };
 
   vitalFunctions: {
@@ -452,21 +455,19 @@ const FoodHabits = () => {
 };
 
 const HealthProblems = () => (
-  <Grid container component={OutlinedPaper}>
+  <Grid container component={OutlinedPaper} spacing={4}>
     {healthProblems.map((group, index) => (
-      <CheckboxGroup key={index} group={group}>
-        {group.id === "healthProblems.others" && (
-          <Field
-            sx={{ my: 2 }}
-            name="healthProblems.otherSymptoms"
-            label="Otros sintomas:"
-            component={TextField}
-            variant="outlined"
-            multiline
-            rows={4}
-            fullWidth
-          />
-        )}
+      <CheckboxGroup key={index} group={{ ...group, id: group.id + ".items" }}>
+        <Field
+          sx={{ my: 2 }}
+          name={`${group.id}.additionalComments`}
+          label="Comentarios adicionales"
+          component={TextField}
+          variant="outlined"
+          multiline
+          rows={4}
+          fullWidth
+        />
       </CheckboxGroup>
     ))}
   </Grid>
