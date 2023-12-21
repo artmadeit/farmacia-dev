@@ -54,7 +54,7 @@ export const AsyncAutocomplete = <T, F>({
   }, 500);
 
   const getOptionLabel = (option: any) =>
-    typeof option === "string" ? option : option.name;
+    typeof option === "string" ? option : getLabel(option);
 
   return (
     <Field
