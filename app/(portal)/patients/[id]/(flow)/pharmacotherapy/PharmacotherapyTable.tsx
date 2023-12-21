@@ -1,6 +1,6 @@
 "use client";
 import { useAuthApi } from "@/app/(api)/api";
-import { Page } from "@/app/(api)/pagination";
+import { Page, SpringPage } from "@/app/(api)/pagination";
 import {
   InexactDatePicker,
   InexactDateType,
@@ -71,16 +71,13 @@ export const PharmacotherapyTable = <T extends string>({
 
   const getApi = useAuthApi();
 
-  const searchDrugPharmaceuticalProducts = (searchText: string) =>
+  const searchDrugs = (searchText: string) =>
     getApi().then((api) =>
       api
-        .get<Page<DrugProduct>>(
-          "drugPharmaceuticalProducts/search/findByFullNameContainingIgnoringCase",
-          {
-            params: { page: 0, searchText },
-          }
-        )
-        .then((x) => x.data._embedded.drugPharmaceuticalProducts)
+        .get<SpringPage<DrugProduct>>("drugs", {
+          params: { page: 0, searchText },
+        })
+        .then((x) => x.data.content)
     );
 
   return (
@@ -127,7 +124,7 @@ export const PharmacotherapyTable = <T extends string>({
                           label="Medicamento"
                           name={`${name}.${index}.drug`}
                           getLabel={(option) => option.fullName}
-                          filter={searchDrugPharmaceuticalProducts}
+                          filter={searchDrugs}
                         />
                       </TableCell>
                       <TableCell sx={{ verticalAlign: "top" }}>
