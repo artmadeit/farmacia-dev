@@ -75,7 +75,7 @@ export const PharmacotherapyTable = <T extends string>({
     getApi().then((api) =>
       api
         .get<Page<DrugProduct>>(
-          "drugPharmaceuticalProducts/search/findByFullName",
+          "drugPharmaceuticalProducts/search/findByFullNameContainingIgnoringCase",
           {
             params: { page: 0, searchText },
           }
