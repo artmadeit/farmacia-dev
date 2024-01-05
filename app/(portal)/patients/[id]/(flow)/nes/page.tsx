@@ -133,11 +133,25 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
   const formInitialValues: NesForm = data
     ? {
-        diagnosisRelated: data.diagnosisRelated.map((diagnosisR: any) => {
-          return {
-            ...diagnosisR,
-            diagnosis: diagnosisR.disease,
-          };
+        diagnosisRelated: anamnesis.diseases.map((disease: any) => {
+          const diagnosisRow = data.diagnosisRelated.find(
+            (x: any) => x.disease.id === disease.id
+          );
+
+          return diagnosisRow
+            ? {
+                ...diagnosisRow,
+                diagnosis: diagnosisRow.disease,
+              }
+            : {
+                disease,
+                symptoms: "",
+                drugEvaluations: [
+                  {
+                    ...emptyEvaluationRow,
+                  },
+                ],
+              };
         }),
         diagnosisNotRelated: data.diagnosisNotRelated,
         pharmaceuticInterventions: data.pharmaceuticInterventions,
