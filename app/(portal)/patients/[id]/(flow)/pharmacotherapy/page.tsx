@@ -87,21 +87,9 @@ type Pharmacoterapy = {
 
 const emptyInitialValues: Pharmacoterapy = {
   history: [{ ...emptyHistoryRow }],
-  drugAllergies: [
-    {
-      ...emptyMedicineAllergyRow,
-    },
-  ],
-  foodAllergies: [
-    {
-      ...emptyFoodsAllergy,
-    },
-  ],
-  adverseReactions: [
-    {
-      ...emptyAdverseReactionRow,
-    },
-  ],
+  drugAllergies: [],
+  foodAllergies: [],
+  adverseReactions: [],
 };
 
 export default function Pharmacotherapy({
