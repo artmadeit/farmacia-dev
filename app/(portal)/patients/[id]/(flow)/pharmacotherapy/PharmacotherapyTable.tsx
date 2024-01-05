@@ -252,7 +252,7 @@ const OtherInformationDialog = ({
     <>
       <Tooltip title="Ver más">
         <IconButton aria-labelledby="Ver" onClick={() => setOpen(true)}>
-          <SearchIcon />
+          <AddIcon />
         </IconButton>
       </Tooltip>
       {rowTouched?.acceptance &&
@@ -275,7 +275,7 @@ const OtherInformationDialog = ({
       <Dialog open={open} onClose={onClose}>
         <DialogTitle style={{ fontSize: "1rem" }}>Otra información</DialogTitle>
         <DialogContent>
-          <Stack spacing={2}>
+          <Stack spacing={2} pt={2}>
             {item.suspensionDate.value !== null && (
               <InexactDatePicker
                 maxDate={today}
