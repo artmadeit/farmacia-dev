@@ -44,6 +44,7 @@ import { historySchema } from "./historySchema";
 import { TABLE_WIDTH_ACTION, TABLE_WIDTH_DATE } from "./table";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import React from "react";
+import { today } from "@/app/date";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -272,6 +273,7 @@ export default function Pharmacotherapy({
                           </TableCell>
                           <TableCell>
                             <InexactDatePicker
+                              maxDate={today}
                               name={`drugAllergies.${index}.date`}
                             />
                           </TableCell>
@@ -350,6 +352,7 @@ export default function Pharmacotherapy({
                           </TableCell>
                           <TableCell>
                             <InexactDatePicker
+                              maxDate={today}
                               name={`foodAllergies.${index}.date`}
                             />
                           </TableCell>
@@ -415,6 +418,7 @@ export default function Pharmacotherapy({
                         <TableRow key={index}>
                           <TableCell>
                             <InexactDatePicker
+                              maxDate={today}
                               name={`adverseReactions.${index}.date`}
                             />
                           </TableCell>

@@ -42,6 +42,7 @@ import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
 import React, { ChangeEvent } from "react";
 import { TABLE_WIDTH_DATE, TABLE_WIDTH_ACTION } from "./table";
 import { emptyHistoryRow } from "./emptyHistoryRow";
+import { today } from "@/app/date";
 
 export type PharmaceuticHistoryRow = {
   administration: string;
@@ -167,11 +168,13 @@ export const PharmacotherapyTable = <T extends string>({
                       </TableCell>
                       <TableCell sx={{ verticalAlign: "top" }}>
                         <InexactDatePicker
+                          maxDate={today}
                           name={`${name}.${index}.startDate`}
                         />
                       </TableCell>
                       <TableCell sx={{ verticalAlign: "top" }}>
                         <InexactDatePicker
+                          maxDate={today}
                           name={`${name}.${index}.suspensionDate`}
                           disabled={item.hasSuspensionDate}
                         />
@@ -275,6 +278,7 @@ const OtherInformationDialog = ({
           <Stack spacing={2}>
             {item.suspensionDate.value !== null && (
               <InexactDatePicker
+                maxDate={today}
                 name={`${name}.${index}.restartDate`}
                 label="Fecha rein."
               />

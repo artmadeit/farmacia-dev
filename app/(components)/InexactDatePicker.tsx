@@ -52,10 +52,12 @@ export function InexactDatePicker({
   label,
   name,
   disabled = false,
+  maxDate
 }: {
   label?: string;
   name: string;
   disabled?: boolean;
+  maxDate?: Date;
 }) {
   const [_value, _meta, _helpers] = useField<InexactDateType>(name);
   const [valueField, valueMeta, valueHelpers] = useField<
@@ -152,6 +154,7 @@ export function InexactDatePicker({
           <Stack>
             {type !== "unknown" && (
               <DatePicker
+                maxDate={maxDate}
                 value={value}
                 onChange={(newValue) => {
                   valueHelpers.setValue(newValue);
