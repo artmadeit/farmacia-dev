@@ -27,6 +27,7 @@ import {
 } from "@mui/material";
 import {
   ArrayHelpers,
+  FastField,
   Field,
   FieldArray,
   Form,
@@ -109,7 +110,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
   }
 
   const initialValues: NesForm = {
-    diagnosisRelated: anamnesis.diseases.map((disease: any) => ({
+    diagnosisRelated: anamnesis.diseases.map((disease: string) => ({
       disease,
       symptoms: "",
       drugEvaluations: [
@@ -133,15 +134,15 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
   const formInitialValues: NesForm = data
     ? {
-        diagnosisRelated: anamnesis.diseases.map((disease: any) => {
+        diagnosisRelated: anamnesis.diseases.map((disease: string) => {
           const diagnosisRow = data.diagnosisRelated.find(
-            (x: any) => x.disease.id === disease.id
+            (x: any) => x.disease === disease
           );
 
           return diagnosisRow
             ? {
                 ...diagnosisRow,
-                diagnosis: diagnosisRow.disease,
+                disease: disease,
               }
             : {
                 disease,
@@ -170,7 +171,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
         validationSchema={yup.object({
           diagnosisRelated: yup.array().of(
             yup.object({
-              disease: yup.object().required(requiredMessage),
+              disease: yup.string().required(requiredMessage),
               symptoms: yup.string().required(requiredMessage),
               drugEvaluations: yup
                 .array()
@@ -195,13 +196,9 @@ export default function NesPage({ params }: { params: { id: number } }) {
           const data = {
             diagnosisRelated: values.diagnosisRelated.map(
               ({ disease, drugEvaluations, ...rest }) => {
-                if (isString(disease)) {
-                  throw "Diagnóstico inválido";
-                }
-
                 return {
                   ...rest,
-                  diseaseId: disease.id,
+                  disease,
                   drugEvaluations: drugEvaluations.map((drugEvaluation) => {
                     if (isString(drugEvaluation.medicine)) {
                       throw "Medicina inválida";
@@ -243,7 +240,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
             <Typography variant="h6" pt={4}>
               Evaluación de medicamentos relacionados al diagnóstico
             </Typography>
-            <DiagnosisTable anamnesis={anamnesis} />
+            <DiagnosisTable />
             <Typography variant="h6" pt={4}>
               Evaluación de medicamentos que no se relacionan con el diagnóstico
             </Typography>
@@ -285,7 +282,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
                           />
                         </Grid>
                         <Grid item xs={6}>
-                          <Field
+                          <FastField
                             component={TextField}
                             name={`pharmaceuticInterventions.${index}.commentaries`}
                             label="Comentarios"
@@ -335,22 +332,8 @@ export default function NesPage({ params }: { params: { id: number } }) {
   );
 }
 
-const DiagnosisTable = ({ anamnesis }: { anamnesis: any }) => {
+const DiagnosisTable = () => {
   const { values } = useFormikContext<NesForm>();
-  const getApi = useAuthApi();
-
-  const searchDiseases = (searchText: string) => {
-    return getApi().then((api) =>
-      api
-        .get<Page<DiseaseCie10>>(
-          "/diseases/search/findByNameContainingIgnoringCase",
-          {
-            params: { page: 0, searchText },
-          }
-        )
-        .then((x) => x.data._embedded.diseases)
-    );
-  };
 
   return (
     <TableContainer component={Paper} sx={{ pt: 2 }}>
@@ -380,15 +363,16 @@ const DiagnosisTable = ({ anamnesis }: { anamnesis: any }) => {
                 <React.Fragment key={index}>
                   <TableRow>
                     <TableCell sx={{ verticalAlign: "top" }}>
-                      <AsyncAutocomplete
+                      <FastField
                         label="Diagnóstico"
+                        component={TextField}
+                        fullWidth
                         name={`diagnosisRelated.${index}.disease`}
-                        filter={searchDiseases}
                         disabled
                       />
                     </TableCell>
                     <TableCell sx={{ verticalAlign: "top" }}>
-                      <Field
+                      <FastField
                         component={TextField}
                         fullWidth
                         name={`diagnosisRelated.${index}.symptoms`}
