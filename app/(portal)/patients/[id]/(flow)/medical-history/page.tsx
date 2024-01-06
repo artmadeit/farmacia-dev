@@ -156,7 +156,7 @@ export type Anamnesis = {
   physicalExercises: string;
   existLabTests: boolean | null;
   labTests: LabTest[];
-  diagnosis: DiseaseCie10[];
+  diagnosis: string[];
 };
 
 export default function PatientInterview({
@@ -258,7 +258,7 @@ export default function PatientInterview({
           const { diagnosis, labTests, ...rest } = values;
           const data = {
             ...rest,
-            diseaseIds: diagnosis.map((x) => x.id),
+            diseases: diagnosis, //diseaseIds: diagnosis.map((x) => x.id),
             labTests: labTests.map((x) => ({
               ...x,
               name: x.name,
@@ -321,9 +321,8 @@ const Diagnosis = () => {
   const { touched, errors, values } = useFormikContext<Anamnesis>();
 
   const getApi = useAuthApi();
-  const [diseases, setDiseases] = React.useState<DiseaseCie10[]>(
-    values.diagnosis
-  );
+  const [diseases, setDiseases] = React.useState<string[]>(values.diagnosis);
+
   const searchDiseases = debounce(async (newInputValue: string) => {
     if (newInputValue) {
       const api = await getApi();
@@ -335,7 +334,7 @@ const Diagnosis = () => {
           }
         )
         .then((x) => x.data);
-      setDiseases(page._embedded.diseases);
+      setDiseases(page._embedded.diseases.map((x) => x.name));
     } else {
       setDiseases([]);
     }
@@ -343,8 +342,12 @@ const Diagnosis = () => {
 
   const totalDiseases = [...values.diagnosis, ...diseases];
 
-  const getOptionLabel = (option: any) =>
-    typeof option === "string" ? option : option.name;
+  // const getOptionLabel = (option: any) =>
+  //   typeof option === "string" ? option : option.name;
+
+  const getOptionLabel = (option: Option) => option;
+
+  type Option = string; //{ id: number; }
 
   const name = "diagnosis";
   return (
@@ -365,30 +368,30 @@ const Diagnosis = () => {
       )}
       // to solve bug with keys:
       // obtained from: https://stackoverflow.com/questions/75818761/material-ui-autocomplete-warning-a-props-object-containing-a-key-prop-is-be
-      renderOption={(props: any, option: any) => {
+      renderOption={(props: any, option: Option) => {
         return (
-          <li {...props} key={option.id}>
+          <li {...props} key={option}>
             {getOptionLabel(option)}
           </li>
         );
       }}
-      renderTags={(tagValue: any[], getTagProps: any) => {
+      renderTags={(tagValue: Option[], getTagProps: any) => {
         return (
           <>
             {tagValue.map((option, index) => (
               <Chip
                 {...getTagProps({ index })}
-                key={option.id}
+                key={option}
                 label={getOptionLabel(option)}
               />
             ))}
           </>
         );
       }}
-      getOptionLabel={getOptionLabel}
-      isOptionEqualToValue={(option: DiseaseCie10, value: DiseaseCie10) =>
-        option.id === value.id
-      }
+      // getOptionLabel={getOptionLabel}
+      // isOptionEqualToValue={(option: DiseaseCie10, value: DiseaseCie10) =>
+      //   option.id === value.id
+      // }
       filterSelectedOptions
       filterOptions={(x: any) => x}
       onInputChange={(_event: any, newInputValue: any) => {
