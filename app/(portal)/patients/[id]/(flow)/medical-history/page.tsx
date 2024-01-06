@@ -354,6 +354,7 @@ const Diagnosis = () => {
     <Field
       name={name}
       multiple
+      freeSolo
       component={Autocomplete}
       options={totalDiseases}
       renderInput={(params: AutocompleteRenderInputParams) => (
