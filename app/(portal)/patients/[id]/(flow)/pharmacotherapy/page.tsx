@@ -1,6 +1,6 @@
 "use client";
 import { useAuthApi } from "@/app/(api)/api";
-import { Page } from "@/app/(api)/pagination";
+import { Page, SpringPage } from "@/app/(api)/pagination";
 import {
   InexactDatePicker,
   InexactDateType,
@@ -104,18 +104,14 @@ export default function Pharmacotherapy({
 
   const { data, mutate } = useSWR(`/patients/${patientId}/pharmacoterapy`);
 
-  const searchDrugDcis = (searchText: string) =>
+  const searchDrugs = (searchText: string) =>
     getApi().then((api) =>
       api
-        .get<Page<DrugProduct>>(
-          "drugDcis/search/findByNameContainingIgnoringCase",
-          {
-            params: { page: 0, searchText },
-          }
-        )
-        .then((x) => x.data._embedded.drugDcis)
+        .get<SpringPage<DrugProduct>>("drugs", {
+          params: { page: 0, searchText },
+        })
+        .then((x) => x.data.content)
     );
-
   const initialValues: Pharmacoterapy = data || emptyInitialValues;
 
   return (
@@ -248,7 +244,8 @@ export default function Pharmacotherapy({
                             <AsyncAutocomplete
                               label="Medicamento"
                               name={`drugAllergies.${index}.drug`}
-                              filter={searchDrugDcis}
+                              getLabel={(option) => option.fullName}
+                              filter={searchDrugs}
                             />
                           </TableCell>
                           <TableCell>
@@ -414,7 +411,8 @@ export default function Pharmacotherapy({
                             <AsyncAutocomplete
                               label="Medicamento"
                               name={`adverseReactions.${index}.medicine`}
-                              filter={searchDrugDcis}
+                              getLabel={(option) => option.fullName}
+                              filter={searchDrugs}
                             />
                           </TableCell>
                           <TableCell>

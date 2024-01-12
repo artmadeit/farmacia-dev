@@ -1,5 +1,5 @@
 import { useAuthApi } from "@/app/(api)/api";
-import { Page } from "@/app/(api)/pagination";
+import { Page, SpringPage } from "@/app/(api)/pagination";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -71,18 +71,14 @@ export const NesTableCells = ({
 }) => {
   const getApi = useAuthApi();
 
-  const searchMedicine = (searchText: string) => {
-    return getApi().then((api) =>
+  const searchDrugs = (searchText: string) =>
+    getApi().then((api) =>
       api
-        .get<Page<DrugProduct>>(
-          "drugDcis/search/findByNameContainingIgnoringCase",
-          {
-            params: { page: 0, searchText },
-          }
-        )
-        .then((x) => x.data._embedded.drugDcis)
+        .get<SpringPage<DrugProduct>>("drugs", {
+          params: { page: 0, searchText },
+        })
+        .then((x) => x.data.content)
     );
-  };
 
   return (
     <>
@@ -90,7 +86,8 @@ export const NesTableCells = ({
         <AsyncAutocomplete
           label="Medicina"
           name={`${name}.${index}.medicine`}
-          filter={searchMedicine}
+          getLabel={(option) => option.fullName}
+          filter={searchDrugs}
         />
       </TableCell>
       <TableCell sx={{ verticalAlign: "top" }}>
