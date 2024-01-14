@@ -15,6 +15,7 @@ import { picoSheetsSchema } from "../nes/picoSheetsSchema";
 import { PharmacotherapyTable } from "../pharmacotherapy/PharmacotherapyTable";
 import { historySchema } from "../pharmacotherapy/historySchema";
 import { TrackingSheet, emptySoapRow } from "./TrackingSheet";
+import { DrugEvaluations } from "../nes/DrugEvaluations";
 
 export const TrackingSheetForm = ({
   initialValues,
@@ -31,7 +32,21 @@ export const TrackingSheetForm = ({
         enableReinitialize
         validationSchema={yup.object({
           history: historySchema,
-          drugEvaluations: yup.array().of(yup.object(drugEvaluationSchema())),
+          diagnosisRelated: yup.array().of(
+            yup.object({
+              disease: yup.string().required(requiredMessage),
+              symptoms: yup.string().required(requiredMessage),
+              drugEvaluations: yup
+                .array()
+                .of(yup.object(drugEvaluationSchema())),
+            })
+          ),
+          diagnosisNotRelated: yup.array().of(
+            yup.object({
+              symptoms: yup.string().required(requiredMessage),
+              ...drugEvaluationSchema(),
+            })
+          ),
           soapRows: yup.array().of(
             yup.object({
               problem: yup.string().required(requiredMessage),
@@ -61,7 +76,11 @@ export const TrackingSheetForm = ({
                   NES
                 </Typography>
               </Grid>
-              <Grid xs={12}>HERE NES Table</Grid>
+              <Grid xs={12}>
+                <DrugEvaluations
+                  diagnosisNotRelated={values.diagnosisNotRelated}
+                />
+              </Grid>
               <Grid xs={12}>
                 <Typography variant="h6">SOAP</Typography>
               </Grid>

@@ -34,16 +34,36 @@ export default function EditSoap({
           drugId: drug.id,
         };
       }),
-      drugEvaluations: values.drugEvaluations.map(({ medicine, ...rest }) => {
-        if (isString(medicine)) {
-          throw "Medicina incorrecta";
-        }
+      diagnosisRelated: values.diagnosisRelated.map(
+        ({ disease, drugEvaluations, ...rest }) => {
+          return {
+            ...rest,
+            disease,
+            drugEvaluations: drugEvaluations.map((drugEvaluation) => {
+              if (isString(drugEvaluation.medicine)) {
+                throw "Medicina inválida";
+              }
 
-        return {
-          ...rest,
-          medicineId: medicine.id,
-        };
-      }),
+              return {
+                ...drugEvaluation,
+                medicineId: drugEvaluation.medicine.id,
+              };
+            }),
+          };
+        }
+      ),
+      diagnosisNotRelated: values.diagnosisNotRelated.map(
+        ({ medicine, ...rest }) => {
+          if (isString(medicine)) {
+            throw "Medicina inválida";
+          }
+
+          return {
+            ...rest,
+            medicineId: medicine.id,
+          };
+        }
+      ),
       soapRows: values.soapRows,
       picoSheets: values.picoSheets,
       patientId: patientId,

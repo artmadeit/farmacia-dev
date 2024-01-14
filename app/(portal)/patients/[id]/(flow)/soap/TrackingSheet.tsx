@@ -1,18 +1,13 @@
 "use client";
 
-import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import { PicoMedicine } from "../nes/PicoMedicine";
-import { DrugTest } from "./create/DrugTest";
+import { DiagnosisNotRelated, DiagnosisRelated } from "../nes/page";
 import { PharmaceuticHistoryRow } from "../pharmacotherapy/PharmacotherapyTable";
 
 export type TrackingSheet = {
   history: PharmaceuticHistoryRow[];
-  drugEvaluations: {
-    medicine: string | DrugProduct;
-    necessity: DrugTest;
-    effectivity: DrugTest;
-    security: DrugTest;
-  }[];
+  diagnosisRelated: DiagnosisRelated[];
+  diagnosisNotRelated: DiagnosisNotRelated[];
   soapRows: {
     problem: string;
     subjective: string;

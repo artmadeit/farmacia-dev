@@ -1,9 +1,7 @@
 "use client";
 
 import { useAuthApi } from "@/app/(api)/api";
-import { Page } from "@/app/(api)/pagination";
 import { Title } from "@/app/(components)/Title";
-import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
@@ -15,14 +13,6 @@ import {
   Grid,
   ListSubheader,
   MenuItem,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TableRow,
   Typography,
 } from "@mui/material";
 import {
@@ -32,7 +22,6 @@ import {
   FieldArray,
   Form,
   Formik,
-  useFormikContext,
 } from "formik";
 import { Select, TextField } from "formik-mui";
 import { isString } from "lodash";
@@ -40,25 +29,15 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
 import { PI_GROUPS } from "./pi-groups";
-import {
-  NesTableCells,
-  emptyDrugNesEvaluation,
-  nesTableCellsHead2,
-  nesTableCellsHead3,
-} from "./table";
 
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 import yup from "@/app/validation";
-import { PicoMedicine } from "./PicoMedicine";
+import { DrugEvaluations, emptyEvaluationRow } from "./DrugEvaluations";
 import PicoDialog from "./PicoDialog";
-import { picoSheetsSchema } from "./picoSheetsSchema";
+import { PicoMedicine } from "./PicoMedicine";
 import { drugEvaluationSchema } from "./drugEvaluationSchema";
-import { SnackbarContext } from "@/app/(components)/SnackbarContext";
-
-const emptyEvaluationRow = {
-  symptoms: "",
-  ...emptyDrugNesEvaluation,
-};
+import { picoSheetsSchema } from "./picoSheetsSchema";
 
 const emptyPharmaceuticInterventionRow = {
   pharmaceuticIntervention: "",
@@ -71,13 +50,17 @@ type NesRow = {
   prm: string;
 };
 
-type NesForm = {
-  diagnosisRelated: {
-    disease: string | DiseaseCie10;
-    symptoms: string;
-    drugEvaluations: DrugEvaluation[];
-  }[];
-  diagnosisNotRelated: ({ symptoms: string } & DrugEvaluation)[];
+export type DiagnosisRelated = {
+  disease: string | DiseaseCie10;
+  symptoms: string;
+  drugEvaluations: DrugEvaluation[];
+};
+
+export type DiagnosisNotRelated = { symptoms: string } & DrugEvaluation;
+
+export type NesForm = {
+  diagnosisRelated: DiagnosisRelated[];
+  diagnosisNotRelated: DiagnosisNotRelated[];
   pharmaceuticInterventions: {
     pharmaceuticIntervention: string;
     commentaries: string;
@@ -237,17 +220,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
       >
         {({ values }) => (
           <Form>
-            <Typography variant="h6" pt={4}>
-              Evaluación de medicamentos relacionados al diagnóstico
-            </Typography>
-            <DiagnosisTable />
-            <Typography variant="h6" pt={4}>
-              Evaluación de medicamentos que no se relacionan con el diagnóstico
-            </Typography>
-            <EvaluationNesTable
-              values={values.diagnosisNotRelated}
-              name="diagnosisNotRelated"
-            />
+            <DrugEvaluations diagnosisNotRelated={values.diagnosisNotRelated} />
             <Grid container pt={4}>
               <Grid item xs={10} paddingBottom={2}>
                 <Typography variant="h6" pt={2}>
@@ -331,142 +304,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
     </div>
   );
 }
-
-const DiagnosisTable = () => {
-  const { values } = useFormikContext<NesForm>();
-
-  return (
-    <TableContainer component={Paper} sx={{ pt: 2 }}>
-      <FieldArray name="diagnosis">
-        {(arrayHelpers: ArrayHelpers) => (
-          <Table>
-            {/* <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>
-                  Datos de Salud
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>
-                  Evaluación de datos de salud
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
-                  Diagnóstico(s)
-                </TableCell>
-                <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
-                  Signos y sintomas que se relacionan con el diagnóstico
-                </TableCell>
-              </TableRow>
-            </TableHead> */}
-            <TableBody>
-              {values.diagnosisRelated.map((x, index) => (
-                <React.Fragment key={index}>
-                  <TableRow>
-                    <TableCell sx={{ verticalAlign: "top" }}>
-                      <FastField
-                        label="Diagnóstico"
-                        component={TextField}
-                        fullWidth
-                        name={`diagnosisRelated.${index}.disease`}
-                        disabled
-                      />
-                    </TableCell>
-                    <TableCell sx={{ verticalAlign: "top" }}>
-                      <FastField
-                        component={TextField}
-                        fullWidth
-                        name={`diagnosisRelated.${index}.symptoms`}
-                        label="Signos y sintomas que se relacionan con el diagnóstico"
-                        multiline
-                        rows={4}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={2}>
-                      <EvaluationNesTable
-                        values={values.diagnosisRelated[index].drugEvaluations}
-                        name={`diagnosisRelated.${index}.drugEvaluations`}
-                      />
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </FieldArray>
-    </TableContainer>
-  );
-};
-
-const EvaluationNesTable = ({ name, values }: { name: any; values: any[] }) => {
-  return (
-    <TableContainer component={Paper} sx={{ pt: 2 }}>
-      <FieldArray name={name}>
-        {(arrayHelpers: ArrayHelpers) => (
-          <Table>
-            <TableHead>
-              {/* <TableRow>
-                {name === "diagnosisNotRelated" && (
-                  <TableCell sx={{ fontWeight: "bold" }}>
-                    Evaluación de datos de salud
-                  </TableCell>
-                )}
-                {nesTableCellsHead1}
-              </TableRow> */}
-              <TableRow>
-                {name === "diagnosisNotRelated" && (
-                  <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
-                    Signos y sintomas que no se relacionan con el diagnóstico
-                  </TableCell>
-                )}
-                {nesTableCellsHead2}
-              </TableRow>
-              <TableRow>{nesTableCellsHead3}</TableRow>
-            </TableHead>
-            <TableBody>
-              {values.map((x, index) => (
-                <TableRow key={index}>
-                  {name === "diagnosisNotRelated" && (
-                    <TableCell sx={{ verticalAlign: "top" }}>
-                      <Field
-                        component={TextField}
-                        fullWidth
-                        name={`${name}.${index}.symptoms`}
-                        label="Sintomas"
-                        multiline
-                        rows={4}
-                      />
-                    </TableCell>
-                  )}
-                  <NesTableCells
-                    name={name}
-                    index={index}
-                    values={x}
-                    onRemove={arrayHelpers.handleRemove(index)}
-                  />
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={3}>
-                  <Button
-                    startIcon={<AddIcon />}
-                    onClick={() => arrayHelpers.push(emptyEvaluationRow)}
-                  >
-                    Agregar medicamento
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        )}
-      </FieldArray>
-    </TableContainer>
-  );
-};
 
 const PiSelect = ({ name }: any) => {
   return (
