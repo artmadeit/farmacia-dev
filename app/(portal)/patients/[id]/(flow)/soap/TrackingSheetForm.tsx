@@ -78,6 +78,7 @@ export const TrackingSheetForm = ({
               </Grid>
               <Grid xs={12}>
                 <DrugEvaluations
+                  enableDelete
                   diagnosisNotRelated={values.diagnosisNotRelated}
                 />
               </Grid>

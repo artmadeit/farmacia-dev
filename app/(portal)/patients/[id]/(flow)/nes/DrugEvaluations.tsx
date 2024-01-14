@@ -3,6 +3,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -30,17 +31,21 @@ import {
 } from "./table";
 
 import { NesForm } from "./page";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const DrugEvaluations = ({
   diagnosisNotRelated,
+  enableDelete = false,
 }: {
   diagnosisNotRelated: any;
+  enableDelete?: boolean;
 }) => (
   <>
     <Typography variant="h6" pt={4}>
       Evaluación de medicamentos relacionados al diagnóstico
     </Typography>
-    <DiagnosisTable />
+    <DiagnosisTable enableDelete={enableDelete} />
     <Typography variant="h6" pt={4}>
       Evaluación de medicamentos que no se relacionan con el diagnóstico
     </Typography>
@@ -56,12 +61,12 @@ export const emptyEvaluationRow = {
   ...emptyDrugNesEvaluation,
 };
 
-const DiagnosisTable = () => {
+const DiagnosisTable = ({ enableDelete = false }) => {
   const { values } = useFormikContext<NesForm>();
 
   return (
     <TableContainer component={Paper} sx={{ pt: 2 }}>
-      <FieldArray name="diagnosis">
+      <FieldArray name="diagnosisRelated">
         {(arrayHelpers: ArrayHelpers) => (
           <Table>
             {/* <TableHead>
@@ -105,9 +110,19 @@ const DiagnosisTable = () => {
                         rows={4}
                       />
                     </TableCell>
+                    <TableCell sx={{ maxWidth: 20, verticalAlign: "top" }}>
+                      {enableDelete && (
+                        <IconButton
+                          aria-label="delete"
+                          onClick={arrayHelpers.handleRemove(index)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
+                    </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell colSpan={2}>
+                    <TableCell colSpan={3}>
                       <EvaluationNesTable
                         values={values.diagnosisRelated[index].drugEvaluations}
                         name={`diagnosisRelated.${index}.drugEvaluations`}
