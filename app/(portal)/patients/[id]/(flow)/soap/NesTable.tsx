@@ -20,6 +20,9 @@ import {
 } from "../nes/table";
 import { TrackingSheet } from "./TrackingSheet";
 
+/**
+ * @deprecated
+ */
 export const NesTable = () => {
   const { values } = useFormikContext<TrackingSheet>();
   const name = "drugEvaluations";

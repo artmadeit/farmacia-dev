@@ -23,7 +23,6 @@ export default function EditSoap({
   );
 
   const handleSubmit = async (values: TrackingSheet) => {
-    // TODO:
     const data = {
       history: values.history.map(({ drug, ...rest }) => {
         if (isString(drug)) {

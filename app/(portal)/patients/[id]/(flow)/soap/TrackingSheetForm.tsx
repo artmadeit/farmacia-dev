@@ -14,7 +14,6 @@ import { drugEvaluationSchema } from "../nes/drugEvaluationSchema";
 import { picoSheetsSchema } from "../nes/picoSheetsSchema";
 import { PharmacotherapyTable } from "../pharmacotherapy/PharmacotherapyTable";
 import { historySchema } from "../pharmacotherapy/historySchema";
-import { NesTable } from "./NesTable";
 import { TrackingSheet, emptySoapRow } from "./TrackingSheet";
 
 export const TrackingSheetForm = ({
@@ -50,16 +49,21 @@ export const TrackingSheetForm = ({
           <Form>
             <Grid container spacing={4}>
               <Grid xs={10} pt={4}>
-                <strong>Farmacoterapia (P) Prescrito (A) Automedicado </strong>
+                <Typography variant="h6" pt={2}>
+                  Farmacoterapia (P) Prescrito (A) Automedicado
+                </Typography>
               </Grid>
               <Grid xs={12}>
                 <PharmacotherapyTable name="history" values={values} />
               </Grid>
-              <Grid xs={12}>
-                <NesTable />
+              <Grid xs={10} pt={4}>
+                <Typography variant="h6" pt={2}>
+                  NES
+                </Typography>
               </Grid>
+              <Grid xs={12}>HERE NES Table</Grid>
               <Grid xs={12}>
-                <Typography variant="h5">SOAP</Typography>
+                <Typography variant="h6">SOAP</Typography>
               </Grid>
               <Grid xs={12} container>
                 <FieldArray name="soapRows">
