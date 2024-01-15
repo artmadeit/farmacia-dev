@@ -40,8 +40,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { useAuthApi } from "@/app/(api)/api";
-import { SpringPage } from "@/app/(api)/pagination";
+import { Page, SpringPage } from "@/app/(api)/pagination";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
 
 export const DrugEvaluations = ({
   diagnosisNotRelated,
@@ -77,19 +78,20 @@ const DiagnosisTable = ({ enableDelete = false }) => {
 
   const getApi = useAuthApi();
 
-  const searchDrugs = (searchText: string) =>
+  const searchDiseases = (searchText: string) =>
     getApi().then((api) =>
       api
-        .get<SpringPage<DrugProduct>>("drugs", {
-          params: { page: 0, searchText },
-        })
-        .then((x) => x.data.content)
+        .get<Page<DiseaseCie10>>(
+          "/diseases/search/findByNameContainingIgnoringCase",
+          {
+            params: { searchText },
+          }
+        )
+        .then((x) => x.data._embedded.diseases)
     );
 
   const initialValues: {
-    disease: null | {
-      fullName: string;
-    };
+    disease: null | DiseaseCie10;
   } = {
     disease: null,
   };
@@ -108,7 +110,7 @@ const DiagnosisTable = ({ enableDelete = false }) => {
                 initialValues={initialValues}
                 onSubmit={(values) => {
                   arrayHelpers.insert(0, {
-                    disease: values.disease?.fullName,
+                    disease: values.disease?.name || values.disease,
                     symptoms: "",
                     drugEvaluations: [],
                   });
@@ -120,8 +122,7 @@ const DiagnosisTable = ({ enableDelete = false }) => {
                     <AsyncAutocomplete
                       label="Diagnóstico"
                       name={`disease`}
-                      getLabel={(option) => option.fullName}
-                      filter={searchDrugs}
+                      filter={searchDiseases}
                     />
                   </DialogContent>
                   <DialogActions sx={{ padding: "20px 24px" }}>
