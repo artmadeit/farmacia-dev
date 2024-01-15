@@ -3,6 +3,9 @@
 import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
   IconButton,
   Paper,
   Table,
@@ -19,10 +22,12 @@ import {
   FastField,
   Field,
   FieldArray,
+  Form,
+  Formik,
   useFormikContext,
 } from "formik";
 import { TextField } from "formik-mui";
-import React from "react";
+import React, { useState } from "react";
 import {
   NesTableCells,
   emptyDrugNesEvaluation,
@@ -33,6 +38,10 @@ import {
 import { NesForm } from "./page";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
+import { useAuthApi } from "@/app/(api)/api";
+import { SpringPage } from "@/app/(api)/pagination";
+import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 
 export const DrugEvaluations = ({
   diagnosisNotRelated,
@@ -64,75 +73,118 @@ export const emptyEvaluationRow = {
 const DiagnosisTable = ({ enableDelete = false }) => {
   const { values } = useFormikContext<NesForm>();
 
+  const [open, setOpen] = useState(false);
+
+  const getApi = useAuthApi();
+
+  const searchDrugs = (searchText: string) =>
+    getApi().then((api) =>
+      api
+        .get<SpringPage<DrugProduct>>("drugs", {
+          params: { page: 0, searchText },
+        })
+        .then((x) => x.data.content)
+    );
+
+  const initialValues: {
+    disease: null | {
+      fullName: string;
+    };
+  } = {
+    disease: null,
+  };
   return (
     <TableContainer component={Paper} sx={{ pt: 2 }}>
       <FieldArray name="diagnosisRelated">
         {(arrayHelpers: ArrayHelpers) => (
-          <Table>
-            {/* <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>
-                  Datos de Salud
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>
-                  Evaluación de datos de salud
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
-                  Diagnóstico(s)
-                </TableCell>
-                <TableCell rowSpan={2} sx={{ minWidth: 300 }}>
-                  Signos y sintomas que se relacionan con el diagnóstico
-                </TableCell>
-              </TableRow>
-            </TableHead> */}
-            <TableBody>
-              {values.diagnosisRelated.map((x, index) => (
-                <React.Fragment key={index}>
-                  <TableRow>
-                    <TableCell sx={{ verticalAlign: "top" }}>
-                      <FastField
-                        label="Diagnóstico"
-                        component={TextField}
-                        fullWidth
-                        name={`diagnosisRelated.${index}.disease`}
-                        disabled
-                      />
-                    </TableCell>
-                    <TableCell sx={{ verticalAlign: "top" }}>
-                      <FastField
-                        component={TextField}
-                        fullWidth
-                        name={`diagnosisRelated.${index}.symptoms`}
-                        label="Signos y sintomas que se relacionan con el diagnóstico"
-                        multiline
-                        rows={4}
-                      />
-                    </TableCell>
-                    <TableCell sx={{ maxWidth: 20, verticalAlign: "top" }}>
-                      {enableDelete && (
-                        <IconButton
-                          aria-label="delete"
-                          onClick={arrayHelpers.handleRemove(index)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={3}>
-                      <EvaluationNesTable
-                        values={values.diagnosisRelated[index].drugEvaluations}
-                        name={`diagnosisRelated.${index}.drugEvaluations`}
-                      />
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
+          <>
+            <Dialog
+              open={open}
+              onClose={() => setOpen(false)}
+              fullWidth
+              maxWidth="md"
+            >
+              <Formik
+                initialValues={initialValues}
+                onSubmit={(values) => {
+                  arrayHelpers.insert(0, {
+                    disease: values.disease?.fullName,
+                    symptoms: "",
+                    drugEvaluations: [],
+                  });
+                  setOpen(false);
+                }}
+              >
+                <Form>
+                  <DialogContent>
+                    <AsyncAutocomplete
+                      label="Diagnóstico"
+                      name={`disease`}
+                      getLabel={(option) => option.fullName}
+                      filter={searchDrugs}
+                    />
+                  </DialogContent>
+                  <DialogActions sx={{ padding: "20px 24px" }}>
+                    <Button variant="contained" type="submit">
+                      Guardar
+                    </Button>
+                  </DialogActions>
+                </Form>
+              </Formik>
+            </Dialog>
+            <Button startIcon={<AddIcon />} onClick={() => setOpen(true)}>
+              Agregar enfermedad
+            </Button>
+            <Table>
+              <TableBody>
+                {values.diagnosisRelated.map((x, index) => (
+                  <React.Fragment key={index}>
+                    <TableRow>
+                      <TableCell sx={{ verticalAlign: "top" }}>
+                        <FastField
+                          label="Diagnóstico"
+                          component={TextField}
+                          fullWidth
+                          name={`diagnosisRelated.${index}.disease`}
+                          disabled
+                        />
+                      </TableCell>
+                      <TableCell sx={{ verticalAlign: "top" }}>
+                        <FastField
+                          component={TextField}
+                          fullWidth
+                          name={`diagnosisRelated.${index}.symptoms`}
+                          label="Signos y sintomas que se relacionan con el diagnóstico"
+                          multiline
+                          rows={4}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ maxWidth: 20, verticalAlign: "top" }}>
+                        {enableDelete && (
+                          <IconButton
+                            aria-label="delete"
+                            onClick={arrayHelpers.handleRemove(index)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell colSpan={3}>
+                        <EvaluationNesTable
+                          values={
+                            values.diagnosisRelated[index].drugEvaluations
+                          }
+                          name={`diagnosisRelated.${index}.drugEvaluations`}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </>
         )}
       </FieldArray>
     </TableContainer>
