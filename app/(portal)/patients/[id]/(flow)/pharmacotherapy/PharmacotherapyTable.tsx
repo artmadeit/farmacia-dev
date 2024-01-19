@@ -1,6 +1,6 @@
 "use client";
 import { useAuthApi } from "@/app/(api)/api";
-import { Page, SpringPage } from "@/app/(api)/pagination";
+import { SpringPage } from "@/app/(api)/pagination";
 import {
   InexactDatePicker,
   InexactDateType,
@@ -10,10 +10,8 @@ import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import {
-  Box,
   Button,
   Checkbox,
   Dialog,
@@ -38,7 +36,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { ArrayHelpers, Field, FieldArray, useFormikContext } from "formik";
-import { CheckboxWithLabel, RadioGroup, TextField } from "formik-mui";
+import { RadioGroup, TextField } from "formik-mui";
 import React, { ChangeEvent } from "react";
 import { TABLE_WIDTH_DATE, TABLE_WIDTH_ACTION } from "./table";
 import { emptyHistoryRow } from "./emptyHistoryRow";
@@ -314,6 +312,8 @@ const OtherInformationDialog = ({
             </FormControl>
             <Field
               name={`${name}.${index}.administration`}
+              multiline
+              rows={2}
               component={TextField}
               label="Administración"
               variant="outlined"
