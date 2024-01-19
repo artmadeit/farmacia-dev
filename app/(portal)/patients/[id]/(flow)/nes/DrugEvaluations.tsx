@@ -133,9 +133,11 @@ const DiagnosisTable = ({ enableDelete = false }) => {
                 </Form>
               </Formik>
             </Dialog>
-            <Button startIcon={<AddIcon />} onClick={() => setOpen(true)}>
-              Agregar enfermedad
-            </Button>
+            {enableDelete && (
+              <Button startIcon={<AddIcon />} onClick={() => setOpen(true)}>
+                Agregar enfermedad
+              </Button>
+            )}
             <Table>
               <TableBody>
                 {values.diagnosisRelated.map((x, index) => (
