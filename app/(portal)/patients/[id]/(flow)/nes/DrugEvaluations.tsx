@@ -2,6 +2,9 @@
 
 import AddIcon from "@mui/icons-material/Add";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   Dialog,
   DialogActions,
@@ -43,6 +46,7 @@ import { useAuthApi } from "@/app/(api)/api";
 import { Page, SpringPage } from "@/app/(api)/pagination";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
+import { GridExpandMoreIcon } from "@mui/x-data-grid";
 
 export const DrugEvaluations = ({
   diagnosisNotRelated,
@@ -175,6 +179,34 @@ const DiagnosisTable = ({ enableDelete = false }) => {
                     </TableRow>
                     <TableRow>
                       <TableCell colSpan={3}>
+                        <Accordion defaultExpanded>
+                          <AccordionSummary
+                            expandIcon={<GridExpandMoreIcon />}
+                            aria-controls="panel3-content"
+                            id="panel3-header"
+                          >
+                            Medicamentos
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <EvaluationNesTable
+                              values={
+                                values.diagnosisRelated[index].drugEvaluations
+                              }
+                              name={`diagnosisRelated.${index}.drugEvaluations`}
+                            />
+                          </AccordionDetails>
+                        </Accordion>
+                      </TableCell>
+                    </TableRow>
+
+                    {/* <TableRow>
+                          <TableCell colSpan={3}> */}
+
+                    {/* </TableCell>
+                        </TableRow> */}
+
+                    {/* <TableRow>
+                      <TableCell colSpan={3}>
                         <EvaluationNesTable
                           values={
                             values.diagnosisRelated[index].drugEvaluations
@@ -182,7 +214,7 @@ const DiagnosisTable = ({ enableDelete = false }) => {
                           name={`diagnosisRelated.${index}.drugEvaluations`}
                         />
                       </TableCell>
-                    </TableRow>
+                    </TableRow> */}
                   </React.Fragment>
                 ))}
               </TableBody>
