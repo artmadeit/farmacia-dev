@@ -190,13 +190,15 @@ export default function PatientInterview({
           occupation: yup.string().required().label("La ocupación"),
           birthdate: yup
             .date()
+            .label("hola")
             .required()
             .min(
               minYear,
               `La fecha de nacimiento no puede ser menor del año ${minYear.getFullYear()}`
             )
             .max(today)
-            .label("Fecha de nacimiento"),
+            .label("Fecha de nacimiento")
+            .typeError("Fecha de nacimiento inválida"),
           weight: yup.number().required().min(10).max(200).label("El peso"),
           size: yup.number().required().min(0.4).max(2.5).label("La talla"),
           sex: yup.string().required(requiredMessage),
