@@ -241,7 +241,11 @@ export default function PatientInterview({
           labTests: yup.array().of(
             yup.object({
               name: yup.string().required(requiredMessage),
-              date: yup.date().required(requiredMessage).max(today),
+              date: yup
+                .date()
+                .required(requiredMessage)
+                .max(today)
+                .typeError("Fecha inválida"),
               result: yup.string().required(requiredMessage),
               normalRange: yup.string().required(requiredMessage),
             })

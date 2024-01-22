@@ -41,18 +41,21 @@ export const inexactDateSchema = (
 ) =>
   yup.object({
     type: yup.string().required(),
-    value: yup.date().when("type", {
-      is: (val: DateType) => val === "unknown",
-      then: (schema) => schema.notRequired(),
-      otherwise: (schema) => callback(schema),
-    }),
+    value: yup
+      .date()
+      .typeError("Fecha Inválida")
+      .when("type", {
+        is: (val: DateType) => val === "unknown",
+        then: (schema) => schema.notRequired(),
+        otherwise: (schema) => callback(schema),
+      }),
   });
 
 export function InexactDatePicker({
   label,
   name,
   disabled = false,
-  maxDate
+  maxDate,
 }: {
   label?: string;
   name: string;
