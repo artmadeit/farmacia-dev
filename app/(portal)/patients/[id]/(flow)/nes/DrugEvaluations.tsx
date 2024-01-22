@@ -196,10 +196,10 @@ const DiagnosisTable = ({ enableDelete = false }) => {
 
 const EvaluationNesTable = ({ name, values }: { name: any; values: any[] }) => {
   return (
-    <TableContainer component={Paper} sx={{ pt: 2 }}>
+    <TableContainer component={Paper}>
       <FieldArray name={name}>
         {(arrayHelpers: ArrayHelpers) => (
-          <Table>
+          <Table size="small">
             <TableHead>
               {/* <TableRow>
                 {name === "diagnosisNotRelated" && (
