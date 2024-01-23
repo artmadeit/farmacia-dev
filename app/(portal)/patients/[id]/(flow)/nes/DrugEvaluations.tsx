@@ -100,7 +100,7 @@ const DiagnosisTable = ({ enableDelete = false }) => {
     disease: null,
   };
   return (
-    <TableContainer component={Paper} sx={{ pt: 2 }}>
+    <TableContainer component={Paper} sx={{ pt: 0, overflowX: "hidden" }}>
       <FieldArray name="diagnosisRelated">
         {(arrayHelpers: ArrayHelpers) => (
           <>
@@ -146,58 +146,58 @@ const DiagnosisTable = ({ enableDelete = false }) => {
               <TableBody>
                 {values.diagnosisRelated.map((x, index) => (
                   <React.Fragment key={index}>
-                    <TableRow>
-                      <TableCell sx={{ verticalAlign: "top" }}>
-                        <FastField
-                          label="Diagnóstico"
-                          component={TextField}
-                          fullWidth
-                          name={`diagnosisRelated.${index}.disease`}
-                          disabled
-                        />
-                      </TableCell>
-                      <TableCell sx={{ verticalAlign: "top" }}>
-                        <FastField
-                          component={TextField}
-                          fullWidth
-                          name={`diagnosisRelated.${index}.symptoms`}
-                          label="Signos y sintomas que se relacionan con el diagnóstico"
-                          multiline
-                          rows={4}
-                        />
-                      </TableCell>
-                      <TableCell sx={{ maxWidth: 20, verticalAlign: "top" }}>
-                        {enableDelete && (
-                          <IconButton
-                            aria-label="delete"
-                            onClick={arrayHelpers.handleRemove(index)}
+                    <Accordion defaultExpanded>
+                      <AccordionSummary
+                        expandIcon={<GridExpandMoreIcon />}
+                        aria-controls="panel3-content"
+                        id="panel3-header"
+                      ></AccordionSummary>
+                      <AccordionDetails>
+                        <TableRow>
+                          <TableCell sx={{ verticalAlign: "top" }}>
+                            <FastField
+                              label="Diagnóstico"
+                              component={TextField}
+                              fullWidth
+                              name={`diagnosisRelated.${index}.disease`}
+                              disabled
+                            />
+                          </TableCell>
+                          <TableCell sx={{ verticalAlign: "top" }}>
+                            <FastField
+                              component={TextField}
+                              fullWidth
+                              name={`diagnosisRelated.${index}.symptoms`}
+                              label="Signos y sintomas que se relacionan con el diagnóstico"
+                              multiline
+                              rows={4}
+                            />
+                          </TableCell>
+                          <TableCell
+                            sx={{ maxWidth: 20, verticalAlign: "top" }}
                           >
-                            <DeleteIcon />
-                          </IconButton>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell colSpan={3}>
-                        <Accordion defaultExpanded>
-                          <AccordionSummary
-                            expandIcon={<GridExpandMoreIcon />}
-                            aria-controls="panel3-content"
-                            id="panel3-header"
-                          >
-                            Medicamentos
-                          </AccordionSummary>
-                          <AccordionDetails>
+                            {enableDelete && (
+                              <IconButton
+                                aria-label="delete"
+                                onClick={arrayHelpers.handleRemove(index)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan={3}>
                             <EvaluationNesTable
                               values={
                                 values.diagnosisRelated[index].drugEvaluations
                               }
                               name={`diagnosisRelated.${index}.drugEvaluations`}
                             />
-                          </AccordionDetails>
-                        </Accordion>
-                      </TableCell>
-                    </TableRow>
+                          </TableCell>
+                        </TableRow>
+                      </AccordionDetails>
+                    </Accordion>
 
                     {/* <TableRow>
                           <TableCell colSpan={3}> */}
