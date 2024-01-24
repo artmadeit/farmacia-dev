@@ -25,7 +25,7 @@ export const ConsumptionHabits = () => {
       <Grid xs={8} container>
         {consumptionHabits.map((group, index) => (
           <Grid key={index} xs={4}>
-            <Subtitle component="h6">{group.label}</Subtitle>
+            <Subtitle component="h6">{group.label}*</Subtitle>
             <FormControl
               required
               error={Boolean(

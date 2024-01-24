@@ -53,6 +53,7 @@ export const PersonalInformation = () => {
           fullWidth
           component={TextField}
           variant="outlined"
+          required
         />
       </Grid>
       <Grid xs={3}>
@@ -63,13 +64,14 @@ export const PersonalInformation = () => {
           slotProps={{
             textField: {
               fullWidth: true,
-              label: "Fecha de Nacimiento",
+              label: "Fecha de Nacimiento *",
               error: touched.birthdate && !!errors.birthdate,
               helperText:
                 touched.birthdate && errors.birthdate ? errors.birthdate : "",
             },
           }}
           name="birthdate"
+          isRequired={true}
         />
       </Grid>
       <Grid xs={2} p={3}>
@@ -96,6 +98,7 @@ export const PersonalInformation = () => {
           type="number"
           variant="outlined"
           fullWidth
+          required
         />
       </Grid>
       <Grid xs={3}>
@@ -106,6 +109,7 @@ export const PersonalInformation = () => {
           type="number"
           variant="outlined"
           fullWidth
+          required
         />
       </Grid>
       <Grid xs={4} p={3}>

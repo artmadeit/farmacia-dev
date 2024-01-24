@@ -186,6 +186,7 @@ export default function PatientInterview({
       <Title date={data?.createDate || new Date()}>
         Ficha de anamnesis farmacológica
       </Title>
+
       <Formik
         initialValues={formInitialValues}
         enableReinitialize
@@ -283,57 +284,60 @@ export default function PatientInterview({
           router.push(`/patients/${patientId}/pharmacotherapy`);
         }}
       >
-        <Form>
-          <Stack spacing={2} pt={2}>
-            <Grid container>
-              <Grid xs={10}>
-                <Subtitle component="h4">1. Datos personales</Subtitle>
+        {({ errors }) => (
+          <Form>
+            <Stack spacing={2} pt={2}>
+              <Grid container>
+                <Grid xs={10}>
+                  <Subtitle component="h4">1. Datos personales</Subtitle>
+                </Grid>
+                {JSON.stringify(errors)}
               </Grid>
-            </Grid>
-            <PersonalInformation />
-            <Subtitle component="h4">2. Historia de salud</Subtitle>
-            <Subtitle component="h5">2.1 Antecedentes patológicos</Subtitle>
-            <PathologicalAntecedents />
-            <Subtitle component="h5">2.2 Problemas de salud</Subtitle>
-            <HealthProblems />
-            <Subtitle component="h5">2.3 Funciones vitales</Subtitle>
-            <VitalFunctions />
-            <Subtitle component="h5">2.4 Hábitos de consumo</Subtitle>
-            <ConsumptionHabits />
-            <Subtitle component="h5">
-              2.5 Hábitos alimenticios y/o dietéticos
-            </Subtitle>
-            <FoodHabits />
-            <Subtitle component="h5">2.6 Ejercicios físicos</Subtitle>
-            <PhysicalExercises />
-            <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
-            <LabTests />
-            <Subtitle component="h5">
-              2.8 Diagnóstico
-              <Tooltip
-                title="Para registrar una enfermedad
+              <PersonalInformation />
+              <Subtitle component="h4">2. Historia de salud</Subtitle>
+              <Subtitle component="h5">2.1 Antecedentes patológicos</Subtitle>
+              <PathologicalAntecedents />
+              <Subtitle component="h5">2.2 Problemas de salud</Subtitle>
+              <HealthProblems />
+              <Subtitle component="h5">2.3 Funciones vitales</Subtitle>
+              <VitalFunctions />
+              <Subtitle component="h5">2.4 Hábitos de consumo</Subtitle>
+              <ConsumptionHabits />
+              <Subtitle component="h5">
+                2.5 Hábitos alimenticios y/o dietéticos
+              </Subtitle>
+              <FoodHabits />
+              <Subtitle component="h5">2.6 Ejercicios físicos*</Subtitle>
+              <PhysicalExercises />
+              <Subtitle component="h5">2.7 Pruebas de laboratorio*</Subtitle>
+              <LabTests />
+              <Subtitle component="h5">
+                2.8 Diagnóstico
+                <Tooltip
+                  title="Para registrar una enfermedad
                 que no se encuentra en la lista, primero debe
                 escribirla y luego hacer click en enter"
-                placement="right"
-              >
-                <IconButton>
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
-            </Subtitle>
+                  placement="right"
+                >
+                  <IconButton>
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
+              </Subtitle>
 
-            <Diagnosis />
-          </Stack>
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            sx={{ marginTop: "10px" }}
-          >
-            <Button variant="contained" type="submit">
-              Guardar
-            </Button>
-          </Box>
-        </Form>
+              <Diagnosis />
+            </Stack>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ marginTop: "10px" }}
+            >
+              <Button variant="contained" type="submit">
+                Guardar
+              </Button>
+            </Box>
+          </Form>
+        )}
       </Formik>
     </div>
   );
@@ -440,7 +444,7 @@ const FoodHabits = () => {
             )}
             key={group.id}
           >
-            <Subtitle component="h6">{group.label}</Subtitle>
+            <Subtitle component="h6">{group.label}*</Subtitle>
             <FastField component={RadioGroup} name={"foodHabits." + group.id}>
               {group.items.map((item) => (
                 <FormControlLabel
