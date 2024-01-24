@@ -5,12 +5,14 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   IconButton,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -37,7 +39,7 @@ import {
   nesTableCellsHead2,
   nesTableCellsHead3,
 } from "./table";
-
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { NesForm } from "./page";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -56,11 +58,11 @@ export const DrugEvaluations = ({
   enableDelete?: boolean;
 }) => (
   <>
-    <Typography variant="h6" pt={4}>
+    <Typography variant="h6" pt={4} pb={2}>
       Evaluación de medicamentos relacionados al diagnóstico
     </Typography>
     <DiagnosisTable enableDelete={enableDelete} />
-    <Typography variant="h6" pt={4}>
+    <Typography variant="h6" pt={4} pb={2}>
       Evaluación de medicamentos que no se relacionan con el diagnóstico
     </Typography>
     <EvaluationNesTable
@@ -100,135 +102,118 @@ const DiagnosisTable = ({ enableDelete = false }) => {
     disease: null,
   };
   return (
-    <TableContainer component={Paper} sx={{ pt: 0, overflowX: "hidden" }}>
-      <FieldArray name="diagnosisRelated">
-        {(arrayHelpers: ArrayHelpers) => (
-          <>
-            <Dialog
-              open={open}
-              onClose={() => setOpen(false)}
-              fullWidth
-              maxWidth="md"
+    <FieldArray name="diagnosisRelated">
+      {(arrayHelpers: ArrayHelpers) => (
+        <>
+          <Dialog
+            open={open}
+            onClose={() => setOpen(false)}
+            fullWidth
+            maxWidth="md"
+          >
+            <Formik
+              initialValues={initialValues}
+              onSubmit={(values) => {
+                arrayHelpers.insert(0, {
+                  disease: values.disease?.name || values.disease,
+                  symptoms: "",
+                  drugEvaluations: [],
+                });
+                setOpen(false);
+              }}
             >
-              <Formik
-                initialValues={initialValues}
-                onSubmit={(values) => {
-                  arrayHelpers.insert(0, {
-                    disease: values.disease?.name || values.disease,
-                    symptoms: "",
-                    drugEvaluations: [],
-                  });
-                  setOpen(false);
-                }}
-              >
-                <Form>
-                  <DialogContent>
-                    <AsyncAutocomplete
+              <Form>
+                <DialogContent>
+                  <AsyncAutocomplete
+                    label="Diagnóstico"
+                    name={`disease`}
+                    filter={searchDiseases}
+                  />
+                </DialogContent>
+                <DialogActions sx={{ padding: "20px 24px" }}>
+                  <Button variant="contained" type="submit">
+                    Guardar
+                  </Button>
+                </DialogActions>
+              </Form>
+            </Formik>
+          </Dialog>
+          {enableDelete && (
+            <Button startIcon={<AddIcon />} onClick={() => setOpen(true)}>
+              Agregar enfermedad
+            </Button>
+          )}
+          <Stack spacing={2}>
+            {values.diagnosisRelated.map((x, index) => (
+              <Box key={index} component={Paper}>
+                <Grid container spacing={2} padding={2}>
+                  <Grid xs={6}>
+                    <FastField
                       label="Diagnóstico"
-                      name={`disease`}
-                      filter={searchDiseases}
+                      component={TextField}
+                      fullWidth
+                      name={`diagnosisRelated.${index}.disease`}
+                      disabled
                     />
-                  </DialogContent>
-                  <DialogActions sx={{ padding: "20px 24px" }}>
-                    <Button variant="contained" type="submit">
-                      Guardar
-                    </Button>
-                  </DialogActions>
-                </Form>
-              </Formik>
-            </Dialog>
-            {enableDelete && (
-              <Button startIcon={<AddIcon />} onClick={() => setOpen(true)}>
-                Agregar enfermedad
-              </Button>
-            )}
-            <Table>
-              <TableBody>
-                {values.diagnosisRelated.map((x, index) => (
-                  <React.Fragment key={index}>
-                    <Accordion defaultExpanded>
-                      <AccordionSummary
-                        expandIcon={<GridExpandMoreIcon />}
-                        aria-controls="panel3-content"
-                        id="panel3-header"
-                      ></AccordionSummary>
-                      <AccordionDetails>
-                        <TableRow>
-                          <TableCell sx={{ verticalAlign: "top" }}>
-                            <FastField
-                              label="Diagnóstico"
-                              component={TextField}
-                              fullWidth
-                              name={`diagnosisRelated.${index}.disease`}
-                              disabled
-                            />
-                          </TableCell>
-                          <TableCell sx={{ verticalAlign: "top" }}>
-                            <FastField
-                              component={TextField}
-                              fullWidth
-                              name={`diagnosisRelated.${index}.symptoms`}
-                              label="Signos y sintomas que se relacionan con el diagnóstico"
-                              multiline
-                              rows={4}
-                            />
-                          </TableCell>
-                          <TableCell
-                            sx={{ maxWidth: 20, verticalAlign: "top" }}
-                          >
-                            {enableDelete && (
-                              <IconButton
-                                aria-label="delete"
-                                onClick={arrayHelpers.handleRemove(index)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell colSpan={3}>
-                            <EvaluationNesTable
-                              values={
-                                values.diagnosisRelated[index].drugEvaluations
-                              }
-                              name={`diagnosisRelated.${index}.drugEvaluations`}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      </AccordionDetails>
-                    </Accordion>
-
-                    {/* <TableRow>
-                          <TableCell colSpan={3}> */}
-
-                    {/* </TableCell>
-                        </TableRow> */}
-
-                    {/* <TableRow>
-                      <TableCell colSpan={3}>
-                        <EvaluationNesTable
-                          values={
-                            values.diagnosisRelated[index].drugEvaluations
-                          }
-                          name={`diagnosisRelated.${index}.drugEvaluations`}
-                        />
-                      </TableCell>
-                    </TableRow> */}
-                  </React.Fragment>
-                ))}
-              </TableBody>
-            </Table>
-          </>
-        )}
-      </FieldArray>
-    </TableContainer>
+                  </Grid>
+                  <Grid sx={{ display: "flex" }} xs={6}>
+                    <FastField
+                      component={TextField}
+                      fullWidth
+                      name={`diagnosisRelated.${index}.symptoms`}
+                      label="Signos y sintomas que se relacionan con el diagnóstico"
+                      multiline
+                      rows={4}
+                    />
+                    {enableDelete && (
+                      <IconButton
+                        aria-label="delete"
+                        onClick={arrayHelpers.handleRemove(index)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    )}
+                  </Grid>
+                </Grid>
+                <Accordion defaultExpanded elevation={0}>
+                  <AccordionSummary
+                    expandIcon={<GridExpandMoreIcon />}
+                    aria-controls="panel3-content"
+                    id="panel3-header"
+                  >
+                    Medicamentos
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <TableContainer sx={{ pt: 0, overflowX: "hidden" }}>
+                      <Table>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell colSpan={3}>
+                              <EvaluationNesTable
+                                values={
+                                  values.diagnosisRelated[index].drugEvaluations
+                                }
+                                name={`diagnosisRelated.${index}.drugEvaluations`}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </AccordionDetails>
+                </Accordion>
+              </Box>
+            ))}
+          </Stack>
+        </>
+      )}
+    </FieldArray>
   );
 };
 
 const EvaluationNesTable = ({ name, values }: { name: any; values: any[] }) => {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} elevation={0}>
       <FieldArray name={name}>
         {(arrayHelpers: ArrayHelpers) => (
           <Table size="small">
@@ -277,7 +262,7 @@ const EvaluationNesTable = ({ name, values }: { name: any; values: any[] }) => {
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell colSpan={3}>
+                <TableCell colSpan={4} sx={{ border: "none" }}>
                   <Button
                     startIcon={<AddIcon />}
                     onClick={() => arrayHelpers.push(emptyEvaluationRow)}
