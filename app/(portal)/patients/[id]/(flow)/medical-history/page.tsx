@@ -13,9 +13,11 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  IconButton,
   TextField as MuiTextField,
   Radio,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
@@ -47,6 +49,7 @@ import {
 } from "./data";
 import { requiredMessage } from "../../../../../(components)/helpers/requiredMessage";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
+import InfoIcon from "@mui/icons-material/Info";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -305,7 +308,20 @@ export default function PatientInterview({
             <PhysicalExercises />
             <Subtitle component="h5">2.7 Pruebas de laboratorio</Subtitle>
             <LabTests />
-            <Subtitle component="h5">2.8 Diagnóstico</Subtitle>
+            <Subtitle component="h5">
+              2.8 Diagnóstico
+              <Tooltip
+                title="Para registrar una enfermedad
+                que no se encuentra en la lista, primero debe
+                escribirla y luego hacer click en enter"
+                placement="right"
+              >
+                <IconButton>
+                  <InfoIcon />
+                </IconButton>
+              </Tooltip>
+            </Subtitle>
+
             <Diagnosis />
           </Stack>
           <Box
