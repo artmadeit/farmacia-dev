@@ -50,6 +50,7 @@ import {
 import { requiredMessage } from "../../../../../(components)/helpers/requiredMessage";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import InfoIcon from "@mui/icons-material/Info";
+import { DatePicker } from "formik-mui-x-date-pickers";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -62,6 +63,7 @@ const foodConsumptionsGroup2 = {
 };
 
 const initialValues: Anamnesis = {
+  interviewDate: new Date(),
   occupation: "",
   sex: "",
   birthdate: null,
@@ -116,6 +118,7 @@ type HealthProblemsByCategory = {
 };
 
 export type Anamnesis = {
+  interviewDate: Date | null;
   occupation: string;
   sex: string;
   birthdate: Date | null;
@@ -185,10 +188,6 @@ export default function PatientInterview({
 
   return (
     <div>
-      <Title date={data?.createDate || new Date()}>
-        Ficha de anamnesis farmacológica
-      </Title>
-
       <Formik
         initialValues={formInitialValues}
         enableReinitialize
@@ -286,9 +285,31 @@ export default function PatientInterview({
           router.push(`/patients/${patientId}/pharmacotherapy`);
         }}
       >
-        {({ errors }) => (
+        {({ errors, touched }) => (
           <Form>
             <Stack spacing={2} pt={2}>
+              <Title date={data?.createDate || new Date()}>
+                Ficha de anamnesis farmacológica
+              </Title>
+              {/* <Grid container justifyContent="flex-end">
+                <Grid xs={3}>
+                  <Field
+                    component={DatePicker}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        label: "Fecha de entrevista",
+                        error: touched.interviewDate && !!errors.interviewDate,
+                        helperText:
+                          touched.interviewDate && errors.interviewDate
+                            ? errors.interviewDate
+                            : "",
+                      },
+                    }}
+                    name="surveyDate"
+                  />
+                </Grid>
+              </Grid> */}
               <Grid container>
                 <Grid xs={10}>
                   <Subtitle component="h4">1. Datos personales</Subtitle>

@@ -116,9 +116,6 @@ export default function Pharmacotherapy({
 
   return (
     <div>
-      <Title date={data?.createDate || new Date()}>
-        Hoja Farmacoterapéutica
-      </Title>
       <Formik
         initialValues={initialValues}
         enableReinitialize
@@ -204,6 +201,9 @@ export default function Pharmacotherapy({
       >
         {({ values, errors, touched }) => (
           <Form>
+            <Title date={data?.createDate || new Date()}>
+              Hoja Farmacoterapéutica
+            </Title>
             <Grid container spacing={2}>
               <Grid xs={10} style={{ margin: "10px 0px" }}>
                 <strong>

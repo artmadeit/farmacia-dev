@@ -145,9 +145,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
   return (
     <div>
-      <Title date={data?.createDate || new Date()}>
-        Para la evaluación y el análisis de datos e identificación del PRM
-      </Title>
       <Formik
         initialValues={formInitialValues}
         enableReinitialize
@@ -220,6 +217,9 @@ export default function NesPage({ params }: { params: { id: number } }) {
       >
         {({ values }) => (
           <Form>
+            <Title date={data?.createDate || new Date()}>
+              Para la evaluación y el análisis de datos e identificación del PRM
+            </Title>
             <DrugEvaluations diagnosisNotRelated={values.diagnosisNotRelated} />
             <Grid container pt={4}>
               <Grid item xs={10} paddingBottom={2}>
