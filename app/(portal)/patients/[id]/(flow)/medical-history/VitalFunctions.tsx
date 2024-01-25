@@ -35,29 +35,40 @@ export const VitalFunctions = () => {
           fullWidth
         />
       </Grid>
-      <Grid container>
-        <Grid xs={12}>
+      {/* <Grid container> */}
+      {/* <Grid xs={12}>
           <Typography>Presión arterial (PA)</Typography>
-        </Grid>
-        <Grid xs={6}>
-          <FastField
-            component={TextField}
-            name="vitalFunctions.bloodPressureSystolic"
-            label="PA sistólica:"
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        <Grid xs={6}>
-          <FastField
-            component={TextField}
-            name="vitalFunctions.bloodPressureDiastolic"
-            label="PA diastólica"
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
+        </Grid> */}
+      <Grid xs={4}>
+        <FastField
+          component={TextField}
+          name="vitalFunctions.bloodPressureSystolic"
+          label="PA sistólica:"
+          variant="outlined"
+          fullWidth
+        />
       </Grid>
+      <Grid xs={4}>
+        <FastField
+          component={TextField}
+          name="vitalFunctions.bloodPressureDiastolic"
+          label="PA diastólica"
+          variant="outlined"
+          fullWidth
+        />
+      </Grid>
+      <Grid xs={4}>
+        <FastField
+          component={TextField}
+          name="vitalFunctions.additionalInformation"
+          label="Información Adicional"
+          multiline
+          rows={4}
+          variant="outlined"
+          fullWidth
+        />
+      </Grid>
+      {/* </Grid> */}
     </Grid>
   );
 };

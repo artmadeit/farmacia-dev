@@ -15,7 +15,7 @@ export const Title = ({
         <Typography variant="h5" gutterBottom>
           {children}
         </Typography>
-        <Typography>Fecha: {formatDateTime(date)}</Typography>
+        <Typography>Fecha de registro: {formatDateTime(date)}</Typography>
       </Box>
       <Divider />
     </Stack>

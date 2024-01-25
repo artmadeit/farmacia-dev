@@ -86,6 +86,7 @@ const initialValues: Anamnesis = {
     temperature: "",
     bloodPressureSystolic: "",
     bloodPressureDiastolic: "",
+    additionalInformation: "",
   },
 
   consumptionHabits: {
@@ -139,6 +140,7 @@ export type Anamnesis = {
     temperature: number | string;
     bloodPressureSystolic: number | string;
     bloodPressureDiastolic: number | string;
+    additionalInformation: string;
   };
 
   consumptionHabits: {
