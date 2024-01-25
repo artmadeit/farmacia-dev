@@ -291,25 +291,6 @@ export default function PatientInterview({
               <Title date={data?.createDate || new Date()}>
                 Ficha de anamnesis farmacológica
               </Title>
-              {/* <Grid container justifyContent="flex-end">
-                <Grid xs={3}>
-                  <Field
-                    component={DatePicker}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        label: "Fecha de entrevista",
-                        error: touched.interviewDate && !!errors.interviewDate,
-                        helperText:
-                          touched.interviewDate && errors.interviewDate
-                            ? errors.interviewDate
-                            : "",
-                      },
-                    }}
-                    name="surveyDate"
-                  />
-                </Grid>
-              </Grid> */}
               <Grid container>
                 <Grid xs={10}>
                   <Subtitle component="h4">1. Datos personales</Subtitle>

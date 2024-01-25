@@ -2,7 +2,7 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import { formatDateTime } from "../date";
 import { Field } from "formik";
-import { DatePicker, DateTimePicker } from "formik-mui-x-date-pickers";
+import { DateTimePicker } from "formik-mui-x-date-pickers";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 export const Title = ({
@@ -21,7 +21,6 @@ export const Title = ({
         <Grid>
           <Typography>Fecha de registro: {formatDateTime(date)}</Typography>
           <Grid container>
-            {/* <Typography> */}
             <Grid xs={3}>
               <Field
                 component={DateTimePicker}
@@ -40,13 +39,9 @@ export const Title = ({
                 name="interviewDate"
               />
             </Grid>
-            {/* </Typography> */}
           </Grid>
         </Grid>
       </Box>
-      {/* <Grid container justifyContent="flex-end">
-        <Grid xs={3}></Grid>
-      </Grid> */}
       <Divider />
     </Stack>
   );

@@ -134,9 +134,6 @@ export default function PatientSelectionPage({
 
   return (
     <>
-      <Title date={data?.createDate || new Date()}>
-        Criterios de selección de pacientes
-      </Title>
       <Formik
         initialValues={data || initialValues}
         enableReinitialize
@@ -171,6 +168,9 @@ export default function PatientSelectionPage({
       >
         {({ values }) => (
           <Form>
+            <Title date={data?.createDate || new Date()}>
+              Criterios de selección de pacientes
+            </Title>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
