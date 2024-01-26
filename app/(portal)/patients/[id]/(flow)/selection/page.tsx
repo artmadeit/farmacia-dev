@@ -111,12 +111,14 @@ type SelectionForm = {
   criterionList: string[];
   drug: Drug | string | null;
   prm: string;
+  interviewDate: Date | null;
 };
 
 const initialValues: SelectionForm = {
   criterionList: [],
   drug: null,
   prm: "",
+  interviewDate: new Date(),
 };
 
 export default function PatientSelectionPage({

@@ -83,6 +83,7 @@ type Pharmacoterapy = {
     dose: string;
     adverseReactionOfDrug: string;
   }[];
+  interviewDate: Date | null;
 };
 
 const emptyInitialValues: Pharmacoterapy = {
@@ -90,6 +91,7 @@ const emptyInitialValues: Pharmacoterapy = {
   drugAllergies: [],
   foodAllergies: [],
   adverseReactions: [],
+  interviewDate: new Date(),
 };
 
 export default function Pharmacotherapy({

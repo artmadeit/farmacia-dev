@@ -38,6 +38,14 @@ function createUppy(patientId: number) {
 
 const height = 400;
 
+type consentDate = {
+  interviewDate: Date | null;
+};
+
+const initialValues: consentDate = {
+  interviewDate: new Date(),
+};
+
 export default function ConsentPage({ params }: { params: { id: number } }) {
   const getApi = useAuthApi();
   const { id: patientId } = params;
@@ -83,7 +91,10 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
 
   return (
     <div>
-      <Formik initialValues={{}} onSubmit={(x) => console.log(x)}>
+      <Formik
+        initialValues={{ initialValues }}
+        onSubmit={(x) => console.log(x)}
+      >
         <Form>
           <Title date={data?.createDate || new Date()}>
             Firma de consentimiento

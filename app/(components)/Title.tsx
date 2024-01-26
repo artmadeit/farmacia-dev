@@ -1,9 +1,13 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import { formatDateTime } from "../date";
-import { Field } from "formik";
+import { Field, useFormikContext } from "formik";
 import { DateTimePicker } from "formik-mui-x-date-pickers";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+
+type dateInterview = {
+  interviewDate: any;
+};
 
 export const Title = ({
   children,
@@ -12,6 +16,7 @@ export const Title = ({
   children: React.ReactNode;
   date: Date;
 }) => {
+  const { touched, errors } = useFormikContext<dateInterview>();
   return (
     <Stack>
       <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -29,11 +34,11 @@ export const Title = ({
                   textField: {
                     fullWidth: true,
                     label: "Fecha entrevista:",
-                    // error: touched.surveyDate && !!errors.surveyDate,
-                    // helperText:
-                    //   touched.surveyDate && errors.surveyDate
-                    //     ? errors.surveyDate
-                    //     : "",
+                    error: touched.interviewDate && !!errors.interviewDate,
+                    helperText:
+                      touched.interviewDate && errors.interviewDate
+                        ? errors.interviewDate
+                        : "",
                   },
                 }}
                 name="interviewDate"
