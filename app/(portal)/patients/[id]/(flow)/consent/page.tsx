@@ -16,6 +16,7 @@ import Transloadit from "@uppy/transloadit";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
+import { Form, Formik } from "formik";
 
 function createUppy(patientId: number) {
   return new Uppy({
@@ -82,9 +83,13 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
 
   return (
     <div>
-      <Title date={data?.createDate || new Date()}>
-        Firma de consentimiento
-      </Title>
+      <Formik initialValues={{}} onSubmit={(x) => console.log(x)}>
+        <Form>
+          <Title date={data?.createDate || new Date()}>
+            Firma de consentimiento
+          </Title>
+        </Form>
+      </Formik>
       <Grid container spacing={4}>
         <Grid xs={6} pt={8}>
           <DragDrop uppy={uppy} height={String(height)} />

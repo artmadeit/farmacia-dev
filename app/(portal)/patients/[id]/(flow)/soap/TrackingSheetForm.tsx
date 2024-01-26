@@ -26,7 +26,6 @@ export const TrackingSheetForm = ({
 }) => {
   return (
     <div>
-      <Title date={initialValues.createDate}>Hoja de seguimiento</Title>
       <Formik
         initialValues={initialValues}
         enableReinitialize
@@ -62,6 +61,7 @@ export const TrackingSheetForm = ({
       >
         {({ values, errors }) => (
           <Form>
+            <Title date={initialValues.createDate}>Hoja de seguimiento</Title>
             <Grid container spacing={4}>
               <Grid xs={10} pt={4}>
                 <Typography variant="h6" pt={2}>
