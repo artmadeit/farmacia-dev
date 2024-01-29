@@ -4,12 +4,18 @@ import { Page } from "@/app/(api)/pagination";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import { usePagination } from "@/app/(components)/hook-customization/usePagination";
 import { Fab, Stack, Tooltip, Typography } from "@mui/material";
-import { DataGrid, GridColDef, esES } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  esES,
+} from "@mui/x-data-grid";
 import React from "react";
 import useSWR from "swr";
 import { DrugProduct } from "./Drug";
 import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
+import EditIcon from "@mui/icons-material/Edit";
 
 const DrugsPage = () => {
   const { paginationModel, setPaginationModel } = usePagination();
@@ -26,6 +32,22 @@ const DrugsPage = () => {
           { field: "name", headerName: "Nombre", width: 150 },
           { field: "concentration", headerName: "Concentración", width: 150 },
           { field: "form", headerName: "Forma", width: 150 },
+          {
+            field: "actions",
+            type: "actions",
+            width: 80,
+            getActions: (params) => {
+              return [
+                <Tooltip title="Editar" key="edit">
+                  <GridActionsCellItem
+                    icon={<EditIcon />}
+                    label="Editar"
+                    onClick={() => console.log("click")}
+                  />
+                </Tooltip>,
+              ];
+            },
+          },
         ] as GridColDef<DrugProduct>[]
       ).map(withOutSorting),
     []
