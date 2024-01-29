@@ -36,7 +36,7 @@ const DrugsPage = () => {
       <Stack direction="row" alignItems="center" spacing={2}>
         <Typography variant="h4">Productos farmacéuticos</Typography>
         <Tooltip title="Registrar">
-          <Link href="/">
+          <Link href="pharmaceutical-product/create">
             <Fab color="primary" aria-labelledby="add">
               <AddIcon />
             </Fab>
