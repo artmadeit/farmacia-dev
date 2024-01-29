@@ -3,11 +3,13 @@
 import { Page } from "@/app/(api)/pagination";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import { usePagination } from "@/app/(components)/hook-customization/usePagination";
-import { Stack, Typography } from "@mui/material";
+import { Fab, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef, esES } from "@mui/x-data-grid";
 import React from "react";
 import useSWR from "swr";
 import { DrugProduct } from "./Drug";
+import AddIcon from "@mui/icons-material/Add";
+import Link from "next/link";
 
 const DrugsPage = () => {
   const { paginationModel, setPaginationModel } = usePagination();
@@ -33,6 +35,13 @@ const DrugsPage = () => {
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
         <Typography variant="h4">Productos farmacéuticos</Typography>
+        <Tooltip title="Registrar">
+          <Link href="/">
+            <Fab color="primary" aria-labelledby="add">
+              <AddIcon />
+            </Fab>
+          </Link>
+        </Tooltip>
       </Stack>
       <div style={{ height: "70vh", width: "100%" }}>
         <DataGrid
