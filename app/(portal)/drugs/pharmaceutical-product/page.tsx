@@ -16,6 +16,7 @@ import { DrugProduct } from "./Drug";
 import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
+import { useRouter } from "next/navigation";
 
 const DrugsPage = () => {
   const { paginationModel, setPaginationModel } = usePagination();
@@ -24,6 +25,8 @@ const DrugsPage = () => {
     "/drugPharmaceuticalProducts",
     { params: { page: paginationModel.page, size: paginationModel.pageSize } },
   ]);
+
+  const router = useRouter();
 
   const columns = React.useMemo(
     () =>
@@ -42,7 +45,11 @@ const DrugsPage = () => {
                   <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Editar"
-                    onClick={() => console.log("click")}
+                    onClick={() =>
+                      router.push(
+                        `/drugs/pharmaceutical-product/${params.row.id}`
+                      )
+                    }
                   />
                 </Tooltip>,
               ];
@@ -50,7 +57,7 @@ const DrugsPage = () => {
           },
         ] as GridColDef<DrugProduct>[]
       ).map(withOutSorting),
-    []
+    [router]
   );
 
   return (
