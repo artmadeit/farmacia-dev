@@ -103,11 +103,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
         },
       ],
     })),
-    diagnosisNotRelated: [
-      {
-        ...emptyEvaluationRow,
-      },
-    ],
+    diagnosisNotRelated: [],
     pharmaceuticInterventions: [
       {
         ...emptyPharmaceuticInterventionRow,
