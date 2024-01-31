@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import { format } from "date-fns";
 import { handleDates } from "../date";
-// import qs from "qs";
 
 export const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -17,6 +17,11 @@ export const useAuthApi = () => {
         },
       });
 
+      api.interceptors.request.use((config) => {
+        handleDatesRequest(config.data);
+        return config;
+      });
+
       api.interceptors.response.use((originalResponse) => {
         handleDates(originalResponse.data);
         return originalResponse;
@@ -25,3 +30,18 @@ export const useAuthApi = () => {
       return api;
     });
 };
+
+/**
+ * For localdatetime support
+ */
+function handleDatesRequest(body: any) {
+  if (body === null || body === undefined || typeof body !== "object")
+    return body;
+
+  for (const key of Object.keys(body)) {
+    const value = body[key];
+    if (body[key] instanceof Date)
+      body[key] = format(body[key], "yyyy-MM-dd'T'HH:mm:ss'Z'");
+    else if (typeof value === "object") handleDatesRequest(value);
+  }
+}

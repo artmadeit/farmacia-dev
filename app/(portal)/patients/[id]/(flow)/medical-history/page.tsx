@@ -295,7 +295,6 @@ export default function PatientInterview({
                 <Grid xs={10}>
                   <Subtitle component="h4">1. Datos personales</Subtitle>
                 </Grid>
-                {JSON.stringify(errors)}
               </Grid>
               <PersonalInformation />
               <Subtitle component="h4">2. Historia de salud</Subtitle>
