@@ -63,7 +63,7 @@ export const DrugEvaluations = ({
     </Typography>
     <DiagnosisTable enableDelete={enableDelete} />
     <Typography variant="h6" pt={4} pb={2}>
-      Evaluación de medicamentos que no se relacionan con el diagnóstico
+      Evaluación de signos y síntomas que no se relacionan con el diagnóstico
     </Typography>
     <EvaluationNesTable
       values={diagnosisNotRelated}
