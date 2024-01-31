@@ -32,7 +32,8 @@ const PharmaceuticalProductForm = ({
 
     const data = {
       ...values,
-      fullName: values.name + " " + values.concentration + " " + values.form,
+      fullName: `${values.name} ${values.concentration} ${values.form}`,
+      // fullName: values.name + " " + values.concentration + " " + values.form,
     };
 
     if (pharmaceuticalProduct.id) {
