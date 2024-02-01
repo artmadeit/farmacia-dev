@@ -79,6 +79,7 @@ export default function CreateTrackingSheet({
       soapRows: values.soapRows,
       picoSheets: values.picoSheets,
       patientId: patientId,
+      interviewDate: values.interviewDate,
     };
     await getApi().then((api) => api.post("soap", data));
     getLastInterview();
@@ -92,7 +93,7 @@ export default function CreateTrackingSheet({
   }
   return (
     <TrackingSheetForm
-      initialValues={{ ...lastInterview, createDate: new Date() }}
+      initialValues={{ ...lastInterview, interviewDate: new Date() }}
       onSubmit={handleSubmit}
     />
   );

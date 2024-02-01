@@ -191,6 +191,7 @@ export default function Pharmacotherapy({
                 drugId: drug.id,
               };
             }),
+            interviewDate: values.interviewDate,
           };
 
           const response = await getApi().then((api) =>
@@ -207,6 +208,7 @@ export default function Pharmacotherapy({
               Hoja Farmacoterapéutica
             </Title>
             <Grid container spacing={2}>
+              {JSON.stringify(errors)}
               <Grid xs={10} style={{ margin: "10px 0px" }}>
                 <strong>
                   3. Historia Farmacoterapéutica (P) Prescrito (A) Automedicado{" "}

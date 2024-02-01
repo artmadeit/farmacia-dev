@@ -205,6 +205,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
             ),
             pharmaceuticInterventions: values.pharmaceuticInterventions,
             picoSheets: values.picoSheets,
+            interviewDate: values.interviewDate,
           };
           const response = await getApi().then((api) =>
             api.post(`patients/${patientId}/nes`, data)
@@ -214,11 +215,12 @@ export default function NesPage({ params }: { params: { id: number } }) {
           router.push(`/patients/${patientId}/soap`);
         }}
       >
-        {({ values }) => (
+        {({ values, errors }) => (
           <Form>
             <Title date={data?.createDate || new Date()}>
               Para la evaluación y el análisis de datos e identificación del PRM
             </Title>
+            {JSON.stringify(errors)}
             <DrugEvaluations diagnosisNotRelated={values.diagnosisNotRelated} />
             <Grid container pt={4}>
               <Grid item xs={10} paddingBottom={2}>

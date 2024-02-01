@@ -17,6 +17,7 @@ export type TrackingSheet = {
   }[];
   picoSheets: PicoMedicine[];
   createDate: Date;
+  interviewDate: Date | null;
 };
 
 export const emptySoapRow = {
