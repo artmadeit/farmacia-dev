@@ -220,7 +220,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
             <Title date={data?.createDate || new Date()}>
               Para la evaluación y el análisis de datos e identificación del PRM
             </Title>
-            {JSON.stringify(errors)}
             <DrugEvaluations diagnosisNotRelated={values.diagnosisNotRelated} />
             <Grid container pt={4}>
               <Grid item xs={10} paddingBottom={2}>

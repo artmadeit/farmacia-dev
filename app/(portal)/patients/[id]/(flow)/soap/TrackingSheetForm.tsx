@@ -69,7 +69,6 @@ export const TrackingSheetForm = ({
                 <Typography variant="h6" pt={2}>
                   Farmacoterapia (P) Prescrito (A) Automedicado
                 </Typography>
-                {JSON.stringify(errors)}
               </Grid>
               <Grid xs={12}>
                 <PharmacotherapyTable name="history" values={values} />
