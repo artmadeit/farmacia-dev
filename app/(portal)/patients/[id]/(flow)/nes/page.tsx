@@ -66,7 +66,7 @@ export type NesForm = {
     commentaries: string;
   }[];
   picoSheets: PicoMedicine[];
-  // interviewDate: Date | null;
+  interviewDate: Date | null;
 };
 
 type DrugEvaluation = {
@@ -110,7 +110,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
       },
     ],
     picoSheets: [],
-    // interviewDate: new Date(),
+    interviewDate: new Date(),
   };
 
   const formInitialValues: NesForm = data
@@ -138,6 +138,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
         diagnosisNotRelated: data.diagnosisNotRelated,
         pharmaceuticInterventions: data.pharmaceuticInterventions,
         picoSheets: data.picoSheets,
+        interviewDate: data.interviewDate,
       }
     : initialValues;
 
