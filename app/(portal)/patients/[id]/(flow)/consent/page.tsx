@@ -38,11 +38,11 @@ function createUppy(patientId: number) {
 
 const height = 400;
 
-type consentDate = {
+type ConsentDate = {
   interviewDate: Date | null;
 };
 
-const initialValues: consentDate = {
+const initialValues: ConsentDate = {
   interviewDate: new Date(),
 };
 
@@ -63,10 +63,6 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
       const reader = new FileReader();
       reader.onload = async function (e) {
         if (e.target) {
-          await getApi().then((api) =>
-            api.post(`patients/${patientId}/consent`)
-          );
-          mutate();
           // Useful if we want to save the url, setUploadUrl(e.target.result); check console.log(file) and result
 
           // remove file so user can upload again
@@ -89,50 +85,56 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
     mutate();
   };
 
+  const formInitialValues: ConsentDate = data || initialValues;
+
   return (
-    <div>
-      <Formik
-        initialValues={{ initialValues }}
-        onSubmit={(x) => console.log(x)}
-      >
-        <Form>
-          <Title date={data?.createDate || new Date()}>
-            Firma de consentimiento
-          </Title>
-        </Form>
-      </Formik>
-      <Grid container spacing={4}>
-        <Grid xs={6} pt={8}>
-          <DragDrop uppy={uppy} height={String(height)} />
-          <StatusBar uppy={uppy} />
+    <Formik
+      initialValues={formInitialValues}
+      onSubmit={async (values) => {
+        await getApi().then((api) =>
+          api.post(`patients/${patientId}/consent`, {
+            interviewDate: values.interviewDate,
+          })
+        );
+        mutate();
+        router.push(`/patients/${patientId}/medical-history`);
+      }}
+    >
+      <Form>
+        <Title date={data?.createDate || new Date()}>
+          Firma de consentimiento
+        </Title>
+
+        <Grid container spacing={4}>
+          <Grid xs={6} pt={8}>
+            <DragDrop uppy={uppy} height={String(height)} />
+            <StatusBar uppy={uppy} />
+          </Grid>
+          <Grid xs={6}>
+            {data && (
+              <Stack>
+                <Box display="flex" justifyContent="end">
+                  <IconButton aria-label="delete" onClick={deleteConsent}>
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+                <embed
+                  src={data.signedUrl}
+                  height={height}
+                  type="application/pdf"
+                />
+              </Stack>
+            )}
+          </Grid>
         </Grid>
-        <Grid xs={6}>
-          {data && (
-            <Stack>
-              <Box display="flex" justifyContent="end">
-                <IconButton aria-label="delete" onClick={deleteConsent}>
-                  <CloseIcon />
-                </IconButton>
-              </Box>
-              <embed
-                src={data.signedUrl}
-                height={height}
-                type="application/pdf"
-              />
-            </Stack>
-          )}
-        </Grid>
-      </Grid>
-      <Box display="flex" justifyContent="end" paddingTop={2}>
-        <Button
-          variant="contained"
-          onClick={() => {
-            router.push(`/patients/${patientId}/medical-history`);
-          }}
-        >
-          Continuar
-        </Button>
-      </Box>
-    </div>
+        <Box display="flex" justifyContent="end" paddingTop={2}>
+          <Button variant="contained" type="submit">
+            Continuar
+          </Button>
+        </Box>
+      </Form>
+    </Formik>
   );
 }
+
+//router.push(`/patients/${patientId}/medical-history`)
