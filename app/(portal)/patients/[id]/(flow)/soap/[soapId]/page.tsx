@@ -67,6 +67,7 @@ export default function EditSoap({
       soapRows: values.soapRows,
       picoSheets: values.picoSheets,
       patientId: patientId,
+      interviewDate: values.interviewDate,
     };
     const response = await getApi().then((api) =>
       api.put(`soap/${soapId}`, data)

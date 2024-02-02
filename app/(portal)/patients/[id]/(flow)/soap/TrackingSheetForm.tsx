@@ -21,7 +21,7 @@ export const TrackingSheetForm = ({
   initialValues,
   onSubmit,
 }: {
-  initialValues: TrackingSheet & { interviewDate: Date };
+  initialValues: TrackingSheet;
   onSubmit: (values: TrackingSheet) => Promise<void>;
 }) => {
   return (
@@ -61,9 +61,7 @@ export const TrackingSheetForm = ({
       >
         {({ values, errors }) => (
           <Form>
-            <Title date={initialValues.interviewDate}>
-              Hoja de seguimiento
-            </Title>
+            <Title date={initialValues.createDate}>Hoja de seguimiento</Title>
             <Grid container spacing={4}>
               <Grid xs={10} pt={4}>
                 <Typography variant="h6" pt={2}>
