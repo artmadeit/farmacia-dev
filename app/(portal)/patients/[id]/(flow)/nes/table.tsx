@@ -3,8 +3,16 @@ import { Page, SpringPage } from "@/app/(api)/pagination";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IconButton, MenuItem, Stack, TableCell, Tooltip } from "@mui/material";
-import { Field } from "formik";
+import {
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  MenuItem,
+  Stack,
+  TableCell,
+  Tooltip,
+} from "@mui/material";
+import { Field, useField, useFormik, useFormikContext } from "formik";
 import { Select, TextField } from "formik-mui";
 import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
 
@@ -160,10 +168,58 @@ const Justification = ({ name }: { name: string }) => {
     : PRM_GROUP.NECESSITY;
 
   const items = getItemsPerGroup(groupName);
+  const [value, meta, helpers] = useField<any>(name);
+  const values = value.value
 
   return (
     <Stack gap={2} pt={2}>
-      <Field
+      {items.map((prmItem, index) => {
+        return (
+          <div key={prmItem.name}>
+            {/* <Field
+              component={CheckboxWithLabel}
+              type="checkbox"
+              name={`${name}.prms[${index}].name`}
+              value={prmItem.name}
+              Label={{ label: `${prmItem.name}: ${prmItem.description}` }}
+            /> */}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={prmItem.name}
+                  checked={values.prms.find((x: any) => x.name === prmItem.name)}
+                  onChange={() => {
+                    const check = values.prms.find((x: any) => x.name === prmItem.name)
+
+                    if(check) {
+                      // elimina
+                    } else {
+                      {name: prmItem.name}
+                    }
+
+
+                    // helpers.setValue({
+                    //   ...values,
+                    //   prms
+                    // })
+                  }}
+                />
+              }
+              label={`${prmItem.name}: ${prmItem.description}`}
+            />
+            <Field
+              component={TextField}
+              label="Justifique"
+              name={`${name}.prms[${index}].justification`}
+              variant="outlined"
+              multiline
+              rows={4}
+              fullWidth
+            />
+          </div>
+        );
+      })}
+      {/* <Field
         formControl={{ sx: { width: 200 } }}
         component={Select}
         id={`${name}.prm`}
@@ -184,7 +240,7 @@ const Justification = ({ name }: { name: string }) => {
         multiline
         rows={4}
         fullWidth
-      />
+      /> */}
     </Stack>
   );
 };
