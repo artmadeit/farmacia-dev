@@ -178,9 +178,7 @@ const Justification = ({ name }: { name: string }) => {
   return (
     <Stack gap={2} pt={2}>
       {items.map((prmItem) => {
-        const index = values.prms?.findIndex(
-          (x: any) => x.name === prmItem.name
-        );
+        const index = values.prms?.findIndex((x) => x.prm === prmItem.name);
         const checked = index !== -1;
 
         return (

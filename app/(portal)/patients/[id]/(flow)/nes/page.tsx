@@ -47,7 +47,7 @@ const emptyPharmaceuticInterventionRow = {
 export type NesRow = {
   evaluation: string;
   prms: {
-    name: string;
+    prm: string;
     justification: string;
   }[];
 };
