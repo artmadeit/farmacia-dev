@@ -44,10 +44,12 @@ const emptyPharmaceuticInterventionRow = {
   commentaries: "",
 };
 
-type NesRow = {
+export type NesRow = {
   evaluation: string;
-  justification: string;
-  prm: string;
+  prms: {
+    name: string;
+    justification: string;
+  }[];
 };
 
 export type DiagnosisRelated = {
@@ -219,7 +221,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
             <Title date={data?.createDate || new Date()}>
               Para la evaluación y el análisis de datos e identificación del PRM
             </Title>
-            {JSON.stringify(values)}
             <DrugEvaluations diagnosisNotRelated={values.diagnosisNotRelated} />
             <Grid container pt={4}>
               <Grid item xs={10} paddingBottom={2}>
@@ -307,7 +308,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
 const PiSelect = ({ name }: any) => {
   return (
-    <Field
+    <FastField
       component={Select}
       formControl={{ sx: { width: "100%" } }}
       name={name}
@@ -325,6 +326,6 @@ const PiSelect = ({ name }: any) => {
           </MenuItem>
         )),
       ])}
-    </Field>
+    </FastField>
   );
 };

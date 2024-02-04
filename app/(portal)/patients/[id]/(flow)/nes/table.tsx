@@ -12,26 +12,30 @@ import {
   TableCell,
   Tooltip,
 } from "@mui/material";
-import { Field, useField, useFormik, useFormikContext } from "formik";
+import {
+  FastField,
+  Field,
+  useField,
+  useFormik,
+  useFormikContext,
+} from "formik";
 import { Select, TextField } from "formik-mui";
 import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
+import { NesRow } from "./page";
 
 export const emptyDrugNesEvaluation = {
   medicine: "",
   necessity: {
     evaluation: "",
-    justification: "",
-    prm: "",
+    prms: [],
   },
   effectivity: {
     evaluation: "",
-    justification: "",
-    prm: "",
+    prms: [],
   },
   security: {
     evaluation: "",
-    justification: "",
-    prm: "",
+    prms: [],
   },
 };
 
@@ -168,79 +172,57 @@ const Justification = ({ name }: { name: string }) => {
     : PRM_GROUP.NECESSITY;
 
   const items = getItemsPerGroup(groupName);
-  const [value, meta, helpers] = useField<any>(name);
-  const values = value.value
+  const [value, _meta, helpers] = useField<any>(name);
+  const values: NesRow = value.value;
 
   return (
     <Stack gap={2} pt={2}>
-      {items.map((prmItem, index) => {
+      {items.map((prmItem) => {
+        const index = values.prms?.findIndex(
+          (x: any) => x.name === prmItem.name
+        );
+        const checked = index !== -1;
+
         return (
-          <div key={prmItem.name}>
-            {/* <Field
-              component={CheckboxWithLabel}
-              type="checkbox"
-              name={`${name}.prms[${index}].name`}
-              value={prmItem.name}
-              Label={{ label: `${prmItem.name}: ${prmItem.description}` }}
-            /> */}
+          <Stack spacing={2} key={prmItem.name}>
             <FormControlLabel
               control={
                 <Checkbox
                   value={prmItem.name}
-                  checked={values.prms.find((x: any) => x.name === prmItem.name)}
+                  checked={checked}
                   onChange={() => {
-                    const check = values.prms.find((x: any) => x.name === prmItem.name)
+                    let prms = checked
+                      ? values.prms.filter((_, i) => i !== index)
+                      : [
+                          ...values.prms,
+                          {
+                            name: prmItem.name,
+                          },
+                        ];
 
-                    if(check) {
-                      // elimina
-                    } else {
-                      {name: prmItem.name}
-                    }
-
-
-                    // helpers.setValue({
-                    //   ...values,
-                    //   prms
-                    // })
+                    helpers.setValue({
+                      ...values,
+                      prms,
+                    });
                   }}
                 />
               }
               label={`${prmItem.name}: ${prmItem.description}`}
             />
-            <Field
-              component={TextField}
-              label="Justifique"
-              name={`${name}.prms[${index}].justification`}
-              variant="outlined"
-              multiline
-              rows={4}
-              fullWidth
-            />
-          </div>
+            {checked && (
+              <FastField
+                component={TextField}
+                label="Justifique"
+                name={`${name}.prms[${index}].justification`}
+                variant="outlined"
+                multiline
+                rows={4}
+                fullWidth
+              />
+            )}
+          </Stack>
         );
       })}
-      {/* <Field
-        formControl={{ sx: { width: 200 } }}
-        component={Select}
-        id={`${name}.prm`}
-        name={`${name}.prm`}
-        label="PRM identificado"
-      >
-        {items.map((item) => (
-          <MenuItem value={item.name} key={item.name}>
-            {item.name}: {item.description}
-          </MenuItem>
-        ))}
-      </Field>
-      <Field
-        component={TextField}
-        label="Justifique"
-        name={`${name}.justification`}
-        variant="outlined"
-        multiline
-        rows={4}
-        fullWidth
-      /> */}
     </Stack>
   );
 };
