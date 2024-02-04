@@ -194,7 +194,7 @@ const Justification = ({ name }: { name: string }) => {
                       : [
                           ...values.prms,
                           {
-                            name: prmItem.name,
+                            prm: prmItem.name,
                           },
                         ];
 
