@@ -44,10 +44,12 @@ const emptyPharmaceuticInterventionRow = {
   commentaries: "",
 };
 
-type NesRow = {
+export type NesRow = {
   evaluation: string;
-  justification: string;
-  prm: string;
+  prms: {
+    prm: string;
+    justification: string;
+  }[];
 };
 
 export type DiagnosisRelated = {
@@ -307,7 +309,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
 const PiSelect = ({ name }: any) => {
   return (
-    <Field
+    <FastField
       component={Select}
       formControl={{ sx: { width: "100%" } }}
       name={name}
@@ -325,6 +327,6 @@ const PiSelect = ({ name }: any) => {
           </MenuItem>
         )),
       ])}
-    </Field>
+    </FastField>
   );
 };

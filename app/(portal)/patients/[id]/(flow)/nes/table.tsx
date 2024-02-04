@@ -3,27 +3,39 @@ import { Page, SpringPage } from "@/app/(api)/pagination";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IconButton, MenuItem, Stack, TableCell, Tooltip } from "@mui/material";
-import { Field } from "formik";
+import {
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  MenuItem,
+  Stack,
+  TableCell,
+  Tooltip,
+} from "@mui/material";
+import {
+  FastField,
+  Field,
+  useField,
+  useFormik,
+  useFormikContext,
+} from "formik";
 import { Select, TextField } from "formik-mui";
 import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
+import { NesRow } from "./page";
 
 export const emptyDrugNesEvaluation = {
   medicine: "",
   necessity: {
     evaluation: "",
-    justification: "",
-    prm: "",
+    prms: [],
   },
   effectivity: {
     evaluation: "",
-    justification: "",
-    prm: "",
+    prms: [],
   },
   security: {
     evaluation: "",
-    justification: "",
-    prm: "",
+    prms: [],
   },
 };
 
@@ -160,31 +172,55 @@ const Justification = ({ name }: { name: string }) => {
     : PRM_GROUP.NECESSITY;
 
   const items = getItemsPerGroup(groupName);
+  const [value, _meta, helpers] = useField<any>(name);
+  const values: NesRow = value.value;
 
   return (
     <Stack gap={2} pt={2}>
-      <Field
-        formControl={{ sx: { width: 200 } }}
-        component={Select}
-        id={`${name}.prm`}
-        name={`${name}.prm`}
-        label="PRM identificado"
-      >
-        {items.map((item) => (
-          <MenuItem value={item.name} key={item.name}>
-            {item.name}: {item.description}
-          </MenuItem>
-        ))}
-      </Field>
-      <Field
-        component={TextField}
-        label="Justifique"
-        name={`${name}.justification`}
-        variant="outlined"
-        multiline
-        rows={4}
-        fullWidth
-      />
+      {items.map((prmItem) => {
+        const index = values.prms?.findIndex((x) => x.prm === prmItem.name);
+        const checked = index !== -1;
+
+        return (
+          <Stack spacing={2} key={prmItem.name}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={prmItem.name}
+                  checked={checked}
+                  onChange={() => {
+                    let prms = checked
+                      ? values.prms.filter((_, i) => i !== index)
+                      : [
+                          ...values.prms,
+                          {
+                            name: prmItem.name,
+                          },
+                        ];
+
+                    helpers.setValue({
+                      ...values,
+                      prms,
+                    });
+                  }}
+                />
+              }
+              label={`${prmItem.name}: ${prmItem.description}`}
+            />
+            {checked && (
+              <FastField
+                component={TextField}
+                label="Justifique"
+                name={`${name}.prms[${index}].justification`}
+                variant="outlined"
+                multiline
+                rows={4}
+                fullWidth
+              />
+            )}
+          </Stack>
+        );
+      })}
     </Stack>
   );
 };
