@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { HorizontalStepper } from "./HorizontalStepper";
 import { apiUrl } from "@/app/(api)/api";
 import { Patient } from "../../create/Patient";

@@ -3,7 +3,6 @@
 import { Title } from "@/app/(components)/Title";
 import Uppy from "@uppy/core";
 import { DragDrop, StatusBar } from "@uppy/react";
-
 import { useAuthApi } from "@/app/(api)/api";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Button, IconButton, Stack } from "@mui/material";
@@ -59,7 +58,6 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
   useEffect(() => {
     const saveConsent = (_stepName: string, result: any) => {
       const file = uppy.getFile(result.localId);
-
       const reader = new FileReader();
       reader.onload = async function (e) {
         if (e.target) {
@@ -105,7 +103,6 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
         <Title date={data?.createDate || new Date()}>
           Firma de consentimiento
         </Title>
-
         <Grid container spacing={4}>
           <Grid xs={6} pt={8}>
             <DragDrop uppy={uppy} height={String(height)} />
@@ -137,5 +134,3 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
     </Formik>
   );
 }
-
-//router.push(`/patients/${patientId}/medical-history`)

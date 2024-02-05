@@ -41,12 +41,10 @@ import {
 } from "./table";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { NesForm } from "./page";
-import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AsyncAutocomplete } from "@/app/(components)/autocomplete";
 import { useAuthApi } from "@/app/(api)/api";
-import { Page, SpringPage } from "@/app/(api)/pagination";
-import { DrugProduct } from "@/app/(portal)/drugs/pharmaceutical-product/Drug";
+import { Page } from "@/app/(api)/pagination";
 import { DiseaseCie10 } from "@/app/(portal)/cie10/DiseaseCie10";
 import { GridExpandMoreIcon } from "@mui/x-data-grid";
 
@@ -79,9 +77,7 @@ export const emptyEvaluationRow = {
 
 const DiagnosisTable = ({ enableDelete = false }) => {
   const { values } = useFormikContext<NesForm>();
-
   const [open, setOpen] = useState(false);
-
   const getApi = useAuthApi();
 
   const searchDiseases = (searchText: string) =>

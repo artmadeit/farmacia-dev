@@ -2,7 +2,7 @@
 import { Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { blue } from "@mui/material/colors";
-import { FastField, Field } from "formik";
+import { FastField } from "formik";
 import { CheckboxWithLabel } from "formik-mui";
 import React from "react";
 import { GroupItems } from "./data";

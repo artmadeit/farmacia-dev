@@ -1,5 +1,5 @@
 "use client";
-import { Typography } from "@mui/material";
+
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { FastField } from "formik";
 import { TextField } from "formik-mui";
@@ -35,10 +35,6 @@ export const VitalFunctions = () => {
           fullWidth
         />
       </Grid>
-      {/* <Grid container> */}
-      {/* <Grid xs={12}>
-          <Typography>Presión arterial (PA)</Typography>
-        </Grid> */}
       <Grid xs={4}>
         <FastField
           component={TextField}
@@ -68,7 +64,6 @@ export const VitalFunctions = () => {
           fullWidth
         />
       </Grid>
-      {/* </Grid> */}
     </Grid>
   );
 };

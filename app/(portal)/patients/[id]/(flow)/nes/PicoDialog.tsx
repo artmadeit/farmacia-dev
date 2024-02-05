@@ -5,7 +5,6 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogTitle,
   Fab,
   Grid,
   IconButton,
@@ -23,7 +22,6 @@ import { TextField } from "formik-mui";
 import React from "react";
 import { PicoMedicine } from "./PicoMedicine";
 import { emptyPicoRow } from "./emptyPicoRow";
-
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { isEqual } from "lodash";
 
@@ -87,9 +85,7 @@ export const PicoDialog = () => {
           </Tooltip>
         )}
       </Box>
-
       <Dialog open={open} onClose={handleClose}>
-        {/* <DialogTitle>PREGUNTA CLINÍCA:</DialogTitle> */}
         <Grid item xs={12} display="flex" justifyContent="flex-end">
           <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
@@ -252,7 +248,6 @@ export const PicoDialog = () => {
                     </Box>
                   </React.Fragment>
                 ))}
-
                 <Box display="flex" justifyContent="space-between">
                   <Button
                     startIcon={<AddIcon />}

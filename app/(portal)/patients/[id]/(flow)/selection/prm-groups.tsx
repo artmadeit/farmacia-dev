@@ -6,7 +6,7 @@ export enum PRM_GROUP {
   SECURITY = "Por Seguridad",
 }
 
-// PRM: es Problema Relacionado com Medicamento
+// PRM: es Problema Relacionado con Medicamento
 export const PRM_GROUPS = [
   {
     group: PRM_GROUP.NECESSITY,

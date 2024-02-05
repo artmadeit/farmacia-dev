@@ -29,7 +29,6 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
 import { PI_GROUPS } from "./pi-groups";
-
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 import yup from "@/app/validation";
@@ -77,8 +76,6 @@ type DrugEvaluation = {
   effectivity: NesRow;
   security: NesRow;
 };
-
-// type NesForm = typeof initialValues;
 
 export default function NesPage({ params }: { params: { id: number } }) {
   const { id: patientId } = params;
@@ -268,7 +265,6 @@ export default function NesPage({ params }: { params: { id: number } }) {
                           />
                         </Grid>
                       </Grid>
-                      // <Box key={index}>Hola</Box>
                     ))}
                     {values.pharmaceuticInterventions.length > 0 && (
                       <div>

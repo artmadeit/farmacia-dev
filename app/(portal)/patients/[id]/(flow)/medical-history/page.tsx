@@ -327,7 +327,6 @@ export default function PatientInterview({
                   </IconButton>
                 </Tooltip>
               </Subtitle>
-
               <Diagnosis />
             </Stack>
             <Box

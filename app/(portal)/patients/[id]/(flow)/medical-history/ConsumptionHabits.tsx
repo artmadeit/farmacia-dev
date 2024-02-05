@@ -59,7 +59,6 @@ export const ConsumptionHabits = () => {
                   />
                 ))}
               </FastField>
-
               <FormHelperText>
                 {touched.consumptionHabits?.[group.id] &&
                   errors.consumptionHabits?.[group.id]}
