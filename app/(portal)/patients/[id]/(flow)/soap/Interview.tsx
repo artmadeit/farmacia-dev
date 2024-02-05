@@ -2,5 +2,5 @@
 
 export type Interview = {
   id: number;
-  createDate: Date;
+  interviewDate: Date;
 };

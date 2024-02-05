@@ -34,12 +34,12 @@ export default function SOAP({ params }: { params: { id: number } }) {
         width: 180,
       },
       {
-        field: "createDate",
+        field: "interviewDate",
         headerName: "Fecha de entrevista",
         width: 140,
         valueGetter: ({ row }) =>
-          row.createDate
-            ? format(new Date(row.createDate), "dd/MM/yyyy HH:mm")
+          row.interviewDate
+            ? format(new Date(row.interviewDate), "dd/MM/yyyy HH:mm")
             : "",
       },
       {
