@@ -90,6 +90,7 @@ export default function ConsentPage({ params }: { params: { id: number } }) {
   return (
     <Formik
       initialValues={formInitialValues}
+      enableReinitialize
       onSubmit={async (values) => {
         await getApi().then((api) =>
           api.post(`patients/${patientId}/consent`, {
