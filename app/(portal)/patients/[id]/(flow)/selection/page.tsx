@@ -161,6 +161,7 @@ export default function PatientSelectionPage({
               criterionList: values.criterionList,
               drugId: isObject(values.drug) ? values.drug.id : null,
               prm: values.prm,
+              interviewDate: values.interviewDate,
             })
           );
           mutate(response.data);
