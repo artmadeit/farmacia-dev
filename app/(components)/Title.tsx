@@ -19,33 +19,33 @@ export const Title = ({
   const { touched, errors } = useFormikContext<dateInterview>();
   return (
     <Stack>
-      <Box display="flex" alignItems="center" justifyContent="space-between">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ paddingBottom: "10px" }}
+      >
         <Typography variant="h5" gutterBottom>
           {children}
         </Typography>
-        <Grid>
+        <Stack spacing={2}>
           <Typography>Fecha de registro: {formatDateTime(date)}</Typography>
-          <Grid container>
-            <Grid xs={3}>
-              <Field
-                component={DateTimePicker}
-                sx={{ padding: "10px 0px" }}
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    label: "Fecha entrevista:",
-                    error: touched.interviewDate && !!errors.interviewDate,
-                    helperText:
-                      touched.interviewDate && errors.interviewDate
-                        ? errors.interviewDate
-                        : "",
-                  },
-                }}
-                name="interviewDate"
-              />
-            </Grid>
-          </Grid>
-        </Grid>
+          <Field
+            component={DateTimePicker}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                label: "Fecha entrevista:",
+                error: touched.interviewDate && !!errors.interviewDate,
+                helperText:
+                  touched.interviewDate && errors.interviewDate
+                    ? errors.interviewDate
+                    : "",
+              },
+            }}
+            name="interviewDate"
+          />
+        </Stack>
       </Box>
       <Divider />
     </Stack>
