@@ -33,7 +33,6 @@ const PharmaceuticalProductForm = ({
     const data = {
       ...values,
       fullName: `${values.name} ${values.concentration} ${values.form}`,
-      // fullName: values.name + " " + values.concentration + " " + values.form,
     };
 
     if (pharmaceuticalProduct.id) {
@@ -56,9 +55,8 @@ const PharmaceuticalProductForm = ({
           initialValues={pharmaceuticalProduct}
           onSubmit={savePharmaceuticalProduct}
         >
-          {({ isSubmitting, values }) => (
+          {({ isSubmitting }) => (
             <Form>
-              {JSON.stringify(values)}
               <Typography variant="h4">
                 {textName} productos farmaceuticos
               </Typography>

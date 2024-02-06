@@ -1,6 +1,5 @@
 "use client";
 
-import { TextField } from "formik-mui";
 import PharmaceuticalProductForm from "../pharmaceuticalProductForm";
 
 const CreatePharmaceuticalProduct = () => {

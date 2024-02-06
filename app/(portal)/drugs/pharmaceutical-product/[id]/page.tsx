@@ -1,3 +1,5 @@
+"use client";
+
 import useSWR from "swr";
 import PharmaceuticalProductForm from "../pharmaceuticalProductForm";
 import Loading from "@/app/(components)/Loading";
@@ -5,7 +7,7 @@ import Loading from "@/app/(components)/Loading";
 const EditPharmaceuticalProduct = ({ params }: { params: { id: number } }) => {
   const { id } = params;
   const { data: pharmaceuticalProduct } = useSWR(
-    id ? `/drugPharmaceuticalProducts/${id}` : null
+    id ? `drugPharmaceuticalProducts/${id}` : null
   );
 
   if (!pharmaceuticalProduct) return <Loading />;
