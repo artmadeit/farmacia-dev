@@ -10,12 +10,7 @@ const EditEstrechoMargen = ({ params }: { params: { id: number } }) => {
 
   const { data: drugs } = useSWR(id ? `drugNarrowMargins/${id}` : null);
 
-  if (!drugs)
-    return (
-      <h1>
-        <Loading />
-      </h1>
-    );
+  if (!drugs) return <Loading />;
   return <DrugForm drugs={drugs} textName="Editar" />;
 };
 

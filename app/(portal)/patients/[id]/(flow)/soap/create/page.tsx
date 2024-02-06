@@ -93,7 +93,11 @@ export default function CreateTrackingSheet({
   }
   return (
     <TrackingSheetForm
-      initialValues={{ ...lastInterview, interviewDate: new Date() }}
+      initialValues={{
+        ...lastInterview,
+        createDate: new Date(),
+        interviewDate: new Date(),
+      }}
       onSubmit={handleSubmit}
     />
   );

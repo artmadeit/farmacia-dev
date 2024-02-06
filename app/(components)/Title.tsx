@@ -4,7 +4,7 @@ import { formatDateTime } from "../date";
 import { Field, useFormikContext } from "formik";
 import { DateTimePicker } from "formik-mui-x-date-pickers";
 
-type dateInterview = {
+type DateInterview = {
   interviewDate: any;
 };
 
@@ -15,7 +15,7 @@ export const Title = ({
   children: React.ReactNode;
   date: Date;
 }) => {
-  const { touched, errors } = useFormikContext<dateInterview>();
+  const { touched, errors } = useFormikContext<DateInterview>();
   return (
     <Stack>
       <Box
