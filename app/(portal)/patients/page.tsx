@@ -18,7 +18,7 @@ import {
 } from "@mui/x-data-grid";
 import { useQueryState } from "next-usequerystate";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
 import { Page } from "../../(api)/pagination";
@@ -62,7 +62,6 @@ export default function ListPatients() {
                   <GridActionsCellItem
                     icon={<SearchIcon />}
                     label="ver"
-                    // onClick={() => router.push(`patients/${params.row.id}`)}
                     onClick={() =>
                       router.push(`patients/${params.row.id}/selection`)
                     }

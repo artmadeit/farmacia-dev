@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { differenceInYears } from "date-fns";
-import { FastField, Field, useFormikContext } from "formik";
+import { FastField, useFormikContext } from "formik";
 import { RadioGroup, TextField } from "formik-mui";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { Anamnesis } from "./page";

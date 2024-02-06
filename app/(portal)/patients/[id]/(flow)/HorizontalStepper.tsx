@@ -15,7 +15,6 @@ const steps = [
   { path: "medical-history", label: "Anamnesis" },
   { path: "pharmacotherapy", label: "Farmacoterapia" },
   { path: "nes", label: "NES" },
-  // { path: "pico", label: "PICO" },
   { path: "soap", label: "SOAP" },
 ];
 

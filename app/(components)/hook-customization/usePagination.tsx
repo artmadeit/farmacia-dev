@@ -1,4 +1,3 @@
-import { GridFeatureMode } from "@mui/x-data-grid";
 import React from "react";
 
 export const usePagination = () => {
