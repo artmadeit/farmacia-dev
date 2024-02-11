@@ -178,13 +178,11 @@ export default function NesPage({ params }: { params: { id: number } }) {
                   ...rest,
                   disease,
                   drugEvaluations: drugEvaluations.map((drugEvaluation) => {
-                    if (isString(drugEvaluation.medicine)) {
-                      throw "Medicina inválida";
-                    }
-
                     return {
                       ...drugEvaluation,
-                      medicineId: drugEvaluation.medicine.id,
+                      medicineId: isString(drugEvaluation.medicine)
+                        ? drugEvaluation.medicine
+                        : drugEvaluation.medicine?.id,
                     };
                   }),
                 };
@@ -192,13 +190,9 @@ export default function NesPage({ params }: { params: { id: number } }) {
             ),
             diagnosisNotRelated: values.diagnosisNotRelated.map(
               ({ medicine, ...rest }) => {
-                if (isString(medicine)) {
-                  throw "Medicina inválida";
-                }
-
                 return {
                   ...rest,
-                  medicineId: medicine.id,
+                  medicineId: isString(medicine) ? medicine : medicine?.id,
                 };
               }
             ),
@@ -206,6 +200,7 @@ export default function NesPage({ params }: { params: { id: number } }) {
             picoSheets: values.picoSheets,
             interviewDate: values.interviewDate,
           };
+
           const response = await getApi().then((api) =>
             api.post(`patients/${patientId}/nes`, data)
           );
