@@ -4,7 +4,7 @@ import yup from "@/app/validation";
 import { nesRowSchema } from "./newsRowSchema";
 import { NesRow } from "./page";
 
-const includesPrm1 = (val: NesRow) =>
+export const includesPrm1 = (val: NesRow) =>
   val.prms.map((x) => x.prm).includes("PRM 1");
 
 export const drugEvaluationSchema = () => {

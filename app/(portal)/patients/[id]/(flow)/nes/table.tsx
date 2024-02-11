@@ -22,6 +22,13 @@ import {
 import { Select, TextField } from "formik-mui";
 import { PRM_GROUP, getItemsPerGroup } from "../selection/prm-groups";
 import { NesRow } from "./page";
+import { includesPrm1 } from "./drugEvaluationSchema";
+import { useState } from "react";
+
+export const emptyNesItem = {
+  evaluation: "",
+  prms: [],
+};
 
 export const emptyDrugNesEvaluation = {
   medicine: "",
@@ -29,14 +36,8 @@ export const emptyDrugNesEvaluation = {
     evaluation: "",
     prms: [],
   },
-  effectivity: {
-    evaluation: "",
-    prms: [],
-  },
-  security: {
-    evaluation: "",
-    prms: [],
-  },
+  effectivity: { ...emptyNesItem },
+  security: { ...emptyNesItem },
 };
 
 export const nesTableCellsHead1 = [
@@ -81,7 +82,9 @@ export const NesTableCells = ({
   values: any;
   onRemove: () => void;
 }) => {
+  const [disabled, setDisabled] = useState(includesPrm1(values.necessity));
   const getApi = useAuthApi();
+  const { setFieldValue } = useFormikContext();
 
   const searchDrugs = (searchText: string) =>
     getApi().then((api) =>
@@ -100,6 +103,7 @@ export const NesTableCells = ({
           name={`${name}.${index}.medicine`}
           getLabel={(option) => option.fullName}
           filter={searchDrugs}
+          disabled={disabled}
         />
       </TableCell>
       <TableCell sx={{ verticalAlign: "top" }}>
@@ -118,7 +122,21 @@ export const NesTableCells = ({
         </Field>
         {(values.necessity.evaluation === "no real" ||
           values.necessity.evaluation === "no potential") && (
-          <Justification name={`${name}.${index}.necessity`} />
+          <Justification
+            row={`${name}.${index}`}
+            nes="necessity"
+            onCheck={(prms) => {
+              if (prms.map((x) => x.prm).includes("PRM 1")) {
+                const row = `${name}.${index}`;
+                setFieldValue(row + "." + "effectivity", emptyNesItem);
+                setFieldValue(row + "." + "security", emptyNesItem);
+                setFieldValue(row + "." + "medicine", "");
+                setDisabled(true);
+              } else {
+                setDisabled(false);
+              }
+            }}
+          />
         )}
       </TableCell>
       <TableCell sx={{ verticalAlign: "top" }}>
@@ -127,6 +145,7 @@ export const NesTableCells = ({
           formControl={{ fullWidth: true }}
           id={`${name}.${index}.effectivity`}
           name={`${name}.${index}.effectivity.evaluation`}
+          disabled={disabled}
         >
           <MenuItem value={"yes"}>Si</MenuItem>
           <MenuItem value={"no real"}>No real</MenuItem>
@@ -134,7 +153,7 @@ export const NesTableCells = ({
         </Field>
         {(values.effectivity.evaluation === "no real" ||
           values.effectivity.evaluation === "no potential") && (
-          <Justification name={`${name}.${index}.effectivity`} />
+          <Justification row={`${name}.${index}`} nes="effectivity" />
         )}
       </TableCell>
       <TableCell sx={{ verticalAlign: "top" }}>
@@ -143,6 +162,7 @@ export const NesTableCells = ({
           formControl={{ fullWidth: true }}
           id={`${name}.${index}.security`}
           name={`${name}.${index}.security.evaluation`}
+          disabled={disabled}
         >
           <MenuItem value={"yes"}>Si</MenuItem>
           <MenuItem value={"no real"}>No real</MenuItem>
@@ -150,7 +170,7 @@ export const NesTableCells = ({
         </Field>
         {(values.security.evaluation === "no real" ||
           values.security.evaluation === "no potential") && (
-          <Justification name={`${name}.${index}.security`} />
+          <Justification row={`${name}.${index}`} nes="security" />
         )}
       </TableCell>
       <TableCell>
@@ -164,7 +184,26 @@ export const NesTableCells = ({
   );
 };
 
-const Justification = ({ name }: { name: string }) => {
+const Justification = ({
+  row,
+  nes,
+  onCheck,
+}: {
+  row: string;
+  nes: string;
+  onCheck?: (
+    prms: (
+      | {
+          prm: string;
+          justification: string;
+        }
+      | {
+          prm: string;
+        }
+    )[]
+  ) => void;
+}) => {
+  const name = row + "." + nes;
   const groupName = name.includes("effectivity")
     ? PRM_GROUP.EFFECTIVITY
     : name.includes("security")
@@ -197,6 +236,8 @@ const Justification = ({ name }: { name: string }) => {
                             prm: prmItem.name,
                           },
                         ];
+
+                    onCheck && onCheck(prms);
 
                     helpers.setValue({
                       ...values,
