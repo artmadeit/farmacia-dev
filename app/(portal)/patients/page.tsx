@@ -3,6 +3,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import {
+  Button,
   Fab,
   InputAdornment,
   Stack,
@@ -84,15 +85,25 @@ export default function ListPatients() {
 
   return (
     <Stack direction="column" spacing={2}>
-      <Stack direction="row" alignItems="center" spacing={2}>
-        <Typography variant="h4">Pacientes</Typography>
-        <Tooltip title="Registrar">
-          <Link href="patients/create">
-            <Fab color="primary" aria-labelledby="add">
-              <AddIcon />
-            </Fab>
-          </Link>
-        </Tooltip>
+      <Stack
+        direction="row"
+        sx={{ display: "flex", justifyContent: "space-between" }}
+        alignItems="center"
+        spacing={2}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h4">Pacientes</Typography>
+          <Tooltip title="Registrar">
+            <Link href="patients/create">
+              <Fab color="primary" aria-labelledby="add">
+                <AddIcon />
+              </Fab>
+            </Link>
+          </Tooltip>
+        </div>
+        <div>
+          <Button>Descargar en CSV</Button>
+        </div>
       </Stack>
       <TextField
         placeholder="Buscar..."
