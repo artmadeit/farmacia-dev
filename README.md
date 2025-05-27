@@ -2,14 +2,18 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+We use Auth0 for the login of the app, so create first a Auth0 account and setup it as a SPA app, then create a .env.local file on the root of this project, with these variables
+
+```bash
+NEXT_PUBLIC_AUTH0_DOMAIN=VALUE
+NEXT_PUBLIC_AUTH0_CLIENT_ID=VALUE
+NEXT_PUBLIC_APP_AUTH0_AUDIENCE=VALUE
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

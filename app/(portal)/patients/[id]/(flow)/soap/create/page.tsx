@@ -52,13 +52,11 @@ export default function CreateTrackingSheet({
             ...rest,
             disease,
             drugEvaluations: drugEvaluations.map((drugEvaluation) => {
-              if (isString(drugEvaluation.medicine)) {
-                throw "Medicina inválida";
-              }
-
               return {
                 ...drugEvaluation,
-                medicineId: drugEvaluation.medicine.id,
+                medicineId: isString(drugEvaluation.medicine)
+                  ? drugEvaluation.medicine
+                  : drugEvaluation.medicine?.id,
               };
             }),
           };
@@ -66,13 +64,9 @@ export default function CreateTrackingSheet({
       ),
       diagnosisNotRelated: values.diagnosisNotRelated.map(
         ({ medicine, ...rest }) => {
-          if (isString(medicine)) {
-            throw "Medicina inválida";
-          }
-
           return {
             ...rest,
-            medicineId: medicine.id,
+            medicineId: isString(medicine) ? medicine : medicine?.id,
           };
         }
       ),
