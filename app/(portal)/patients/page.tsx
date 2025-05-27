@@ -94,7 +94,7 @@ export default function ListPatients() {
         <div style={{ display: "flex", alignItems: "center" }}>
           <Typography variant="h4">Pacientes</Typography>
           <Tooltip title="Registrar">
-            <Link href="patients/create">
+            <Link href="patients/create" style={{ paddingLeft: "10px" }}>
               <Fab color="primary" aria-labelledby="add">
                 <AddIcon />
               </Fab>
@@ -102,7 +102,7 @@ export default function ListPatients() {
           </Tooltip>
         </div>
         <div>
-          <Button>Descargar en CSV</Button>
+          <Button variant="outlined">Descargar en CSV</Button>
         </div>
       </Stack>
       <TextField
