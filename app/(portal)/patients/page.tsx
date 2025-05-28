@@ -1,6 +1,7 @@
 "use client";
 
 import AddIcon from "@mui/icons-material/Add";
+import { FileDownload } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   Button,
@@ -27,6 +28,7 @@ import { withOutSorting } from "../../(components)/helpers/withOutSorting";
 import { usePagination } from "../../(components)/hook-customization/usePagination";
 import { Patient } from "./create/Patient";
 import useDebounce from "@/app/(components)/helpers/useDebounce";
+import { CSVLink } from "react-csv";
 
 export default function ListPatients() {
   const router = useRouter();
@@ -83,6 +85,8 @@ export default function ListPatients() {
     setSearchText(searchText);
   };
 
+  const csvData = patients?._embedded.patients || [];
+
   return (
     <Stack direction="column" spacing={2}>
       <Stack
@@ -102,7 +106,24 @@ export default function ListPatients() {
           </Tooltip>
         </div>
         <div>
-          <Button variant="outlined">Descargar en CSV</Button>
+          <CSVLink
+            data={csvData}
+            headers={[
+              { label: "Código", key: "code" },
+              { label: "Nombre", key: "firstName" },
+              { label: "Apellido", key: "lastName" },
+              { label: "Registrado por", key: "createdByEmail" },
+            ]}
+          >
+            <Tooltip title="Descargar en CSV">
+              <Fab aria-labelledby="add">
+                <FileDownload />
+              </Fab>
+            </Tooltip>
+          </CSVLink>
+          {/* </Tooltip> */}
+
+          {/* <Button variant="outlined">Descargar en CSV</Button> */}
         </div>
       </Stack>
       <TextField
