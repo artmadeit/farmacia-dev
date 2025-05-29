@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   Chip,
+  Fab,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -51,6 +52,7 @@ import { requiredMessage } from "../../../../../(components)/helpers/requiredMes
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import InfoIcon from "@mui/icons-material/Info";
 import { DatePicker } from "formik-mui-x-date-pickers";
+import { FileDownload } from "@mui/icons-material";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -288,9 +290,21 @@ export default function PatientInterview({
         {({ errors, touched }) => (
           <Form>
             <Stack spacing={2} pt={2}>
-              <Title date={data?.createDate || new Date()}>
-                Ficha de anamnesis farmacológica
-              </Title>
+              <div>
+                <Title date={data?.createDate || new Date()}>
+                  {/* <p
+                    style={{ fontSize: "1.5 rem", margin: "0px 0px 10px 0px" }}
+                  > */}
+                  Ficha de anamnesis farmacológica
+                  {/* </p> */}
+                  <Tooltip title="Descargar CSV" style={{ marginLeft: "10px" }}>
+                    <Fab>
+                      <FileDownload />
+                    </Fab>
+                  </Tooltip>
+                  {/* <Button variant="outlined">Descargar CSV</Button> */}
+                </Title>
+              </div>
               <Grid container>
                 <Grid xs={10}>
                   <Subtitle component="h4">1. Datos personales</Subtitle>
