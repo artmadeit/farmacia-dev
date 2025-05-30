@@ -113,6 +113,7 @@ export default function ListPatients() {
               { label: "Apellido", key: "lastName" },
               { label: "Registrado por", key: "createdByEmail" },
             ]}
+            filename="pacientes.csv"
           >
             <Tooltip title="Descargar en CSV">
               <Fab aria-labelledby="add">

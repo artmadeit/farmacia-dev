@@ -53,6 +53,7 @@ import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import InfoIcon from "@mui/icons-material/Info";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { FileDownload } from "@mui/icons-material";
+import { CSVLink } from "react-csv";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -188,6 +189,17 @@ export default function PatientInterview({
       }
     : initialValues;
 
+  const csvData = [
+    {
+      interviewDate: formInitialValues.interviewDate,
+      occupation: formInitialValues.occupation,
+      birthdate: formInitialValues.birthdate,
+      weight: formInitialValues.weight,
+      size: formInitialValues.size,
+      sex: formInitialValues.sex,
+    },
+  ];
+
   return (
     <div>
       <Formik
@@ -293,11 +305,26 @@ export default function PatientInterview({
               <div>
                 <Title date={data?.createDate || new Date()}>
                   Ficha de anamnesis farmacológica
-                  <Tooltip title="Descargar CSV" style={{ marginLeft: "10px" }}>
-                    <Fab>
-                      <FileDownload />
-                    </Fab>
-                  </Tooltip>
+                  <CSVLink
+                    data={csvData}
+                    headers={[
+                      { label: "Fecha de entrevista", key: "interviewDate" },
+                      { label: "Ocupación", key: "occupation" },
+                      { label: "Fecha de nacimiento", key: "birthdate" },
+                      { label: "Peso", key: "weight" },
+                      { label: "Tamaño", key: "size" },
+                      { label: "Sexo", key: "sex" },
+                    ]}
+                  >
+                    <Tooltip
+                      title="Descargar CSV"
+                      style={{ marginLeft: "10px" }}
+                    >
+                      <Fab>
+                        <FileDownload />
+                      </Fab>
+                    </Tooltip>
+                  </CSVLink>
                 </Title>
               </div>
               <Grid container>
