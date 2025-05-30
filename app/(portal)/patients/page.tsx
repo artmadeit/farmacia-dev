@@ -4,7 +4,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { FileDownload } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  Button,
   Fab,
   InputAdornment,
   Stack,
@@ -121,9 +120,6 @@ export default function ListPatients() {
               </Fab>
             </Tooltip>
           </CSVLink>
-          {/* </Tooltip> */}
-
-          {/* <Button variant="outlined">Descargar en CSV</Button> */}
         </div>
       </Stack>
       <TextField

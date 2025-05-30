@@ -292,17 +292,12 @@ export default function PatientInterview({
             <Stack spacing={2} pt={2}>
               <div>
                 <Title date={data?.createDate || new Date()}>
-                  {/* <p
-                    style={{ fontSize: "1.5 rem", margin: "0px 0px 10px 0px" }}
-                  > */}
                   Ficha de anamnesis farmacológica
-                  {/* </p> */}
                   <Tooltip title="Descargar CSV" style={{ marginLeft: "10px" }}>
                     <Fab>
                       <FileDownload />
                     </Fab>
                   </Tooltip>
-                  {/* <Button variant="outlined">Descargar CSV</Button> */}
                 </Title>
               </div>
               <Grid container>
