@@ -315,6 +315,7 @@ export default function PatientInterview({
                       { label: "Tamaño", key: "size" },
                       { label: "Sexo", key: "sex" },
                     ]}
+                    filename={`pacientes_${patientId}.csv`}
                   >
                     <Tooltip
                       title="Descargar CSV"
