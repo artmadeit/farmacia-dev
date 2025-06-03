@@ -321,9 +321,11 @@ export default function PatientInterview({
                       title="Descargar CSV"
                       style={{ marginLeft: "10px" }}
                     >
-                      <Fab>
-                        <FileDownload />
-                      </Fab>
+                      {data && (
+                        <Fab>
+                          <FileDownload />
+                        </Fab>
+                      )}
                     </Tooltip>
                   </CSVLink>
                 </Title>
