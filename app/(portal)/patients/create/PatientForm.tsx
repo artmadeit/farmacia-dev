@@ -1,10 +1,12 @@
 "use client";
 
 import { useAuthApi } from "@/app/(api)/api";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import { Button, FormLabel, Grid, Stack, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import { Patient } from "./Patient";
 
 type PatientFormProps = {
@@ -16,7 +18,8 @@ const inline = {
   alignItems: "center",
 };
 
-const PatientForm = ({ patient: patient }: PatientFormProps) => {
+const PatientForm = ({ patient }: PatientFormProps) => {
+  const snackbar = useContext(SnackbarContext);
   const router = useRouter();
   const getApi = useAuthApi();
 
@@ -24,10 +27,18 @@ const PatientForm = ({ patient: patient }: PatientFormProps) => {
     <Formik
       initialValues={patient}
       onSubmit={async (values) => {
-        const response = await getApi().then((api) =>
-          api.post("/patients", values)
-        );
-        router.push(`/patients/${response.data.id}/selection`);
+        const api = await getApi();
+        try {
+          const response = await (patient.id ? api.put(`/patients/${patient.id}`, values) : api.post("/patients", values))
+          router.push(`/patients/${response.data.id}/selection`);
+        } catch (e: any) {
+          console.log(e.response)
+          if (e.response.status === 409) {
+            snackbar.showMessage("Código de paciente debe ser único");
+          } else {
+            snackbar.showMessage(e.response.data.message);
+          }
+        }
       }}
     >
       <Form>
