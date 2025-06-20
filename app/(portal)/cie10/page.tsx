@@ -8,6 +8,7 @@ import React from "react";
 import { DiseaseCie10 } from "./DiseaseCie10";
 import useSWR from "swr";
 import { Page } from "@/app/(api)/pagination";
+import Loading from "@/app/(components)/Loading";
 
 const Cie10 = () => {
   const { paginationModel, setPaginationModel } = usePagination();
@@ -34,17 +35,21 @@ const Cie10 = () => {
         <Typography variant="h4">CIE10</Typography>
       </Stack>
       <div style={{ height: "70vh", width: "100%" }}>
-        <DataGrid
-          loading={isLoading}
-          columns={columns}
-          rowCount={diseases?.page.totalElements}
-          rows={diseases?._embedded.diseases || []}
-          paginationModel={paginationModel}
-          paginationMode="server"
-          onPaginationModelChange={setPaginationModel}
-          disableColumnFilter
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-        />
+        {
+          diseases ?
+            <DataGrid
+              loading={isLoading}
+              columns={columns}
+              rowCount={diseases?.page.totalElements}
+              rows={diseases?._embedded.diseases || []}
+              paginationModel={paginationModel}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+              disableColumnFilter
+              localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+            /> :
+            <Loading />
+        }
       </div>
     </Stack>
   );

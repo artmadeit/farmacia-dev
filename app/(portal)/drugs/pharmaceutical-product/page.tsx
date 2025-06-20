@@ -17,6 +17,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/(components)/Loading";
 
 const DrugsPage = () => {
   const { paginationModel, setPaginationModel } = usePagination();
@@ -73,17 +74,21 @@ const DrugsPage = () => {
         </Tooltip>
       </Stack>
       <div style={{ height: "70vh", width: "100%" }}>
-        <DataGrid
-          loading={isLoading}
-          columns={columns}
-          rowCount={drugs?.page.totalElements}
-          paginationModel={paginationModel}
-          paginationMode="server"
-          onPaginationModelChange={setPaginationModel}
-          disableColumnFilter
-          rows={drugs?._embedded.drugPharmaceuticalProducts || []}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-        />
+        {
+          drugs ?
+            <DataGrid
+              loading={isLoading}
+              columns={columns}
+              rowCount={drugs?.page.totalElements}
+              paginationModel={paginationModel}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+              disableColumnFilter
+              rows={drugs?._embedded.drugPharmaceuticalProducts || []}
+              localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+            />
+            : <Loading />
+        }
       </div>
     </Stack>
   );

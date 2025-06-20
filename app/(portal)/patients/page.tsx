@@ -28,6 +28,7 @@ import { usePagination } from "../../(components)/hook-customization/usePaginati
 import { Patient } from "./create/Patient";
 import useDebounce from "@/app/(components)/helpers/useDebounce";
 import { CSVLink } from "react-csv";
+import Loading from "@/app/(components)/Loading";
 
 export default function ListPatients() {
   const router = useRouter();
@@ -138,17 +139,20 @@ export default function ListPatients() {
         fullWidth
       />
       <div style={{ height: "70vh", width: "100%" }}>
-        <DataGrid
-          loading={isLoading}
-          columns={columns}
-          rowCount={patients?.page.totalElements || 0}
-          paginationModel={paginationModel}
-          paginationMode="server"
-          onPaginationModelChange={setPaginationModel}
-          disableColumnFilter
-          rows={patients?._embedded?.patients || []}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-        />
+        {
+          patients ?
+            <DataGrid
+              loading={isLoading}
+              columns={columns}
+              rowCount={patients?.page.totalElements || 0}
+              paginationModel={paginationModel}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+              disableColumnFilter
+              rows={patients?._embedded?.patients || []}
+              localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+            /> : <Loading />
+        }
       </div>
     </Stack>
   );
