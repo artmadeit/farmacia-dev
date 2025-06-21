@@ -25,7 +25,7 @@ import React, { useEffect } from "react";
 import useSWR from "swr";
 import { Page } from "../../../../../(api)/pagination";
 import { AsyncAutocomplete } from "../../../../../(components)/autocomplete";
-import yup from "../../../../../validation";
+import yup, { typeErrorMessage } from "../../../../../validation";
 import { Drug } from "../../../../drugs/narrow-margin/Drug";
 import { PatientDocument } from "../PatientDocument";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
@@ -142,6 +142,7 @@ export default function PatientSelectionPage({
         validationSchema={yup.object({
           drug: yup
             .object()
+            .typeError(typeErrorMessage)
             .nullable()
             .label("Medicamento")
             .when("criterionList", {

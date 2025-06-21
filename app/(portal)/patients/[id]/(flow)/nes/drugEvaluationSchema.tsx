@@ -1,6 +1,6 @@
 "use client";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
-import yup from "@/app/validation";
+import yup, { typeErrorMessage } from "@/app/validation";
 import { nesRowSchema } from "./newsRowSchema";
 import { NesRow } from "./page";
 
@@ -9,7 +9,7 @@ export const includesPrm1 = (val: NesRow) =>
 
 export const drugEvaluationSchema = () => {
   return {
-    medicine: yup.object().when("necessity", {
+    medicine: yup.object().typeError(typeErrorMessage).when("necessity", {
       is: includesPrm1,
       then: (schema) => schema.notRequired(),
       otherwise: (schema) => schema.required(requiredMessage),

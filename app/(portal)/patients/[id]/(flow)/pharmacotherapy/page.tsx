@@ -38,7 +38,7 @@ import {
   PharmacotherapyTable,
 } from "./PharmacotherapyTable";
 import { emptyHistoryRow } from "./emptyHistoryRow";
-import yup from "@/app/validation";
+import yup, { typeErrorMessage } from "@/app/validation";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
 import { historySchema } from "./historySchema";
 import { TABLE_WIDTH_ACTION, TABLE_WIDTH_DATE } from "./table";
@@ -125,7 +125,7 @@ export default function Pharmacotherapy({
           history: historySchema,
           drugAllergies: yup.array().of(
             yup.object({
-              drug: yup.object().required(requiredMessage),
+              drug: yup.object().typeError(typeErrorMessage).required(requiredMessage),
               description: yup.string().required(requiredMessage),
               date: inexactDateSchema((value) =>
                 value.required(requiredMessage)
@@ -146,7 +146,7 @@ export default function Pharmacotherapy({
               date: inexactDateSchema((value) =>
                 value.required(requiredMessage)
               ),
-              medicine: yup.object().required(requiredMessage),
+              medicine: yup.object().typeError(typeErrorMessage).required(requiredMessage),
               dose: yup.string().required(requiredMessage),
               adverseReactionOfDrug: yup.string().required(requiredMessage),
             })

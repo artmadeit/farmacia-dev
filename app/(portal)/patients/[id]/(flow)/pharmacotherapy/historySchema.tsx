@@ -1,6 +1,6 @@
 import { inexactDateSchema } from "@/app/(components)/InexactDatePicker";
 import { requiredMessage } from "@/app/(components)/helpers/requiredMessage";
-import yup from "@/app/validation";
+import yup, { typeErrorMessage } from "@/app/validation";
 
 export const historySchema = yup.array().of(
   yup.object({
@@ -18,6 +18,6 @@ export const historySchema = yup.array().of(
     suspensionDate: inexactDateSchema(),
     dose: yup.string().required(requiredMessage),
     mode: yup.string().required(requiredMessage),
-    drug: yup.object().required(requiredMessage),
+    drug: yup.object().typeError(typeErrorMessage).required(requiredMessage),
   })
 );
