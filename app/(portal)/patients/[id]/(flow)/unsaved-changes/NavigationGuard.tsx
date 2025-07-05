@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { UnsavedChangesDialog } from './UnsavedChangesDialog';
 
 type NavigationGuardContextType = {
@@ -27,31 +27,15 @@ export const NavigationGuardProvider = ({
     const [pendingRoute, setPendingRoute] = useState<string | null>(null);
 
     // Handle browser navigation (refresh, close tab, etc.)
-    // React.useEffect(() => {
-    //   console.log(dirty)
-    //   const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-    //     if (dirty) {
-    //       e.preventDefault();
-    //       e.returnValue = "";
-    //     }
-    //   };
-    //   window.addEventListener("beforeunload", handleBeforeUnload);
-    //   return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-    // }, [dirty]);
-
-    // useEffect(() => {
-    //     const handlePopState = (event: PopStateEvent) => {
-    //       if (!isDirty || confirm('You have unsaved changes. Leave anyway?')) {
-    //         lastPath.current = window.location.pathname
-    //       } else {
-    //         router.push(lastPath.current) // Rollback
-    //         window.history.pushState(null, '', lastPath.current)
-    //       }
-    //     }
-
-    //     window.addEventListener('popstate', handlePopState)
-    //     return () => window.removeEventListener('popstate', handlePopState)
-    //   }, [isDirty, router])
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (isDirty) {
+                e.preventDefault();
+            }
+        };
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+    }, [isDirty]);
 
     const handleCancel = () => {
         setShowDialog(false);
@@ -71,7 +55,7 @@ export const NavigationGuardProvider = ({
         <NavigationGuardContext.Provider value={{
             isDirty,
             setIsDirty,
-            showDialog: (url) => {
+            showDialog: (url: string) => {
                 setPendingRoute(url);
                 setShowDialog(true);
             }
