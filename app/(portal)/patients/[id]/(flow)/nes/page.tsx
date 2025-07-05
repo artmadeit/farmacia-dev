@@ -37,6 +37,7 @@ import PicoDialog from "./PicoDialog";
 import { PicoMedicine } from "./PicoMedicine";
 import { drugEvaluationSchema } from "./drugEvaluationSchema";
 import { picoSheetsSchema } from "./picoSheetsSchema";
+import { FormDirtyObserver } from "../unsaved-changes/FormDirtyObserver";
 
 const emptyPharmaceuticInterventionRow = {
   pharmaceuticIntervention: "",
@@ -114,31 +115,31 @@ export default function NesPage({ params }: { params: { id: number } }) {
 
   const formInitialValues: NesForm = data
     ? {
-        diagnosisRelated: anamnesis.diseases.map((disease: string) => {
-          const diagnosisRow = data.diagnosisRelated.find(
-            (x: any) => x.disease === disease
-          );
+      diagnosisRelated: anamnesis.diseases.map((disease: string) => {
+        const diagnosisRow = data.diagnosisRelated.find(
+          (x: any) => x.disease === disease
+        );
 
-          return diagnosisRow
-            ? {
-                ...diagnosisRow,
-                disease: disease,
-              }
-            : {
-                disease,
-                symptoms: "",
-                drugEvaluations: [
-                  {
-                    ...emptyEvaluationRow,
-                  },
-                ],
-              };
-        }),
-        diagnosisNotRelated: data.diagnosisNotRelated,
-        pharmaceuticInterventions: data.pharmaceuticInterventions,
-        picoSheets: data.picoSheets,
-        interviewDate: data.interviewDate,
-      }
+        return diagnosisRow
+          ? {
+            ...diagnosisRow,
+            disease: disease,
+          }
+          : {
+            disease,
+            symptoms: "",
+            drugEvaluations: [
+              {
+                ...emptyEvaluationRow,
+              },
+            ],
+          };
+      }),
+      diagnosisNotRelated: data.diagnosisNotRelated,
+      pharmaceuticInterventions: data.pharmaceuticInterventions,
+      picoSheets: data.picoSheets,
+      interviewDate: data.interviewDate,
+    }
     : initialValues;
 
   return (
@@ -209,8 +210,9 @@ export default function NesPage({ params }: { params: { id: number } }) {
           router.push(`/patients/${patientId}/soap`);
         }}
       >
-        {({ values, errors }) => (
+        {({ values }) => (
           <Form>
+            <FormDirtyObserver />
             <Title date={data?.createDate || new Date()}>
               Para la evaluación y el análisis de datos e identificación del PRM
             </Title>

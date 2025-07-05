@@ -54,6 +54,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { FileDownload } from "@mui/icons-material";
 import { CSVLink } from "react-csv";
+import { FormDirtyObserver } from "../unsaved-changes/FormDirtyObserver";
 
 const foodConsumptionsGroup1 = {
   ...foodConsumptions,
@@ -300,6 +301,7 @@ export default function PatientInterview({
       >
         {() => (
           <Form>
+            <FormDirtyObserver />
             <Stack spacing={2} pt={2}>
               <div>
                 <Title date={data?.createDate || new Date()}>

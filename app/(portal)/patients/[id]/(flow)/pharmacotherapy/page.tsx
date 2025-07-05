@@ -28,7 +28,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { ArrayHelpers, Field, FieldArray, Form, Formik } from "formik";
+import { ArrayHelpers, FastField, Field, FieldArray, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { isString } from "lodash";
 import { useRouter } from "next/navigation";
@@ -45,6 +45,7 @@ import { TABLE_WIDTH_ACTION, TABLE_WIDTH_DATE } from "./table";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import React from "react";
 import { today } from "@/app/date";
+import { FormDirtyObserver } from "../unsaved-changes/FormDirtyObserver";
 
 const emptyMedicineAllergyRow = {
   drug: "",
@@ -202,8 +203,9 @@ export default function Pharmacotherapy({
           router.push(`/patients/${patientId}/nes`);
         }}
       >
-        {({ values, errors, touched }) => (
+        {({ values }) => (
           <Form>
+            <FormDirtyObserver />
             <Title date={data?.createDate || new Date()}>
               Hoja Farmacoterapéutica
             </Title>
@@ -252,7 +254,7 @@ export default function Pharmacotherapy({
                             />
                           </TableCell>
                           <TableCell>
-                            <Field
+                            <FastField
                               name={`drugAllergies.${index}.description`}
                               component={TextField}
                               variant="outlined"
@@ -323,7 +325,7 @@ export default function Pharmacotherapy({
                       {values.foodAllergies.map((x, index) => (
                         <TableRow key={index}>
                           <TableCell>
-                            <Field
+                            <FastField
                               component={TextField}
                               name={`foodAllergies.${index}.food`}
                               variant="outlined"
@@ -331,7 +333,7 @@ export default function Pharmacotherapy({
                             />
                           </TableCell>
                           <TableCell>
-                            <Field
+                            <FastField
                               component={TextField}
                               name={`foodAllergies.${index}.description`}
                               variant="outlined"
