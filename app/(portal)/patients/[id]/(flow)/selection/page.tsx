@@ -30,6 +30,7 @@ import { Drug } from "../../../../drugs/narrow-margin/Drug";
 import { PatientDocument } from "../PatientDocument";
 import { patientSelectionCriteriaList } from "./patientSelectionCriteriaList";
 import { PRM_GROUPS } from "./prm-groups";
+import { FormDirtyObserver } from "../unsaved-changes/FormDirtyObserver";
 
 const PrmSelect = ({ disabled }: { disabled: boolean }) => {
   const { setFieldValue } = useFormikContext();
@@ -172,6 +173,7 @@ export default function PatientSelectionPage({
       >
         {({ values }) => (
           <Form>
+            <FormDirtyObserver />
             <Title date={data?.createDate || new Date()}>
               Criterios de selección de pacientes
             </Title>

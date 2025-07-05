@@ -34,7 +34,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
-    "formik": "^2.4.5",
+    "formik": "^2.4.6",
     "formik-mui": "^5.0.0-alpha.0",
     "formik-mui-x-date-pickers": "^0.0.1",
     "next": "14.0.3",

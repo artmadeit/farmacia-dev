@@ -1,10 +1,11 @@
 "use client";
 
+import { useConfirmableRouter } from "@/app/(components)/hook-customization/useConfirmableRouter";
 import Box from "@mui/material/Box";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import Stepper from "@mui/material/Stepper";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 type Step = { path: string; label: string };
@@ -18,14 +19,8 @@ const steps = [
   { path: "soap", label: "SOAP" },
 ];
 
-// const getParent = (path: string) => {
-//   const pathSplit = path.split("/");
-//   pathSplit.pop();
-//   return pathSplit.join("/");
-// };
-
 export function HorizontalStepper({ patientId }: { patientId: number }) {
-  const router = useRouter();
+  const router = useConfirmableRouter();
   const pathname = usePathname();
 
   const activeStep: number = steps.findIndex((x) => pathname.includes(x.path));
