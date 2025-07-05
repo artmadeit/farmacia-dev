@@ -131,7 +131,7 @@ export const PharmacotherapyTable = <T extends string>({
                           variant="outlined"
                           error={Boolean(
                             (touched[name] as any)?.[index]?.mode &&
-                              (errors[name] as any)?.[index]?.mode
+                            (errors[name] as any)?.[index]?.mode
                           )}
                         >
                           <Field
@@ -278,7 +278,7 @@ const OtherInformationDialog = ({
               <InexactDatePicker
                 maxDate={today}
                 name={`${name}.${index}.restartDate`}
-                label="Fecha rein."
+                label="Fecha de reinicio"
               />
             )}
             <Field

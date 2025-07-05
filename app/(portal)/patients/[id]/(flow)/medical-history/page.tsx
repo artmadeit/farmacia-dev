@@ -184,9 +184,9 @@ export default function PatientInterview({
 
   const formInitialValues: Anamnesis = data
     ? {
-        ...data,
-        diagnosis: data.diseases,
-      }
+      ...data,
+      diagnosis: data.diseases,
+    }
     : initialValues;
 
   const csvData = [
@@ -209,7 +209,6 @@ export default function PatientInterview({
           occupation: yup.string().required().label("La ocupación"),
           birthdate: yup
             .date()
-            .label("hola")
             .required()
             .min(
               minYear,
@@ -299,7 +298,7 @@ export default function PatientInterview({
           router.push(`/patients/${patientId}/pharmacotherapy`);
         }}
       >
-        {({ errors, touched }) => (
+        {() => (
           <Form>
             <Stack spacing={2} pt={2}>
               <div>
