@@ -76,6 +76,20 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
     <List>
       <Link
         component={NextLink}
+        href="/monitors"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <ListItem>
+          <ListItemButton>
+            <ListItemIcon>
+              <span className="material-symbols-outlined">patient_list</span>
+            </ListItemIcon>
+            <ListItemText primary="Monitores" />
+          </ListItemButton>
+        </ListItem>
+      </Link>
+      <Link
+        component={NextLink}
         href="/patients"
         style={{ textDecoration: "none", color: "inherit" }}
       >
