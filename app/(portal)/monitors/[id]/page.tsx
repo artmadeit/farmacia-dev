@@ -1,10 +1,60 @@
 "use client";
 
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
+
+type Pharmacologist = {
+  name: string;
+  email: string;
+};
 
 const EditMonitors = () => {
+  const router = useRouter();
+  const [pharmacalogist, setPharmacalogist] = React.useState({
+    _embedded: {
+      pharmacalogist: [],
+    },
+    page: {
+      size: "",
+      totalElements: "",
+      totalPage: "",
+      numbers: "",
+    },
+  });
+
+  const columns = React.useMemo(
+    () =>
+      (
+        [
+          { field: "", headerName: "" },
+          { field: "", headerName: "" },
+          {
+            field: "actions",
+            type: "actions",
+            width: 80,
+            getActions: (params) => {
+              return [
+                <Tooltip title="" key="see">
+                  <GridActionsCellItem
+                    icon={<SearchIcon />}
+                    label="Edit"
+                    onClick={() => router.push(`${params}/`)}
+                  />
+                </Tooltip>,
+              ];
+            },
+          },
+        ] as GridColDef<Pharmacologist>[]
+      ).map(withOutSorting),
+    [router]
+  );
+
   return (
     <Grid container>
       <Grid item>
@@ -49,6 +99,14 @@ const EditMonitors = () => {
           )}
         </Formik>
       </Grid>
+      {/* <div style={{ width: "100" }}> */}
+      <Grid xs={12} style={{ height: "70vh" }}>
+        <DataGrid
+          columns={columns}
+          rows={pharmacalogist._embedded.pharmacalogist}
+        />
+      </Grid>
+      {/* </div> */}
     </Grid>
   );
 };
