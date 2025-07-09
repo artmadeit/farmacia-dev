@@ -36,7 +36,14 @@ export default function ListMonitors() {
   });
   const [monitor, setMonitor] = React.useState({
     _embedded: {
-      monitor: [],
+      monitor: [
+        {
+          id: 1,
+          code: "1370",
+          firstName: "Jakob",
+          lastName: "Mauricio",
+        },
+      ],
     },
     page: {
       size: "",
@@ -63,7 +70,7 @@ export default function ListMonitors() {
                   <GridActionsCellItem
                     icon={<SearchIcon />}
                     label="ver"
-                    onClick={() => router.push(`${params}/selection`)}
+                    onClick={() => router.push(`monitors/${params.row.id}`)}
                   />
                 </Tooltip>,
               ];
@@ -85,13 +92,13 @@ export default function ListMonitors() {
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center">
         <Typography variant="h4">Monitores</Typography>
-        <Tooltip title="Registrar" style={{ paddingLeft: "10px" }}>
+        {/* <Tooltip title="Registrar" style={{ paddingLeft: "10px" }}>
           <Link href="/patients">
             <Fab color="primary" aria-labelledby="add">
               <AddIcon />
             </Fab>
           </Link>
-        </Tooltip>
+        </Tooltip> */}
       </Stack>
       <TextField
         placeholder="Buscar..."
