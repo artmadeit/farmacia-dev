@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 
 type Pharmacologist = {
+  id?: number;
   name: string;
   email: string;
 };
@@ -23,7 +24,13 @@ const EditMonitors = () => {
   const router = useRouter();
   const [pharmacalogist, setPharmacalogist] = React.useState({
     _embedded: {
-      pharmacalogist: [],
+      pharmacalogist: [
+        {
+          id: 1,
+          name: "Daniel",
+          email: "mauricio@gmail.com",
+        },
+      ],
     },
     page: {
       size: "",
@@ -38,7 +45,7 @@ const EditMonitors = () => {
       (
         [
           { field: "name", headerName: "Nombre" },
-          { field: "email", headerName: "Email" },
+          { field: "email", headerName: "Email", width: 200 },
           {
             field: "actions",
             type: "actions",
@@ -108,13 +115,11 @@ const EditMonitors = () => {
         <Typography variant="h5" style={{ padding: "40px 0px 20px 0px" }}>
           Farmacólogos
         </Typography>
-        {/* <Grid xs={12} style={{ height: "70vh" }}> */}
         <DataGrid
           columns={columns}
           rows={pharmacalogist._embedded.pharmacalogist}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
-        {/* </Grid> */}
       </div>
     </Grid>
   );
