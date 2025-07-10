@@ -2,7 +2,12 @@
 
 import { Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  esES,
+  GridActionsCellItem,
+  GridColDef,
+} from "@mui/x-data-grid";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import React from "react";
@@ -32,8 +37,8 @@ const EditMonitors = () => {
     () =>
       (
         [
-          { field: "", headerName: "" },
-          { field: "", headerName: "" },
+          { field: "name", headerName: "Nombre" },
+          { field: "email", headerName: "Email" },
           {
             field: "actions",
             type: "actions",
@@ -56,8 +61,8 @@ const EditMonitors = () => {
   );
 
   return (
-    <Grid container>
-      <Grid item>
+    <Grid container style={{ display: "flex", flexDirection: "column" }}>
+      <Grid item xs={6}>
         <Formik
           initialValues={{
             name: "",
@@ -99,14 +104,18 @@ const EditMonitors = () => {
           )}
         </Formik>
       </Grid>
-      {/* <div style={{ width: "100" }}> */}
-      <Grid xs={12} style={{ height: "70vh" }}>
+      <div style={{ width: "100", height: "70vh" }}>
+        <Typography variant="h5" style={{ padding: "40px 0px 20px 0px" }}>
+          Farmacólogos
+        </Typography>
+        {/* <Grid xs={12} style={{ height: "70vh" }}> */}
         <DataGrid
           columns={columns}
           rows={pharmacalogist._embedded.pharmacalogist}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
-      </Grid>
-      {/* </div> */}
+        {/* </Grid> */}
+      </div>
     </Grid>
   );
 };
