@@ -82,7 +82,7 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
         <ListItem>
           <ListItemButton>
             <ListItemIcon>
-              <span className="material-symbols-outlined">patient_list</span>
+              <span className="material-symbols-outlined">person</span>
             </ListItemIcon>
             <ListItemText primary="Monitores" />
           </ListItemButton>

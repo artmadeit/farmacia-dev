@@ -7,6 +7,7 @@ import {
   esES,
   GridActionsCellItem,
   GridColDef,
+  GRID_CHECKBOX_SELECTION_COL_DEF,
 } from "@mui/x-data-grid";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
@@ -61,6 +62,10 @@ const EditMonitors = () => {
                 </Tooltip>,
               ];
             },
+          },
+          {
+            ...GRID_CHECKBOX_SELECTION_COL_DEF,
+            width: 100,
           },
         ] as GridColDef<Pharmacologist>[]
       ).map(withOutSorting),
@@ -119,6 +124,9 @@ const EditMonitors = () => {
           columns={columns}
           rows={pharmacalogist._embedded.pharmacalogist}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          disableColumnFilter
+          checkboxSelection
+          // disableRowSelectionOnClick
         />
       </div>
     </Grid>
