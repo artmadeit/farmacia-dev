@@ -14,41 +14,22 @@ import { TextField } from "formik-mui";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
-
-type Pharmacologist = {
-  id?: number;
-  name: string;
-  email: string;
-};
+import { User } from "../User";
+import { Page } from "@/app/(api)/pagination";
+import useSWR from "swr";
 
 const EditMonitors = ({ params }: { params: { email: string } }) => {
   const { email } = params;
 
   const router = useRouter();
-  const [pharmacalogist, setPharmacalogist] = React.useState({
-    _embedded: {
-      pharmacalogist: [
-        {
-          id: 1,
-          name: "Daniel",
-          email: "mauricio@gmail.com",
-        },
-      ],
-    },
-    page: {
-      size: "",
-      totalElements: "",
-      totalPage: "",
-      numbers: "",
-    },
-  });
+  const { data } = useSWR<Page<User>>(`/users/pharmacalogists`);
+  const pharmacalogists = data?._embedded?.users;
 
   const columns = React.useMemo(
     () =>
       (
         [
-          { field: "name", headerName: "Nombre" },
-          { field: "email", headerName: "Email", width: 200 },
+          { field: "email", headerName: "Email", flex: 1 },
           {
             field: "actions",
             type: "actions",
@@ -69,12 +50,11 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
             ...GRID_CHECKBOX_SELECTION_COL_DEF,
             width: 100,
           },
-        ] as GridColDef<Pharmacologist>[]
+        ] as GridColDef<User>[]
       ).map(withOutSorting),
     [router]
   );
 
-  console.log(email)
   return (
     <Grid container style={{ display: "flex", flexDirection: "column" }}>
       <Grid item xs={6}>
@@ -88,7 +68,8 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
         </Typography>
         <DataGrid
           columns={columns}
-          rows={pharmacalogist._embedded.pharmacalogist}
+          rows={pharmacalogists || []}
+          getRowId={user => user.email}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           disableColumnFilter
           checkboxSelection

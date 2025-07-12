@@ -17,15 +17,11 @@ import {
 import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
-
-type Monitor = {
-  email: string;
-  name: string;
-};
+import { User } from "./User";
 
 export default function ListMonitors() {
   const router = useRouter();
-  const { data } = useSWR<Page<Monitor>>(`/users/monitors`);
+  const { data } = useSWR<Page<User>>(`/users/monitors`);
   const monitors = data?._embedded?.users;
 
   const columns = React.useMemo(
@@ -49,7 +45,7 @@ export default function ListMonitors() {
               ];
             },
           },
-        ] as GridColDef<Monitor>[]
+        ] as GridColDef<User>[]
       ).map(withOutSorting),
     [router]
   );
