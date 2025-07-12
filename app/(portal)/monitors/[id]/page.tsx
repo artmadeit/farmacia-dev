@@ -128,6 +128,9 @@ const EditMonitors = () => {
           checkboxSelection
           // disableRowSelectionOnClick
         />
+        <Button variant="contained" style={{ margin: "20px 0px 20px 0px" }}>
+          Guardar
+        </Button>
       </div>
     </Grid>
   );

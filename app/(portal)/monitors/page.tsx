@@ -2,6 +2,7 @@
 
 import AddIcon from "@mui/icons-material/Add";
 import {
+  Button,
   Fab,
   InputAdornment,
   Stack,
@@ -14,7 +15,6 @@ import {
   esES,
   GridActionsCellItem,
   GridColDef,
-  GRID_CHECKBOX_SELECTION_COL_DEF,
 } from "@mui/x-data-grid";
 import Link from "next/link";
 import React from "react";
@@ -77,10 +77,6 @@ export default function ListMonitors() {
               ];
             },
           },
-          {
-            ...GRID_CHECKBOX_SELECTION_COL_DEF,
-            width: 100,
-          },
         ] as GridColDef<Monitor>[]
       ).map(withOutSorting),
     [router]
@@ -123,7 +119,6 @@ export default function ListMonitors() {
           columns={columns}
           rows={monitor._embedded.monitor}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          checkboxSelection
         />
       </div>
     </Stack>
