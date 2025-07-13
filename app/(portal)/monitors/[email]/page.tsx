@@ -28,7 +28,10 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
   const email = decodeURIComponent(params.email);
 
   const router = useRouter();
-  const { data } = useSWR<Page<User>>(`/users/pharmacologists`);
+  const { data } = useSWR<Page<User>>([
+    `/users/pharmacologists`,
+    { params: { size: 200 } }, // TODO: paginate this
+  ]);
   const pharmacologists = data?._embedded?.users;
 
   const { data: assignments } = useSWR<MonitorAssignmentPharmacologist[]>([
@@ -81,7 +84,7 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
 
   const assignPharmacologists = async () => {
     const api = await getApi();
-    await api.post(`/monitors/pharmacologists-assignments`,
+    await api.post(`/users/monitors/pharmacologists-assignments`,
       rowSelectionModel.map(x => ({
         monitorEmail: email,
         pharmacologistEmail: x

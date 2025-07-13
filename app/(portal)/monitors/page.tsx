@@ -21,7 +21,10 @@ import { User } from "./User";
 
 export default function ListMonitors() {
   const router = useRouter();
-  const { data } = useSWR<Page<User>>(`/users/monitors`);
+  const { data } = useSWR<Page<User>>([
+    `/users/monitors`,
+    { params: { size: 200 } }, // TODO: paginate this
+  ]);
   const monitors = data?._embedded?.users;
 
   const columns = React.useMemo(
