@@ -4,7 +4,7 @@ import { Fab, Stack, Tooltip, Typography } from "@mui/material";
 import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
@@ -48,45 +48,47 @@ const DrugsPage = () => {
 
   const { user } = useAuth0();
 
+
+  const roles: string[] = user?.["https://farmacia-unmsm.org/roles"];
   const columns = React.useMemo(
     () =>
       (
         [
           { field: "name", headerName: "Nombre", minWidth: 200 },
-          {
-            field: "actions",
-            type: "actions",
-            width: 80,
-            getActions: (params) => {
-              return [
-                <Tooltip title="Editar" key="edit">
-                  <GridActionsCellItem
-                    icon={<EditIcon />}
-                    label="Editar"
-                    onClick={() =>
-                      router.push(`/drugs/narrow-margin/${params.row.id}`)
-                    }
-                  />
-                </Tooltip>,
-                <Tooltip title="Eliminar" key="delete">
-                  <GridActionsCellItem
-                    icon={<DeleteIcon />}
-                    label="Eliminar"
-                    onClick={() => setItemToDelete(params.row)}
-                  />
-                </Tooltip>,
-              ];
-            },
-          },
+          ...(roles.some(role => ["RESEARCHER", "SUPER_ADMIN", "MONITOR"].includes(role)) ?
+            [
+              {
+                field: "actions",
+                type: "actions",
+                width: 80,
+                getActions: (params: GridRowParams<Drug>) => {
+                  return [
+                    <Tooltip title="Editar" key="edit">
+                      <GridActionsCellItem
+                        icon={<EditIcon />}
+                        label="Editar"
+                        onClick={() =>
+                          router.push(`/drugs/narrow-margin/${params.row.id}`)
+                        }
+                      />
+                    </Tooltip>,
+                    <Tooltip title="Eliminar" key="delete">
+                      <GridActionsCellItem
+                        icon={<DeleteIcon />}
+                        label="Eliminar"
+                        onClick={() => setItemToDelete(params.row)}
+                      />
+                    </Tooltip>,
+                  ];
+                },
+              }
+            ] : []),
         ] as GridColDef<Drug>[]
       ).map(withOutSorting),
-    [router]
+    [router, roles]
   );
 
   if (!drugs) return <Loading />;
-
-  const roles: string[] = user?.["https://farmacia-unmsm.org/roles"];
-
   return (
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
