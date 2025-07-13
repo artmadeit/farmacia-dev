@@ -18,6 +18,7 @@ import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 import DialogDelete from "@/app/(components)/DialogDelete";
 import { useAuthApi } from "@/app/(api)/api";
 import Loading from "@/app/(components)/Loading";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const DrugsPage = () => {
   const router = useRouter();
@@ -44,6 +45,8 @@ const DrugsPage = () => {
     "/drugNarrowMargins",
     { params: { page: paginationModel.page, size: paginationModel.pageSize } },
   ]);
+
+  const { user } = useAuth0();
 
   const columns = React.useMemo(
     () =>
@@ -82,17 +85,22 @@ const DrugsPage = () => {
 
   if (!drugs) return <Loading />;
 
+  const roles: string[] = user?.["https://farmacia-unmsm.org/roles"];
+
   return (
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
         <Typography variant="h4">Estrecho margen</Typography>
-        <Tooltip title="Registrar">
-          <Link href="narrow-margin/create">
-            <Fab color="primary" aria-labelledby="add">
-              <AddIcon />
-            </Fab>
-          </Link>
-        </Tooltip>
+        {
+          roles.some(role => ["RESEARCHER", "SUPER_ADMIN", "MONITOR"].includes(role)) &&
+          <Tooltip title="Registrar">
+            <Link href="narrow-margin/create">
+              <Fab color="primary" aria-labelledby="add">
+                <AddIcon />
+              </Fab>
+            </Link>
+          </Tooltip>
+        }
       </Stack>
       <div style={{ height: "70vh", width: "100%" }}>
         <DataGrid
