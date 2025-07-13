@@ -41,7 +41,7 @@ const Cie10Form = ({ disease, textName }: Cie10FormProps) => {
           {({ isSubmitting }) => (
             <Form>
               <Typography variant="h4" style={{ paddingBottom: "20px" }}>
-                {textName} medicamento
+                {textName} Enfermedad
               </Typography>
               <Grid>
                 <Stack spacing={2}>
@@ -52,8 +52,6 @@ const Cie10Form = ({ disease, textName }: Cie10FormProps) => {
                     variant="outlined"
                     required
                   />
-                </Stack>
-                <Stack spacing={2}>
                   <Field
                     component={TextField}
                     name="name"
