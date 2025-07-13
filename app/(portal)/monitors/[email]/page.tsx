@@ -14,6 +14,7 @@ import {
   GridColDef,
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import useSWR from "swr";
@@ -34,7 +35,7 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
   ]);
   const pharmacologists = data?._embedded?.users;
 
-  const { data: assignments } = useSWR<MonitorAssignmentPharmacologist[]>([
+  const { data: assignments, mutate: mutateAssignments } = useSWR<MonitorAssignmentPharmacologist[]>([
     `/users/monitors/pharmacologists-assignments`,
     { params: { email } },
   ]);
@@ -83,14 +84,23 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
   const snackbar = useContext(SnackbarContext);
 
   const assignPharmacologists = async () => {
-    const api = await getApi();
-    await api.post(`/users/monitors/pharmacologists-assignments`,
-      rowSelectionModel.map(x => ({
-        monitorEmail: email,
-        pharmacologistEmail: x
-      })));
-    snackbar.showMessage("Farmacologos asignados a monitor");
-    router.push("/monitors");
+    try {
+      const api = await getApi();
+      await api.post(`/users/monitors/pharmacologists-assignments`,
+        rowSelectionModel.map(x => ({
+          monitorEmail: email,
+          pharmacologistEmail: x
+        })));
+      mutateAssignments();
+      snackbar.showMessage("Farmacologos asignados a monitor");
+      router.push("/monitors");
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        snackbar.showMessage(e.response?.data.message);
+      } else {
+        snackbar.showMessage("Upss ocurrio un error intentelo de nuevo");
+      }
+    }
   };
 
   return (
