@@ -72,22 +72,27 @@ export default function MenuDrawer2({ children }: React.PropsWithChildren<{}>) {
   if (isLoading) return <Loading />;
   if (!isAuthenticated) return redirect("/");
 
+  const roles: string[] = user?.["https://farmacia-unmsm.org/roles"];
+
   const drawer = (
     <List>
-      <Link
-        component={NextLink}
-        href="/monitors"
-        style={{ textDecoration: "none", color: "inherit" }}
-      >
-        <ListItem>
-          <ListItemButton>
-            <ListItemIcon>
-              <span className="material-symbols-outlined">person</span>
-            </ListItemIcon>
-            <ListItemText primary="Monitores" />
-          </ListItemButton>
-        </ListItem>
-      </Link>
+      {
+        roles.some(role => ["RESEARCHER", "SUPER_ADMIN"].includes(role)) &&
+        <Link
+          component={NextLink}
+          href="/monitors"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <ListItem>
+            <ListItemButton>
+              <ListItemIcon>
+                <span className="material-symbols-outlined">person</span>
+              </ListItemIcon>
+              <ListItemText primary="Monitores" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+      }
       <Link
         component={NextLink}
         href="/patients"
