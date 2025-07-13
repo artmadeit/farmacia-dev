@@ -8,22 +8,26 @@ import {
   GridActionsCellItem,
   GridColDef,
   GRID_CHECKBOX_SELECTION_COL_DEF,
+  GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
 import { User } from "../User";
 import { Page } from "@/app/(api)/pagination";
 import useSWR from "swr";
+import { useAuthApi } from "@/app/(api)/api";
+import { SnackbarContext } from "@/app/(components)/SnackbarContext";
 
 const EditMonitors = ({ params }: { params: { email: string } }) => {
   const { email } = params;
 
   const router = useRouter();
-  const { data } = useSWR<Page<User>>(`/users/pharmacalogists`);
-  const pharmacalogists = data?._embedded?.users;
+  const { data } = useSWR<Page<User>>(`/users/pharmacologists`);
+  const pharmacologists = data?._embedded?.users;
+  const getApi = useAuthApi();
 
   const columns = React.useMemo(
     () =>
@@ -55,6 +59,21 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
     [router]
   );
 
+  const [rowSelectionModel, setRowSelectionModel] =
+    useState<GridRowSelectionModel>([]);
+  const snackbar = useContext(SnackbarContext);
+
+  const assignPharmacologists = async () => {
+    const api = await getApi();
+    await api.post(`/monitors/pharmacologists-assignments`,
+      rowSelectionModel.map(x => ({
+        monitorEmail: email,
+        pharmacologistEmail: x
+      })));
+    snackbar.showMessage("Farmacologos asignados a monitor");
+    router.push("/monitors");
+  };
+
   return (
     <Grid container style={{ display: "flex", flexDirection: "column" }}>
       <Grid item xs={6}>
@@ -68,14 +87,18 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
         </Typography>
         <DataGrid
           columns={columns}
-          rows={pharmacalogists || []}
+          rows={pharmacologists || []}
           getRowId={user => user.email}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           disableColumnFilter
           checkboxSelection
-        // disableRowSelectionOnClick
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            setRowSelectionModel(newRowSelectionModel);
+          }}
+          rowSelectionModel={rowSelectionModel}
         />
-        <Button variant="contained" style={{ margin: "20px 0px 20px 0px" }}>
+        <Button variant="contained" style={{ margin: "20px 0px 20px 0px" }}
+          onClick={assignPharmacologists}>
           Guardar
         </Button>
       </div>
