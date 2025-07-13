@@ -87,10 +87,10 @@ const EditMonitors = ({ params }: { params: { email: string } }) => {
     try {
       const api = await getApi();
       await api.post(`/users/monitors/pharmacologists-assignments`,
-        rowSelectionModel.map(x => ({
+        {
           monitorEmail: email,
-          pharmacologistEmail: x
-        })));
+          pharmacologistEmails: rowSelectionModel
+        });
       mutateAssignments();
       snackbar.showMessage("Farmacologos asignados a monitor");
       router.push("/monitors");

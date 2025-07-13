@@ -85,7 +85,7 @@ export default function ListPatients() {
     setSearchText(searchText);
   };
 
-  const csvData = patients?._embedded.patients || [];
+  const csvData = patients?._embedded?.patients || [];
 
   return (
     <Stack direction="column" spacing={2}>
