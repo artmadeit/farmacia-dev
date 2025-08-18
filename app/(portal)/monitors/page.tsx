@@ -1,14 +1,12 @@
 "use client";
 
-import AddIcon from "@mui/icons-material/Add";
+import { Page } from "@/app/(api)/pagination";
+import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
+import SearchIcon from "@mui/icons-material/Search";
 import {
-  Button,
-  Fab,
-  InputAdornment,
   Stack,
-  TextField,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import {
   DataGrid,
@@ -16,51 +14,24 @@ import {
   GridActionsCellItem,
   GridColDef,
 } from "@mui/x-data-grid";
-import Link from "next/link";
-import React from "react";
-import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
-import { withOutSorting } from "@/app/(components)/helpers/withOutSorting";
-import { useQueryState } from "next-usequerystate";
-
-type Monitor = {
-  id?: number;
-  code: string;
-  firstName: string;
-  lastName: string;
-};
+import React from "react";
+import useSWR from "swr";
+import { User } from "./User";
 
 export default function ListMonitors() {
   const router = useRouter();
-  const [searchText, setSearchText] = useQueryState("searchText", {
-    defaultValue: "",
-  });
-  const [monitor, setMonitor] = React.useState({
-    _embedded: {
-      monitor: [
-        {
-          id: 1,
-          code: "1370",
-          firstName: "Jakob",
-          lastName: "Mauricio",
-        },
-      ],
-    },
-    page: {
-      size: "",
-      totalElements: "",
-      totalPage: "",
-      numbers: "",
-    },
-  });
+  const { data } = useSWR<Page<User>>([
+    `/users/monitors`,
+    { params: { size: 200 } }, // TODO: paginate this
+  ]);
+  const monitors = data?._embedded?.users;
 
   const columns = React.useMemo(
     () =>
       (
         [
-          { field: "code", headerName: "Código" },
-          { field: "firstName", headerName: "Nombre" },
-          { field: "lastName", headerName: "Apellido" },
+          { field: "email", headerName: "Email", flex: 1 },
           {
             field: "actions",
             type: "actions",
@@ -71,23 +42,16 @@ export default function ListMonitors() {
                   <GridActionsCellItem
                     icon={<SearchIcon />}
                     label="ver"
-                    onClick={() => router.push(`monitors/${params.row.id}`)}
+                    onClick={() => router.push(`monitors/${params.row.email}`)}
                   />
                 </Tooltip>,
               ];
             },
           },
-        ] as GridColDef<Monitor>[]
+        ] as GridColDef<User>[]
       ).map(withOutSorting),
     [router]
   );
-
-  const handleChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (event) => {
-    const searchText = event.target.value;
-    setSearchText(searchText);
-  };
 
   return (
     <Stack direction="column" spacing={2}>
@@ -101,7 +65,7 @@ export default function ListMonitors() {
           </Link>
         </Tooltip> */}
       </Stack>
-      <TextField
+      {/* <TextField
         placeholder="Buscar..."
         variant="outlined"
         value={searchText}
@@ -113,11 +77,12 @@ export default function ListMonitors() {
             </InputAdornment>
           ),
         }}
-      />
+      />*/}
       <div style={{ width: "100", height: "70vh" }}>
         <DataGrid
           columns={columns}
-          rows={monitor._embedded.monitor}
+          rows={monitors || []}
+          getRowId={monitor => monitor.email}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
