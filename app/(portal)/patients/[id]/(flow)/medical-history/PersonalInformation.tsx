@@ -112,8 +112,17 @@ export const PersonalInformation = () => {
           required
         />
       </Grid>
-      <Grid xs={4} p={3}>
+      <Grid xs={2} p={3}>
         IMC: {getImc(values)}
+      </Grid>
+      <Grid xs={3}>
+        <FastField
+          label="Perímetro abdominal(cm)"
+          name="abdPerimeter"
+          component={TextField}
+          variant="outlined"
+          fullWidth
+        />
       </Grid>
     </Grid>
   );
