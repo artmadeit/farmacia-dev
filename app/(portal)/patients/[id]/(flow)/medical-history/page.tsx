@@ -185,9 +185,9 @@ export default function PatientInterview({
 
   const formInitialValues: Anamnesis = data
     ? {
-      ...data,
-      diagnosis: data.diseases,
-    }
+        ...data,
+        diagnosis: data.diseases,
+      }
     : initialValues;
 
   const csvData = [
@@ -352,7 +352,20 @@ export default function PatientInterview({
               <FoodHabits />
               <Subtitle component="h5">2.6 Ejercicios físicos*</Subtitle>
               <PhysicalExercises />
-              <Subtitle component="h5">2.7 Pruebas de laboratorio*</Subtitle>
+              <Subtitle component="h5">
+                2.7 Calculadora para medir el riesgo cardiovascular a los 10
+                años (de acuerdo con la calculadora HEARTS-OPS)
+              </Subtitle>
+              <div>
+                <Button
+                  variant="contained"
+                  href="https://www.paho.org/cardioapp/web/#/cvrisk"
+                >
+                  Ir a Hearts
+                </Button>
+              </div>
+
+              <Subtitle component="h5">2.8 Pruebas de laboratorio*</Subtitle>
               <LabTests />
               <Subtitle component="h5">
                 2.8 Diagnóstico
