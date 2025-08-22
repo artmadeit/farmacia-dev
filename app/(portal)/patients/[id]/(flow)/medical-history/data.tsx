@@ -10,10 +10,6 @@ export const antecedents = [
   { label: "Enf. tiroides", name: "ENF_TIROIDES" },
 ];
 
-// export const HeartsWebCalculator = [
-//   { label: "Agregue resultados de la Calculadora", name: "calculadora" },
-// ];
-
 export type GroupItems = {
   id: string;
   label: string;

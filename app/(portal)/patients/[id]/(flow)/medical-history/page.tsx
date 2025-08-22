@@ -606,20 +606,8 @@ const CallToActiontoHeartsWeb = () => (
         multiline
         rows={4}
         fullWidth
+        required
       />
     </Grid>
-    {/* {HeartsWebCalculator.map((item) => (
-      <Grid xs={8} key={item.name}>
-        <FastField
-          name={item.name}
-          label={item.label}
-          component={TextField}
-          variant="outlined"
-          multiline
-          rows={4}
-          fullWidth
-        />
-      </Grid>
-    ))} */}
   </Grid>
 );
