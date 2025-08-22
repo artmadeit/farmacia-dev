@@ -47,7 +47,6 @@ import {
   foodConsumptions,
   foodHabits,
   healthProblems,
-  // HeartsWebCalculator,
 } from "./data";
 import { requiredMessage } from "../../../../../(components)/helpers/requiredMessage";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
@@ -76,7 +75,7 @@ const initialValues: Anamnesis = {
   weight: "",
   size: "",
   antecedents: [],
-  HeartsWebCalculator: [],
+  heartsWebCalculator: "",
   otherAntecedents: "",
 
   healthProblems: {
@@ -133,7 +132,7 @@ export type Anamnesis = {
   weight: number | string;
   size: number | string;
   antecedents: string[];
-  HeartsWebCalculator: string[];
+  heartsWebCalculator: string;
   otherAntecedents: string;
 
   healthProblems: {
@@ -190,9 +189,9 @@ export default function PatientInterview({
 
   const formInitialValues: Anamnesis = data
     ? {
-        ...data,
-        diagnosis: data.diseases,
-      }
+      ...data,
+      diagnosis: data.diseases,
+    }
     : initialValues;
 
   const csvData = [
@@ -593,14 +592,15 @@ const CallToActiontoHeartsWeb = () => (
       <Button
         variant="contained"
         href="https://www.paho.org/cardioapp/web/#/cvrisk"
+        target="_blank"
       >
         Ir a Hearts
       </Button>
     </Grid>
     <Grid xs={8}>
       <FastField
-        name="HeartsWebCalculator"
-        label="Agregue resultados de la Calculadora"
+        name="heartsWebCalculator"
+        label="Agregue resultados de la calculadora"
         component={TextField}
         variant="outlined"
         multiline
