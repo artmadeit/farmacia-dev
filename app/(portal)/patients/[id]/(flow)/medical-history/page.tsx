@@ -47,6 +47,7 @@ import {
   foodConsumptions,
   foodHabits,
   healthProblems,
+  // HeartsWebCalculator,
 } from "./data";
 import { requiredMessage } from "../../../../../(components)/helpers/requiredMessage";
 import { SnackbarContext } from "@/app/(components)/SnackbarContext";
@@ -75,6 +76,7 @@ const initialValues: Anamnesis = {
   weight: "",
   size: "",
   antecedents: [],
+  HeartsWebCalculator: [],
   otherAntecedents: "",
 
   healthProblems: {
@@ -131,6 +133,7 @@ export type Anamnesis = {
   weight: number | string;
   size: number | string;
   antecedents: string[];
+  HeartsWebCalculator: string[];
   otherAntecedents: string;
 
   healthProblems: {
@@ -358,15 +361,7 @@ export default function PatientInterview({
                 2.7 Calculadora para medir el riesgo cardiovascular a los 10
                 años (de acuerdo con la calculadora HEARTS-OPS)
               </Subtitle>
-              <div>
-                <Button
-                  variant="contained"
-                  href="https://www.paho.org/cardioapp/web/#/cvrisk"
-                >
-                  Ir a Hearts
-                </Button>
-              </div>
-
+              <CallToActiontoHeartsWeb />
               <Subtitle component="h5">2.8 Pruebas de laboratorio*</Subtitle>
               <LabTests />
               <Subtitle component="h5">
@@ -589,5 +584,42 @@ const PathologicalAntecedents = () => (
         fullWidth
       />
     </Grid>
+  </Grid>
+);
+
+const CallToActiontoHeartsWeb = () => (
+  <Grid container component={OutlinedPaper}>
+    <Grid xs={4}>
+      <Button
+        variant="contained"
+        href="https://www.paho.org/cardioapp/web/#/cvrisk"
+      >
+        Ir a Hearts
+      </Button>
+    </Grid>
+    <Grid xs={8}>
+      <FastField
+        name="HeartsWebCalculator"
+        label="Agregue resultados de la Calculadora"
+        component={TextField}
+        variant="outlined"
+        multiline
+        rows={4}
+        fullWidth
+      />
+    </Grid>
+    {/* {HeartsWebCalculator.map((item) => (
+      <Grid xs={8} key={item.name}>
+        <FastField
+          name={item.name}
+          label={item.label}
+          component={TextField}
+          variant="outlined"
+          multiline
+          rows={4}
+          fullWidth
+        />
+      </Grid>
+    ))} */}
   </Grid>
 );
