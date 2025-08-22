@@ -118,10 +118,12 @@ export const PersonalInformation = () => {
       <Grid xs={3}>
         <FastField
           label="Perímetro abdominal(cm)"
-          name="abdPerimeter"
+          name="abdominalPerimeter"
           component={TextField}
+          type="number"
           variant="outlined"
           fullWidth
+          required
         />
       </Grid>
     </Grid>

@@ -69,6 +69,7 @@ const foodConsumptionsGroup2 = {
 const initialValues: Anamnesis = {
   interviewDate: new Date(),
   occupation: "",
+  abdominalPerimeter: "",
   sex: "",
   birthdate: null,
   weight: "",
@@ -124,6 +125,7 @@ type HealthProblemsByCategory = {
 export type Anamnesis = {
   interviewDate: Date | null;
   occupation: string;
+  abdominalPerimeter: number | string;
   sex: string;
   birthdate: Date | null;
   weight: number | string;
