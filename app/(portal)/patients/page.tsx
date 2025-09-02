@@ -43,7 +43,7 @@ export default function ListPatients() {
     {
       params: {
         page: paginationModel.page,
-        pageSize: paginationModel.pageSize,
+        size: paginationModel.pageSize,
       },
     },
   ]);
